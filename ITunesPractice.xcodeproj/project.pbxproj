@@ -16,6 +16,11 @@
 		8B4D36DB299FBD8000059381 /* ITunesPracticeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4D36DA299FBD8000059381 /* ITunesPracticeTests.swift */; };
 		8B4D36E5299FBD8000059381 /* ITunesPracticeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4D36E4299FBD8000059381 /* ITunesPracticeUITests.swift */; };
 		8B4D36E7299FBD8000059381 /* ITunesPracticeUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4D36E6299FBD8000059381 /* ITunesPracticeUITestsLaunchTests.swift */; };
+		8B4D36FA299FC47D00059381 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 8B4D36F9299FC47D00059381 /* Alamofire */; };
+		8B4D36FD299FC48E00059381 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 8B4D36FC299FC48E00059381 /* SwiftyJSON */; };
+		8B4D3700299FC4A300059381 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 8B4D36FF299FC4A300059381 /* Kingfisher */; };
+		8B4D3703299FC4D800059381 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8B4D3702299FC4D800059381 /* IQKeyboardManagerSwift */; };
+		8B4D3706299FC50D00059381 /* FLEX in Frameworks */ = {isa = PBXBuildFile; productRef = 8B4D3705299FC50D00059381 /* FLEX */; };
 		97B7FD5CD094AC365701E1D3 /* Pods_ITunesPractice_ITunesPracticeUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 033C501393AE280CB723584C /* Pods_ITunesPractice_ITunesPracticeUITests.framework */; };
 		AF7D6A83D37BF81654903587 /* Pods_ITunesPracticeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71300AB6BE241C3E8AE7C134 /* Pods_ITunesPracticeTests.framework */; };
 /* End PBXBuildFile section */
@@ -66,7 +71,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B4D3703299FC4D800059381 /* IQKeyboardManagerSwift in Frameworks */,
+				8B4D3700299FC4A300059381 /* Kingfisher in Frameworks */,
+				8B4D36FD299FC48E00059381 /* SwiftyJSON in Frameworks */,
 				24B1F81F56F20E14AB804089 /* Pods_ITunesPractice.framework in Frameworks */,
+				8B4D36FA299FC47D00059381 /* Alamofire in Frameworks */,
+				8B4D3706299FC50D00059381 /* FLEX in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,10 +134,13 @@
 		8B4D36C2299FBD7E00059381 /* ITunesPractice */ = {
 			isa = PBXGroup;
 			children = (
+				8B4D36F5299FC43600059381 /* ViewController */,
+				8B4D36F7299FC44900059381 /* Model */,
+				8B4D36F6299FC44200059381 /* View */,
+				8B4D36F4299FC42100059381 /* Storyboard */,
+				8B4D36F3299FC40E00059381 /* Resources */,
 				8B4D36C3299FBD7E00059381 /* AppDelegate.swift */,
 				8B4D36C5299FBD7E00059381 /* SceneDelegate.swift */,
-				8B4D36C9299FBD7E00059381 /* Main.storyboard */,
-				8B4D36CC299FBD8000059381 /* Assets.xcassets */,
 				8B4D36CE299FBD8000059381 /* LaunchScreen.storyboard */,
 				8B4D36D1299FBD8000059381 /* Info.plist */,
 			);
@@ -151,6 +164,43 @@
 			path = ITunesPracticeUITests;
 			sourceTree = "<group>";
 		};
+		8B4D36F3299FC40E00059381 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8B4D36CC299FBD8000059381 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		8B4D36F4299FC42100059381 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				8B4D36C9299FBD7E00059381 /* Main.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		8B4D36F5299FC43600059381 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		8B4D36F6299FC44200059381 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		8B4D36F7299FC44900059381 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		D5C21F7631BEBCCF5CBD47EB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -161,7 +211,6 @@
 				870E6A0E3200511CE28E5D52 /* Pods-ITunesPracticeTests.debug.xcconfig */,
 				2D9D85E036D93BCA751421CD /* Pods-ITunesPracticeTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -182,6 +231,13 @@
 			dependencies = (
 			);
 			name = ITunesPractice;
+			packageProductDependencies = (
+				8B4D36F9299FC47D00059381 /* Alamofire */,
+				8B4D36FC299FC48E00059381 /* SwiftyJSON */,
+				8B4D36FF299FC4A300059381 /* Kingfisher */,
+				8B4D3702299FC4D800059381 /* IQKeyboardManagerSwift */,
+				8B4D3705299FC50D00059381 /* FLEX */,
+			);
 			productName = ITunesPractice;
 			productReference = 8B4D36C0299FBD7E00059381 /* ITunesPractice.app */;
 			productType = "com.apple.product-type.application";
@@ -256,6 +312,13 @@
 				Base,
 			);
 			mainGroup = 8B4D36B7299FBD7E00059381;
+			packageReferences = (
+				8B4D36F8299FC47D00059381 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				8B4D36FB299FC48E00059381 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+				8B4D36FE299FC4A300059381 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				8B4D3701299FC4D800059381 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
+				8B4D3704299FC50D00059381 /* XCRemoteSwiftPackageReference "FLEX" */,
+			);
 			productRefGroup = 8B4D36C1299FBD7E00059381 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -717,6 +780,77 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8B4D36F8299FC47D00059381 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		8B4D36FB299FC48E00059381 /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		8B4D36FE299FC4A300059381 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
+		8B4D3701299FC4D800059381 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hackiftekhar/IQKeyboardManager.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		8B4D3704299FC50D00059381 /* XCRemoteSwiftPackageReference "FLEX" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/FLEXTool/FLEX.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8B4D36F9299FC47D00059381 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B4D36F8299FC47D00059381 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		8B4D36FC299FC48E00059381 /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B4D36FB299FC48E00059381 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
+		};
+		8B4D36FF299FC4A300059381 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B4D36FE299FC4A300059381 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		8B4D3702299FC4D800059381 /* IQKeyboardManagerSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B4D3701299FC4D800059381 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
+			productName = IQKeyboardManagerSwift;
+		};
+		8B4D3705299FC50D00059381 /* FLEX */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B4D3704299FC50D00059381 /* XCRemoteSwiftPackageReference "FLEX" */;
+			productName = FLEX;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8B4D36B8299FBD7E00059381 /* Project object */;
 }
