@@ -7,6 +7,9 @@ target 'ITunesPractice' do
 
   # Pods for ITunesPractice
 
+  pod 'SwiftLint'
+
+
   target 'ITunesPracticeTests' do
     inherit! :search_paths
     # Pods for testing

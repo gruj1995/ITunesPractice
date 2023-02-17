@@ -5,11 +5,10 @@
 //  Created by 李品毅 on 2023/2/17.
 //
 
-import XCTest
 @testable import ITunesPractice
+import XCTest
 
 final class ITunesPracticeTests: XCTestCase {
-
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -32,5 +31,4 @@ final class ITunesPracticeTests: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
-
 }

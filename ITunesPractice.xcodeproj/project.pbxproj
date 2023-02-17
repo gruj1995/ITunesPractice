@@ -21,6 +21,7 @@
 		8B4D3700299FC4A300059381 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 8B4D36FF299FC4A300059381 /* Kingfisher */; };
 		8B4D3703299FC4D800059381 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8B4D3702299FC4D800059381 /* IQKeyboardManagerSwift */; };
 		8B4D3706299FC50D00059381 /* FLEX in Frameworks */ = {isa = PBXBuildFile; productRef = 8B4D3705299FC50D00059381 /* FLEX */; };
+		8B4D3708299FCA5B00059381 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4D3707299FCA5B00059381 /* SearchViewController.swift */; };
 		97B7FD5CD094AC365701E1D3 /* Pods_ITunesPractice_ITunesPracticeUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 033C501393AE280CB723584C /* Pods_ITunesPractice_ITunesPracticeUITests.framework */; };
 		AF7D6A83D37BF81654903587 /* Pods_ITunesPracticeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71300AB6BE241C3E8AE7C134 /* Pods_ITunesPracticeTests.framework */; };
 /* End PBXBuildFile section */
@@ -63,6 +64,7 @@
 		8B4D36E0299FBD8000059381 /* ITunesPracticeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ITunesPracticeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B4D36E4299FBD8000059381 /* ITunesPracticeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITunesPracticeUITests.swift; sourceTree = "<group>"; };
 		8B4D36E6299FBD8000059381 /* ITunesPracticeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITunesPracticeUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		8B4D3707299FCA5B00059381 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		DA04B84F1DBB0D7BD892EB6B /* Pods-ITunesPractice.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ITunesPractice.release.xcconfig"; path = "Target Support Files/Pods-ITunesPractice/Pods-ITunesPractice.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -183,6 +185,7 @@
 		8B4D36F5299FC43600059381 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				8B4D3707299FCA5B00059381 /* SearchViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -225,6 +228,8 @@
 				8B4D36BC299FBD7E00059381 /* Sources */,
 				8B4D36BD299FBD7E00059381 /* Frameworks */,
 				8B4D36BE299FBD7E00059381 /* Resources */,
+				8BB74C54299FD3AA000B9D59 /* ShellScript */,
+				8BB74C55299FD794000B9D59 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -380,6 +385,40 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		8BB74C54299FD3AA000B9D59 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftformat >/dev/null; then\nswiftformat .\nelse\necho \"warning: SwiftFormat not installed.\"\nfi\n";
+		};
+		8BB74C55299FD794000B9D59 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+		};
 		9FD595FDD08696676281A5D7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -431,6 +470,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B4D3708299FCA5B00059381 /* SearchViewController.swift in Sources */,
 				8B4D36C4299FBD7E00059381 /* AppDelegate.swift in Sources */,
 				8B4D36C6299FBD7E00059381 /* SceneDelegate.swift in Sources */,
 			);
