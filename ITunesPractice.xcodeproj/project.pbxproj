@@ -44,6 +44,19 @@
 		8BB74C9129A1DD7F000B9D59 /* ApiComponentSendable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB74C9029A1DD7F000B9D59 /* ApiComponentSendable.swift */; };
 		8BB74C9329A1DDE5000B9D59 /* ApiEngine+ApiComponentSendable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB74C9229A1DDE5000B9D59 /* ApiEngine+ApiComponentSendable.swift */; };
 		8BFDF16A29A1EB39008E2C23 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8BFDF16929A1EB39008E2C23 /* SnapKit */; };
+		8BFDF16C29A1F55F008E2C23 /* ITunesServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFDF16B29A1F55F008E2C23 /* ITunesServiceProvider.swift */; };
+		8BFDF16E29A1F835008E2C23 /* ITunesServiceProviderInpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFDF16D29A1F835008E2C23 /* ITunesServiceProviderInpl.swift */; };
+		8BFDF17129A2180E008E2C23 /* String+Extensins.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFDF17029A2180E008E2C23 /* String+Extensins.swift */; };
+		8BFDF17329A21CB0008E2C23 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFDF17229A21CB0008E2C23 /* MainTabBarController.swift */; };
+		8BFDF17529A229A9008E2C23 /* LibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFDF17429A229A9008E2C23 /* LibraryViewController.swift */; };
+		8BFDF17729A23142008E2C23 /* UISearchBar+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFDF17629A23142008E2C23 /* UISearchBar+Extensions.swift */; };
+		8BFDF17929A24D37008E2C23 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFDF17829A24D37008E2C23 /* UIColor+Extensions.swift */; };
+		8BFDF17B29A3024C008E2C23 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFDF17A29A3024C008E2C23 /* Track.swift */; };
+		8BFDF17F29A313D5008E2C23 /* DateUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFDF17E29A313D5008E2C23 /* DateUtility.swift */; };
+		8BFDF18129A31568008E2C23 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFDF18029A31568008E2C23 /* Date+Extensions.swift */; };
+		8BFDF18329A32B68008E2C23 /* NilDataResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFDF18229A32B68008E2C23 /* NilDataResponse.swift */; };
+		8BFDF18529A34818008E2C23 /* TrackCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFDF18429A34818008E2C23 /* TrackCell.swift */; };
+		8BFDF18C29A3ACEF008E2C23 /* CombineSchedulers in Frameworks */ = {isa = PBXBuildFile; productRef = 8BFDF18B29A3ACEF008E2C23 /* CombineSchedulers */; };
 		97B7FD5CD094AC365701E1D3 /* Pods_ITunesPractice_ITunesPracticeUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 033C501393AE280CB723584C /* Pods_ITunesPractice_ITunesPracticeUITests.framework */; };
 		AF7D6A83D37BF81654903587 /* Pods_ITunesPracticeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71300AB6BE241C3E8AE7C134 /* Pods_ITunesPracticeTests.framework */; };
 /* End PBXBuildFile section */
@@ -108,6 +121,18 @@
 		8BB74C8E29A1DC9F000B9D59 /* ApiEngineError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiEngineError.swift; sourceTree = "<group>"; };
 		8BB74C9029A1DD7F000B9D59 /* ApiComponentSendable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiComponentSendable.swift; sourceTree = "<group>"; };
 		8BB74C9229A1DDE5000B9D59 /* ApiEngine+ApiComponentSendable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiEngine+ApiComponentSendable.swift"; sourceTree = "<group>"; };
+		8BFDF16B29A1F55F008E2C23 /* ITunesServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITunesServiceProvider.swift; sourceTree = "<group>"; };
+		8BFDF16D29A1F835008E2C23 /* ITunesServiceProviderInpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITunesServiceProviderInpl.swift; sourceTree = "<group>"; };
+		8BFDF17029A2180E008E2C23 /* String+Extensins.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensins.swift"; sourceTree = "<group>"; };
+		8BFDF17229A21CB0008E2C23 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		8BFDF17429A229A9008E2C23 /* LibraryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewController.swift; sourceTree = "<group>"; };
+		8BFDF17629A23142008E2C23 /* UISearchBar+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISearchBar+Extensions.swift"; sourceTree = "<group>"; };
+		8BFDF17829A24D37008E2C23 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
+		8BFDF17A29A3024C008E2C23 /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
+		8BFDF17E29A313D5008E2C23 /* DateUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtility.swift; sourceTree = "<group>"; };
+		8BFDF18029A31568008E2C23 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
+		8BFDF18229A32B68008E2C23 /* NilDataResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NilDataResponse.swift; sourceTree = "<group>"; };
+		8BFDF18429A34818008E2C23 /* TrackCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackCell.swift; sourceTree = "<group>"; };
 		DA04B84F1DBB0D7BD892EB6B /* Pods-ITunesPractice.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ITunesPractice.release.xcconfig"; path = "Target Support Files/Pods-ITunesPractice/Pods-ITunesPractice.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -116,6 +141,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BFDF18C29A3ACEF008E2C23 /* CombineSchedulers in Frameworks */,
 				8B4D3703299FC4D800059381 /* IQKeyboardManagerSwift in Frameworks */,
 				8B4D3700299FC4A300059381 /* Kingfisher in Frameworks */,
 				8B4D36FD299FC48E00059381 /* SwiftyJSON in Frameworks */,
@@ -185,6 +211,7 @@
 				8B4D36F6299FC44200059381 /* View */,
 				8BB74C5B29A1393A000B9D59 /* API */,
 				8BB74C7129A150F2000B9D59 /* Helper */,
+				8BFDF16F29A217F8008E2C23 /* Extensions */,
 				8B4D36F3299FC40E00059381 /* Resources */,
 				8BB74C7429A15425000B9D59 /* Constants.swift */,
 				8B4D36C3299FBD7E00059381 /* AppDelegate.swift */,
@@ -223,8 +250,10 @@
 		8B4D36F5299FC43600059381 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				8BFDF17229A21CB0008E2C23 /* MainTabBarController.swift */,
 				8B4D3707299FCA5B00059381 /* SearchViewController.swift */,
 				8BB74C8A29A1D735000B9D59 /* SearchViewModel.swift */,
+				8BFDF17429A229A9008E2C23 /* LibraryViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -232,6 +261,7 @@
 		8B4D36F6299FC44200059381 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				8BFDF18429A34818008E2C23 /* TrackCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -239,6 +269,7 @@
 		8B4D36F7299FC44900059381 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				8BFDF17A29A3024C008E2C23 /* Track.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -257,6 +288,7 @@
 				8BB74C6929A14BA3000B9D59 /* CustomRequest.swift */,
 				8BB74C8429A1CBD3000B9D59 /* Defs.swift */,
 				8BB74C6B29A14BEF000B9D59 /* HTTPMethod.swift */,
+				8BFDF18229A32B68008E2C23 /* NilDataResponse.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -266,6 +298,8 @@
 			children = (
 				8BB74C7829A1C687000B9D59 /* ITunesService.swift */,
 				8BB74C7A29A1C91B000B9D59 /* ITunesService+Search.swift */,
+				8BFDF16B29A1F55F008E2C23 /* ITunesServiceProvider.swift */,
+				8BFDF16D29A1F835008E2C23 /* ITunesServiceProviderInpl.swift */,
 			);
 			path = SearchService;
 			sourceTree = "<group>";
@@ -274,6 +308,7 @@
 			isa = PBXGroup;
 			children = (
 				8BB74C6029A13DF4000B9D59 /* Logger.swift */,
+				8BFDF17E29A313D5008E2C23 /* DateUtility.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -291,6 +326,17 @@
 				8BB74C8829A1CCEB000B9D59 /* CustomJsonBodyParamsAdapter.swift */,
 			);
 			path = Adapter;
+			sourceTree = "<group>";
+		};
+		8BFDF16F29A217F8008E2C23 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				8BFDF17029A2180E008E2C23 /* String+Extensins.swift */,
+				8BFDF17629A23142008E2C23 /* UISearchBar+Extensions.swift */,
+				8BFDF17829A24D37008E2C23 /* UIColor+Extensions.swift */,
+				8BFDF18029A31568008E2C23 /* Date+Extensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		D5C21F7631BEBCCF5CBD47EB /* Pods */ = {
@@ -318,7 +364,6 @@
 				8B4D36BD299FBD7E00059381 /* Frameworks */,
 				8B4D36BE299FBD7E00059381 /* Resources */,
 				8BB74C54299FD3AA000B9D59 /* ShellScript */,
-				8BB74C55299FD794000B9D59 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -332,6 +377,7 @@
 				8B4D3702299FC4D800059381 /* IQKeyboardManagerSwift */,
 				8B4D3705299FC50D00059381 /* FLEX */,
 				8BFDF16929A1EB39008E2C23 /* SnapKit */,
+				8BFDF18B29A3ACEF008E2C23 /* CombineSchedulers */,
 			);
 			productName = ITunesPractice;
 			productReference = 8B4D36C0299FBD7E00059381 /* ITunesPractice.app */;
@@ -414,6 +460,7 @@
 				8B4D3701299FC4D800059381 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 				8B4D3704299FC50D00059381 /* XCRemoteSwiftPackageReference "FLEX" */,
 				8BFDF16829A1EB39008E2C23 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				8BFDF18A29A3ACEF008E2C23 /* XCRemoteSwiftPackageReference "combine-schedulers" */,
 			);
 			productRefGroup = 8B4D36C1299FBD7E00059381 /* Products */;
 			projectDirPath = "";
@@ -490,24 +537,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftformat >/dev/null; then\nswiftformat .\nelse\necho \"warning: SwiftFormat not installed.\"\nfi\n";
-		};
-		8BB74C55299FD794000B9D59 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+			shellScript = "if which swiftformat >/dev/null; then\nswiftformat .\nelse\necho \"warning: SwiftFormat not installed.\"\nfi\n\n# 讓 Debug mode 下才會跑 lint\nif [ \"$CONFIGURATION\" == \"Debug\" ]; then\n    echo \"Debug configuration\"\n    \"${PODS_ROOT}/SwiftLint/swiftlint\" lint --config \"${SRCROOT}/.swiftlint.yml\"\nelse\n    echo \"Release configuration\"\nfi\n";
 		};
 		9FD595FDD08696676281A5D7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -560,24 +590,36 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BFDF17329A21CB0008E2C23 /* MainTabBarController.swift in Sources */,
+				8BFDF16C29A1F55F008E2C23 /* ITunesServiceProvider.swift in Sources */,
 				8BB74C6A29A14BA3000B9D59 /* CustomRequest.swift in Sources */,
 				8BB74C7D29A1CA0E000B9D59 /* CustomPathAdapter.swift in Sources */,
 				8BB74C8D29A1DBA9000B9D59 /* ApiSendHelper.swift in Sources */,
 				8BB74C6529A14584000B9D59 /* ApiRequestError.swift in Sources */,
+				8BFDF18529A34818008E2C23 /* TrackCell.swift in Sources */,
 				8BB74C7B29A1C91B000B9D59 /* ITunesService+Search.swift in Sources */,
 				8BB74C9329A1DDE5000B9D59 /* ApiEngine+ApiComponentSendable.swift in Sources */,
+				8BFDF17B29A3024C008E2C23 /* Track.swift in Sources */,
+				8BFDF16E29A1F835008E2C23 /* ITunesServiceProviderInpl.swift in Sources */,
+				8BFDF17F29A313D5008E2C23 /* DateUtility.swift in Sources */,
 				8BB74C6C29A14BEF000B9D59 /* HTTPMethod.swift in Sources */,
+				8BFDF17729A23142008E2C23 /* UISearchBar+Extensions.swift in Sources */,
+				8BFDF17929A24D37008E2C23 /* UIColor+Extensions.swift in Sources */,
 				8BB74C7529A15425000B9D59 /* Constants.swift in Sources */,
 				8BB74C8529A1CBD3000B9D59 /* Defs.swift in Sources */,
 				8BB74C8929A1CCEB000B9D59 /* CustomJsonBodyParamsAdapter.swift in Sources */,
 				8B4D3708299FCA5B00059381 /* SearchViewController.swift in Sources */,
 				8BB74C7929A1C687000B9D59 /* ITunesService.swift in Sources */,
 				8BB74C8729A1CC8F000B9D59 /* CustomContentTypeAdapter.swift in Sources */,
+				8BFDF17529A229A9008E2C23 /* LibraryViewController.swift in Sources */,
 				8BB74C6129A13DF4000B9D59 /* Logger.swift in Sources */,
+				8BFDF17129A2180E008E2C23 /* String+Extensins.swift in Sources */,
+				8BFDF18129A31568008E2C23 /* Date+Extensions.swift in Sources */,
 				8BB74C8B29A1D735000B9D59 /* SearchViewModel.swift in Sources */,
 				8BB74C7329A15350000B9D59 /* ApiEngine.swift in Sources */,
 				8BB74C8F29A1DC9F000B9D59 /* ApiEngineError.swift in Sources */,
 				8B4D36C4299FBD7E00059381 /* AppDelegate.swift in Sources */,
+				8BFDF18329A32B68008E2C23 /* NilDataResponse.swift in Sources */,
 				8BB74C5D29A1394A000B9D59 /* AlamofireAdapter.swift in Sources */,
 				8BB74C9129A1DD7F000B9D59 /* ApiComponentSendable.swift in Sources */,
 				8B4D36C6299FBD7E00059381 /* SceneDelegate.swift in Sources */,
@@ -974,6 +1016,14 @@
 				minimumVersion = 5.0.1;
 			};
 		};
+		8BFDF18A29A3ACEF008E2C23 /* XCRemoteSwiftPackageReference "combine-schedulers" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/combine-schedulers";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1006,6 +1056,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8BFDF16829A1EB39008E2C23 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		8BFDF18B29A3ACEF008E2C23 /* CombineSchedulers */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8BFDF18A29A3ACEF008E2C23 /* XCRemoteSwiftPackageReference "combine-schedulers" */;
+			productName = CombineSchedulers;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
