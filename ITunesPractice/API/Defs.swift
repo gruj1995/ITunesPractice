@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - Defs
 
-enum RequestError: Error{
+enum RequestError: Error {
     case urlError
     case adapterError(error: Error)
 }

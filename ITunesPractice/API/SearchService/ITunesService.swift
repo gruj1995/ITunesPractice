@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct ITunesService{
+struct ITunesService {
     
 }

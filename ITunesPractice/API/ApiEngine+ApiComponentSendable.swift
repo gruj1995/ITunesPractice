@@ -11,9 +11,9 @@ import Alamofire
 // MARK: - ApiComponentSendable
 extension ApiEngine: ApiComponentSendable {
     
-    public func sendRequest(request: URLRequest, queue: DispatchQueue = .main, handler: @escaping (Data?, HTTPURLResponse?, Error?) -> Void) -> URLSessionDataTask?{
+    public func sendRequest(request: URLRequest, queue: DispatchQueue = .main, handler: @escaping (Data?, HTTPURLResponse?, Error?) -> Void) -> URLSessionDataTask? {
         let authorizationHeaderPreservingRedirectHandler: Redirector = {
-            let behavior = Redirector.Behavior.modify { (task, request, response) in
+            let behavior = Redirector.Behavior.modify { (task, request, _ ) in
                 var redirectedRequest = request
                 
                 if let originalRequest = task.originalRequest,
@@ -28,8 +28,7 @@ extension ApiEngine: ApiComponentSendable {
             let redirector = Redirector(behavior: behavior)
             return redirector
         }()
-        
-        
+
         // 因為現在在 session 中插入 event monitor，但如果 request 不在 main 上，event monitor 在 Alamofire 內會有可能拿不到而進入 fatal task
         if Thread.isMainThread {
             
@@ -52,8 +51,7 @@ extension ApiEngine: ApiComponentSendable {
                 
                 dataRequest
                     .validate(statusCode: 200..<300)
-                    .responseData(queue: queue) {
-                        (responseData) in
+                    .responseData(queue: queue) { responseData in
                         
                         let data = responseData.data
                         let response = responseData.response

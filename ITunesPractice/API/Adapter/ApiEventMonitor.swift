@@ -27,8 +27,7 @@ final class ApiEventMonitor: EventMonitor {
             return
         }
         if let json = try? JSONSerialization
-            .jsonObject(with: data, options: .mutableContainers)
-        {
+            .jsonObject(with: data, options: .mutableContainers) {
             Logger.log(json)
         }
     }

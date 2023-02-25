@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-public struct ApiEngineError: Error{
+public struct ApiEngineError: Error {
 
     /// 回應物件三御家(都儲存丟出去，有可能要客製化判斷)
     public var data: Data?
@@ -16,7 +16,7 @@ public struct ApiEngineError: Error{
     public var response: URLResponse?
 
     /// 初始化
-    public init(data: Data?, error: Error?, response: URLResponse?){
+    public init(data: Data?, error: Error?, response: URLResponse?) {
         self.data = data
         self.error = error
         self.response = response
