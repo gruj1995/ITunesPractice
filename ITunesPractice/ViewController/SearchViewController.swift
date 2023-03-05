@@ -30,11 +30,21 @@ class SearchViewController: UIViewController {
         setupUI()
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // 只有在當前的 navigationBar 的 prefersLargeTitles 属性为true/YES时, largeTitleDisplayMode才會起作用
+        // 注意: 不要寫成 self.navigationController.navigationItem.largeTitleDisplayMode == ...
+        navigationController?.navigationBar.prefersLargeTitles = true
+
+        // 捲動時是否隱藏搜尋框
+        navigationItem.hidesSearchBarWhenScrolling = false
+
+        navigationItem.title = "搜尋".localizedString()
     }
 
     // MARK: Private
+
+    private let viewModel: SearchViewModel = .init()
 
     // 觀察者
     private var cancellables: Set<AnyCancellable> = []
@@ -76,22 +86,12 @@ class SearchViewController: UIViewController {
         return searchController
     }()
 
-    private let viewModel: SearchViewModel = .init()
-
     private func setupUI() {
         view.backgroundColor = .black
-
-        // 只有在當前的 navigationBar 的 prefersLargeTitles 属性为true/YES时, largeTitleDisplayMode才會起作用
-        // 注意: 不要寫成 self.navigationController.navigationItem.largeTitleDisplayMode == ...
-        navigationController?.navigationBar.prefersLargeTitles = true
 
         // 添加搜尋框
         navigationItem.searchController = searchController
 
-        // 捲動時是否隱藏搜尋框
-        navigationItem.hidesSearchBarWhenScrolling = false
-
-        navigationItem.title = "搜尋".localizedString()
         if let searchBar = navigationItem.searchController?.searchBar,
            let textField = searchBar.textField {
             // 調整搜尋框左邊放大鏡顏色
