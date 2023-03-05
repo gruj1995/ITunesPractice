@@ -65,19 +65,19 @@ extension ITunesService {
 
         /// 偏移量(搜尋結果分頁機制相關)
         private let offset: Int
-        
+
         // TODO: 修改
-        func fetchTracks(completion: @escaping ((Result<TrackList, Error>) -> Void)) {
+        func fetchTracks(completion: @escaping ((Result<SearchResponse, Error>) -> Void)) {
 
             guard let request = try? self.buildRequest() else {
                 completion(.failure(AlamofireAdapter.shared.getNilDataError()))
                 return
             }
 
-            ApiEngine.shared.requestDecodableWithResult(request) { (result: Result<TrackList, ApiEngineError>) in
+            ApiEngine.shared.requestDecodableWithResult(request) { (result: Result<SearchResponse, ApiEngineError>) in
                 switch result {
-                case .success(let albumList):
-                    completion(.success(albumList))
+                case .success(let response):
+                    completion(.success(response))
                 case .failure(let error):
                     completion(.failure(error))
                 }
