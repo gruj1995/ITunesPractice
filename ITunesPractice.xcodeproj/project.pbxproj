@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		24B1F81F56F20E14AB804089 /* Pods_ITunesPractice.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C007FA42F6407B20D99A2DE /* Pods_ITunesPractice.framework */; };
+		8B3B6CCB29AC788400A6352A /* ITunesService+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B6CCA29AC788400A6352A /* ITunesService+Lookup.swift */; };
+		8B3B6CCD29AD8C0E00A6352A /* TrackDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B6CCC29AD8C0E00A6352A /* TrackDetailViewController.swift */; };
+		8B3B6CCF29AD8C2500A6352A /* TrackDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B6CCE29AD8C2500A6352A /* TrackDetailViewModel.swift */; };
 		8B4D36C4299FBD7E00059381 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4D36C3299FBD7E00059381 /* AppDelegate.swift */; };
 		8B4D36C6299FBD7E00059381 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4D36C5299FBD7E00059381 /* SceneDelegate.swift */; };
 		8B4D36CD299FBD8000059381 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B4D36CC299FBD8000059381 /* Assets.xcassets */; };
@@ -21,6 +24,15 @@
 		8B4D3703299FC4D800059381 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8B4D3702299FC4D800059381 /* IQKeyboardManagerSwift */; };
 		8B4D3706299FC50D00059381 /* FLEX in Frameworks */ = {isa = PBXBuildFile; productRef = 8B4D3705299FC50D00059381 /* FLEX */; };
 		8B4D3708299FCA5B00059381 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4D3707299FCA5B00059381 /* SearchViewController.swift */; };
+		8B6B569F29B0EA3000F099DD /* PreviewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6B569E29B0EA3000F099DD /* PreviewType.swift */; };
+		8B6B56A329B111B700F099DD /* TrackContextMenuConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6B56A229B111B700F099DD /* TrackContextMenuConfiguration.swift */; };
+		8B6B56A529B11BBA00F099DD /* TrackContextMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6B56A429B11BBA00F099DD /* TrackContextMenuViewController.swift */; };
+		8B6B56A729B1755300F099DD /* LibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6B56A629B1755300F099DD /* LibraryViewModel.swift */; };
+		8B6B56AD29B1854B00F099DD /* UserDefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6B56AC29B1854B00F099DD /* UserDefaultsHelper.swift */; };
+		8B6B56B329B2D6FB00F099DD /* UserDefaults+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6B56B229B2D6FB00F099DD /* UserDefaults+Extensions.swift */; };
+		8B6B56B529B4491500F099DD /* RangeReplaceableCollection+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6B56B429B4491500F099DD /* RangeReplaceableCollection+Extensions.swift */; };
+		8B6B56B729B4821600F099DD /* ToastHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6B56B629B4821600F099DD /* ToastHelper.swift */; };
+		8B6B56B929B48C6400F099DD /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6B56B829B48C6400F099DD /* UIViewController+Extensions.swift */; };
 		8BB74C5D29A1394A000B9D59 /* AlamofireAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB74C5C29A1394A000B9D59 /* AlamofireAdapter.swift */; };
 		8BB74C5F29A13C33000B9D59 /* ApiEventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB74C5E29A13C33000B9D59 /* ApiEventMonitor.swift */; };
 		8BB74C6129A13DF4000B9D59 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB74C6029A13DF4000B9D59 /* Logger.swift */; };
@@ -43,7 +55,9 @@
 		8BB74C8F29A1DC9F000B9D59 /* ApiEngineError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB74C8E29A1DC9F000B9D59 /* ApiEngineError.swift */; };
 		8BB74C9129A1DD7F000B9D59 /* ApiComponentSendable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB74C9029A1DD7F000B9D59 /* ApiComponentSendable.swift */; };
 		8BB74C9329A1DDE5000B9D59 /* ApiEngine+ApiComponentSendable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB74C9229A1DDE5000B9D59 /* ApiEngine+ApiComponentSendable.swift */; };
-		8BF2026029A99DF7005FF2E4 /* TrackList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF2025F29A99DF7005FF2E4 /* TrackList.swift */; };
+		8BD1C64F29AEDEAE00337EF3 /* ITunesImageSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD1C64E29AEDEAE00337EF3 /* ITunesImageSize.swift */; };
+		8BD1C65329AF37AA00337EF3 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD1C65229AF37AA00337EF3 /* PreviewViewController.swift */; };
+		8BF2026029A99DF7005FF2E4 /* SearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF2025F29A99DF7005FF2E4 /* SearchResponse.swift */; };
 		8BFDF16A29A1EB39008E2C23 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8BFDF16929A1EB39008E2C23 /* SnapKit */; };
 		8BFDF16C29A1F55F008E2C23 /* ITunesServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFDF16B29A1F55F008E2C23 /* ITunesServiceProvider.swift */; };
 		8BFDF16E29A1F835008E2C23 /* ITunesServiceProviderInpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFDF16D29A1F835008E2C23 /* ITunesServiceProviderInpl.swift */; };
@@ -88,6 +102,9 @@
 		71300AB6BE241C3E8AE7C134 /* Pods_ITunesPracticeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ITunesPracticeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C007FA42F6407B20D99A2DE /* Pods_ITunesPractice.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ITunesPractice.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		870E6A0E3200511CE28E5D52 /* Pods-ITunesPracticeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ITunesPracticeTests.debug.xcconfig"; path = "Target Support Files/Pods-ITunesPracticeTests/Pods-ITunesPracticeTests.debug.xcconfig"; sourceTree = "<group>"; };
+		8B3B6CCA29AC788400A6352A /* ITunesService+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ITunesService+Lookup.swift"; sourceTree = "<group>"; };
+		8B3B6CCC29AD8C0E00A6352A /* TrackDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailViewController.swift; sourceTree = "<group>"; };
+		8B3B6CCE29AD8C2500A6352A /* TrackDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailViewModel.swift; sourceTree = "<group>"; };
 		8B4D36C0299FBD7E00059381 /* ITunesPractice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ITunesPractice.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B4D36C3299FBD7E00059381 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8B4D36C5299FBD7E00059381 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -100,6 +117,15 @@
 		8B4D36E4299FBD8000059381 /* ITunesPracticeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITunesPracticeUITests.swift; sourceTree = "<group>"; };
 		8B4D36E6299FBD8000059381 /* ITunesPracticeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITunesPracticeUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		8B4D3707299FCA5B00059381 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		8B6B569E29B0EA3000F099DD /* PreviewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewType.swift; sourceTree = "<group>"; };
+		8B6B56A229B111B700F099DD /* TrackContextMenuConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackContextMenuConfiguration.swift; sourceTree = "<group>"; };
+		8B6B56A429B11BBA00F099DD /* TrackContextMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackContextMenuViewController.swift; sourceTree = "<group>"; };
+		8B6B56A629B1755300F099DD /* LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewModel.swift; sourceTree = "<group>"; };
+		8B6B56AC29B1854B00F099DD /* UserDefaultsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsHelper.swift; sourceTree = "<group>"; };
+		8B6B56B229B2D6FB00F099DD /* UserDefaults+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Extensions.swift"; sourceTree = "<group>"; };
+		8B6B56B429B4491500F099DD /* RangeReplaceableCollection+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RangeReplaceableCollection+Extensions.swift"; sourceTree = "<group>"; };
+		8B6B56B629B4821600F099DD /* ToastHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastHelper.swift; sourceTree = "<group>"; };
+		8B6B56B829B48C6400F099DD /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		8BB74C5C29A1394A000B9D59 /* AlamofireAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireAdapter.swift; sourceTree = "<group>"; };
 		8BB74C5E29A13C33000B9D59 /* ApiEventMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiEventMonitor.swift; sourceTree = "<group>"; };
 		8BB74C6029A13DF4000B9D59 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -122,7 +148,9 @@
 		8BB74C8E29A1DC9F000B9D59 /* ApiEngineError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiEngineError.swift; sourceTree = "<group>"; };
 		8BB74C9029A1DD7F000B9D59 /* ApiComponentSendable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiComponentSendable.swift; sourceTree = "<group>"; };
 		8BB74C9229A1DDE5000B9D59 /* ApiEngine+ApiComponentSendable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiEngine+ApiComponentSendable.swift"; sourceTree = "<group>"; };
-		8BF2025F29A99DF7005FF2E4 /* TrackList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackList.swift; sourceTree = "<group>"; };
+		8BD1C64E29AEDEAE00337EF3 /* ITunesImageSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITunesImageSize.swift; sourceTree = "<group>"; };
+		8BD1C65229AF37AA00337EF3 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
+		8BF2025F29A99DF7005FF2E4 /* SearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResponse.swift; sourceTree = "<group>"; };
 		8BFDF16B29A1F55F008E2C23 /* ITunesServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITunesServiceProvider.swift; sourceTree = "<group>"; };
 		8BFDF16D29A1F835008E2C23 /* ITunesServiceProviderInpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITunesServiceProviderInpl.swift; sourceTree = "<group>"; };
 		8BFDF17029A2180E008E2C23 /* String+Extensins.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensins.swift"; sourceTree = "<group>"; };
@@ -213,7 +241,9 @@
 				8B4D36F6299FC44200059381 /* View */,
 				8BB74C5B29A1393A000B9D59 /* API */,
 				8BB74C7129A150F2000B9D59 /* Helper */,
+				8B6B56A029B1116E00F099DD /* Module */,
 				8BFDF16F29A217F8008E2C23 /* Extensions */,
+				8BD1C64D29AEDE9200337EF3 /* Enumerations */,
 				8B4D36F3299FC40E00059381 /* Resources */,
 				8BB74C7429A15425000B9D59 /* Constants.swift */,
 				8B4D36C3299FBD7E00059381 /* AppDelegate.swift */,
@@ -256,6 +286,11 @@
 				8B4D3707299FCA5B00059381 /* SearchViewController.swift */,
 				8BB74C8A29A1D735000B9D59 /* SearchViewModel.swift */,
 				8BFDF17429A229A9008E2C23 /* LibraryViewController.swift */,
+				8B6B56A629B1755300F099DD /* LibraryViewModel.swift */,
+				8B3B6CCC29AD8C0E00A6352A /* TrackDetailViewController.swift */,
+				8B3B6CCE29AD8C2500A6352A /* TrackDetailViewModel.swift */,
+				8BD1C65229AF37AA00337EF3 /* PreviewViewController.swift */,
+				8B6B56A429B11BBA00F099DD /* TrackContextMenuViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -272,9 +307,25 @@
 			isa = PBXGroup;
 			children = (
 				8BFDF17A29A3024C008E2C23 /* Track.swift */,
-				8BF2025F29A99DF7005FF2E4 /* TrackList.swift */,
+				8BF2025F29A99DF7005FF2E4 /* SearchResponse.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		8B6B56A029B1116E00F099DD /* Module */ = {
+			isa = PBXGroup;
+			children = (
+				8B6B56A129B1118D00F099DD /* ContextMenu */,
+			);
+			path = Module;
+			sourceTree = "<group>";
+		};
+		8B6B56A129B1118D00F099DD /* ContextMenu */ = {
+			isa = PBXGroup;
+			children = (
+				8B6B56A229B111B700F099DD /* TrackContextMenuConfiguration.swift */,
+			);
+			path = ContextMenu;
 			sourceTree = "<group>";
 		};
 		8BB74C5B29A1393A000B9D59 /* API */ = {
@@ -300,9 +351,10 @@
 			isa = PBXGroup;
 			children = (
 				8BB74C7829A1C687000B9D59 /* ITunesService.swift */,
-				8BB74C7A29A1C91B000B9D59 /* ITunesService+Search.swift */,
 				8BFDF16B29A1F55F008E2C23 /* ITunesServiceProvider.swift */,
 				8BFDF16D29A1F835008E2C23 /* ITunesServiceProviderInpl.swift */,
+				8BB74C7A29A1C91B000B9D59 /* ITunesService+Search.swift */,
+				8B3B6CCA29AC788400A6352A /* ITunesService+Lookup.swift */,
 			);
 			path = SearchService;
 			sourceTree = "<group>";
@@ -312,6 +364,8 @@
 			children = (
 				8BB74C6029A13DF4000B9D59 /* Logger.swift */,
 				8BFDF17E29A313D5008E2C23 /* DateUtility.swift */,
+				8B6B56AC29B1854B00F099DD /* UserDefaultsHelper.swift */,
+				8B6B56B629B4821600F099DD /* ToastHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -331,13 +385,25 @@
 			path = Adapter;
 			sourceTree = "<group>";
 		};
+		8BD1C64D29AEDE9200337EF3 /* Enumerations */ = {
+			isa = PBXGroup;
+			children = (
+				8BD1C64E29AEDEAE00337EF3 /* ITunesImageSize.swift */,
+				8B6B569E29B0EA3000F099DD /* PreviewType.swift */,
+			);
+			path = Enumerations;
+			sourceTree = "<group>";
+		};
 		8BFDF16F29A217F8008E2C23 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				8BFDF17029A2180E008E2C23 /* String+Extensins.swift */,
-				8BFDF17629A23142008E2C23 /* UISearchBar+Extensions.swift */,
 				8BFDF17829A24D37008E2C23 /* UIColor+Extensions.swift */,
+				8B6B56B829B48C6400F099DD /* UIViewController+Extensions.swift */,
+				8BFDF17629A23142008E2C23 /* UISearchBar+Extensions.swift */,
+				8B6B56B229B2D6FB00F099DD /* UserDefaults+Extensions.swift */,
 				8BFDF18029A31568008E2C23 /* Date+Extensions.swift */,
+				8B6B56B429B4491500F099DD /* RangeReplaceableCollection+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -594,39 +660,53 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BFDF17329A21CB0008E2C23 /* MainTabBarController.swift in Sources */,
+				8B3B6CCD29AD8C0E00A6352A /* TrackDetailViewController.swift in Sources */,
 				8BFDF16C29A1F55F008E2C23 /* ITunesServiceProvider.swift in Sources */,
 				8BB74C6A29A14BA3000B9D59 /* CustomRequest.swift in Sources */,
 				8BB74C7D29A1CA0E000B9D59 /* CustomPathAdapter.swift in Sources */,
+				8B6B56A529B11BBA00F099DD /* TrackContextMenuViewController.swift in Sources */,
 				8BB74C8D29A1DBA9000B9D59 /* ApiSendHelper.swift in Sources */,
 				8BB74C6529A14584000B9D59 /* ApiRequestError.swift in Sources */,
+				8B6B56A329B111B700F099DD /* TrackContextMenuConfiguration.swift in Sources */,
 				8BFDF18529A34818008E2C23 /* TrackCell.swift in Sources */,
 				8BB74C7B29A1C91B000B9D59 /* ITunesService+Search.swift in Sources */,
 				8BB74C9329A1DDE5000B9D59 /* ApiEngine+ApiComponentSendable.swift in Sources */,
 				8BFDF17B29A3024C008E2C23 /* Track.swift in Sources */,
+				8B6B569F29B0EA3000F099DD /* PreviewType.swift in Sources */,
 				8BFDF16E29A1F835008E2C23 /* ITunesServiceProviderInpl.swift in Sources */,
 				8BFDF17F29A313D5008E2C23 /* DateUtility.swift in Sources */,
 				8BB74C6C29A14BEF000B9D59 /* HTTPMethod.swift in Sources */,
 				8BFDF17729A23142008E2C23 /* UISearchBar+Extensions.swift in Sources */,
+				8BD1C65329AF37AA00337EF3 /* PreviewViewController.swift in Sources */,
 				8BFDF17929A24D37008E2C23 /* UIColor+Extensions.swift in Sources */,
 				8BB74C7529A15425000B9D59 /* Constants.swift in Sources */,
 				8BB74C8529A1CBD3000B9D59 /* Defs.swift in Sources */,
 				8BB74C8929A1CCEB000B9D59 /* CustomJsonBodyParamsAdapter.swift in Sources */,
 				8B4D3708299FCA5B00059381 /* SearchViewController.swift in Sources */,
 				8BB74C7929A1C687000B9D59 /* ITunesService.swift in Sources */,
+				8B6B56B729B4821600F099DD /* ToastHelper.swift in Sources */,
 				8BB74C8729A1CC8F000B9D59 /* CustomContentTypeAdapter.swift in Sources */,
 				8BFDF17529A229A9008E2C23 /* LibraryViewController.swift in Sources */,
+				8B6B56B929B48C6400F099DD /* UIViewController+Extensions.swift in Sources */,
 				8BB74C6129A13DF4000B9D59 /* Logger.swift in Sources */,
+				8B6B56AD29B1854B00F099DD /* UserDefaultsHelper.swift in Sources */,
 				8BFDF17129A2180E008E2C23 /* String+Extensins.swift in Sources */,
 				8BFDF18129A31568008E2C23 /* Date+Extensions.swift in Sources */,
+				8BD1C64F29AEDEAE00337EF3 /* ITunesImageSize.swift in Sources */,
 				8BB74C8B29A1D735000B9D59 /* SearchViewModel.swift in Sources */,
 				8BB74C7329A15350000B9D59 /* ApiEngine.swift in Sources */,
+				8B6B56A729B1755300F099DD /* LibraryViewModel.swift in Sources */,
 				8BB74C8F29A1DC9F000B9D59 /* ApiEngineError.swift in Sources */,
+				8B6B56B529B4491500F099DD /* RangeReplaceableCollection+Extensions.swift in Sources */,
 				8B4D36C4299FBD7E00059381 /* AppDelegate.swift in Sources */,
 				8BFDF18329A32B68008E2C23 /* NilDataResponse.swift in Sources */,
+				8B6B56B329B2D6FB00F099DD /* UserDefaults+Extensions.swift in Sources */,
+				8B3B6CCF29AD8C2500A6352A /* TrackDetailViewModel.swift in Sources */,
 				8BB74C5D29A1394A000B9D59 /* AlamofireAdapter.swift in Sources */,
 				8BB74C9129A1DD7F000B9D59 /* ApiComponentSendable.swift in Sources */,
 				8B4D36C6299FBD7E00059381 /* SceneDelegate.swift in Sources */,
-				8BF2026029A99DF7005FF2E4 /* TrackList.swift in Sources */,
+				8B3B6CCB29AC788400A6352A /* ITunesService+Lookup.swift in Sources */,
+				8BF2026029A99DF7005FF2E4 /* SearchResponse.swift in Sources */,
 				8BB74C6E29A14E01000B9D59 /* CustomRequestAdapter.swift in Sources */,
 				8BB74C8329A1CB57000B9D59 /* CustomQueryParamsAdapter.swift in Sources */,
 				8BB74C5F29A13C33000B9D59 /* ApiEventMonitor.swift in Sources */,
