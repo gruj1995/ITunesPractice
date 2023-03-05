@@ -241,7 +241,6 @@
 				8B4D36F6299FC44200059381 /* View */,
 				8BB74C5B29A1393A000B9D59 /* Service */,
 				8BB74C7129A150F2000B9D59 /* Helper */,
-				8B6B56A029B1116E00F099DD /* Module */,
 				8B6B56BC29B4995A00F099DD /* Utility */,
 				8B4D36F3299FC40E00059381 /* Resources */,
 				8B6B56BD29B4999800F099DD /* Supporting Files */,
@@ -296,6 +295,7 @@
 		8B4D36F6299FC44200059381 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				8B6B56BE29B49B4100F099DD /* TableView */,
 				8BFDF18429A34818008E2C23 /* TrackCell.swift */,
 			);
 			path = View;
@@ -308,14 +308,6 @@
 				8BF2025F29A99DF7005FF2E4 /* SearchResponse.swift */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		8B6B56A029B1116E00F099DD /* Module */ = {
-			isa = PBXGroup;
-			children = (
-				8B6B56A129B1118D00F099DD /* ContextMenu */,
-			);
-			path = Module;
 			sourceTree = "<group>";
 		};
 		8B6B56A129B1118D00F099DD /* ContextMenu */ = {
@@ -342,6 +334,14 @@
 				8B4D36D1299FBD8000059381 /* Info.plist */,
 			);
 			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8B6B56BE29B49B4100F099DD /* TableView */ = {
+			isa = PBXGroup;
+			children = (
+				8B6B56A129B1118D00F099DD /* ContextMenu */,
+			);
+			path = TableView;
 			sourceTree = "<group>";
 		};
 		8BB74C5B29A1393A000B9D59 /* Service */ = {
