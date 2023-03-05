@@ -107,7 +107,7 @@ class SearchViewController: UIViewController {
 
     private func observe() {
         viewModel.$tracks
-            .receive(on: DispatchQueue.main)
+            .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 guard let self = self else { return }
                 self.tableView.reloadData()
@@ -117,8 +117,7 @@ class SearchViewController: UIViewController {
     private func setupLayout() {
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.top.bottom.leading.trailing
-                .equalToSuperview()
+            make.edges.equalToSuperview()
         }
     }
 }
@@ -144,11 +143,32 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // 解除cell被選中的狀態
         tableView.deselectRow(at: indexPath, animated: true)
+        viewModel.setSelectedTrack(forCellAt: indexPath.row)
+        let vc = TrackDetailViewController()
+        vc.dataSource = self
+        navigationController?.pushViewController(vc, animated: true)
     }
 
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        // Hami change: remove cell's themed background color
-//        cell.contentView.backgroundColor = .black
+    /*
+     * 點擊 context menu 的預覽圖後觸發，如果沒實作此 funtion，則點擊預覽圖後直接關閉 context menu
+            - animator  跳轉動畫執行者，可以添加要跳轉到的頁面和跳轉動畫
+     */
+    func tableView(_ tableView: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
+        if let identifier = configuration.identifier as? String,
+           let index = Int(identifier) {
+            animator.addCompletion { [weak self] in
+                guard let self = self else { return }
+                self.viewModel.setSelectedTrack(forCellAt: index)
+                let vc = TrackDetailViewController()
+                vc.dataSource = self
+                self.show(vc, sender: self)
+            }
+        }
+    }
+
+    // context menu 的清單
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        return viewModel.contextMenuConfiguration(forCellAt: indexPath)
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -157,7 +177,7 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
-        view.backgroundColor = .black
+        view.backgroundColor = .clear
         return view
     }
 }
@@ -166,6 +186,14 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension SearchViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        viewModel.search(text: searchController.searchBar.text)
+        viewModel.searchTerm = searchController.searchBar.text ?? ""
+    }
+}
+
+// MARK: TrackDetailViewControllerDatasource
+
+extension SearchViewController: TrackDetailViewControllerDatasource {
+    func trackId(_ trackDetailViewController: TrackDetailViewController) -> Int? {
+        return viewModel.selectedTrack?.trackId
     }
 }
