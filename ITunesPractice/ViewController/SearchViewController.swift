@@ -57,6 +57,7 @@ class SearchViewController: UIViewController {
         tableView.dataSource = self
         tableView.backgroundColor = .black
         tableView.separatorStyle = .none
+        tableView.keyboardDismissMode = .onDrag // 捲動就隱藏鍵盤
         return tableView
     }()
 
