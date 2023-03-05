@@ -28,38 +28,6 @@ class TrackCell: UITableViewCell {
         return String(describing: self)
     }
 
-    /// 專輯封面圖示
-    lazy var coverImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.layer.cornerRadius = 5
-        imageView.clipsToBounds = true
-        return imageView
-    }()
-
-    lazy var trackNameLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .left
-        label.font = .systemFont(ofSize: 15)
-        label.textColor = .white
-        return label
-    }()
-
-    lazy var albumInfoLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .left
-        label.font = .systemFont(ofSize: 13)
-        label.textColor = .lightText
-        return label
-    }()
-
-    lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [trackNameLabel, albumInfoLabel])
-        stackView.axis = .vertical
-        stackView.spacing = 3
-        stackView.distribution = .equalSpacing
-        return stackView
-    }()
-
     override func layoutSubviews() {
         super.layoutSubviews()
         coverImageView.layoutIfNeeded()
@@ -72,6 +40,39 @@ class TrackCell: UITableViewCell {
     }
 
     // MARK: Private
+
+    /// 專輯封面圖示
+    private lazy var coverImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.layer.cornerRadius = 5
+        imageView.clipsToBounds = true
+        return imageView
+    }()
+
+    private lazy var trackNameLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.font = .systemFont(ofSize: 15)
+        label.textColor = .white
+        label.lineBreakMode = .byWordWrapping
+        return label
+    }()
+
+    private lazy var albumInfoLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.font = .systemFont(ofSize: 13)
+        label.textColor = .lightText
+        return label
+    }()
+
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [trackNameLabel, albumInfoLabel])
+        stackView.axis = .vertical
+        stackView.spacing = 3
+        stackView.distribution = .equalSpacing
+        return stackView
+    }()
 
     private func setupLayout() {
         contentView.addSubview(coverImageView)
@@ -91,7 +92,7 @@ class TrackCell: UITableViewCell {
 
         // 點擊時 cell highlight的顏色
         let backgroundView = UIView()
-        backgroundView.backgroundColor = UIColor(hex: "#333333")
+        backgroundView.backgroundColor = .appColor(.gray2)
         selectedBackgroundView = backgroundView
 
         backgroundColor = .black

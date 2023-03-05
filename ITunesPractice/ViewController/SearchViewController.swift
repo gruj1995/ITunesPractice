@@ -126,16 +126,16 @@ class SearchViewController: UIViewController {
 
 extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.dataCount
+        return viewModel.tracks.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TrackCell.reuseIdentifier) as? TrackCell
         else {
-            return UITableViewCell()
+            fatalError()
         }
         let track = viewModel.tracks[indexPath.row]
-        cell.configure(artworkUrl: track.artworkUrl, collectionName: track.collectionName, artistName: track.artistName, trackName: track.trackName)
+        cell.configure(artworkUrl: track.artworkUrl100, collectionName: track.collectionName, artistName: track.artistName, trackName: track.trackName)
 
         return cell
     }
