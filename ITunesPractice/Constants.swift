@@ -5,7 +5,7 @@
 //  Created by 李品毅 on 2023/2/19.
 //
 
-import Foundation
+import UIKit
 
 /// 常數
 open class Constants {
@@ -17,4 +17,10 @@ open class Constants {
 
     /// long polling Timeout(Server設30秒 所以client設60秒 要聽到server的正常timeout訊息)
     public static let timeoutIntervalForLongPolling = TimeInterval(60)
+
+    static let screenSize: CGRect = UIScreen.main.bounds
+
+    static let screenWidth = Constants.screenSize.width
+
+    static let screenHeight = Constants.screenSize.height
 }

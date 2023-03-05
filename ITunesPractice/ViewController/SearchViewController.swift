@@ -30,11 +30,21 @@ class SearchViewController: UIViewController {
         setupUI()
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // 只有在當前的 navigationBar 的 prefersLargeTitles 属性为true/YES时, largeTitleDisplayMode才會起作用
+        // 注意: 不要寫成 self.navigationController.navigationItem.largeTitleDisplayMode == ...
+        navigationController?.navigationBar.prefersLargeTitles = true
+
+        // 捲動時是否隱藏搜尋框
+        navigationItem.hidesSearchBarWhenScrolling = false
+
+        navigationItem.title = "搜尋".localizedString()
     }
 
     // MARK: Private
+
+    private let viewModel: SearchViewModel = .init()
 
     // 觀察者
     private var cancellables: Set<AnyCancellable> = []
@@ -47,6 +57,7 @@ class SearchViewController: UIViewController {
         tableView.dataSource = self
         tableView.backgroundColor = .black
         tableView.separatorStyle = .none
+        tableView.keyboardDismissMode = .onDrag // 捲動就隱藏鍵盤
         return tableView
     }()
 
@@ -76,22 +87,12 @@ class SearchViewController: UIViewController {
         return searchController
     }()
 
-    private let viewModel: SearchViewModel = .init()
-
     private func setupUI() {
         view.backgroundColor = .black
-
-        // 只有在當前的 navigationBar 的 prefersLargeTitles 属性为true/YES时, largeTitleDisplayMode才會起作用
-        // 注意: 不要寫成 self.navigationController.navigationItem.largeTitleDisplayMode == ...
-        navigationController?.navigationBar.prefersLargeTitles = true
 
         // 添加搜尋框
         navigationItem.searchController = searchController
 
-        // 捲動時是否隱藏搜尋框
-        navigationItem.hidesSearchBarWhenScrolling = false
-
-        navigationItem.title = "搜尋".localizedString()
         if let searchBar = navigationItem.searchController?.searchBar,
            let textField = searchBar.textField {
             // 調整搜尋框左邊放大鏡顏色
@@ -106,7 +107,7 @@ class SearchViewController: UIViewController {
 
     private func observe() {
         viewModel.$tracks
-            .receive(on: DispatchQueue.main)
+            .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 guard let self = self else { return }
                 self.tableView.reloadData()
@@ -116,8 +117,7 @@ class SearchViewController: UIViewController {
     private func setupLayout() {
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.top.bottom.leading.trailing
-                .equalToSuperview()
+            make.edges.equalToSuperview()
         }
     }
 }
@@ -126,16 +126,16 @@ class SearchViewController: UIViewController {
 
 extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.dataCount
+        return viewModel.tracks.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TrackCell.reuseIdentifier) as? TrackCell
         else {
-            return UITableViewCell()
+            fatalError()
         }
         let track = viewModel.tracks[indexPath.row]
-        cell.configure(artworkUrl: track.artworkUrl, collectionName: track.collectionName, artistName: track.artistName, trackName: track.trackName)
+        cell.configure(artworkUrl: track.artworkUrl100, collectionName: track.collectionName, artistName: track.artistName, trackName: track.trackName)
 
         return cell
     }
@@ -143,11 +143,32 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // 解除cell被選中的狀態
         tableView.deselectRow(at: indexPath, animated: true)
+        viewModel.setSelectedTrack(forCellAt: indexPath.row)
+        let vc = TrackDetailViewController()
+        vc.dataSource = self
+        navigationController?.pushViewController(vc, animated: true)
     }
 
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        // Hami change: remove cell's themed background color
-//        cell.contentView.backgroundColor = .black
+    /*
+     * 點擊 context menu 的預覽圖後觸發，如果沒實作此 funtion，則點擊預覽圖後直接關閉 context menu
+            - animator  跳轉動畫執行者，可以添加要跳轉到的頁面和跳轉動畫
+     */
+    func tableView(_ tableView: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
+        if let identifier = configuration.identifier as? String,
+           let index = Int(identifier) {
+            animator.addCompletion { [weak self] in
+                guard let self = self else { return }
+                self.viewModel.setSelectedTrack(forCellAt: index)
+                let vc = TrackDetailViewController()
+                vc.dataSource = self
+                self.show(vc, sender: self)
+            }
+        }
+    }
+
+    // context menu 的清單
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        return viewModel.contextMenuConfiguration(forCellAt: indexPath)
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -156,7 +177,7 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
-        view.backgroundColor = .black
+        view.backgroundColor = .clear
         return view
     }
 }
@@ -165,6 +186,14 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension SearchViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        viewModel.search(text: searchController.searchBar.text)
+        viewModel.searchTerm = searchController.searchBar.text ?? ""
+    }
+}
+
+// MARK: TrackDetailViewControllerDatasource
+
+extension SearchViewController: TrackDetailViewControllerDatasource {
+    func trackId(_ trackDetailViewController: TrackDetailViewController) -> Int? {
+        return viewModel.selectedTrack?.trackId
     }
 }

@@ -9,12 +9,22 @@ import UIKit
 
 enum AssetsColor {
     case red1
+    case primaryText
+    case secondaryText
+    case background
+    case gray1
+    case gray2
 }
 
 extension UIColor {
     static func appColor(_ name: AssetsColor) -> UIColor? {
         switch name {
         case .red1: return UIColor(named: "red_1")
+        case .primaryText: return UIColor(named: "primary_text")
+        case .secondaryText: return UIColor(named: "secondary_text")
+        case .background: return UIColor(named: "background")
+        case .gray1: return UIColor(named: "gray_1")
+        case .gray2: return UIColor(named: "gray_2")
         }
     }
 }
