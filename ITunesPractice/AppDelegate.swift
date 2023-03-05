@@ -25,12 +25,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // 要先到 info.plist 新增 key(View controller-based status bar appearance) 以下設置才有效
         UIApplication.shared.statusBarStyle = .lightContent
-        
+
         // 設置所有 UIBarButtonItem 的 tinitColor
         UIBarButtonItem.appearance().tintColor = .appColor(.red1)
         
         setNavigationBarAppearance()
-        
+
         // 修正ios 15 tableView section 上方多出的空白
         if #available(iOS 15.0, *) {
             UITableView.appearance().sectionHeaderTopPadding = 0.0
@@ -58,6 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 extension AppDelegate {
+    // TODO: 移到主題色管理
     private func setNavigationBarAppearance() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithDefaultBackground()
@@ -72,6 +73,11 @@ extension AppDelegate {
         appearance.largeTitleTextAttributes = [
             NSAttributedString.Key.foregroundColor: UIColor.white
         ]
+        // 返回按鈕樣式
+        let backButtonAppearance = UIBarButtonItemAppearance(style: .plain)
+        backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.clear]
+        appearance.backButtonAppearance = backButtonAppearance
+        
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
     }
