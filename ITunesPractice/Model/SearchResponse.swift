@@ -1,5 +1,5 @@
 //
-//  TrackList.swift
+//  SearchResponse.swift
 //  ITunesPractice
 //
 //  Created by 李品毅 on 2023/2/25.
@@ -7,9 +7,9 @@
 
 import Foundation
 
-// MARK: - TrackList
+// MARK: - SearchResponse
 
-struct TrackList: Codable {
+struct SearchResponse: Codable {
     // MARK: Internal
 
     let results: [Track]
