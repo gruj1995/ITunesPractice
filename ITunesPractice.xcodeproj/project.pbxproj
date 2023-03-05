@@ -239,17 +239,15 @@
 				8B4D36F5299FC43600059381 /* ViewController */,
 				8B4D36F7299FC44900059381 /* Model */,
 				8B4D36F6299FC44200059381 /* View */,
-				8BB74C5B29A1393A000B9D59 /* API */,
+				8BB74C5B29A1393A000B9D59 /* Service */,
 				8BB74C7129A150F2000B9D59 /* Helper */,
 				8B6B56A029B1116E00F099DD /* Module */,
-				8BFDF16F29A217F8008E2C23 /* Extensions */,
-				8BD1C64D29AEDE9200337EF3 /* Enumerations */,
+				8B6B56BC29B4995A00F099DD /* Utility */,
 				8B4D36F3299FC40E00059381 /* Resources */,
-				8BB74C7429A15425000B9D59 /* Constants.swift */,
+				8B6B56BD29B4999800F099DD /* Supporting Files */,
 				8B4D36C3299FBD7E00059381 /* AppDelegate.swift */,
 				8B4D36C5299FBD7E00059381 /* SceneDelegate.swift */,
 				8B4D36CE299FBD8000059381 /* LaunchScreen.storyboard */,
-				8B4D36D1299FBD8000059381 /* Info.plist */,
 			);
 			path = ITunesPractice;
 			sourceTree = "<group>";
@@ -328,7 +326,25 @@
 			path = ContextMenu;
 			sourceTree = "<group>";
 		};
-		8BB74C5B29A1393A000B9D59 /* API */ = {
+		8B6B56BC29B4995A00F099DD /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				8BD1C64D29AEDE9200337EF3 /* Enumerations */,
+				8BFDF16F29A217F8008E2C23 /* Extensions */,
+				8BB74C7429A15425000B9D59 /* Constants.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		8B6B56BD29B4999800F099DD /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8B4D36D1299FBD8000059381 /* Info.plist */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8BB74C5B29A1393A000B9D59 /* Service */ = {
 			isa = PBXGroup;
 			children = (
 				8BB74C9529A1E212000B9D59 /* Adapter */,
@@ -344,7 +360,7 @@
 				8BB74C6B29A14BEF000B9D59 /* HTTPMethod.swift */,
 				8BFDF18229A32B68008E2C23 /* NilDataResponse.swift */,
 			);
-			path = API;
+			path = Service;
 			sourceTree = "<group>";
 		};
 		8BB74C6829A14A56000B9D59 /* SearchService */ = {
