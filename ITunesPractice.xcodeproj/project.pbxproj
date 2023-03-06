@@ -33,6 +33,10 @@
 		8B6B56B529B4491500F099DD /* RangeReplaceableCollection+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6B56B429B4491500F099DD /* RangeReplaceableCollection+Extensions.swift */; };
 		8B6B56B729B4821600F099DD /* ToastHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6B56B629B4821600F099DD /* ToastHelper.swift */; };
 		8B6B56B929B48C6400F099DD /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6B56B829B48C6400F099DD /* UIViewController+Extensions.swift */; };
+		8B6B56C229B4F2ED00F099DD /* PagingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6B56C129B4F2ED00F099DD /* PagingViewModel.swift */; };
+		8B6B56C429B577C200F099DD /* SearchViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6B56C329B577C200F099DD /* SearchViewController2.swift */; };
+		8B6B56C629B577D200F099DD /* SearchViewModel2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6B56C529B577D200F099DD /* SearchViewModel2.swift */; };
+		8B6B56C829B5931200F099DD /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6B56C729B5931200F099DD /* Utils.swift */; };
 		8BB74C5D29A1394A000B9D59 /* AlamofireAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB74C5C29A1394A000B9D59 /* AlamofireAdapter.swift */; };
 		8BB74C5F29A13C33000B9D59 /* ApiEventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB74C5E29A13C33000B9D59 /* ApiEventMonitor.swift */; };
 		8BB74C6129A13DF4000B9D59 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB74C6029A13DF4000B9D59 /* Logger.swift */; };
@@ -55,6 +59,8 @@
 		8BB74C8F29A1DC9F000B9D59 /* ApiEngineError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB74C8E29A1DC9F000B9D59 /* ApiEngineError.swift */; };
 		8BB74C9129A1DD7F000B9D59 /* ApiComponentSendable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB74C9029A1DD7F000B9D59 /* ApiComponentSendable.swift */; };
 		8BB74C9329A1DDE5000B9D59 /* ApiEngine+ApiComponentSendable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB74C9229A1DDE5000B9D59 /* ApiEngine+ApiComponentSendable.swift */; };
+		8BBC8F4129B6522400ACB0EA /* TrackCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBC8F4029B6522400ACB0EA /* TrackCellView.swift */; };
+		8BBC8F4529B6662F00ACB0EA /* TrackDetailViewControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBC8F4429B6662F00ACB0EA /* TrackDetailViewControllerView.swift */; };
 		8BD1C64F29AEDEAE00337EF3 /* ITunesImageSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD1C64E29AEDEAE00337EF3 /* ITunesImageSize.swift */; };
 		8BD1C65329AF37AA00337EF3 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD1C65229AF37AA00337EF3 /* PreviewViewController.swift */; };
 		8BF2026029A99DF7005FF2E4 /* SearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF2025F29A99DF7005FF2E4 /* SearchResponse.swift */; };
@@ -126,6 +132,10 @@
 		8B6B56B429B4491500F099DD /* RangeReplaceableCollection+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RangeReplaceableCollection+Extensions.swift"; sourceTree = "<group>"; };
 		8B6B56B629B4821600F099DD /* ToastHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastHelper.swift; sourceTree = "<group>"; };
 		8B6B56B829B48C6400F099DD /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
+		8B6B56C129B4F2ED00F099DD /* PagingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagingViewModel.swift; sourceTree = "<group>"; };
+		8B6B56C329B577C200F099DD /* SearchViewController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController2.swift; sourceTree = "<group>"; };
+		8B6B56C529B577D200F099DD /* SearchViewModel2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel2.swift; sourceTree = "<group>"; };
+		8B6B56C729B5931200F099DD /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		8BB74C5C29A1394A000B9D59 /* AlamofireAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireAdapter.swift; sourceTree = "<group>"; };
 		8BB74C5E29A13C33000B9D59 /* ApiEventMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiEventMonitor.swift; sourceTree = "<group>"; };
 		8BB74C6029A13DF4000B9D59 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -148,6 +158,8 @@
 		8BB74C8E29A1DC9F000B9D59 /* ApiEngineError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiEngineError.swift; sourceTree = "<group>"; };
 		8BB74C9029A1DD7F000B9D59 /* ApiComponentSendable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiComponentSendable.swift; sourceTree = "<group>"; };
 		8BB74C9229A1DDE5000B9D59 /* ApiEngine+ApiComponentSendable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiEngine+ApiComponentSendable.swift"; sourceTree = "<group>"; };
+		8BBC8F4029B6522400ACB0EA /* TrackCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackCellView.swift; sourceTree = "<group>"; };
+		8BBC8F4429B6662F00ACB0EA /* TrackDetailViewControllerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailViewControllerView.swift; sourceTree = "<group>"; };
 		8BD1C64E29AEDEAE00337EF3 /* ITunesImageSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITunesImageSize.swift; sourceTree = "<group>"; };
 		8BD1C65229AF37AA00337EF3 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
 		8BF2025F29A99DF7005FF2E4 /* SearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResponse.swift; sourceTree = "<group>"; };
@@ -246,6 +258,7 @@
 				8B6B56BD29B4999800F099DD /* Supporting Files */,
 				8B4D36C3299FBD7E00059381 /* AppDelegate.swift */,
 				8B4D36C5299FBD7E00059381 /* SceneDelegate.swift */,
+				8B4D36D1299FBD8000059381 /* Info.plist */,
 				8B4D36CE299FBD8000059381 /* LaunchScreen.storyboard */,
 			);
 			path = ITunesPractice;
@@ -288,6 +301,9 @@
 				8B3B6CCE29AD8C2500A6352A /* TrackDetailViewModel.swift */,
 				8BD1C65229AF37AA00337EF3 /* PreviewViewController.swift */,
 				8B6B56A429B11BBA00F099DD /* TrackContextMenuViewController.swift */,
+				8B6B56C129B4F2ED00F099DD /* PagingViewModel.swift */,
+				8B6B56C329B577C200F099DD /* SearchViewController2.swift */,
+				8B6B56C529B577D200F099DD /* SearchViewModel2.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -295,6 +311,7 @@
 		8B4D36F6299FC44200059381 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				8BBC8F3F29B651E300ACB0EA /* SwiftUI+Previews */,
 				8B6B56BE29B49B4100F099DD /* TableView */,
 				8BFDF18429A34818008E2C23 /* TrackCell.swift */,
 			);
@@ -324,6 +341,7 @@
 				8BD1C64D29AEDE9200337EF3 /* Enumerations */,
 				8BFDF16F29A217F8008E2C23 /* Extensions */,
 				8BB74C7429A15425000B9D59 /* Constants.swift */,
+				8B6B56C729B5931200F099DD /* Utils.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -331,7 +349,6 @@
 		8B6B56BD29B4999800F099DD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				8B4D36D1299FBD8000059381 /* Info.plist */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -399,6 +416,15 @@
 				8BB74C8829A1CCEB000B9D59 /* CustomJsonBodyParamsAdapter.swift */,
 			);
 			path = Adapter;
+			sourceTree = "<group>";
+		};
+		8BBC8F3F29B651E300ACB0EA /* SwiftUI+Previews */ = {
+			isa = PBXGroup;
+			children = (
+				8BBC8F4029B6522400ACB0EA /* TrackCellView.swift */,
+				8BBC8F4429B6662F00ACB0EA /* TrackDetailViewControllerView.swift */,
+			);
+			path = "SwiftUI+Previews";
 			sourceTree = "<group>";
 		};
 		8BD1C64D29AEDE9200337EF3 /* Enumerations */ = {
@@ -688,6 +714,8 @@
 				8BB74C7B29A1C91B000B9D59 /* ITunesService+Search.swift in Sources */,
 				8BB74C9329A1DDE5000B9D59 /* ApiEngine+ApiComponentSendable.swift in Sources */,
 				8BFDF17B29A3024C008E2C23 /* Track.swift in Sources */,
+				8B6B56C429B577C200F099DD /* SearchViewController2.swift in Sources */,
+				8B6B56C229B4F2ED00F099DD /* PagingViewModel.swift in Sources */,
 				8B6B569F29B0EA3000F099DD /* PreviewType.swift in Sources */,
 				8BFDF16E29A1F835008E2C23 /* ITunesServiceProviderInpl.swift in Sources */,
 				8BFDF17F29A313D5008E2C23 /* DateUtility.swift in Sources */,
@@ -704,6 +732,8 @@
 				8BB74C8729A1CC8F000B9D59 /* CustomContentTypeAdapter.swift in Sources */,
 				8BFDF17529A229A9008E2C23 /* LibraryViewController.swift in Sources */,
 				8B6B56B929B48C6400F099DD /* UIViewController+Extensions.swift in Sources */,
+				8B6B56C829B5931200F099DD /* Utils.swift in Sources */,
+				8B6B56C629B577D200F099DD /* SearchViewModel2.swift in Sources */,
 				8BB74C6129A13DF4000B9D59 /* Logger.swift in Sources */,
 				8B6B56AD29B1854B00F099DD /* UserDefaultsHelper.swift in Sources */,
 				8BFDF17129A2180E008E2C23 /* String+Extensins.swift in Sources */,
@@ -715,7 +745,9 @@
 				8BB74C8F29A1DC9F000B9D59 /* ApiEngineError.swift in Sources */,
 				8B6B56B529B4491500F099DD /* RangeReplaceableCollection+Extensions.swift in Sources */,
 				8B4D36C4299FBD7E00059381 /* AppDelegate.swift in Sources */,
+				8BBC8F4529B6662F00ACB0EA /* TrackDetailViewControllerView.swift in Sources */,
 				8BFDF18329A32B68008E2C23 /* NilDataResponse.swift in Sources */,
+				8BBC8F4129B6522400ACB0EA /* TrackCellView.swift in Sources */,
 				8B6B56B329B2D6FB00F099DD /* UserDefaults+Extensions.swift in Sources */,
 				8B3B6CCF29AD8C2500A6352A /* TrackDetailViewModel.swift in Sources */,
 				8BB74C5D29A1394A000B9D59 /* AlamofireAdapter.swift in Sources */,
