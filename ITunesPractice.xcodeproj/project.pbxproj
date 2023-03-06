@@ -255,7 +255,6 @@
 				8BB74C7129A150F2000B9D59 /* Helper */,
 				8B6B56BC29B4995A00F099DD /* Utility */,
 				8B4D36F3299FC40E00059381 /* Resources */,
-				8B6B56BD29B4999800F099DD /* Supporting Files */,
 				8B4D36C3299FBD7E00059381 /* AppDelegate.swift */,
 				8B4D36C5299FBD7E00059381 /* SceneDelegate.swift */,
 				8B4D36D1299FBD8000059381 /* Info.plist */,
@@ -344,13 +343,6 @@
 				8B6B56C729B5931200F099DD /* Utils.swift */,
 			);
 			path = Utility;
-			sourceTree = "<group>";
-		};
-		8B6B56BD29B4999800F099DD /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		8B6B56BE29B49B4100F099DD /* TableView */ = {
