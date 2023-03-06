@@ -14,9 +14,11 @@ struct SearchResponse: Codable {
 
     let results: [Track]
 
+    let resultCount: Int
+
     // MARK: Private
 
     private enum CodingKeys: String, CodingKey {
-        case results
+        case results, resultCount
     }
 }
