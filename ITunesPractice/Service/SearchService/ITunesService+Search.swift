@@ -66,7 +66,7 @@ extension ITunesService {
         /// 偏移量(搜尋結果分頁機制相關)
         private let offset: Int
 
-        // TODO: 修改
+        // TODO: 會卡頓
         func fetchTracks(completion: @escaping ((Result<SearchResponse, Error>) -> Void)) {
 
             guard let request = try? self.buildRequest() else {
@@ -82,6 +82,29 @@ extension ITunesService {
                     completion(.failure(error))
                 }
             }
+        }
+
+        func fetchTracksByURLSession(completion: @escaping ((Result<SearchResponse, Error>) -> Void)) {
+            guard let request = try? self.buildRequest() else {
+                completion(.failure(AlamofireAdapter.shared.getNilDataError()))
+                return
+            }
+
+            let session = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                guard let data = data else { return }
+                do {
+                    let response = try JSONDecoder().decode(SearchResponse.self, from: data)
+                    completion(.success(response))
+                } catch {
+                    completion(.failure(error))
+                }
+            }
+
+            session.resume()
         }
     }
 }
