@@ -58,14 +58,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 extension AppDelegate {
-    // TODO: 移到主題色管理
+    // TODO: 移到主題色管理,目前沒有使用
     private func setNavigationBarAppearance() {
+
+        // 返回按鈕樣式
+        let backButtonAppearance = UIBarButtonItemAppearance(style: .plain)
+        backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.clear]
+
+        // iOS 15 捲動的內容跟 bar 沒有重疊時使用
+        let scrollEdgeAppearance = UINavigationBarAppearance()
+        scrollEdgeAppearance.configureWithDefaultBackground()
+        scrollEdgeAppearance.backgroundColor = .black
+        scrollEdgeAppearance.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.white,
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .semibold)
+        ]
+        scrollEdgeAppearance.largeTitleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.white
+        ]
+        scrollEdgeAppearance.backButtonAppearance = backButtonAppearance
+
+        // iOS 15 捲動的內容跟 bar 重疊時使用
         let appearance = UINavigationBarAppearance()
-        appearance.configureWithDefaultBackground()
-        //        appearance.configureWithOpaqueBackground() // 預設背景及陰影
-        //        appearance.configureWithTransparentBackground() // 透明背景且無陰影(隱藏底部邊框)
-        // 模糊效果樣式(可調亮/暗程度)
-        appearance.backgroundEffect = UIBlurEffect(style: .systemMaterialDark)
+        appearance.configureWithTransparentBackground() // 透明背景且無陰影(隱藏底部邊框)
+        appearance.backgroundColor = .clear
         appearance.titleTextAttributes = [
             NSAttributedString.Key.foregroundColor: UIColor.white,
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .semibold)
@@ -73,13 +89,11 @@ extension AppDelegate {
         appearance.largeTitleTextAttributes = [
             NSAttributedString.Key.foregroundColor: UIColor.white
         ]
-        // 返回按鈕樣式
-        let backButtonAppearance = UIBarButtonItemAppearance(style: .plain)
-        backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.clear]
         appearance.backButtonAppearance = backButtonAppearance
-        
-        UINavigationBar.appearance().standardAppearance = appearance
-        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        appearance.backgroundEffect = UIBlurEffect(style: .systemMaterialDark)
+
+//        UINavigationBar.appearance().standardAppearance = appearance
+//        UINavigationBar.appearance().scrollEdgeAppearance = scrollEdgeAppearance
     }
 }
 
