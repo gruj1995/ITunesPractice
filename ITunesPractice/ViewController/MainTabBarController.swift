@@ -20,7 +20,7 @@ class MainTabBarController: UITabBarController {
     private func setupUI() {
         setTabBarAppearance()
 
-        let searchVC = SearchViewController()
+        let searchVC = SearchViewController2()
         let searchNavVC = UINavigationController(rootViewController: searchVC)
         searchNavVC.tabBarItem.image = UIImage(systemName: "magnifyingglass")
         searchNavVC.tabBarItem.title = "搜尋".localizedString()
