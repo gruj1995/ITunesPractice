@@ -22,7 +22,7 @@ class ToastHelper {
 
     // MARK: - Instance Methods
 
-    func showToast(text: String, position: Position, font: UIFont = .systemFont(ofSize: 15), backgroundColor: UIColor = .gray, textColor: UIColor = .white, cornerRadius: CGFloat = 10.0, alignment: NSTextAlignment = .center, withDuration duration: TimeInterval = 1.5, delay: TimeInterval = 1.5) {
+    func showToast(text: String, position: Position, alignment: NSTextAlignment, font: UIFont = .systemFont(ofSize: 15), backgroundColor: UIColor = .gray, textColor: UIColor = .white, cornerRadius: CGFloat = 10.0, withDuration duration: TimeInterval = 1.5, delay: TimeInterval = 1.5) {
         // 用來呈現 toast 的畫面
         guard let toastWindow = UIApplication.shared.keyWindowCompact else {
             return
