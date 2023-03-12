@@ -33,7 +33,7 @@ extension ITunesService {
             "/lookup"
         }
 
-        var method: AlamofireAdapter.HTTPMethod {
+        var method: HTTPMethod {
             return .get
         }
 

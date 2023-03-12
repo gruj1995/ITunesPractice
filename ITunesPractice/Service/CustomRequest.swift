@@ -14,7 +14,7 @@ public protocol CustomRequest {
     associatedtype Response: Decodable
 
     /// HTTPMethod
-    var method: AlamofireAdapter.HTTPMethod { get }
+    var method: HTTPMethod { get }
 
     /// 請求轉接器(發送前處理)
     var adapters: [CustomRequestAdapter] { get }
@@ -23,12 +23,11 @@ public protocol CustomRequest {
 //    var decisions: [CMDecision] { get }
 }
     
-/// 基底Request
 extension CustomRequest {
     
     /// 建立Request
     public func buildRequest() throws -> URLRequest {
-        guard let url = URL(string: Constants.domain) else {
+        guard let url = URL(string: Constants.itunesDomain) else {
             throw RequestError.urlError
         }
         let request = URLRequest(url: url)

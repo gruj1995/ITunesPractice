@@ -9,7 +9,7 @@ import Foundation
 
 /// HTTPMethod 的 轉接器
 struct CustomHTTPMethodAdapter: CustomRequestAdapter {
-    let method: AlamofireAdapter.HTTPMethod
+    let method: HTTPMethod
 
     func adapted(_ request: URLRequest) throws -> URLRequest {
         var request = request

@@ -37,7 +37,7 @@ extension ITunesService {
             "/search"
         }
 
-        var method: AlamofireAdapter.HTTPMethod {
+        var method: HTTPMethod {
             return .get
         }
 
