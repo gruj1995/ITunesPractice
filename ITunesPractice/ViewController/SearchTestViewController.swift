@@ -1,8 +1,8 @@
 //
-//  SearchViewController2.swift
+//  SearchViewController.swift
 //  ITunesPractice
 //
-//  Created by 李品毅 on 2023/3/6.
+//  Created by 李品毅 on 2023/2/17.
 //
 
 import Combine
@@ -11,7 +11,7 @@ import UIKit
 
 // MARK: - SearchViewController
 
-class SearchViewController2: UIViewController {
+class SearchTestViewController: UIViewController {
     // MARK: Lifecycle
 
     init() {
@@ -27,7 +27,6 @@ class SearchViewController2: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         bindViewModel()
-        viewModel.delegate = self
         setupUI()
     }
 
@@ -45,7 +44,7 @@ class SearchViewController2: UIViewController {
 
     // MARK: Private
 
-    private let viewModel: SearchViewModel2 = .init()
+    private let viewModel: SearchTestViewModel = .init()
 
     // 觀察者
     private var cancellables: Set<AnyCancellable> = []
@@ -108,7 +107,7 @@ class SearchViewController2: UIViewController {
     }
 
     private func bindViewModel() {
-        viewModel.$tracks
+        viewModel.$items
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.tableView.reloadData()
@@ -126,9 +125,9 @@ class SearchViewController2: UIViewController {
 
 // MARK: UITableViewDataSource, UITableViewDelegate
 
-extension SearchViewController2: UITableViewDataSource, UITableViewDelegate {
+extension SearchTestViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.totalCount
+        return viewModel.items.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -136,9 +135,7 @@ extension SearchViewController2: UITableViewDataSource, UITableViewDelegate {
         else {
             fatalError()
         }
-        guard let track = viewModel.track(forCellAt: indexPath.row) else {
-            return cell
-        }
+        let track = viewModel.items[indexPath.row]
         cell.configure(artworkUrl: track.artworkUrl100, collectionName: track.collectionName, artistName: track.artistName, trackName: track.trackName)
 
         return cell
@@ -154,19 +151,52 @@ extension SearchViewController2: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-
-        let lastRowIndex = tableView.numberOfRows(inSection: 0) - 1
-        let lastVisibleRowIndex = tableView.indexPathsForVisibleRows?.last?.row ?? 0
-
-        // 如果目前正在載入中，或是已經載入所有資料，返回
-        guard !viewModel.isLoading, lastVisibleRowIndex == lastRowIndex else {
+//         let currentCount = viewModel.tracks.count
+//         if indexPath.row == currentCount - 1 {
+//             viewModel.search()
+//         }
+        guard indexPath.row >= viewModel.items.count - 1 else {
             return
         }
+        viewModel.loadMoreItems { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let newItems):
+                let newIndexPaths = (self.viewModel.items.count - newItems.count..<self.viewModel.items.count).map {
+                    IndexPath(row: $0, section: 0)
+                }
+                DispatchQueue.main.async {
+                    tableView.insertRows(at: newIndexPaths, with: .automatic)
+                }
+            case .failure(let error):
+                print("Failed to load more items: \(error.localizedDescription)")
+            }
+        }
+    }
 
-        // 載入下一頁資料
-        viewModel.loadNextPage()
-      }
-
+//    // 當用戶滾動時，將在main thread上調用此方法，為可能顯示的單元格提供索引路徑
+//    // 使用此方法的實現來啟動任何昂貴的數據加載操作
+//    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+//        guard let lastIndexPath = indexPaths.last, lastIndexPath.row >= viewModel.items.count - 1 else {
+//            return
+//        }
+//
+//        viewModel.loadMoreItems { [weak self] result in
+//            guard let self = self else { return }
+//            switch result {
+//            case .success(let newItems):
+//                let newIndexPaths = (self.viewModel.items.count - newItems.count..<self.viewModel.items.count).map {
+//                    IndexPath(row: $0, section: 0)
+//                }
+//                DispatchQueue.main.async {
+//                    self.tableView.insertRows(at: newIndexPaths, with: .automatic)
+//                }
+//            case .failure(let error):
+//                print("Failed to load more items: \(error.localizedDescription)")
+//            }
+//        }
+//    }
+    
     /*
      * 點擊 context menu 的預覽圖後觸發，如果沒實作此 funtion，則點擊預覽圖後直接關閉 context menu
             - animator  跳轉動畫執行者，可以添加要跳轉到的頁面和跳轉動畫
@@ -202,7 +232,7 @@ extension SearchViewController2: UITableViewDataSource, UITableViewDelegate {
 
 // MARK: UISearchResultsUpdating
 
-extension SearchViewController2: UISearchResultsUpdating {
+extension SearchTestViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         viewModel.searchTerm = searchController.searchBar.text ?? ""
     }
@@ -210,21 +240,8 @@ extension SearchViewController2: UISearchResultsUpdating {
 
 // MARK: TrackDetailViewControllerDatasource
 
-extension SearchViewController2: TrackDetailViewControllerDatasource {
+extension SearchTestViewController: TrackDetailViewControllerDatasource {
     func trackId(_ trackDetailViewController: TrackDetailViewController) -> Int? {
         return viewModel.selectedTrack?.trackId
-    }
-}
-
-extension SearchViewController2: SearchViewModelDelegate {
-    func didUpdateData() {
-//        tableView.reloadData()
-    }
-
-    func didFailWithError(_ error: Error) {
-        let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alert.addAction(okAction)
-        present(alert, animated: true, completion: nil)
     }
 }

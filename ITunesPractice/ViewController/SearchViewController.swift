@@ -2,7 +2,7 @@
 //  SearchViewController.swift
 //  ITunesPractice
 //
-//  Created by 李品毅 on 2023/2/17.
+//  Created by 李品毅 on 2023/3/6.
 //
 
 import Combine
@@ -26,13 +26,20 @@ class SearchViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        observe()
+        bindViewModel()
+
+        NetStatus.shared.netStatusChangeHandler = {
+            DispatchQueue.main.async { [unowned self] in
+                self.updateUI()
+            }
+        }
+
         setupUI()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // 只有在當前的 navigationBar 的 prefersLargeTitles 属性为true/YES时, largeTitleDisplayMode才會起作用
+        // 只有在當前的 navigationBar 的 prefersLargeTitles 属性true時, largeTitleDisplayMode才會起作用
         // 注意: 不要寫成 self.navigationController.navigationItem.largeTitleDisplayMode == ...
         navigationController?.navigationBar.prefersLargeTitles = true
 
@@ -55,6 +62,7 @@ class SearchViewController: UIViewController {
         tableView.rowHeight = 60
         tableView.delegate = self
         tableView.dataSource = self
+//        tableView.prefetchDataSource = self // 懶加載
         tableView.backgroundColor = .black
         tableView.separatorStyle = .none
         tableView.keyboardDismissMode = .onDrag // 捲動就隱藏鍵盤
@@ -87,6 +95,12 @@ class SearchViewController: UIViewController {
         return searchController
     }()
 
+    private lazy var emptyStateView: EmptyStateView = {
+        let view = EmptyStateView()
+        view.isHidden = true
+        return view
+    }()
+
     private func setupUI() {
         view.backgroundColor = .black
 
@@ -105,13 +119,88 @@ class SearchViewController: UIViewController {
         setupLayout()
     }
 
-    private func observe() {
-        viewModel.$tracks
+    private func bindViewModel() {
+//        viewModel.tracksPublisher
+//            .receive(on: RunLoop.main)
+//            .sink(receiveCompletion: { [weak self] completion in
+//                // TODO: 目前使用CurrentValueSubject無法觸發此處，要修改
+//                switch completion {
+//                case .failure(let error):
+//                    // 处理错误
+//                    self?.handleError(error)
+//                case .finished:
+//                    // 完成操作
+//                    self?.updateUI()
+//                }
+//            }, receiveValue: { [weak self] _ in
+//                // 处理数据
+//                self?.updateUI()
+////                self?.tableView.reloadData()
+//            })
+////            .sink { [weak self] _ in
+////                self?.updateUI()
+////            }
+//            .store(in: &cancellables)
+
+        viewModel.statePublisher
             .receive(on: RunLoop.main)
-            .sink { [weak self] _ in
+//            .sink(receiveCompletion: { [weak self] completion in
+//                // TODO: 目前使用CurrentValueSubject無法觸發此處，要修改
+//                switch completion {
+//                case .failure(let error):
+//                    // 处理错误
+//                    self?.handleError(error)
+//                case .finished:
+//                    // 完成操作
+//                    self?.updateUI()
+//                }
+//            }, receiveValue: { [weak self] _ in
+//                // 处理数据
+//                self?.updateUI()
+////                self?.tableView.reloadData()
+//            })
+            .sink { [weak self] state in
                 guard let self = self else { return }
-                self.tableView.reloadData()
-            }.store(in: &cancellables)
+                switch state {
+                case .loading:
+                    self.tableView.reloadData()
+                case .success:
+                    self.updateUI()
+                case .failed(let error):
+                    self.handleError(error)
+                case .none:
+                    break
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    private func updateUI() {
+        if viewModel.totalCount == 0, !viewModel.searchTerm.isEmpty {
+            showNoResultView()
+        } else if !NetStatus.shared.isConnected {
+            showEmptyView()
+        } else {
+            showTableView()
+        }
+    }
+
+    private func showTableView() {
+        tableView.isHidden = false
+        emptyStateView.isHidden = true
+        tableView.reloadData()
+    }
+
+    private func showNoResultView() {
+        emptyStateView.configure(title: "沒有結果".localizedString(), message: "嘗試新的搜尋項目。".localizedString())
+        emptyStateView.isHidden = false
+        tableView.isHidden = true
+    }
+
+    private func showEmptyView() {
+        emptyStateView.configure(title: "您已離線".localizedString(), message: "關閉「飛航模式」或連接 Wi-Fi。".localizedString())
+        emptyStateView.isHidden = false
+        tableView.isHidden = true
     }
 
     private func setupLayout() {
@@ -119,6 +208,21 @@ class SearchViewController: UIViewController {
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+
+        view.addSubview(emptyStateView)
+        emptyStateView.snp.makeConstraints { make in
+            make.centerX.equalTo(view.safeAreaLayoutGuide)
+            make.centerY.equalTo(view.safeAreaLayoutGuide).multipliedBy(0.9)
+            make.width.equalToSuperview().multipliedBy(0.8)
+        }
+    }
+
+    private func handleError(_ error: Error) {
+        Utils.toast(error.localizedDescription, at: .center)
+//        let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+//        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+//        alert.addAction(okAction)
+//        present(alert, animated: true, completion: nil)
     }
 }
 
@@ -126,15 +230,17 @@ class SearchViewController: UIViewController {
 
 extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.tracks.count
+        return viewModel.totalCount
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TrackCell.reuseIdentifier) as? TrackCell
         else {
-            fatalError()
+            return UITableViewCell()
         }
-        let track = viewModel.tracks[indexPath.row]
+        guard let track = viewModel.track(forCellAt: indexPath.row) else {
+            return cell
+        }
         cell.configure(artworkUrl: track.artworkUrl100, collectionName: track.collectionName, artistName: track.artistName, trackName: track.trackName)
 
         return cell
@@ -149,8 +255,21 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
         navigationController?.pushViewController(vc, animated: true)
     }
 
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let lastRowIndex = tableView.numberOfRows(inSection: 0) - 1
+        let lastVisibleRowIndex = tableView.indexPathsForVisibleRows?.last?.row ?? 0
+
+        // 如果目前正在載入中或還沒滑到最底，不做事
+        if case .loading = viewModel.state, lastVisibleRowIndex != lastRowIndex {
+            return
+        }
+
+        // 載入下一頁資料
+        viewModel.loadNextPage()
+    }
+
     /*
-     * 點擊 context menu 的預覽圖後觸發，如果沒實作此 funtion，則點擊預覽圖後直接關閉 context menu
+       點擊 context menu 的預覽圖後觸發，如果沒實作此 funtion，則點擊預覽圖後直接關閉 context menu
             - animator  跳轉動畫執行者，可以添加要跳轉到的頁面和跳轉動畫
      */
     func tableView(_ tableView: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {

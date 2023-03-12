@@ -22,20 +22,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
         // 要先到 info.plist 新增 key(View controller-based status bar appearance) 以下設置才有效
         UIApplication.shared.statusBarStyle = .lightContent
 
         // 設置所有 UIBarButtonItem 的 tinitColor
         UIBarButtonItem.appearance().tintColor = .appColor(.red1)
-        
-        setNavigationBarAppearance()
+
+//        setNavigationBarAppearance()
+
+        // 監控網路變化
+        NetStatus.shared.startMonitoring()
 
         // 修正ios 15 tableView section 上方多出的空白
         if #available(iOS 15.0, *) {
             UITableView.appearance().sectionHeaderTopPadding = 0.0
         }
-        
+
 #if DEBUG
         FLEXManager.shared.isNetworkDebuggingEnabled = true
 #endif
@@ -58,9 +60,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 extension AppDelegate {
-    // TODO: 移到主題色管理,目前沒有使用
+    // TODO: 建立單獨的類管理,目前沒有使用
     private func setNavigationBarAppearance() {
-
         // 返回按鈕樣式
         let backButtonAppearance = UIBarButtonItemAppearance(style: .plain)
         backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.clear]
@@ -92,13 +93,13 @@ extension AppDelegate {
         appearance.backButtonAppearance = backButtonAppearance
         appearance.backgroundEffect = UIBlurEffect(style: .systemMaterialDark)
 
-//        UINavigationBar.appearance().standardAppearance = appearance
-//        UINavigationBar.appearance().scrollEdgeAppearance = scrollEdgeAppearance
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = scrollEdgeAppearance
     }
 }
 
 extension UIWindow {
-    #if DEBUG
+#if DEBUG
     /// 搖動出現debug套件
     open override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         super.motionEnded(motion, with: event)
@@ -106,5 +107,5 @@ extension UIWindow {
             FLEXManager.shared.showExplorer()
         }
     }
-    #endif
+#endif
 }
