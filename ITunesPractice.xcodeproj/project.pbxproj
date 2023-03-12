@@ -46,8 +46,8 @@
 		8BB69BCD29BD694B00F09793 /* NetStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BCC29BD694B00F09793 /* NetStatus.swift */; };
 		8BB69BD029BD766400F09793 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BCF29BD766400F09793 /* EmptyStateView.swift */; };
 		8BB69BD229BDAFF500F09793 /* ViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BD129BDAFF500F09793 /* ViewState.swift */; };
-		8BB69BD429BDB49400F09793 /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BD329BDB49400F09793 /* SearchResultViewController.swift */; };
-		8BB69BD629BDB4A500F09793 /* SearchResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BD529BDB4A500F09793 /* SearchResultViewModel.swift */; };
+		8BB69BD429BDB49400F09793 /* SearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BD329BDB49400F09793 /* SearchResultsViewController.swift */; };
+		8BB69BD629BDB4A500F09793 /* SearchResultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BD529BDB4A500F09793 /* SearchResultsViewModel.swift */; };
 		8BB74C5D29A1394A000B9D59 /* AlamofireAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB74C5C29A1394A000B9D59 /* AlamofireAdapter.swift */; };
 		8BB74C5F29A13C33000B9D59 /* ApiEventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB74C5E29A13C33000B9D59 /* ApiEventMonitor.swift */; };
 		8BB74C6129A13DF4000B9D59 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB74C6029A13DF4000B9D59 /* Logger.swift */; };
@@ -157,8 +157,8 @@
 		8BB69BCC29BD694B00F09793 /* NetStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetStatus.swift; sourceTree = "<group>"; };
 		8BB69BCF29BD766400F09793 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		8BB69BD129BDAFF500F09793 /* ViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewState.swift; sourceTree = "<group>"; };
-		8BB69BD329BDB49400F09793 /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
-		8BB69BD529BDB4A500F09793 /* SearchResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewModel.swift; sourceTree = "<group>"; };
+		8BB69BD329BDB49400F09793 /* SearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewController.swift; sourceTree = "<group>"; };
+		8BB69BD529BDB4A500F09793 /* SearchResultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewModel.swift; sourceTree = "<group>"; };
 		8BB74C5C29A1394A000B9D59 /* AlamofireAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireAdapter.swift; sourceTree = "<group>"; };
 		8BB74C5E29A13C33000B9D59 /* ApiEventMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiEventMonitor.swift; sourceTree = "<group>"; };
 		8BB74C6029A13DF4000B9D59 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -320,6 +320,8 @@
 				8BFDF17229A21CB0008E2C23 /* MainTabBarController.swift */,
 				8B6B56C329B577C200F099DD /* SearchViewController.swift */,
 				8B6B56C529B577D200F099DD /* SearchViewModel.swift */,
+				8BB69BD329BDB49400F09793 /* SearchResultsViewController.swift */,
+				8BB69BD529BDB4A500F09793 /* SearchResultsViewModel.swift */,
 				8BFDF17429A229A9008E2C23 /* LibraryViewController.swift */,
 				8B6B56A629B1755300F099DD /* LibraryViewModel.swift */,
 				8B3B6CCC29AD8C0E00A6352A /* TrackDetailViewController.swift */,
@@ -327,10 +329,8 @@
 				8BD1C65229AF37AA00337EF3 /* PreviewViewController.swift */,
 				8B6B56A429B11BBA00F099DD /* TrackContextMenuViewController.swift */,
 				8B6B56C129B4F2ED00F099DD /* PagingViewModel.swift */,
-				8BB69BD329BDB49400F09793 /* SearchResultViewController.swift */,
 				8B4D3707299FCA5B00059381 /* SearchTestViewController.swift */,
 				8BB74C8A29A1D735000B9D59 /* SearchTestViewModel.swift */,
-				8BB69BD529BDB4A500F09793 /* SearchResultViewModel.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -791,7 +791,7 @@
 				8BB74C8929A1CCEB000B9D59 /* CustomJsonBodyParamsAdapter.swift in Sources */,
 				8B4D3708299FCA5B00059381 /* SearchTestViewController.swift in Sources */,
 				8BB74C7929A1C687000B9D59 /* ITunesService.swift in Sources */,
-				8BB69BD429BDB49400F09793 /* SearchResultViewController.swift in Sources */,
+				8BB69BD429BDB49400F09793 /* SearchResultsViewController.swift in Sources */,
 				8B6B56B729B4821600F099DD /* ToastHelper.swift in Sources */,
 				8BB74C8729A1CC8F000B9D59 /* CustomContentTypeAdapter.swift in Sources */,
 				8BFDF17529A229A9008E2C23 /* LibraryViewController.swift in Sources */,
@@ -819,7 +819,7 @@
 				8BB69BD229BDAFF500F09793 /* ViewState.swift in Sources */,
 				8BB69BD029BD766400F09793 /* EmptyStateView.swift in Sources */,
 				8BB74C5D29A1394A000B9D59 /* AlamofireAdapter.swift in Sources */,
-				8BB69BD629BDB4A500F09793 /* SearchResultViewModel.swift in Sources */,
+				8BB69BD629BDB4A500F09793 /* SearchResultsViewModel.swift in Sources */,
 				8BB74C9129A1DD7F000B9D59 /* ApiComponentSendable.swift in Sources */,
 				8B4D36C6299FBD7E00059381 /* SceneDelegate.swift in Sources */,
 				8BB69BC929BCB71C00F09793 /* ApiEngine+Extensions.swift in Sources */,
