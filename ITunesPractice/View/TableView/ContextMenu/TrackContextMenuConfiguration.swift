@@ -9,6 +9,7 @@ import UIKit
 
 // MARK: - TrackContextMenuConfiguration
 
+// TODO: 調整擴充性
 struct TrackContextMenuConfiguration {
     // MARK: Internal
 
@@ -20,12 +21,12 @@ struct TrackContextMenuConfiguration {
 
     typealias TrackContextMenuActionHandler = (TrackContextMenuAction) -> Void
 
-    let index: Int
+    let indexPath: IndexPath
     let track: Track?
     let actionHandler: TrackContextMenuActionHandler
 
     func createContextMenuConfiguration() -> UIContextMenuConfiguration {
-        let identifier = String(index) as NSCopying
+        let identifier = "\(indexPath.section).\(indexPath.row)" as NSCopying
         return UIContextMenuConfiguration(identifier: identifier, previewProvider: previewViewControllerProvider, actionProvider: actionMenuProvider)
     }
 

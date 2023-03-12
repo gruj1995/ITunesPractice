@@ -207,7 +207,8 @@ extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegat
 
     // context menu 的清單
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        return viewModel.contextMenuConfiguration(forCellAt: indexPath)
+        viewModel.setSelectedTrack(forCellAt: indexPath.row)
+        return tableView.createTrackContextMenuConfiguration(indexPath: indexPath, track: viewModel.selectedTrack)
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

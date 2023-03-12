@@ -5,6 +5,7 @@
 //  Created by 李品毅 on 2023/3/6.
 //
 
+import Foundation
 import Combine
 
 // MARK: - SearchViewModel

@@ -51,6 +51,7 @@
 		8BB69BD829BE1B1500F09793 /* MusicPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BD729BE1B1500F09793 /* MusicPlayerController.swift */; };
 		8BB69BDA29BE1B3100F09793 /* MusicPlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BD929BE1B3100F09793 /* MusicPlayerViewModel.swift */; };
 		8BB69BDC29BE1C9500F09793 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BDB29BE1C9500F09793 /* UIApplication+Extensions.swift */; };
+		8BB69BDE29BE239C00F09793 /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BDD29BE239C00F09793 /* UITableView+Extensions.swift */; };
 		8BB74C5D29A1394A000B9D59 /* AlamofireAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB74C5C29A1394A000B9D59 /* AlamofireAdapter.swift */; };
 		8BB74C5F29A13C33000B9D59 /* ApiEventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB74C5E29A13C33000B9D59 /* ApiEventMonitor.swift */; };
 		8BB74C6129A13DF4000B9D59 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB74C6029A13DF4000B9D59 /* Logger.swift */; };
@@ -165,6 +166,7 @@
 		8BB69BD729BE1B1500F09793 /* MusicPlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayerController.swift; sourceTree = "<group>"; };
 		8BB69BD929BE1B3100F09793 /* MusicPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayerViewModel.swift; sourceTree = "<group>"; };
 		8BB69BDB29BE1C9500F09793 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
+		8BB69BDD29BE239C00F09793 /* UITableView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extensions.swift"; sourceTree = "<group>"; };
 		8BB74C5C29A1394A000B9D59 /* AlamofireAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireAdapter.swift; sourceTree = "<group>"; };
 		8BB74C5E29A13C33000B9D59 /* ApiEventMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiEventMonitor.swift; sourceTree = "<group>"; };
 		8BB74C6029A13DF4000B9D59 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -515,6 +517,7 @@
 				8BFDF18029A31568008E2C23 /* Date+Extensions.swift */,
 				8B6B56B429B4491500F099DD /* RangeReplaceableCollection+Extensions.swift */,
 				8BB69BDB29BE1C9500F09793 /* UIApplication+Extensions.swift */,
+				8BB69BDD29BE239C00F09793 /* UITableView+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -770,6 +773,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BB69BDE29BE239C00F09793 /* UITableView+Extensions.swift in Sources */,
 				8BB69BD829BE1B1500F09793 /* MusicPlayerController.swift in Sources */,
 				8BFDF17329A21CB0008E2C23 /* MainTabBarController.swift in Sources */,
 				8B3B6CCD29AD8C0E00A6352A /* TrackDetailViewController.swift in Sources */,
