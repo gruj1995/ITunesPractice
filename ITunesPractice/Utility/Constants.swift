@@ -7,16 +7,15 @@
 
 import UIKit
 
-/// 常數
-open class Constants {
-    /// 預設的Domain
-    public static let domain = "https://itunes.apple.com"
+enum Constants {
+
+    static let itunesDomain = "https://itunes.apple.com"
 
     /// 一般請求Timeout
-    public static let timeoutIntervalForRequest = TimeInterval(30)
+    static let timeoutIntervalForRequest = TimeInterval(30)
 
     /// long polling Timeout(Server設30秒 所以client設60秒 要聽到server的正常timeout訊息)
-    public static let timeoutIntervalForLongPolling = TimeInterval(60)
+    static let timeoutIntervalForLongPolling = TimeInterval(60)
 
     static let screenSize: CGRect = UIScreen.main.bounds
 
