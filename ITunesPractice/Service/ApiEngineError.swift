@@ -10,7 +10,7 @@ import Alamofire
 
 public struct ApiEngineError: Error {
 
-    /// 回應物件三御家(都儲存丟出去，有可能要客製化判斷)
+    /// 回應物件御三家(都儲存丟出去，有可能要客製化判斷)
     public var data: Data?
     public var error: Error?
     public var response: URLResponse?
