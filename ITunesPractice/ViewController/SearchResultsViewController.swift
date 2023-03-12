@@ -172,16 +172,11 @@ extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegat
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        // 用戶滑到最底時載入下一頁資料
         let lastRowIndex = tableView.numberOfRows(inSection: 0) - 1
-        let lastVisibleRowIndex = tableView.indexPathsForVisibleRows?.last?.row ?? 0
-
-        // 如果目前正在載入中或還沒滑到最底，不做事
-        if case .loading = viewModel.state, lastVisibleRowIndex != lastRowIndex {
-            return
+        if indexPath.row == lastRowIndex {
+            viewModel.loadNextPage()
         }
-
-        // 載入下一頁資料
-        viewModel.loadNextPage()
     }
 
     /*
