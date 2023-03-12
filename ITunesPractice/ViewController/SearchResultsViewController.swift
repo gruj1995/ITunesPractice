@@ -48,6 +48,13 @@ class SearchResultsViewController: UIViewController {
     // 觀察者
     private var cancellables: Set<AnyCancellable> = []
 
+    // 抓取資料時的旋轉讀條 (可以搜尋"egaf"，觀察在資料筆數小的情況下怎麼顯示)
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(style: .medium)
+        activityIndicator.startAnimating()
+        return activityIndicator
+    }()
+
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(TrackCell.self, forCellReuseIdentifier: TrackCell.reuseIdentifier)
@@ -78,14 +85,12 @@ class SearchResultsViewController: UIViewController {
             .sink { [weak self] state in
                 guard let self = self else { return }
                 switch state {
-                case .loading:
-                    self.tableView.reloadData()
                 case .success:
                     self.updateUI()
                 case .failed(let error):
                     self.handleError(error)
-                case .none:
-                    break
+                case .loading, .none:
+                    return
                 }
             }
             .store(in: &cancellables)
@@ -97,14 +102,16 @@ class SearchResultsViewController: UIViewController {
         } else if !NetStatus.shared.isConnected {
             showEmptyView()
         } else {
+            // 要放在 tableView.reloadData() 前
+            tableView.tableFooterView = nil
+            tableView.reloadData()
             showTableView()
         }
     }
 
     private func showTableView() {
-        tableView.isHidden = false
         emptyStateView.isHidden = true
-        tableView.reloadData()
+        tableView.isHidden = false
     }
 
     private func showNoResultView() {
@@ -134,6 +141,7 @@ class SearchResultsViewController: UIViewController {
     }
 
     private func handleError(_ error: Error) {
+        tableView.tableFooterView = nil
         Utils.toast(error.localizedDescription, at: .center)
 //        let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
 //        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
@@ -175,6 +183,7 @@ extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegat
         // 用戶滑到最底時載入下一頁資料
         let lastRowIndex = tableView.numberOfRows(inSection: 0) - 1
         if indexPath.row == lastRowIndex {
+            tableView.tableFooterView = activityIndicator
             viewModel.loadNextPage()
         }
     }
