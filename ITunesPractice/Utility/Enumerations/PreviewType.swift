@@ -22,9 +22,9 @@ enum PreviewType: Int {
 
     var iconImage: UIImage? {
         switch self {
-        case .artist: return UIImage(systemName: "person.fill")
-        case .album: return UIImage(systemName: "music.note.list")
-        case .track: return UIImage(systemName: "play.fill")
+        case .artist: return AppImages.person
+        case .album: return AppImages.musicList
+        case .track: return AppImages.play
         }
     }
 }

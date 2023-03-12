@@ -22,12 +22,12 @@ class MainTabBarController: UITabBarController {
 
         let searchVC = SearchViewController()
         let searchNavVC = UINavigationController(rootViewController: searchVC)
-        searchNavVC.tabBarItem.image = UIImage(systemName: "magnifyingglass")
+        searchNavVC.tabBarItem.image = AppImages.magnifyingGlass
         searchNavVC.tabBarItem.title = "搜尋".localizedString()
 
         let libraryVC = LibraryViewController()
         let libraryNavVC = UINavigationController(rootViewController: libraryVC)
-        libraryNavVC.tabBarItem.image = UIImage(systemName: "music.note.house.fill")
+        libraryNavVC.tabBarItem.image = AppImages.musicHouse
         libraryNavVC.tabBarItem.title = "資料庫".localizedString()
 
         viewControllers = [searchNavVC, libraryNavVC]

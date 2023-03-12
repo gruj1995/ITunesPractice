@@ -52,6 +52,8 @@
 		8BB69BDA29BE1B3100F09793 /* MusicPlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BD929BE1B3100F09793 /* MusicPlayerViewModel.swift */; };
 		8BB69BDC29BE1C9500F09793 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BDB29BE1C9500F09793 /* UIApplication+Extensions.swift */; };
 		8BB69BDE29BE239C00F09793 /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BDD29BE239C00F09793 /* UITableView+Extensions.swift */; };
+		8BB69BE029BE5A5900F09793 /* MiniPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BDF29BE5A5900F09793 /* MiniPlayerViewController.swift */; };
+		8BB69BE429BE5CC600F09793 /* AppImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BE329BE5CC600F09793 /* AppImages.swift */; };
 		8BB74C5D29A1394A000B9D59 /* AlamofireAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB74C5C29A1394A000B9D59 /* AlamofireAdapter.swift */; };
 		8BB74C5F29A13C33000B9D59 /* ApiEventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB74C5E29A13C33000B9D59 /* ApiEventMonitor.swift */; };
 		8BB74C6129A13DF4000B9D59 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB74C6029A13DF4000B9D59 /* Logger.swift */; };
@@ -167,6 +169,8 @@
 		8BB69BD929BE1B3100F09793 /* MusicPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayerViewModel.swift; sourceTree = "<group>"; };
 		8BB69BDB29BE1C9500F09793 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		8BB69BDD29BE239C00F09793 /* UITableView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extensions.swift"; sourceTree = "<group>"; };
+		8BB69BDF29BE5A5900F09793 /* MiniPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniPlayerViewController.swift; sourceTree = "<group>"; };
+		8BB69BE329BE5CC600F09793 /* AppImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppImages.swift; sourceTree = "<group>"; };
 		8BB74C5C29A1394A000B9D59 /* AlamofireAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireAdapter.swift; sourceTree = "<group>"; };
 		8BB74C5E29A13C33000B9D59 /* ApiEventMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiEventMonitor.swift; sourceTree = "<group>"; };
 		8BB74C6029A13DF4000B9D59 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -341,6 +345,7 @@
 				8B6B56C129B4F2ED00F099DD /* PagingViewModel.swift */,
 				8B4D3707299FCA5B00059381 /* SearchTestViewController.swift */,
 				8BB74C8A29A1D735000B9D59 /* SearchTestViewModel.swift */,
+				8BB69BDF29BE5A5900F09793 /* MiniPlayerViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -381,6 +386,7 @@
 				8BB74C7429A15425000B9D59 /* Constants.swift */,
 				8BFDF17E29A313D5008E2C23 /* DateUtility.swift */,
 				8B6B56C729B5931200F099DD /* Utils.swift */,
+				8BB69BE329BE5CC600F09793 /* AppImages.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -795,6 +801,7 @@
 				8B6B56C229B4F2ED00F099DD /* PagingViewModel.swift in Sources */,
 				8B6B569F29B0EA3000F099DD /* PreviewType.swift in Sources */,
 				8BFDF16E29A1F835008E2C23 /* ITunesServiceProviderInpl.swift in Sources */,
+				8BB69BE029BE5A5900F09793 /* MiniPlayerViewController.swift in Sources */,
 				8BFDF17F29A313D5008E2C23 /* DateUtility.swift in Sources */,
 				8BB74C6C29A14BEF000B9D59 /* HTTPMethod.swift in Sources */,
 				8BFDF17729A23142008E2C23 /* UISearchBar+Extensions.swift in Sources */,
@@ -845,6 +852,7 @@
 				8BB74C8329A1CB57000B9D59 /* CustomQueryParamsAdapter.swift in Sources */,
 				8BB74C5F29A13C33000B9D59 /* ApiEventMonitor.swift in Sources */,
 				8BB74C8129A1CAAD000B9D59 /* CustomHTTPMethodAdapter.swift in Sources */,
+				8BB69BE429BE5CC600F09793 /* AppImages.swift in Sources */,
 				8BBC8F6529B7632300ACB0EA /* UIButton+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

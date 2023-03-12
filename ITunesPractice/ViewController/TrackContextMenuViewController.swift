@@ -41,7 +41,7 @@ class TrackContextMenuViewController: UIViewController {
 
     private lazy var arrowImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "chevron.right")
+        imageView.image = AppImages.chevronRight
         imageView.tintColor = .lightText
         imageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         return imageView

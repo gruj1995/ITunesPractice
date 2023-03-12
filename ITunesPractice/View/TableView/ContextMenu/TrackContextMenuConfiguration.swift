@@ -51,17 +51,17 @@ struct TrackContextMenuConfiguration {
             guard let track = self.track else { return nil }
             let isAdded = UserDefaults.standard.tracks.contains(track)
 
-            let addAction = self.createAction(title: "加入資料庫".localizedString(), image: UIImage(systemName: "plus")) { _ in
+            let addAction = self.createAction(title: "加入資料庫".localizedString(), image: AppImages.plus) { _ in
                 self.actionHandler(.addToLibrary(track))
             }
             let addMenu = UIMenu(title: "", options: .displayInline, children: [addAction])
 
-            let deleteAction = self.createAction(title: "從資料庫中刪除".localizedString(), image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+            let deleteAction = self.createAction(title: "從資料庫中刪除".localizedString(), image: AppImages.trash, attributes: .destructive) { _ in
                 self.actionHandler(.deleteFromLibrary(track))
             }
             let deleteMenu = UIMenu(title: "", options: .displayInline, children: [deleteAction])
 
-            let shareAction = self.createAction(title: "分享歌曲".localizedString(), image: UIImage(systemName: "square.and.arrow.up")) { _ in
+            let shareAction = self.createAction(title: "分享歌曲".localizedString(), image: AppImages.squareAndArrowUp) { _ in
                 self.actionHandler(.share(track))
             }
 
