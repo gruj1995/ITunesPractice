@@ -11,7 +11,7 @@ import Foundation
 public typealias Parameters = [String: Any]
 
 /// 將 Alamofire 包起來的 Adapter，防止 Alamofire 散落在各個檔案
-/// 這個階段，因為原來 Alamofire 直接使用原始檔，所以暫時還沒收起來
+
 public final class AlamofireAdapter {
 
     private init() {}

@@ -18,4 +18,11 @@ extension String {
     func replace(target: String, withString: String) -> String {
         return self.replacingOccurrences(of: target, with: withString, options: NSString.CompareOptions.literal, range: nil)
     }
+
+    /// 檢查 email 參數是否符合電子郵件地址的格式
+    func isValidEmail(_ email: String) -> Bool {
+       let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+       let emailPred = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
+       return emailPred.evaluate(with: email)
+   }
 }

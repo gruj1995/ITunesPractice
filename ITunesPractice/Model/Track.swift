@@ -73,7 +73,7 @@ struct Track: Codable, Equatable, CustomStringConvertible {
         return lhs.trackId == rhs.trackId
     }
 
-    /// 設定 iTunes API 回傳的圖片尺寸（太小看起來模糊）
+    /// 調整 iTunes API 回傳的圖片尺寸（100x100可能看起來模糊）
     func getArtworkImageWithSize(size: ITunesImageSize) -> URL? {
         URL(string: artworkUrl100.replace(target: "100x100", withString: "\(size.rawValue)x\(size.rawValue)"))
     }
