@@ -8,7 +8,5 @@
 import UIKit
 
 extension UIViewController {
-    func showToast(text: String, position: ToastHelper.Position = .bottom) {
-        ToastHelper.shared.showToast(text: text, position: position)
-    }
+   
 }
