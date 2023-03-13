@@ -109,13 +109,15 @@ class RippleEffectButton: UIButton {
         groupAnimation.animations = [pathAnimation, opacityAnimation]
         groupAnimation.duration = rippleAnimationDuration
         // 動畫完成後自動從圖層移除
-        groupAnimation.isRemovedOnCompletion = true
+        groupAnimation.isRemovedOnCompletion = false
+        // 參考文章說明 https://juejin.cn/post/6991371790245183496
         groupAnimation.fillMode = .forwards
         circleLayer.add(groupAnimation, forKey: "RippleGroupAnimation")
 
         // 等動畫結束隱藏 circleLayer
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + rippleAnimationDuration) {
             // All animations are done, so remove the layer.
+            self.circleLayer.removeAllAnimations()
             self.circleLayer.opacity = 0
             self.isCircleLayerHidden = true
         }
