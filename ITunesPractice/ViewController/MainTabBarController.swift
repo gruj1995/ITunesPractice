@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class MainTabBarController: UITabBarController {
     // MARK: Internal
@@ -17,9 +18,16 @@ class MainTabBarController: UITabBarController {
 
     // MARK: Private
 
+    // mini 音樂播放器
+    private lazy var miniPlayerVC = MiniPlayerViewController()
+
     private func setupUI() {
         setTabBarAppearance()
+        setTabBarItems()
+        setupLayout()
+    }
 
+    private func setTabBarItems() {
         let searchVC = SearchViewController()
         let searchNavVC = UINavigationController(rootViewController: searchVC)
         searchNavVC.tabBarItem.image = AppImages.magnifyingGlass
@@ -31,6 +39,17 @@ class MainTabBarController: UITabBarController {
         libraryNavVC.tabBarItem.title = "資料庫".localizedString()
 
         viewControllers = [searchNavVC, libraryNavVC]
+    }
+
+    private func setupLayout() {
+        view.addSubview(miniPlayerVC.view)
+        addChild(miniPlayerVC)
+        miniPlayerVC.didMove(toParent: self)
+        miniPlayerVC.view.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(tabBar.snp.top)
+            make.height.equalTo(64)
+        }
     }
 
     private func setTabBarAppearance() {
