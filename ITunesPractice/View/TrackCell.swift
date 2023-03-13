@@ -14,12 +14,12 @@ class TrackCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupLayout()
+        setupUI()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setupLayout()
+        setupUI()
     }
 
     // MARK: Internal
@@ -54,7 +54,6 @@ class TrackCell: UITableViewCell {
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 15)
         label.textColor = .white
-        label.lineBreakMode = .byWordWrapping
         return label
     }()
 
@@ -74,27 +73,28 @@ class TrackCell: UITableViewCell {
         return stackView
     }()
 
-    private func setupLayout() {
-        contentView.addSubview(coverImageView)
-        coverImageView.snp.makeConstraints { make in
-            make.top.bottom.leading
-                .equalToSuperview()
-                .inset(UIEdgeInsets(top: 5, left: 20, bottom: 5, right: 0))
-            make.width.equalTo(coverImageView.snp.height).multipliedBy(1)
-        }
-
-        contentView.addSubview(stackView)
-        stackView.snp.makeConstraints { make in
-            make.left.equalTo(coverImageView.snp.right).offset(15)
-            make.trailing.equalToSuperview().offset(-20)
-            make.centerY.equalToSuperview()
-        }
-
+    private func setupUI() {
         // 點擊時 cell highlight的顏色
         let backgroundView = UIView()
         backgroundView.backgroundColor = .appColor(.gray2)
         selectedBackgroundView = backgroundView
-
         backgroundColor = .black
+        setupLayout()
+    }
+
+    private func setupLayout() {
+        contentView.addSubview(coverImageView)
+        coverImageView.snp.makeConstraints { make in
+            make.leading.equalTo(contentView.snp.leadingMargin)
+            make.top.bottom.equalToSuperview().inset(5)
+            make.width.equalTo(coverImageView.snp.height)
+        }
+
+        contentView.addSubview(stackView)
+        stackView.snp.makeConstraints { make in
+            make.leading.equalTo(coverImageView.snp.trailing).offset(15)
+            make.trailing.equalTo(contentView.snp.trailingMargin)
+            make.centerY.equalToSuperview()
+        }
     }
 }
