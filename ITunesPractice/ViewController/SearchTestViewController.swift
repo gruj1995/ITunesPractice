@@ -215,9 +215,9 @@ extension SearchTestViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     // context menu 的清單
-    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        return viewModel.contextMenuConfiguration(forCellAt: indexPath)
-    }
+//    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+//        return viewModel.contextMenuConfiguration(forCellAt: indexPath)
+//    }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 10
