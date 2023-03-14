@@ -23,8 +23,6 @@ class EmptyStateView: UIView {
 
     // MARK: Internal
 
-    var onAddButtonTapped: (() -> Void)?
-
     func configure(title: String, message: String) {
         titleLabel.text = title
         messageLabel.text = message
