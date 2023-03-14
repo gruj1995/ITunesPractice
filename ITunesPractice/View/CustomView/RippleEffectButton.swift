@@ -124,10 +124,9 @@ class RippleEffectButton: UIButton {
     }
 }
 
-
 /// CABasicAnimation 的 keyPath 參數
 enum AnimationKeyPath: String {
-    case opacity = "opacity"
-    case path = "path"
-    case position = "position"
+    case opacity // 透明度
+    case path // 路徑
+    case position
 }
