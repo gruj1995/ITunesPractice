@@ -8,7 +8,7 @@
 import UIKit
 
 extension UIView {
-    func gesture(_ gestureType: GestureType = .tap()) -> GesturePublisher {
+    func gesture(_ gestureType: GestureType) -> GesturePublisher {
         .init(view: self, gestureType: gestureType)
     }
 }
