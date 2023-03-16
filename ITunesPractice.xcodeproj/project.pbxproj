@@ -11,6 +11,7 @@
 		8B3B6CCB29AC788400A6352A /* ITunesService+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B6CCA29AC788400A6352A /* ITunesService+Lookup.swift */; };
 		8B3B6CCD29AD8C0E00A6352A /* TrackDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B6CCC29AD8C0E00A6352A /* TrackDetailViewController.swift */; };
 		8B3B6CCF29AD8C2500A6352A /* TrackDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B6CCE29AD8C2500A6352A /* TrackDetailViewModel.swift */; };
+		8B3F9BC629C376E70050CFC9 /* PanDismissViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F9BC529C376E70050CFC9 /* PanDismissViewController.swift */; };
 		8B4D36C4299FBD7E00059381 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4D36C3299FBD7E00059381 /* AppDelegate.swift */; };
 		8B4D36C6299FBD7E00059381 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4D36C5299FBD7E00059381 /* SceneDelegate.swift */; };
 		8B4D36CD299FBD8000059381 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B4D36CC299FBD8000059381 /* Assets.xcassets */; };
@@ -26,6 +27,10 @@
 		8B4D3708299FCA5B00059381 /* SearchTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4D3707299FCA5B00059381 /* SearchTestViewController.swift */; };
 		8B677CC529BEC97600F73FE5 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B677CC429BEC97600F73FE5 /* UIView+Extensions.swift */; };
 		8B677CC729BEF7F400F73FE5 /* RippleEffectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B677CC629BEF7F400F73FE5 /* RippleEffectButton.swift */; };
+		8B677CCA29BF922400F73FE5 /* GesturePublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B677CC929BF922400F73FE5 /* GesturePublisher.swift */; };
+		8B677CCC29BF934100F73FE5 /* GestureSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B677CCB29BF934100F73FE5 /* GestureSubscription.swift */; };
+		8B677CCE29BF934A00F73FE5 /* GestureType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B677CCD29BF934A00F73FE5 /* GestureType.swift */; };
+		8B677CD029BF942200F73FE5 /* UIView+Ripple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B677CCF29BF942200F73FE5 /* UIView+Ripple.swift */; };
 		8B6B569F29B0EA3000F099DD /* PreviewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6B569E29B0EA3000F099DD /* PreviewType.swift */; };
 		8B6B56A329B111B700F099DD /* TrackContextMenuConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6B56A229B111B700F099DD /* TrackContextMenuConfiguration.swift */; };
 		8B6B56A529B11BBA00F099DD /* TrackContextMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6B56A429B11BBA00F099DD /* TrackContextMenuViewController.swift */; };
@@ -81,6 +86,12 @@
 		8BBC8F4129B6522400ACB0EA /* TrackCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBC8F4029B6522400ACB0EA /* TrackCellView.swift */; };
 		8BBC8F4529B6662F00ACB0EA /* TrackDetailViewControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBC8F4429B6662F00ACB0EA /* TrackDetailViewControllerView.swift */; };
 		8BBC8F6529B7632300ACB0EA /* UIButton+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBC8F6429B7632300ACB0EA /* UIButton+Extensions.swift */; };
+		8BBCE34E29C0B6D60084BF44 /* PresentAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBCE34B29C0B6D60084BF44 /* PresentAnimator.swift */; };
+		8BBCE34F29C0B6D60084BF44 /* PresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBCE34C29C0B6D60084BF44 /* PresentationController.swift */; };
+		8BBCE35029C0B6D60084BF44 /* Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBCE34D29C0B6D60084BF44 /* Presenter.swift */; };
+		8BBCE35429C0D67B0084BF44 /* HighlightBlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBCE35329C0D67B0084BF44 /* HighlightBlurView.swift */; };
+		8BBCE35629C1F1E00084BF44 /* Practice.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8BBCE35529C1F1E00084BF44 /* Practice.storyboard */; };
+		8BBCE35829C1F56D0084BF44 /* PlaylistPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBCE35729C1F56D0084BF44 /* PlaylistPlayerViewController.swift */; };
 		8BD1C64F29AEDEAE00337EF3 /* ITunesImageSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD1C64E29AEDEAE00337EF3 /* ITunesImageSize.swift */; };
 		8BD1C65329AF37AA00337EF3 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD1C65229AF37AA00337EF3 /* PreviewViewController.swift */; };
 		8BF2026029A99DF7005FF2E4 /* SearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF2025F29A99DF7005FF2E4 /* SearchResponse.swift */; };
@@ -131,6 +142,7 @@
 		8B3B6CCA29AC788400A6352A /* ITunesService+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ITunesService+Lookup.swift"; sourceTree = "<group>"; };
 		8B3B6CCC29AD8C0E00A6352A /* TrackDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailViewController.swift; sourceTree = "<group>"; };
 		8B3B6CCE29AD8C2500A6352A /* TrackDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailViewModel.swift; sourceTree = "<group>"; };
+		8B3F9BC529C376E70050CFC9 /* PanDismissViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanDismissViewController.swift; sourceTree = "<group>"; };
 		8B4D36C0299FBD7E00059381 /* ITunesPractice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ITunesPractice.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B4D36C3299FBD7E00059381 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8B4D36C5299FBD7E00059381 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -145,6 +157,10 @@
 		8B4D3707299FCA5B00059381 /* SearchTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTestViewController.swift; sourceTree = "<group>"; };
 		8B677CC429BEC97600F73FE5 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		8B677CC629BEF7F400F73FE5 /* RippleEffectButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RippleEffectButton.swift; sourceTree = "<group>"; };
+		8B677CC929BF922400F73FE5 /* GesturePublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GesturePublisher.swift; sourceTree = "<group>"; };
+		8B677CCB29BF934100F73FE5 /* GestureSubscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureSubscription.swift; sourceTree = "<group>"; };
+		8B677CCD29BF934A00F73FE5 /* GestureType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureType.swift; sourceTree = "<group>"; };
+		8B677CCF29BF942200F73FE5 /* UIView+Ripple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ripple.swift"; sourceTree = "<group>"; };
 		8B6B569E29B0EA3000F099DD /* PreviewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewType.swift; sourceTree = "<group>"; };
 		8B6B56A229B111B700F099DD /* TrackContextMenuConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackContextMenuConfiguration.swift; sourceTree = "<group>"; };
 		8B6B56A429B11BBA00F099DD /* TrackContextMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackContextMenuViewController.swift; sourceTree = "<group>"; };
@@ -200,6 +216,12 @@
 		8BBC8F4029B6522400ACB0EA /* TrackCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackCellView.swift; sourceTree = "<group>"; };
 		8BBC8F4429B6662F00ACB0EA /* TrackDetailViewControllerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailViewControllerView.swift; sourceTree = "<group>"; };
 		8BBC8F6429B7632300ACB0EA /* UIButton+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extensions.swift"; sourceTree = "<group>"; };
+		8BBCE34B29C0B6D60084BF44 /* PresentAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentAnimator.swift; sourceTree = "<group>"; };
+		8BBCE34C29C0B6D60084BF44 /* PresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentationController.swift; sourceTree = "<group>"; };
+		8BBCE34D29C0B6D60084BF44 /* Presenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
+		8BBCE35329C0D67B0084BF44 /* HighlightBlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightBlurView.swift; sourceTree = "<group>"; };
+		8BBCE35529C1F1E00084BF44 /* Practice.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Practice.storyboard; sourceTree = "<group>"; };
+		8BBCE35729C1F56D0084BF44 /* PlaylistPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistPlayerViewController.swift; sourceTree = "<group>"; };
 		8BD1C64E29AEDEAE00337EF3 /* ITunesImageSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITunesImageSize.swift; sourceTree = "<group>"; };
 		8BD1C65229AF37AA00337EF3 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
 		8BF2025F29A99DF7005FF2E4 /* SearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResponse.swift; sourceTree = "<group>"; };
@@ -263,6 +285,22 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		8B3F9BC329C3767E0050CFC9 /* TechExperiments */ = {
+			isa = PBXGroup;
+			children = (
+				8B3F9BC429C3768F0050CFC9 /* ViewController */,
+			);
+			path = TechExperiments;
+			sourceTree = "<group>";
+		};
+		8B3F9BC429C3768F0050CFC9 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				8B3F9BC529C376E70050CFC9 /* PanDismissViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
 		8B4D36B7299FBD7E00059381 = {
 			isa = PBXGroup;
 			children = (
@@ -295,11 +333,13 @@
 				8BB69BB929BC924000F09793 /* NetworkService */,
 				8BB74C7129A150F2000B9D59 /* Helper */,
 				8B6B56BC29B4995A00F099DD /* Utility */,
+				8B3F9BC329C3767E0050CFC9 /* TechExperiments */,
 				8B4D36F3299FC40E00059381 /* Resources */,
 				8B4D36C3299FBD7E00059381 /* AppDelegate.swift */,
 				8B4D36C5299FBD7E00059381 /* SceneDelegate.swift */,
 				8B4D36D1299FBD8000059381 /* Info.plist */,
 				8B4D36CE299FBD8000059381 /* LaunchScreen.storyboard */,
+				8BBCE35529C1F1E00084BF44 /* Practice.storyboard */,
 			);
 			path = ITunesPractice;
 			sourceTree = "<group>";
@@ -340,6 +380,8 @@
 				8BB69BD529BDB4A500F09793 /* SearchResultsViewModel.swift */,
 				8BB69BD729BE1B1500F09793 /* MusicPlayerController.swift */,
 				8BB69BD929BE1B3100F09793 /* MusicPlayerViewModel.swift */,
+				8BBCE35729C1F56D0084BF44 /* PlaylistPlayerViewController.swift */,
+				8BB69BDF29BE5A5900F09793 /* MiniPlayerViewController.swift */,
 				8BFDF17429A229A9008E2C23 /* LibraryViewController.swift */,
 				8B6B56A629B1755300F099DD /* LibraryViewModel.swift */,
 				8B3B6CCC29AD8C0E00A6352A /* TrackDetailViewController.swift */,
@@ -349,7 +391,6 @@
 				8B6B56C129B4F2ED00F099DD /* PagingViewModel.swift */,
 				8B4D3707299FCA5B00059381 /* SearchTestViewController.swift */,
 				8BB74C8A29A1D735000B9D59 /* SearchTestViewModel.swift */,
-				8BB69BDF29BE5A5900F09793 /* MiniPlayerViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -374,6 +415,16 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		8B677CC829BF921800F73FE5 /* Combine */ = {
+			isa = PBXGroup;
+			children = (
+				8B677CC929BF922400F73FE5 /* GesturePublisher.swift */,
+				8B677CCB29BF934100F73FE5 /* GestureSubscription.swift */,
+				8B677CCD29BF934A00F73FE5 /* GestureType.swift */,
+			);
+			path = Combine;
+			sourceTree = "<group>";
+		};
 		8B6B56A129B1118D00F099DD /* ContextMenu */ = {
 			isa = PBXGroup;
 			children = (
@@ -385,6 +436,7 @@
 		8B6B56BC29B4995A00F099DD /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				8B677CC829BF921800F73FE5 /* Combine */,
 				8BD1C64D29AEDE9200337EF3 /* Enumerations */,
 				8BFDF16F29A217F8008E2C23 /* Extensions */,
 				8BB74C7429A15425000B9D59 /* Constants.swift */,
@@ -437,6 +489,7 @@
 			children = (
 				8BB69BCF29BD766400F09793 /* EmptyStateView.swift */,
 				8B677CC629BEF7F400F73FE5 /* RippleEffectButton.swift */,
+				8BBCE35329C0D67B0084BF44 /* HighlightBlurView.swift */,
 			);
 			path = CustomView;
 			sourceTree = "<group>";
@@ -475,6 +528,7 @@
 		8BB74C7129A150F2000B9D59 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				8BBCE34A29C0B6B90084BF44 /* Presenter */,
 				8BB74C6029A13DF4000B9D59 /* Logger.swift */,
 				8B6B56AC29B1854B00F099DD /* UserDefaultsHelper.swift */,
 				8B6B56B629B4821600F099DD /* ToastHelper.swift */,
@@ -506,6 +560,16 @@
 			path = "SwiftUI+Previews";
 			sourceTree = "<group>";
 		};
+		8BBCE34A29C0B6B90084BF44 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				8BBCE34D29C0B6D60084BF44 /* Presenter.swift */,
+				8BBCE34B29C0B6D60084BF44 /* PresentAnimator.swift */,
+				8BBCE34C29C0B6D60084BF44 /* PresentationController.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
 		8BD1C64D29AEDE9200337EF3 /* Enumerations */ = {
 			isa = PBXGroup;
 			children = (
@@ -522,6 +586,7 @@
 				8BB69BDB29BE1C9500F09793 /* UIApplication+Extensions.swift */,
 				8BFDF17829A24D37008E2C23 /* UIColor+Extensions.swift */,
 				8B677CC429BEC97600F73FE5 /* UIView+Extensions.swift */,
+				8B677CCF29BF942200F73FE5 /* UIView+Ripple.swift */,
 				8B6B56B829B48C6400F099DD /* UIViewController+Extensions.swift */,
 				8BFDF17629A23142008E2C23 /* UISearchBar+Extensions.swift */,
 				8BBC8F6429B7632300ACB0EA /* UIButton+Extensions.swift */,
@@ -559,6 +624,7 @@
 				8B4D36BD299FBD7E00059381 /* Frameworks */,
 				8B4D36BE299FBD7E00059381 /* Resources */,
 				8BB74C54299FD3AA000B9D59 /* ShellScript */,
+				2EC19FBB3CC228A9361FB57C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -605,6 +671,7 @@
 				8B4D36DC299FBD8000059381 /* Sources */,
 				8B4D36DD299FBD8000059381 /* Frameworks */,
 				8B4D36DE299FBD8000059381 /* Resources */,
+				478E6C001005A2CF2F86D939 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -673,6 +740,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BBCE35629C1F1E00084BF44 /* Practice.storyboard in Resources */,
 				8B4D36D0299FBD8000059381 /* LaunchScreen.storyboard in Resources */,
 				8B4D36CD299FBD8000059381 /* Assets.xcassets in Resources */,
 			);
@@ -695,6 +763,40 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		2EC19FBB3CC228A9361FB57C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ITunesPractice/Pods-ITunesPractice-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ITunesPractice/Pods-ITunesPractice-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ITunesPractice/Pods-ITunesPractice-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		478E6C001005A2CF2F86D939 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ITunesPractice-ITunesPracticeUITests/Pods-ITunesPractice-ITunesPracticeUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ITunesPractice-ITunesPracticeUITests/Pods-ITunesPractice-ITunesPracticeUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ITunesPractice-ITunesPracticeUITests/Pods-ITunesPractice-ITunesPracticeUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		51029D74A68D8BB5C2E5E725 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -789,15 +891,20 @@
 				8BB69BD829BE1B1500F09793 /* MusicPlayerController.swift in Sources */,
 				8BFDF17329A21CB0008E2C23 /* MainTabBarController.swift in Sources */,
 				8B677CC729BEF7F400F73FE5 /* RippleEffectButton.swift in Sources */,
+				8BBCE35429C0D67B0084BF44 /* HighlightBlurView.swift in Sources */,
 				8B3B6CCD29AD8C0E00A6352A /* TrackDetailViewController.swift in Sources */,
 				8BB69BC529BCACA500F09793 /* LookupAPIRequest.swift in Sources */,
+				8B677CCC29BF934100F73FE5 /* GestureSubscription.swift in Sources */,
 				8BB69BC329BC9E9600F09793 /* HTTPMethod+Extensions.swift in Sources */,
 				8BFDF16C29A1F55F008E2C23 /* ITunesServiceProvider.swift in Sources */,
 				8BB74C6A29A14BA3000B9D59 /* CustomRequest.swift in Sources */,
 				8BB74C7D29A1CA0E000B9D59 /* CustomPathAdapter.swift in Sources */,
 				8B6B56A529B11BBA00F099DD /* TrackContextMenuViewController.swift in Sources */,
 				8BB74C8D29A1DBA9000B9D59 /* ApiSendHelper.swift in Sources */,
+				8B677CCE29BF934A00F73FE5 /* GestureType.swift in Sources */,
+				8BBCE34E29C0B6D60084BF44 /* PresentAnimator.swift in Sources */,
 				8BB74C6529A14584000B9D59 /* ApiRequestError.swift in Sources */,
+				8B3F9BC629C376E70050CFC9 /* PanDismissViewController.swift in Sources */,
 				8B6B56A329B111B700F099DD /* TrackContextMenuConfiguration.swift in Sources */,
 				8BB69BC129BC94BB00F09793 /* SearchAPIRequest.swift in Sources */,
 				8BFDF18529A34818008E2C23 /* TrackCell.swift in Sources */,
@@ -810,6 +917,7 @@
 				8BFDF16E29A1F835008E2C23 /* ITunesServiceProviderInpl.swift in Sources */,
 				8BB69BE029BE5A5900F09793 /* MiniPlayerViewController.swift in Sources */,
 				8BFDF17F29A313D5008E2C23 /* DateUtility.swift in Sources */,
+				8BBCE35829C1F56D0084BF44 /* PlaylistPlayerViewController.swift in Sources */,
 				8BB74C6C29A14BEF000B9D59 /* HTTPMethod.swift in Sources */,
 				8BFDF17729A23142008E2C23 /* UISearchBar+Extensions.swift in Sources */,
 				8BD1C65329AF37AA00337EF3 /* PreviewViewController.swift in Sources */,
@@ -817,7 +925,9 @@
 				8BB74C7529A15425000B9D59 /* Constants.swift in Sources */,
 				8BB74C8529A1CBD3000B9D59 /* Defs.swift in Sources */,
 				8BB74C8929A1CCEB000B9D59 /* CustomJsonBodyParamsAdapter.swift in Sources */,
+				8B677CCA29BF922400F73FE5 /* GesturePublisher.swift in Sources */,
 				8B4D3708299FCA5B00059381 /* SearchTestViewController.swift in Sources */,
+				8BBCE34F29C0B6D60084BF44 /* PresentationController.swift in Sources */,
 				8BB74C7929A1C687000B9D59 /* ITunesService.swift in Sources */,
 				8BB69BD429BDB49400F09793 /* SearchResultsViewController.swift in Sources */,
 				8B6B56B729B4821600F099DD /* ToastHelper.swift in Sources */,
@@ -858,8 +968,10 @@
 				8BF2026029A99DF7005FF2E4 /* SearchResponse.swift in Sources */,
 				8BB74C6E29A14E01000B9D59 /* CustomRequestAdapter.swift in Sources */,
 				8BB74C8329A1CB57000B9D59 /* CustomQueryParamsAdapter.swift in Sources */,
+				8BBCE35029C0B6D60084BF44 /* Presenter.swift in Sources */,
 				8BB74C5F29A13C33000B9D59 /* ApiEventMonitor.swift in Sources */,
 				8BB74C8129A1CAAD000B9D59 /* CustomHTTPMethodAdapter.swift in Sources */,
+				8B677CD029BF942200F73FE5 /* UIView+Ripple.swift in Sources */,
 				8BB69BE429BE5CC600F09793 /* AppImages.swift in Sources */,
 				8BBC8F6529B7632300ACB0EA /* UIButton+Extensions.swift in Sources */,
 			);
