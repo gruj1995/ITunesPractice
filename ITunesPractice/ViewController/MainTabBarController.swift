@@ -75,4 +75,12 @@ class MainTabBarController: UITabBarController {
         itemAppearance.selected.iconColor = .appColor(.red1)
         itemAppearance.selected.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.appColor(.red1)!]
     }
+
+    private func presentPlayerView() {
+        let vc = PlayListController()
+        // fullScreen 背景遮罩會是黑色的，所以設 overFullScreen
+        vc.modalPresentationStyle = .overFullScreen
+        FloatingPanelManager.shared.set(contentVC: vc, layoutType: .modalFullScreen, track: vc.tableView)
+        FloatingPanelManager.shared.show(on: self)
+    }
 }
