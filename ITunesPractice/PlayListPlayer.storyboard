@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_0" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Playlist Player View Controller-->
+        <scene sceneID="bsM-CY-zlo">
+            <objects>
+                <viewController storyboardIdentifier="PlaylistPlayerViewController" id="5pf-OQ-RtP" customClass="PlaylistPlayerViewController" customModule="ITunesPractice" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="rml-vO-FrI">
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="254"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="anq-y9-Bid">
+                                <rect key="frame" x="20" y="27" width="350" height="212"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kd0-Iw-tt6">
+                                        <rect key="frame" x="0.0" y="0.0" width="350" height="20"/>
+                                        <subviews>
+                                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Q3m-UN-FRp">
+                                                <rect key="frame" x="0.0" y="0.0" width="350" height="4"/>
+                                            </progressView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1:10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WF6-sf-tRM">
+                                                <rect key="frame" x="0.0" y="8" width="19.333333333333332" height="12"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1:10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nO5-Ez-uad">
+                                                <rect key="frame" x="330.66666666666669" y="8" width="19.333333333333314" height="12"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="nO5-Ez-uad" secondAttribute="bottom" id="8ow-Qm-R6E"/>
+                                            <constraint firstAttribute="trailing" secondItem="Q3m-UN-FRp" secondAttribute="trailing" id="B8J-iV-zdN"/>
+                                            <constraint firstAttribute="trailing" secondItem="nO5-Ez-uad" secondAttribute="trailing" id="H1A-Ed-l86"/>
+                                            <constraint firstAttribute="bottom" secondItem="WF6-sf-tRM" secondAttribute="bottom" id="H5u-HT-epI"/>
+                                            <constraint firstItem="Q3m-UN-FRp" firstAttribute="leading" secondItem="Kd0-Iw-tt6" secondAttribute="leading" id="Ltc-Gy-Gn9"/>
+                                            <constraint firstItem="Q3m-UN-FRp" firstAttribute="top" secondItem="Kd0-Iw-tt6" secondAttribute="top" id="WwG-aZ-Prv"/>
+                                            <constraint firstItem="WF6-sf-tRM" firstAttribute="leading" secondItem="Kd0-Iw-tt6" secondAttribute="leading" id="iSe-43-xMO"/>
+                                            <constraint firstAttribute="height" constant="20" id="ovr-Eg-ZpF"/>
+                                        </constraints>
+                                    </view>
+                                    <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" distribution="equalSpacing" spacing="60" translatesAutoresizingMaskIntoConstraints="NO" id="yqS-W8-zMH">
+                                        <rect key="frame" x="55" y="54" width="240" height="40"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zZN-27-igB" customClass="RippleEffectButton" customModule="ITunesPractice" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="zZN-27-igB" secondAttribute="height" multiplier="1:1" id="cmS-pe-vPd"/>
+                                                </constraints>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain" image="backward.fill" catalog="system">
+                                                    <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="pointSize" pointSize="20"/>
+                                                </buttonConfiguration>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="koE-d1-2p7" customClass="RippleEffectButton" customModule="ITunesPractice" customModuleProvider="target">
+                                                <rect key="frame" x="100" y="0.0" width="40" height="40"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain">
+                                                    <imageReference key="image" image="play.fill" catalog="system" symbolScale="large"/>
+                                                    <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="pointSize" pointSize="24" weight="black"/>
+                                                </buttonConfiguration>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MVn-bO-a6f" customClass="RippleEffectButton" customModule="ITunesPractice" customModuleProvider="target">
+                                                <rect key="frame" x="200" y="0.0" width="40" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="MVn-bO-a6f" secondAttribute="height" multiplier="1:1" id="CB3-AI-CkD"/>
+                                                </constraints>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain" image="forward.fill" catalog="system">
+                                                    <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="pointSize" pointSize="20"/>
+                                                </buttonConfiguration>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="PvO-2a-71K"/>
+                                            <constraint firstItem="koE-d1-2p7" firstAttribute="width" secondItem="yqS-W8-zMH" secondAttribute="height" multiplier="1:1" id="bed-5J-ss1"/>
+                                        </constraints>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="J47-nY-SAW">
+                                        <rect key="frame" x="0.0" y="127.66666666666666" width="350" height="84.333333333333343"/>
+                                        <subviews>
+                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="50" minValue="0.0" maxValue="100" minimumValueImage="speaker.fill" catalog="system" maximumValueImage="speaker.wave.3.fill" translatesAutoresizingMaskIntoConstraints="NO" id="g4B-i9-X7Z">
+                                                <rect key="frame" x="-2" y="0.0" width="354" height="31"/>
+                                            </slider>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="55" translatesAutoresizingMaskIntoConstraints="NO" id="Kyf-RD-Q8D">
+                                                <rect key="frame" x="43" y="50" width="264" height="34.333333333333343"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WYi-8a-IHq">
+                                                        <rect key="frame" x="0.0" y="0.0" width="53" height="34.333333333333336"/>
+                                                        <state key="normal" title="Button"/>
+                                                        <buttonConfiguration key="configuration" style="plain">
+                                                            <imageReference key="image" image="quote.bubble" catalog="system" symbolScale="large"/>
+                                                            <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage"/>
+                                                        </buttonConfiguration>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7jL-nN-k2t">
+                                                        <rect key="frame" x="108" y="0.0" width="50" height="34.333333333333336"/>
+                                                        <state key="normal" title="Button"/>
+                                                        <buttonConfiguration key="configuration" style="plain">
+                                                            <imageReference key="image" image="airplayaudio" catalog="system" symbolScale="large"/>
+                                                        </buttonConfiguration>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2f7-8Y-Jq1">
+                                                        <rect key="frame" x="213" y="0.0" width="51" height="34.333333333333336"/>
+                                                        <state key="normal" title="Button"/>
+                                                        <buttonConfiguration key="configuration" style="plain">
+                                                            <imageReference key="image" image="list.bullet" catalog="system" symbolScale="large"/>
+                                                        </buttonConfiguration>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="g4B-i9-X7Z" firstAttribute="width" secondItem="J47-nY-SAW" secondAttribute="width" id="UQU-lz-aRc"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="Kd0-Iw-tt6" firstAttribute="width" secondItem="anq-y9-Bid" secondAttribute="width" id="eHx-sz-u6A"/>
+                                    <constraint firstItem="J47-nY-SAW" firstAttribute="width" secondItem="anq-y9-Bid" secondAttribute="width" id="gyd-gB-35u"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="9xc-dB-Bs7"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="anq-y9-Bid" firstAttribute="leading" secondItem="9xc-dB-Bs7" secondAttribute="leading" constant="20" id="6Dh-G2-gdG"/>
+                            <constraint firstItem="9xc-dB-Bs7" firstAttribute="top" secondItem="anq-y9-Bid" secondAttribute="top" constant="20" id="Fms-aT-O3d"/>
+                            <constraint firstItem="9xc-dB-Bs7" firstAttribute="bottom" secondItem="anq-y9-Bid" secondAttribute="bottom" constant="15" id="Gdw-IA-aqI"/>
+                            <constraint firstItem="9xc-dB-Bs7" firstAttribute="trailing" secondItem="anq-y9-Bid" secondAttribute="trailing" constant="20" id="gU9-zS-SEr"/>
+                        </constraints>
+                    </view>
+                    <size key="freeformSize" width="390" height="254"/>
+                    <connections>
+                        <outlet property="musicProgressView" destination="Q3m-UN-FRp" id="vQj-8M-fNU"/>
+                        <outlet property="volumeSlider" destination="g4B-i9-X7Z" id="ibt-c0-oVj"/>
+                        <outletCollection property="playButtons" destination="zZN-27-igB" collectionClass="NSMutableArray" id="LVu-lG-PXO"/>
+                        <outletCollection property="playButtons" destination="koE-d1-2p7" collectionClass="NSMutableArray" id="yHu-Iw-i3U"/>
+                        <outletCollection property="playButtons" destination="MVn-bO-a6f" collectionClass="NSMutableArray" id="NqI-g9-ky5"/>
+                        <outletCollection property="advancedButtons" destination="WYi-8a-IHq" collectionClass="NSMutableArray" id="p5f-h2-gHS"/>
+                        <outletCollection property="advancedButtons" destination="7jL-nN-k2t" collectionClass="NSMutableArray" id="01U-TR-hHZ"/>
+                        <outletCollection property="advancedButtons" destination="2f7-8Y-Jq1" collectionClass="NSMutableArray" id="Jvh-Kt-ogq"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HiM-zZ-xik" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-94" y="-306"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="airplayaudio" catalog="system" width="128" height="123"/>
+        <image name="backward.fill" catalog="system" width="128" height="77"/>
+        <image name="forward.fill" catalog="system" width="128" height="77"/>
+        <image name="list.bullet" catalog="system" width="128" height="87"/>
+        <image name="play.fill" catalog="system" width="117" height="128"/>
+        <image name="quote.bubble" catalog="system" width="128" height="110"/>
+        <image name="speaker.fill" catalog="system" width="128" height="125"/>
+        <image name="speaker.wave.3.fill" catalog="system" width="128" height="84"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
