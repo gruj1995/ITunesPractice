@@ -50,27 +50,35 @@ class PlaylistPlayerViewController: UIViewController {
     private func updateUI() {}
 
     private func setupUI() {
+        setupLayout()
+
         playButtons.forEach { $0.tintColor = .white }
         advancedButtons.forEach { $0.tintColor = .white }
+        setupVolumeSlider()
+        setupMusicProgressView()
+    }
 
+    private func setupMusicProgressView() {
+        // 進度條填滿時顏色
+        musicProgressView.progressTintColor = .white
+        // 進度條未填滿時顏色
+        musicProgressView.trackTintColor = .lightText
+    }
+
+    private func setupVolumeSlider() {
         // 圓點圖換小一點
+        // 這邊要注意官方文件說不能同時設置圖案跟 thumbTintColor，因為只會取用一邊的結果
         volumeSlider.setThumbImage(AppImages.circleFill, for: .normal)
         volumeSlider.setThumbImage(AppImages.circleFill, for: .highlighted)
-        volumeSlider.tintColor = .white
-        // 圓點顏色
-        volumeSlider.thumbTintColor = .white
-        // 填滿時顏色
+
+        // 滑軌填滿時顏色
         volumeSlider.minimumTrackTintColor = .white
-        // 未填滿時顏色
+        // 滑軌未填滿時顏色
         volumeSlider.maximumTrackTintColor = .lightText
 
-        // 填滿時顏色
-        musicProgressView.progressTintColor = .white
-
-        // 未填滿時顏色
-        musicProgressView.trackTintColor = .lightText
-
-        setupLayout()
+        volumeSlider.tintColor = .white
+        volumeSlider.minimumValue = 0
+        volumeSlider.maximumValue = 100
     }
 
     private func setupLayout() {

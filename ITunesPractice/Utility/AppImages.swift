@@ -26,6 +26,7 @@ enum AppImages {
     static let pause = UIImage(systemName: "pause.fill")
     static let play = UIImage(systemName: "play.fill")
     static let forward = UIImage(systemName: "forward.fill")
+    static let backward = UIImage(systemName: "backward.fill")
     static let pauseLarge = UIImage(systemName: "pause.fill", withConfiguration: playerButtonConfiguration)
     static let playLarge = UIImage(systemName: "play.fill", withConfiguration: playerButtonConfiguration)
     static let forwardLarge = UIImage(systemName: "forward.fill", withConfiguration: playerButtonConfiguration)
@@ -43,5 +44,8 @@ enum AppImages {
 
     // 這張圖透過 pinterest 找圖和 figma 修改尺寸與透明度做出來的～
     static let musicNote = UIImage(named: "music.note")
+
+    // 圓形
+    static let circleFill = UIImage(named: "circle.fill")
 }
 

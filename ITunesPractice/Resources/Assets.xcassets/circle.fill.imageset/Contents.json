@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Ellipse 1.png",
+      "filename" : "Ellipse 2.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Ellipse 1@2x.png",
+      "filename" : "Ellipse 2@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Ellipse 1@3x.png",
+      "filename" : "Ellipse 2@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
@@ -21,6 +21,6 @@
     "version" : 1
   },
   "properties" : {
-    "template-rendering-intent" : "template"
+    "template-rendering-intent" : "original"
   }
 }
