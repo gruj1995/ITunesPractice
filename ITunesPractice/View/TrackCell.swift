@@ -33,10 +33,12 @@ class TrackCell: UITableViewCell {
         coverImageView.layoutIfNeeded()
     }
 
-    func configure(artworkUrl: String, collectionName: String, artistName: String, trackName: String) {
+    func configure(artworkUrl: String, collectionName: String, artistName: String, trackName: String, showsHighlight: Bool = false) {
         coverImageView.kf.setImage(with: URL(string: artworkUrl))
         trackNameLabel.text = trackName
         albumInfoLabel.text = "\(artistName) · \(collectionName)"
+        highlightView.backgroundColor = showsHighlight ? .appColor(.gray1) : .clear
+        selectedBackgroundView = highlightView
     }
 
     // MARK: Private
@@ -75,12 +77,14 @@ class TrackCell: UITableViewCell {
 
     private func setupUI() {
         // 點擊時 cell highlight的顏色
-        let backgroundView = UIView()
-        backgroundView.backgroundColor = .appColor(.gray2)
-        selectedBackgroundView = backgroundView
-        backgroundColor = .black
+//        let backgroundView = UIView()
+//        backgroundView.backgroundColor = .appColor(.gray2)
+//        selectedBackgroundView = backgroundView
+        backgroundColor = .clear
         setupLayout()
     }
+
+    private var highlightView: UIView = UIView()
 
     private func setupLayout() {
         contentView.addSubview(coverImageView)
