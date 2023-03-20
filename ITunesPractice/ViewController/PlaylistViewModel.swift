@@ -10,9 +10,9 @@ import Combine
 import Kingfisher
 import UIKit
 
-// MARK: - PlayListViewModel
+// MARK: - PlaylistViewModel
 
-class PlayListViewModel {
+class PlaylistViewModel {
     // MARK: Lifecycle
 
     init() {
@@ -22,13 +22,13 @@ class PlayListViewModel {
 
     // MARK: Internal
 
+    let colorsSubject = PassthroughSubject<[UIColor], Never>()
+
     private(set) var selectedTrack: Track? {
         didSet {
             changeImage()
         }
     }
-
-    let colorsSubject = PassthroughSubject<[UIColor], Never>()
 
     var state: ViewState {
         get {
@@ -60,6 +60,10 @@ class PlayListViewModel {
         return tracks.count
     }
 
+    var numberOfSections: Int {
+        2
+    }
+
     func track(forCellAt index: Int) -> Track? {
         guard index < tracks.count else { return nil }
         return tracks[index]
@@ -71,13 +75,8 @@ class PlayListViewModel {
         selectedTrack = tracks[index]
     }
 
-    private func setSelectedTrack(_ track: Track?) {
-        selectedTrack = track
-    }
-
-    private func changeImage() {
-        guard let track = selectedTrack else { return }
-        downloadImage(with: track.artworkUrl100)
+    func numberOfRows(in section: Int) -> Int {
+        totalCount
     }
 
     // MARK: Private
@@ -92,12 +91,13 @@ class PlayListViewModel {
 
     private var cancellables: Set<AnyCancellable> = []
 
-    var numberOfSections: Int {
-        2
+    private func setSelectedTrack(_ track: Track?) {
+        selectedTrack = track
     }
 
-    func numberOfRows(in section: Int) -> Int {
-        totalCount
+    private func changeImage() {
+        guard let track = selectedTrack else { return }
+        downloadImage(with: track.artworkUrl100)
     }
 
     /// 使用kingfisher下載圖檔

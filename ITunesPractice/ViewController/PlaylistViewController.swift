@@ -9,7 +9,7 @@ import Combine
 import SnapKit
 import UIKit
 
-// MARK: - PlayListViewController
+// MARK: - PlaylistViewController
 
 /*
   - 沒網路時，網路音樂文字變灰色且不可選擇，本地音樂維持白字可選擇
@@ -20,7 +20,7 @@ import UIKit
   - cell 拖曳排序功能
  */
 
-class PlayListViewController: UIViewController {
+class PlaylistViewController: UIViewController {
     // MARK: Lifecycle
 
     init() {
@@ -52,6 +52,10 @@ class PlayListViewController: UIViewController {
 
     var lastVelocityYSign = 0
 
+    let theight = Constants.screenHeight - 150 - Constants.screenHeight * 0.27
+
+    var isPlayerHidden: Bool = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
         bindViewModel()
@@ -63,6 +67,7 @@ class PlayListViewController: UIViewController {
             }
         }
     }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 //        gradient2.frame = UIScreen.main.bounds
@@ -76,7 +81,7 @@ class PlayListViewController: UIViewController {
 
     private let cellHeight: CGFloat = 60
 
-    private let viewModel: PlayListViewModel = .init()
+    private let viewModel: PlaylistViewModel = .init()
 
     // mini 音樂播放器
     private lazy var playerVC: PlaylistPlayerViewController = {
@@ -109,6 +114,9 @@ class PlayListViewController: UIViewController {
 
     private var lastContentOffset: CGFloat = 0
 
+    private lazy var zeroPath = UIBezierPath(rect: CGRect(x: 0, y: 0, width: view.bounds.width, height: 700)).cgPath
+    private lazy var tablePath = UIBezierPath(rect: CGRect(x: 0, y: 0, width: view.bounds.width, height: theight)).cgPath
+
     /// 是否滑動到tableview最後一個section
     private var isLastSectionReached: Bool {
         tableView.isLastSectionReached()
@@ -140,8 +148,6 @@ class PlayListViewController: UIViewController {
         }
         playerVC.didMove(toParent: self)
     }
-
-    let theight = Constants.screenHeight - 150 - Constants.screenHeight * 0.27
 
     private func bindViewModel() {
         viewModel.statePublisher
@@ -192,16 +198,11 @@ class PlayListViewController: UIViewController {
 //        alert.addAction(okAction)
 //        present(alert, animated: true, completion: nil)
     }
-
-    private lazy var zeroPath = UIBezierPath(rect: CGRect(x: 0, y: 0, width: view.bounds.width, height: 700)).cgPath
-    private lazy var tablePath = UIBezierPath(rect: CGRect(x: 0, y: 0, width: view.bounds.width, height: theight)).cgPath
-
-    var isPlayerHidden: Bool = false
 }
 
 // MARK: UITableViewDataSource, UITableViewDelegate
 
-extension PlayListViewController: UITableViewDataSource, UITableViewDelegate {
+extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.numberOfSections
     }
@@ -324,13 +325,13 @@ extension PlayListViewController: UITableViewDataSource, UITableViewDelegate {
             let hiddenFrameHeight = tableView.contentOffset.y + tableView(tableView, heightForHeaderInSection: 0) - cell.frame.origin.y
 
             if hiddenFrameHeight >= 0 || hiddenFrameHeight <= cell.frame.size.height {
-                self.maskCell(cell: cell, fromTopWithMargin: hiddenFrameHeight)
+                maskCell(cell: cell, fromTopWithMargin: hiddenFrameHeight)
             }
         }
     }
 
     func maskCell(cell: UITableViewCell, fromTopWithMargin margin: CGFloat) {
-        cell.layer.mask = visibilityMaskForCell(cell: cell, withLocation: margin/cell.frame.size.height)
+        cell.layer.mask = visibilityMaskForCell(cell: cell, withLocation: margin / cell.frame.size.height)
         cell.layer.masksToBounds = true
     }
 
@@ -346,7 +347,7 @@ extension PlayListViewController: UITableViewDataSource, UITableViewDelegate {
 
 // MARK: TrackDetailViewControllerDatasource
 
-extension PlayListViewController: TrackDetailViewControllerDatasource {
+extension PlaylistViewController: TrackDetailViewControllerDatasource {
     func trackId(_ trackDetailViewController: TrackDetailViewController) -> Int? {
         return viewModel.selectedTrack?.trackId
     }

@@ -67,8 +67,8 @@
 		8BB69BD229BDAFF500F09793 /* ViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BD129BDAFF500F09793 /* ViewState.swift */; };
 		8BB69BD429BDB49400F09793 /* SearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BD329BDB49400F09793 /* SearchResultsViewController.swift */; };
 		8BB69BD629BDB4A500F09793 /* SearchResultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BD529BDB4A500F09793 /* SearchResultsViewModel.swift */; };
-		8BB69BD829BE1B1500F09793 /* PlayListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BD729BE1B1500F09793 /* PlayListViewController.swift */; };
-		8BB69BDA29BE1B3100F09793 /* PlayListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BD929BE1B3100F09793 /* PlayListViewModel.swift */; };
+		8BB69BD829BE1B1500F09793 /* PlaylistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BD729BE1B1500F09793 /* PlaylistViewController.swift */; };
+		8BB69BDA29BE1B3100F09793 /* PlaylistViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BD929BE1B3100F09793 /* PlaylistViewModel.swift */; };
 		8BB69BDC29BE1C9500F09793 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BDB29BE1C9500F09793 /* UIApplication+Extensions.swift */; };
 		8BB69BDE29BE239C00F09793 /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BDD29BE239C00F09793 /* UITableView+Extensions.swift */; };
 		8BB69BE029BE5A5900F09793 /* MiniPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BDF29BE5A5900F09793 /* MiniPlayerViewController.swift */; };
@@ -206,8 +206,8 @@
 		8BB69BD129BDAFF500F09793 /* ViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewState.swift; sourceTree = "<group>"; };
 		8BB69BD329BDB49400F09793 /* SearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewController.swift; sourceTree = "<group>"; };
 		8BB69BD529BDB4A500F09793 /* SearchResultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewModel.swift; sourceTree = "<group>"; };
-		8BB69BD729BE1B1500F09793 /* PlayListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayListViewController.swift; sourceTree = "<group>"; };
-		8BB69BD929BE1B3100F09793 /* PlayListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayListViewModel.swift; sourceTree = "<group>"; };
+		8BB69BD729BE1B1500F09793 /* PlaylistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistViewController.swift; sourceTree = "<group>"; };
+		8BB69BD929BE1B3100F09793 /* PlaylistViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistViewModel.swift; sourceTree = "<group>"; };
 		8BB69BDB29BE1C9500F09793 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		8BB69BDD29BE239C00F09793 /* UITableView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extensions.swift"; sourceTree = "<group>"; };
 		8BB69BDF29BE5A5900F09793 /* MiniPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniPlayerViewController.swift; sourceTree = "<group>"; };
@@ -439,8 +439,8 @@
 				8B6B56C529B577D200F099DD /* SearchViewModel.swift */,
 				8BB69BD329BDB49400F09793 /* SearchResultsViewController.swift */,
 				8BB69BD529BDB4A500F09793 /* SearchResultsViewModel.swift */,
-				8BB69BD729BE1B1500F09793 /* PlayListViewController.swift */,
-				8BB69BD929BE1B3100F09793 /* PlayListViewModel.swift */,
+				8BB69BD729BE1B1500F09793 /* PlaylistViewController.swift */,
+				8BB69BD929BE1B3100F09793 /* PlaylistViewModel.swift */,
 				8BBCE35729C1F56D0084BF44 /* PlaylistPlayerViewController.swift */,
 				8B3F9BDD29C6AF850050CFC9 /* PlaylistPlayerViewModel.swift */,
 				8BB69BDF29BE5A5900F09793 /* MiniPlayerViewController.swift */,
@@ -955,7 +955,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BB69BDE29BE239C00F09793 /* UITableView+Extensions.swift in Sources */,
-				8BB69BD829BE1B1500F09793 /* PlayListViewController.swift in Sources */,
+				8BB69BD829BE1B1500F09793 /* PlaylistViewController.swift in Sources */,
 				8BFDF17329A21CB0008E2C23 /* MainTabBarController.swift in Sources */,
 				8B677CC729BEF7F400F73FE5 /* RippleEffectButton.swift in Sources */,
 				8BBCE35429C0D67B0084BF44 /* HighlightBlurView.swift in Sources */,
@@ -1038,7 +1038,7 @@
 				8BB74C9129A1DD7F000B9D59 /* ApiComponentSendable.swift in Sources */,
 				8B4D36C6299FBD7E00059381 /* SceneDelegate.swift in Sources */,
 				8B3F9BE129C6EA270050CFC9 /* UIColor+Extension.swift in Sources */,
-				8BB69BDA29BE1B3100F09793 /* PlayListViewModel.swift in Sources */,
+				8BB69BDA29BE1B3100F09793 /* PlaylistViewModel.swift in Sources */,
 				8BB69BC929BCB71C00F09793 /* ApiEngine+Extensions.swift in Sources */,
 				8B3B6CCB29AC788400A6352A /* ITunesService+Lookup.swift in Sources */,
 				8BF2026029A99DF7005FF2E4 /* SearchResponse.swift in Sources */,

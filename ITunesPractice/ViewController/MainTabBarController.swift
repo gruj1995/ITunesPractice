@@ -92,7 +92,7 @@ class MainTabBarController: UITabBarController {
     }
 
     private func presentPlaylistVC() {
-        let vc = PlayListViewController()
+        let vc = PlaylistViewController()
         // fullScreen 背景遮罩會是黑色的，所以設 overFullScreen
         vc.modalPresentationStyle = .overFullScreen
         FloatingPanelManager.shared.set(contentVC: vc, layoutType: .modalFullScreen, track: vc.tableView)
