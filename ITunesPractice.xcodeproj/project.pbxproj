@@ -19,6 +19,12 @@
 		8B3F9BD329C5FBC70050CFC9 /* FloatingPanelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F9BD229C5FBC70050CFC9 /* FloatingPanelManager.swift */; };
 		8B3F9BD829C6012E0050CFC9 /* FloatingPanel+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F9BD729C6012E0050CFC9 /* FloatingPanel+Layout.swift */; };
 		8B3F9BDA29C619A00050CFC9 /* FloatingPanel+Behavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F9BD929C6199F0050CFC9 /* FloatingPanel+Behavior.swift */; };
+		8B3F9BDE29C6AF850050CFC9 /* PlaylistPlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F9BDD29C6AF850050CFC9 /* PlaylistPlayerViewModel.swift */; };
+		8B3F9BE129C6EA270050CFC9 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F9BE029C6EA270050CFC9 /* UIColor+Extension.swift */; };
+		8B3F9BE329C6EA820050CFC9 /* GradientColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F9BE229C6EA820050CFC9 /* GradientColorManager.swift */; };
+		8B3F9BE629C6F0660050CFC9 /* ColorKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8B3F9BE529C6F0660050CFC9 /* ColorKit */; };
+		8B3F9BE829C724330050CFC9 /* PlayListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F9BE729C724330050CFC9 /* PlayListHeaderView.swift */; };
+		8B3F9BEA29C734F40050CFC9 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F9BE929C734F40050CFC9 /* GradientView.swift */; };
 		8B4D36C4299FBD7E00059381 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4D36C3299FBD7E00059381 /* AppDelegate.swift */; };
 		8B4D36C6299FBD7E00059381 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4D36C5299FBD7E00059381 /* SceneDelegate.swift */; };
 		8B4D36CD299FBD8000059381 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B4D36CC299FBD8000059381 /* Assets.xcassets */; };
@@ -62,7 +68,7 @@
 		8BB69BD229BDAFF500F09793 /* ViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BD129BDAFF500F09793 /* ViewState.swift */; };
 		8BB69BD429BDB49400F09793 /* SearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BD329BDB49400F09793 /* SearchResultsViewController.swift */; };
 		8BB69BD629BDB4A500F09793 /* SearchResultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BD529BDB4A500F09793 /* SearchResultsViewModel.swift */; };
-		8BB69BD829BE1B1500F09793 /* PlayListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BD729BE1B1500F09793 /* PlayListController.swift */; };
+		8BB69BD829BE1B1500F09793 /* PlayListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BD729BE1B1500F09793 /* PlayListViewController.swift */; };
 		8BB69BDA29BE1B3100F09793 /* PlayListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BD929BE1B3100F09793 /* PlayListViewModel.swift */; };
 		8BB69BDC29BE1C9500F09793 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BDB29BE1C9500F09793 /* UIApplication+Extensions.swift */; };
 		8BB69BDE29BE239C00F09793 /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BDD29BE239C00F09793 /* UITableView+Extensions.swift */; };
@@ -155,6 +161,11 @@
 		8B3F9BD229C5FBC70050CFC9 /* FloatingPanelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanelManager.swift; sourceTree = "<group>"; };
 		8B3F9BD729C6012E0050CFC9 /* FloatingPanel+Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FloatingPanel+Layout.swift"; sourceTree = "<group>"; };
 		8B3F9BD929C6199F0050CFC9 /* FloatingPanel+Behavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FloatingPanel+Behavior.swift"; sourceTree = "<group>"; };
+		8B3F9BDD29C6AF850050CFC9 /* PlaylistPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistPlayerViewModel.swift; sourceTree = "<group>"; };
+		8B3F9BE029C6EA270050CFC9 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		8B3F9BE229C6EA820050CFC9 /* GradientColorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientColorManager.swift; sourceTree = "<group>"; };
+		8B3F9BE729C724330050CFC9 /* PlayListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayListHeaderView.swift; sourceTree = "<group>"; };
+		8B3F9BE929C734F40050CFC9 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		8B4D36C0299FBD7E00059381 /* ITunesPractice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ITunesPractice.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B4D36C3299FBD7E00059381 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8B4D36C5299FBD7E00059381 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -197,7 +208,7 @@
 		8BB69BD129BDAFF500F09793 /* ViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewState.swift; sourceTree = "<group>"; };
 		8BB69BD329BDB49400F09793 /* SearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewController.swift; sourceTree = "<group>"; };
 		8BB69BD529BDB4A500F09793 /* SearchResultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewModel.swift; sourceTree = "<group>"; };
-		8BB69BD729BE1B1500F09793 /* PlayListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayListController.swift; sourceTree = "<group>"; };
+		8BB69BD729BE1B1500F09793 /* PlayListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayListViewController.swift; sourceTree = "<group>"; };
 		8BB69BD929BE1B3100F09793 /* PlayListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayListViewModel.swift; sourceTree = "<group>"; };
 		8BB69BDB29BE1C9500F09793 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		8BB69BDD29BE239C00F09793 /* UITableView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extensions.swift"; sourceTree = "<group>"; };
@@ -261,6 +272,7 @@
 				8B4D3703299FC4D800059381 /* IQKeyboardManagerSwift in Frameworks */,
 				8B4D3700299FC4A300059381 /* Kingfisher in Frameworks */,
 				8B4D36FD299FC48E00059381 /* SwiftyJSON in Frameworks */,
+				8B3F9BE629C6F0660050CFC9 /* ColorKit in Frameworks */,
 				8BFDF16A29A1EB39008E2C23 /* SnapKit in Frameworks */,
 				24B1F81F56F20E14AB804089 /* Pods_ITunesPractice.framework in Frameworks */,
 				8B4D36FA299FC47D00059381 /* Alamofire in Frameworks */,
@@ -300,6 +312,7 @@
 		8B3F9BC329C3767E0050CFC9 /* Experiments */ = {
 			isa = PBXGroup;
 			children = (
+				8B3F9BDF29C6EA110050CFC9 /* GradientColor */,
 				8B3F9BCC29C5C6410050CFC9 /* CustomFloatingVC */,
 				8B3F9BC929C383E00050CFC9 /* Helper */,
 				8B3F9BC429C3768F0050CFC9 /* ViewController */,
@@ -340,6 +353,15 @@
 				8B3F9BD929C6199F0050CFC9 /* FloatingPanel+Behavior.swift */,
 			);
 			path = FloatingPanel;
+			sourceTree = "<group>";
+		};
+		8B3F9BDF29C6EA110050CFC9 /* GradientColor */ = {
+			isa = PBXGroup;
+			children = (
+				8B3F9BE029C6EA270050CFC9 /* UIColor+Extension.swift */,
+				8B3F9BE229C6EA820050CFC9 /* GradientColorManager.swift */,
+			);
+			path = GradientColor;
 			sourceTree = "<group>";
 		};
 		8B4D36B7299FBD7E00059381 = {
@@ -419,9 +441,10 @@
 				8B6B56C529B577D200F099DD /* SearchViewModel.swift */,
 				8BB69BD329BDB49400F09793 /* SearchResultsViewController.swift */,
 				8BB69BD529BDB4A500F09793 /* SearchResultsViewModel.swift */,
-				8BB69BD729BE1B1500F09793 /* PlayListController.swift */,
+				8BB69BD729BE1B1500F09793 /* PlayListViewController.swift */,
 				8BB69BD929BE1B3100F09793 /* PlayListViewModel.swift */,
 				8BBCE35729C1F56D0084BF44 /* PlaylistPlayerViewController.swift */,
+				8B3F9BDD29C6AF850050CFC9 /* PlaylistPlayerViewModel.swift */,
 				8BB69BDF29BE5A5900F09793 /* MiniPlayerViewController.swift */,
 				8BFDF17429A229A9008E2C23 /* LibraryViewController.swift */,
 				8B6B56A629B1755300F099DD /* LibraryViewModel.swift */,
@@ -528,9 +551,11 @@
 		8BB69BCE29BD75D700F09793 /* CustomView */ = {
 			isa = PBXGroup;
 			children = (
+				8B3F9BE929C734F40050CFC9 /* GradientView.swift */,
 				8BB69BCF29BD766400F09793 /* EmptyStateView.swift */,
 				8B677CC629BEF7F400F73FE5 /* RippleEffectButton.swift */,
 				8BBCE35329C0D67B0084BF44 /* HighlightBlurView.swift */,
+				8B3F9BE729C724330050CFC9 /* PlayListHeaderView.swift */,
 			);
 			path = CustomView;
 			sourceTree = "<group>";
@@ -681,6 +706,7 @@
 				8BFDF16929A1EB39008E2C23 /* SnapKit */,
 				8BFDF18B29A3ACEF008E2C23 /* CombineSchedulers */,
 				8B3F9BD029C5EDB10050CFC9 /* FloatingPanel */,
+				8B3F9BE529C6F0660050CFC9 /* ColorKit */,
 			);
 			productName = ITunesPractice;
 			productReference = 8B4D36C0299FBD7E00059381 /* ITunesPractice.app */;
@@ -766,6 +792,7 @@
 				8BFDF16829A1EB39008E2C23 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				8BFDF18A29A3ACEF008E2C23 /* XCRemoteSwiftPackageReference "combine-schedulers" */,
 				8B3F9BCF29C5EDB10050CFC9 /* XCRemoteSwiftPackageReference "FloatingPanel" */,
+				8B3F9BE429C6F0660050CFC9 /* XCRemoteSwiftPackageReference "ColorKit" */,
 			);
 			productRefGroup = 8B4D36C1299FBD7E00059381 /* Products */;
 			projectDirPath = "";
@@ -931,7 +958,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BB69BDE29BE239C00F09793 /* UITableView+Extensions.swift in Sources */,
-				8BB69BD829BE1B1500F09793 /* PlayListController.swift in Sources */,
+				8BB69BD829BE1B1500F09793 /* PlayListViewController.swift in Sources */,
 				8BFDF17329A21CB0008E2C23 /* MainTabBarController.swift in Sources */,
 				8B677CC729BEF7F400F73FE5 /* RippleEffectButton.swift in Sources */,
 				8BBCE35429C0D67B0084BF44 /* HighlightBlurView.swift in Sources */,
@@ -939,6 +966,7 @@
 				8BB69BC529BCACA500F09793 /* LookupAPIRequest.swift in Sources */,
 				8B677CCC29BF934100F73FE5 /* GestureSubscription.swift in Sources */,
 				8BB69BC329BC9E9600F09793 /* HTTPMethod+Extensions.swift in Sources */,
+				8B3F9BE829C724330050CFC9 /* PlayListHeaderView.swift in Sources */,
 				8BFDF16C29A1F55F008E2C23 /* ITunesServiceProvider.swift in Sources */,
 				8BB74C6A29A14BA3000B9D59 /* CustomRequest.swift in Sources */,
 				8BB74C7D29A1CA0E000B9D59 /* CustomPathAdapter.swift in Sources */,
@@ -968,6 +996,7 @@
 				8BD1C65329AF37AA00337EF3 /* PreviewViewController.swift in Sources */,
 				8BFDF17929A24D37008E2C23 /* UIColor+Extensions.swift in Sources */,
 				8BB74C7529A15425000B9D59 /* Constants.swift in Sources */,
+				8B3F9BE329C6EA820050CFC9 /* GradientColorManager.swift in Sources */,
 				8BB74C8529A1CBD3000B9D59 /* Defs.swift in Sources */,
 				8BB74C8929A1CCEB000B9D59 /* CustomJsonBodyParamsAdapter.swift in Sources */,
 				8B677CCA29BF922400F73FE5 /* GesturePublisher.swift in Sources */,
@@ -987,6 +1016,7 @@
 				8B3F9BD829C6012E0050CFC9 /* FloatingPanel+Layout.swift in Sources */,
 				8BB74C6129A13DF4000B9D59 /* Logger.swift in Sources */,
 				8B6B56AD29B1854B00F099DD /* UserDefaultsHelper.swift in Sources */,
+				8B3F9BDE29C6AF850050CFC9 /* PlaylistPlayerViewModel.swift in Sources */,
 				8BFDF17129A2180E008E2C23 /* String+Extensins.swift in Sources */,
 				8BFDF18129A31568008E2C23 /* Date+Extensions.swift in Sources */,
 				8BD1C64F29AEDEAE00337EF3 /* ITunesImageSize.swift in Sources */,
@@ -1006,10 +1036,12 @@
 				8B3B6CCF29AD8C2500A6352A /* TrackDetailViewModel.swift in Sources */,
 				8BB69BD229BDAFF500F09793 /* ViewState.swift in Sources */,
 				8BB69BD029BD766400F09793 /* EmptyStateView.swift in Sources */,
+				8B3F9BEA29C734F40050CFC9 /* GradientView.swift in Sources */,
 				8BB74C5D29A1394A000B9D59 /* AlamofireAdapter.swift in Sources */,
 				8BB69BD629BDB4A500F09793 /* SearchResultsViewModel.swift in Sources */,
 				8BB74C9129A1DD7F000B9D59 /* ApiComponentSendable.swift in Sources */,
 				8B4D36C6299FBD7E00059381 /* SceneDelegate.swift in Sources */,
+				8B3F9BE129C6EA270050CFC9 /* UIColor+Extension.swift in Sources */,
 				8BB69BDA29BE1B3100F09793 /* PlayListViewModel.swift in Sources */,
 				8BB69BC929BCB71C00F09793 /* ApiEngine+Extensions.swift in Sources */,
 				8B3B6CCB29AC788400A6352A /* ITunesService+Lookup.swift in Sources */,
@@ -1372,6 +1404,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		8B3F9BE429C6F0660050CFC9 /* XCRemoteSwiftPackageReference "ColorKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Boris-Em/ColorKit.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		8B4D36F8299FC47D00059381 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -1435,6 +1475,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8B3F9BCF29C5EDB10050CFC9 /* XCRemoteSwiftPackageReference "FloatingPanel" */;
 			productName = FloatingPanel;
+		};
+		8B3F9BE529C6F0660050CFC9 /* ColorKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B3F9BE429C6F0660050CFC9 /* XCRemoteSwiftPackageReference "ColorKit" */;
+			productName = ColorKit;
 		};
 		8B4D36F9299FC47D00059381 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;

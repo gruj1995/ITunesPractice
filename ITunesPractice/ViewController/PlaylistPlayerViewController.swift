@@ -29,13 +29,19 @@ import UIKit
 class PlaylistPlayerViewController: UIViewController {
     // MARK: Internal
 
-    @IBOutlet var musicProgressView: UIProgressView!
+    class var storyboardIdentifier: String {
+        return String(describing: self)
+    }
+
+    @IBOutlet var musicProgressSlider: UISlider!
 
     @IBOutlet var playButtons: [RippleEffectButton]!
 
     @IBOutlet var advancedButtons: [UIButton]!
 
     @IBOutlet var volumeSlider: UISlider!
+
+    @IBOutlet weak var stackView: UIStackView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,55 +53,101 @@ class PlaylistPlayerViewController: UIViewController {
 
     // MARK: Private
 
+    private lazy var currentTimeLabel: UILabel = {
+        let label = UILabel()
+        label.text = "1:20"
+        label.textColor = .lightText
+        label.textAlignment = .left
+        label.font = .systemFont(ofSize: 10)
+        return label
+    }()
+
+    private lazy var remainingTimeLabel: UILabel = {
+        let label = UILabel()
+        label.text = "2:45"
+        label.textColor = .lightText
+        label.textAlignment = .right
+        label.font = .systemFont(ofSize: 10)
+        return label
+    }()
+
+    private let viewModel: PlaylistPlayerViewModel = .init()
+
+    lazy var gradient: CAGradientLayer = {
+        let gradient = CAGradientLayer()
+//        gradient.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: view.bounds.height)
+        gradient.frame = UIScreen.main.bounds
+//        view.layer.insertSublayer(gradient, at: 0)
+        return gradient
+    }()
+
     private func updateUI() {}
 
+//    private let blurEffect = UIBlurEffect(style: .systemUltraThinMaterialLight)
+//    // 毛玻璃view
+//    private lazy var blurView: UIVisualEffectView = .init(effect: blurEffect)
+
+    private var blurView: UIView = UIView()
+
     private func setupUI() {
+        view.backgroundColor = .clear
+        blurView.backgroundColor = .white
+        blurView.alpha = 0.05
         setupLayout()
 
         playButtons.forEach { $0.tintColor = .white }
         advancedButtons.forEach { $0.tintColor = .white }
         setupVolumeSlider()
-        setupMusicProgressView()
+        setupMusicProgressSlider()
     }
 
-    private func setupMusicProgressView() {
-        // 進度條填滿時顏色
-        musicProgressView.progressTintColor = .white
-        // 進度條未填滿時顏色
-        musicProgressView.trackTintColor = .lightText
+    private func setupMusicProgressSlider() {
+        // 滑軌填滿時顏色
+        musicProgressSlider.minimumTrackTintColor = .white
+        // 滑軌未填滿時顏色
+        musicProgressSlider.maximumTrackTintColor = .lightText
+        musicProgressSlider.minimumValue = 0
+        musicProgressSlider.maximumValue = 100
     }
+
+//    private func
 
     private func setupVolumeSlider() {
         // 圓點圖換小一點
         // 這邊要注意官方文件說不能同時設置圖案跟 thumbTintColor，因為只會取用一邊的結果
         volumeSlider.setThumbImage(AppImages.circleFill, for: .normal)
         volumeSlider.setThumbImage(AppImages.circleFill, for: .highlighted)
-
-        // 滑軌填滿時顏色
-        volumeSlider.minimumTrackTintColor = .white
-        // 滑軌未填滿時顏色
-        volumeSlider.maximumTrackTintColor = .lightText
-
+        // slider 兩側 icon
+        volumeSlider.minimumValueImage = AppImages.speakerSmall
+        volumeSlider.maximumValueImage = AppImages.speakerWaveSmall
+        // icon 圖片顏色
         volumeSlider.tintColor = .white
+        volumeSlider.minimumTrackTintColor = .white
+        volumeSlider.maximumTrackTintColor = .lightText
         volumeSlider.minimumValue = 0
         volumeSlider.maximumValue = 100
     }
 
     private func setupLayout() {
-//        view.addSubview(playPauseButton)
-//        view.addSubview(nextButton)
+        view.addSubview(currentTimeLabel)
+        currentTimeLabel.snp.makeConstraints { make in
+            make.height.equalTo(15)
+            make.leading.equalTo(musicProgressSlider)
+            make.top.equalTo(musicProgressSlider.snp.bottom)
+        }
 
-//        playPauseButton.snp.makeConstraints { make in
-//            make.width.height.equalTo(40)
-//            make.leading.equalTo(songTitleLabel.snp.trailing).offset(8)
-//            make.centerY.equalToSuperview()
-//        }
+        view.addSubview(remainingTimeLabel)
+        remainingTimeLabel.snp.makeConstraints { make in
+            make.height.equalTo(15)
+            make.trailing.equalTo(musicProgressSlider)
+            make.top.equalTo(musicProgressSlider.snp.bottom)
+        }
 
-//        nextButton.snp.makeConstraints { make in
-//            make.width.height.centerY.equalTo(playPauseButton)
-//            make.leading.equalTo(playPauseButton.snp.trailing).offset(8)
-//            make.trailing.equalToSuperview().inset(20)
-//        }
+        view.addSubview(blurView)
+        blurView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(stackView.snp.top)
+        }
     }
 
     @objc
