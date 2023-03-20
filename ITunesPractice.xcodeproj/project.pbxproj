@@ -24,7 +24,6 @@
 		8B3F9BE329C6EA820050CFC9 /* GradientColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F9BE229C6EA820050CFC9 /* GradientColorManager.swift */; };
 		8B3F9BE629C6F0660050CFC9 /* ColorKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8B3F9BE529C6F0660050CFC9 /* ColorKit */; };
 		8B3F9BE829C724330050CFC9 /* PlayListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F9BE729C724330050CFC9 /* PlayListHeaderView.swift */; };
-		8B3F9BEA29C734F40050CFC9 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F9BE929C734F40050CFC9 /* GradientView.swift */; };
 		8B4D36C4299FBD7E00059381 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4D36C3299FBD7E00059381 /* AppDelegate.swift */; };
 		8B4D36C6299FBD7E00059381 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4D36C5299FBD7E00059381 /* SceneDelegate.swift */; };
 		8B4D36CD299FBD8000059381 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B4D36CC299FBD8000059381 /* Assets.xcassets */; };
@@ -165,7 +164,6 @@
 		8B3F9BE029C6EA270050CFC9 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		8B3F9BE229C6EA820050CFC9 /* GradientColorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientColorManager.swift; sourceTree = "<group>"; };
 		8B3F9BE729C724330050CFC9 /* PlayListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayListHeaderView.swift; sourceTree = "<group>"; };
-		8B3F9BE929C734F40050CFC9 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		8B4D36C0299FBD7E00059381 /* ITunesPractice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ITunesPractice.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B4D36C3299FBD7E00059381 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8B4D36C5299FBD7E00059381 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -551,7 +549,6 @@
 		8BB69BCE29BD75D700F09793 /* CustomView */ = {
 			isa = PBXGroup;
 			children = (
-				8B3F9BE929C734F40050CFC9 /* GradientView.swift */,
 				8BB69BCF29BD766400F09793 /* EmptyStateView.swift */,
 				8B677CC629BEF7F400F73FE5 /* RippleEffectButton.swift */,
 				8BBCE35329C0D67B0084BF44 /* HighlightBlurView.swift */,
@@ -1036,7 +1033,6 @@
 				8B3B6CCF29AD8C2500A6352A /* TrackDetailViewModel.swift in Sources */,
 				8BB69BD229BDAFF500F09793 /* ViewState.swift in Sources */,
 				8BB69BD029BD766400F09793 /* EmptyStateView.swift in Sources */,
-				8B3F9BEA29C734F40050CFC9 /* GradientView.swift in Sources */,
 				8BB74C5D29A1394A000B9D59 /* AlamofireAdapter.swift in Sources */,
 				8BB69BD629BDB4A500F09793 /* SearchResultsViewModel.swift in Sources */,
 				8BB74C9129A1DD7F000B9D59 /* ApiComponentSendable.swift in Sources */,
