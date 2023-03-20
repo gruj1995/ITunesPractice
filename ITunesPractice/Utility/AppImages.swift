@@ -7,8 +7,8 @@
 
 import UIKit
 
-// 因為 SF Symbols 是向量圖，所以要放大icon的話要透過SymbolConfiguration設置
-let playerButtonConfiguration = UIImage.SymbolConfiguration(pointSize: 20, weight: .regular, scale: .large)
+// 因為 SF Symbols 是向量圖，所以要改變 icon 尺寸的話要透過 SymbolConfiguration 設置
+let speakerConfiguration = UIImage.SymbolConfiguration(pointSize: 13, weight: .regular, scale: .small)
 
 /// 使用 enum 搭配 static let 有兩個原因:
 /// 1. 因為無法初始化沒有case的enum，更能表達常數的概念
@@ -27,9 +27,12 @@ enum AppImages {
     static let play = UIImage(systemName: "play.fill")
     static let forward = UIImage(systemName: "forward.fill")
     static let backward = UIImage(systemName: "backward.fill")
-    static let pauseLarge = UIImage(systemName: "pause.fill", withConfiguration: playerButtonConfiguration)
-    static let playLarge = UIImage(systemName: "play.fill", withConfiguration: playerButtonConfiguration)
-    static let forwardLarge = UIImage(systemName: "forward.fill", withConfiguration: playerButtonConfiguration)
+    static let shuffle = UIImage(systemName: "shuffle")
+    static let repeat0 = UIImage(systemName: "repeat")
+    static let repeat1 = UIImage(systemName: "repeat.1")
+    static let infinity = UIImage(systemName: "infinity")
+    static let speakerSmall = UIImage(systemName: "speaker.fill", withConfiguration: speakerConfiguration)
+    static let speakerWaveSmall = UIImage(systemName: "speaker.wave.3.fill", withConfiguration: speakerConfiguration)
 
     // context menu
     static let plus = UIImage(systemName: "plus")
