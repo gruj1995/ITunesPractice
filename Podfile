@@ -12,7 +12,6 @@ target 'ITunesPractice' do
   # It fetches the most dominant and prominent colors
   pod 'UIImageColors'
 
-
   target 'ITunesPracticeTests' do
     inherit! :search_paths
     # Pods for testing
