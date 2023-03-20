@@ -5,9 +5,20 @@
 //  Created by 李品毅 on 2023/3/13.
 //
 
-import SnapKit
 import Kingfisher
+import SnapKit
 import UIKit
+
+/*
+ 迷你播放器規則
+   1. miniPlayer 點擊按鈕後，通知目前顯示的頁面執行對應動作
+   2. 如果目前顯示的頁面是彈窗，會關閉彈窗，同時按鈕動作不會進行(e.g. 點擊播放按鈕，不會變成暫停的樣子)
+   3. 目前顯示的頁面選中歌曲時，通知 miniPlayer 更換歌曲並自動點擊播放按鈕，接續執行1.的行為
+   4. 現正播放的音樂即使使剛查到的，cell 上的動畫也會顯示正播放中 (蓋上遮罩並顯示動畫)
+   5. 預設文字是未在播放
+ */
+
+// MARK: - MiniPlayerViewController
 
 // 參考 https://github.com/LeoNatan/LNPopupController
 class MiniPlayerViewController: UIViewController {
@@ -24,12 +35,8 @@ class MiniPlayerViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         updateUI()
-    }
 
-    func updateUI() {
-//        coverImageView.kf.setImage(with: URL(string: "https://is4-ssl.mzstatic.com/image/thumb/Features115/v4/2a/e1/fc/2ae1fc34-a98d-20bf-33ed-71e321773b0a/dj.lykipmdm.jpg/100x100bb.jpg"))
-        coverImageView.image = AppImages.musicNote
-        songTitleLabel.text = "鄧紫棋-倒數"
+        let notificationPublisher = NotificationCenter.default.publisher(for: .addTrack)
     }
 
     // MARK: Private
@@ -40,12 +47,7 @@ class MiniPlayerViewController: UIViewController {
         return view
     }()
 
-    // 毛玻璃效果
-    private lazy var blurView: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: .systemMaterialDark)
-        let blurView = UIVisualEffectView(effect: blurEffect)
-        return blurView
-    }()
+    private lazy var highlightBlurView: HighlightBlurView = HighlightBlurView()
 
     private lazy var coverImageView: UIImageView = {
         let imageView = UIImageView()
@@ -85,6 +87,12 @@ class MiniPlayerViewController: UIViewController {
         return button
     }()
 
+    private func updateUI() {
+//        coverImageView.kf.setImage(with: URL(string: "https://is4-ssl.mzstatic.com/image/thumb/Features115/v4/2a/e1/fc/2ae1fc34-a98d-20bf-33ed-71e321773b0a/dj.lykipmdm.jpg/100x100bb.jpg"))
+        coverImageView.image = AppImages.musicNote
+        songTitleLabel.text = "鄧紫棋-倒數"
+    }
+
     private func setupUI() {
         setupLayout()
     }
@@ -119,8 +127,8 @@ class MiniPlayerViewController: UIViewController {
             make.trailing.equalToSuperview().inset(20)
         }
 
-        view.insertSubview(blurView, at: 0)
-        blurView.snp.makeConstraints { make in
+        view.insertSubview(highlightBlurView, at: 0)
+        highlightBlurView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
 
@@ -136,7 +144,10 @@ class MiniPlayerViewController: UIViewController {
     }
 
     @objc
-    private func nextButtonTapped(_ sender: UIButton) {
+    private func nextButtonTapped(_ sender: UIButton) {}
+}
 
-    }
+extension Notification.Name {
+    static let addTrack = Notification.Name("addTrack")
+    static let playTrack = Notification.Name("playTrack")
 }
