@@ -18,4 +18,10 @@ extension RangeReplaceableCollection where Element: Equatable {
             return (true, element)
         }
     }
+
+    mutating func appendIfNotContains(_ elements: [Element]) {
+        for element in elements {
+            appendIfNotContains(element)
+        }
+    }
 }
