@@ -5,14 +5,16 @@
 //  Created by 李品毅 on 2023/2/19.
 //
 
-import UIKit
 import SnapKit
+import Combine
+import UIKit
 
 class MainTabBarController: UITabBarController {
     // MARK: Internal
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        addChildView()
         setupUI()
     }
 
@@ -20,6 +22,8 @@ class MainTabBarController: UITabBarController {
 
     // mini 音樂播放器
     private lazy var miniPlayerVC = MiniPlayerViewController()
+
+    private var cancellables = Set<AnyCancellable>()
 
     private func setupUI() {
         setTabBarAppearance()
@@ -41,10 +45,21 @@ class MainTabBarController: UITabBarController {
         viewControllers = [searchNavVC, libraryNavVC]
     }
 
-    private func setupLayout() {
+    private func addChildView() {
         view.addSubview(miniPlayerVC.view)
         addChild(miniPlayerVC)
         miniPlayerVC.didMove(toParent: self)
+
+        // TODO: 放在這邊是否破壞MVVM架構？
+        miniPlayerVC.view
+            .gesture(.tap())
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.presentPlaylistVC()
+            }.store(in: &cancellables)
+    }
+
+    private func setupLayout() {
         miniPlayerVC.view.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(tabBar.snp.top)
@@ -76,8 +91,8 @@ class MainTabBarController: UITabBarController {
         itemAppearance.selected.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.appColor(.red1)!]
     }
 
-    private func presentPlayerView() {
-        let vc = PlayListController()
+    private func presentPlaylistVC() {
+        let vc = PlayListViewController()
         // fullScreen 背景遮罩會是黑色的，所以設 overFullScreen
         vc.modalPresentationStyle = .overFullScreen
         FloatingPanelManager.shared.set(contentVC: vc, layoutType: .modalFullScreen, track: vc.tableView)
