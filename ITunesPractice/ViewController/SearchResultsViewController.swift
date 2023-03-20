@@ -62,7 +62,7 @@ class SearchResultsViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
 //        tableView.prefetchDataSource = self // 懶加載
-        tableView.backgroundColor = .black
+        tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
         tableView.keyboardDismissMode = .onDrag // 捲動就隱藏鍵盤
         return tableView
@@ -75,7 +75,6 @@ class SearchResultsViewController: UIViewController {
     }()
 
     private func setupUI() {
-        view.backgroundColor = .black
         setupLayout()
     }
 
@@ -105,6 +104,7 @@ class SearchResultsViewController: UIViewController {
             // 要放在 tableView.reloadData() 前
             tableView.tableFooterView = nil
             tableView.reloadData()
+            tableView.scrollToTop(animated: false)
             showTableView()
         }
     }
@@ -165,8 +165,10 @@ extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegat
         guard let track = viewModel.track(forCellAt: indexPath.row) else {
             return cell
         }
-        cell.configure(artworkUrl: track.artworkUrl100, collectionName: track.collectionName, artistName: track.artistName, trackName: track.trackName)
+        cell.configure(artworkUrl: track.artworkUrl100, collectionName: track.collectionName, artistName: track.artistName, trackName: track.trackName, showsHighlight: true)
 
+        // 原生的右邊箭頭
+        cell.accessoryType = .disclosureIndicator
         return cell
     }
 
@@ -176,7 +178,8 @@ extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegat
         viewModel.setSelectedTrack(forCellAt: indexPath.row)
         let vc = TrackDetailViewController()
         vc.dataSource = self
-        navigationController?.pushViewController(vc, animated: true)
+        // 由 SearchViewController push
+        presentingViewController?.navigationController?.pushViewController(vc, animated: true)
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -216,9 +219,7 @@ extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegat
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = UIView()
-        view.backgroundColor = .clear
-        return view
+        return UIView.emptyView()
     }
 }
 
