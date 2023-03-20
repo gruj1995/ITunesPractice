@@ -14,10 +14,12 @@ import UIKit
 class SearchViewController: UIViewController {
     // MARK: Lifecycle
 
+    // 使用 code 或 Xib 檔案生成 ViewController
     init() {
         super.init(nibName: nil, bundle: nil)
     }
 
+    // 使用 Storyboard 生成 ViewController
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
@@ -80,7 +82,7 @@ class SearchViewController: UIViewController {
         // 搜尋框進入搜尋狀態時，要不要在當前頁面上顯示一層半透明遮罩(會擋住點擊)
         searchController.obscuresBackgroundDuringPresentation = false
         // searchResultsController 是否被加入此VC的view層級中，並跟隨VC生命週期。預設值為false
-        searchController.definesPresentationContext = false
+        searchController.definesPresentationContext = true
         // 轉場方式是否由 searchResultsController 決定，預設值為 false 由系統決定
 //        searchController.providesPresentationContextTransitionStyle = true
         return searchController
