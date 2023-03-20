@@ -23,6 +23,7 @@ class FloatingPanelManager {
     func set(contentVC: UIViewController, layoutType: FPLayoutType? = nil, track scrollView: UIScrollView? = nil) {
         fpc.set(contentViewController: contentVC)
 
+        // 有設置的話 scrollView 滾動到頂部或底部時會變成整頁拖動
         if let scrollView = scrollView {
             fpc.track(scrollView: scrollView)
         }
