@@ -49,14 +49,6 @@ class MainTabBarController: UITabBarController {
         view.addSubview(miniPlayerVC.view)
         addChild(miniPlayerVC)
         miniPlayerVC.didMove(toParent: self)
-
-        // TODO: 放在這邊是否破壞MVVM架構？
-        miniPlayerVC.view
-            .gesture(.tap())
-            .receive(on: RunLoop.main)
-            .sink { [weak self] _ in
-                self?.presentPlaylistVC()
-            }.store(in: &cancellables)
     }
 
     private func setupLayout() {
@@ -89,13 +81,5 @@ class MainTabBarController: UITabBarController {
         // tabBar 標籤被選取時的顏色
         itemAppearance.selected.iconColor = .appColor(.red1)
         itemAppearance.selected.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.appColor(.red1)!]
-    }
-
-    private func presentPlaylistVC() {
-        let vc = PlaylistViewController()
-        // fullScreen 背景遮罩會是黑色的，所以設 overFullScreen
-        vc.modalPresentationStyle = .overFullScreen
-        FloatingPanelManager.shared.set(contentVC: vc, layoutType: .modalFullScreen, track: vc.tableView)
-        FloatingPanelManager.shared.show(on: self)
     }
 }

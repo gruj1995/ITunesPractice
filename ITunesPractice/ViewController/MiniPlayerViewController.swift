@@ -9,6 +9,8 @@ import Kingfisher
 import SnapKit
 import UIKit
 
+// MARK: - MiniPlayerViewController
+
 /*
  迷你播放器規則
    1. miniPlayer 點擊按鈕後，通知目前顯示的頁面執行對應動作
@@ -17,8 +19,6 @@ import UIKit
    4. 現正播放的音樂即使使剛查到的，cell 上的動畫也會顯示正播放中 (蓋上遮罩並顯示動畫)
    5. 預設文字是未在播放
  */
-
-// MARK: - MiniPlayerViewController
 
 // 參考 https://github.com/LeoNatan/LNPopupController
 class MiniPlayerViewController: UIViewController {
@@ -37,6 +37,10 @@ class MiniPlayerViewController: UIViewController {
         updateUI()
 
         let notificationPublisher = NotificationCenter.default.publisher(for: .addTrack)
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(highlightBlurViewTapped))
+        highlightBlurView.isUserInteractionEnabled = true
+        highlightBlurView.addGestureRecognizer(tapGesture)
     }
 
     // MARK: Private
@@ -47,7 +51,7 @@ class MiniPlayerViewController: UIViewController {
         return view
     }()
 
-    private lazy var highlightBlurView: HighlightBlurView = HighlightBlurView()
+    private lazy var highlightBlurView: HighlightBlurView = .init()
 
     private lazy var coverImageView: UIImageView = {
         let imageView = UIImageView()
@@ -136,6 +140,19 @@ class MiniPlayerViewController: UIViewController {
             make.bottom.leading.trailing.equalToSuperview()
             make.height.equalTo(0.3)
         }
+    }
+
+    private func presentPlaylistVC() {
+        let vc = PlaylistViewController()
+        // fullScreen 背景遮罩會是黑色的，所以設 overFullScreen
+        vc.modalPresentationStyle = .overFullScreen
+        FloatingPanelManager.shared.set(contentVC: vc, layoutType: .modalFullScreen, track: vc.tableView)
+        FloatingPanelManager.shared.show(on: self)
+    }
+
+    @objc
+    private func highlightBlurViewTapped() {
+        presentPlaylistVC()
     }
 
     @objc
