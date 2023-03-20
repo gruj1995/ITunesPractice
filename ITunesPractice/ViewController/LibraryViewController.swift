@@ -45,14 +45,22 @@ class LibraryViewController: UIViewController {
 
     private var cancellables: Set<AnyCancellable> = []
 
+    private let cellHeight: CGFloat = 60
+
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(TrackCell.self, forCellReuseIdentifier: TrackCell.reuseIdentifier)
-        tableView.rowHeight = 60
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.rowHeight = cellHeight
         tableView.backgroundColor = .black
         tableView.separatorStyle = .none
+        /**
+        - StoryBoard 中，除了 Row Height 是預設 Automatic 自動計算的，Header Height 和 Footer Height 都不是預設 Automatic
+        - 如果純 code 拉 tableView，預設都是 Automatic，所以下面要將 estimatedSectionFooterHeight 設置為0才能讓 heightForFooterInSection 生效
+         */
+        tableView.estimatedSectionHeaderHeight = 0
+        tableView.estimatedSectionFooterHeight = 0
         return tableView
     }()
 
@@ -113,8 +121,10 @@ extension LibraryViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = UIView()
-        view.backgroundColor = .black
-        return view
+        return UIView.emptyView()
+    }
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return cellHeight
     }
 }
