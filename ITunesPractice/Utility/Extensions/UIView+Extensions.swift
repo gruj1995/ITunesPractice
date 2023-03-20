@@ -11,4 +11,10 @@ extension UIView {
     func gesture(_ gestureType: GestureType) -> GesturePublisher {
         .init(view: self, gestureType: gestureType)
     }
+
+    static func emptyView() -> UIView {
+        let view = UIView()
+        view.backgroundColor = .clear
+        return view
+    }
 }
