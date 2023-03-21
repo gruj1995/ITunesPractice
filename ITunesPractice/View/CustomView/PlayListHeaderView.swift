@@ -25,8 +25,18 @@ final class PlayListHeaderView: UIView {
 
     // MARK: Internal
 
-    func configure(title: String) {
+    func configure(title: String, subTitle: String?) {
         titleLabel.text = title
+        if let subTitle = subTitle {
+            subTitleLabel.text = subTitle
+        }
+        subTitleLabel.isHidden = subTitle == nil
+    }
+
+    func updateButtons() {
+//        [shuffleButton, repeatButton, infinityButton].forEach { button in
+//
+//        }
     }
 
     // MARK: Private
@@ -34,6 +44,13 @@ final class PlayListHeaderView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16, weight: .bold)
+        label.textAlignment = .left
+        return label
+    }()
+
+    private lazy var subTitleLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 11, weight: .regular)
         label.textAlignment = .left
         return label
     }()
@@ -71,18 +88,7 @@ final class PlayListHeaderView: UIView {
         return button
     }()
 
-    func updateButtons() {
-//        [shuffleButton, repeatButton, infinityButton].forEach { button in
-//
-//        }
-    }
-
-    private func setupUI() {
-        backgroundColor = .clear
-        setupLayout()
-    }
-
-    private lazy var stackView: UIStackView = {
+    private lazy var buttonsStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [shuffleButton, repeatButton, infinityButton])
         stackView.axis = .horizontal
         stackView.spacing = 10
@@ -91,21 +97,31 @@ final class PlayListHeaderView: UIView {
         return stackView
     }()
 
+    private lazy var labelsStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, subTitleLabel])
+        stackView.axis = .vertical
+        stackView.spacing = 5
+        stackView.alignment = .fill
+        stackView.distribution = .equalCentering
+        return stackView
+    }()
+
+    private func setupUI() {
+        backgroundColor = .clear
+        setupLayout()
+    }
+
     private func setupLayout() {
-        addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
+        addSubview(labelsStackView)
+        labelsStackView.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(20)
             make.centerY.equalToSuperview()
         }
 
-        addSubview(stackView)
-        stackView.snp.makeConstraints { make in
+        addSubview(buttonsStackView)
+        buttonsStackView.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(20)
             make.centerY.equalToSuperview()
-        }
-
-        infinityButton.snp.makeConstraints { make in
-            make.width.height.equalTo(20)
         }
     }
 }
