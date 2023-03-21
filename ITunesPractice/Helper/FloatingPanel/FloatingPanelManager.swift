@@ -79,4 +79,16 @@ extension FloatingPanelManager: FloatingPanelControllerDelegate {
     func floatingPanel(_ fpc: FloatingPanelController, animatorForDismissingWith velocity: CGVector) -> UIViewPropertyAnimator {
         return UIViewPropertyAnimator(duration: 0.3, curve: .easeOut)
     }
+
+    /**
+     當浮動面板移動時，會檢查是否正在執行吸引動畫（attracting），如果沒有正在執行吸引動畫，則獲取浮動面板在全屏模式下的最小和最大 y 坐標值（即最頂部和最底部），然後將浮動面板的位置限制在這個範圍內。
+     */
+    func floatingPanelDidMove(_ fpc: FloatingPanelController) {
+        if !fpc.isAttracting {
+            let loc = fpc.surfaceLocation
+            let minY = fpc.surfaceLocation(for: .full).y
+            let maxY = fpc.surfaceLocation(for: .tip).y
+            fpc.surfaceLocation = CGPoint(x: loc.x, y: min(max(loc.y, minY), maxY))
+        }
+    }
 }
