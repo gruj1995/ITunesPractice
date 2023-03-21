@@ -12,12 +12,12 @@ import UIKit
 class DisableBouncePanelBehavior: FloatingPanelBehavior {
     // 滑超過頂部或底部時是否有回彈效果
     func allowsRubberBanding(for edge: UIRectEdge) -> Bool {
-        return false
+        return true
     }
 
     // scrollView 減速的速率，值越大要越多時間減速。
     // 作者說值不應小於 0.979
-    var springDecelerationRate: CGFloat {
-        0.979
-    }
+//    var springDecelerationRate: CGFloat {
+//        0.979
+//    }
 }
