@@ -262,7 +262,20 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
     // context menu 的清單
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         viewModel.setSelectedTrack(forCellAt: indexPath.row)
+        viewModel.selectedIndexPath = indexPath
         return tableView.createTrackContextMenuConfiguration(indexPath: indexPath, track: viewModel.selectedTrack)
+    }
+
+    // 解決開啟 context menu 後 cell 出現黑色背景的問題 (因為背景設為 .clear 引起)
+    // 參考: https://reurl.cc/b73dgl
+    func tableView(_ tableView: UITableView, previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+        guard let indexPath =  viewModel.selectedIndexPath,
+              let cell = tableView.cellForRow(at: indexPath) else {
+            return nil
+        }
+        let targetedPreview = UITargetedPreview(view: cell)
+        targetedPreview.parameters.backgroundColor = .clear
+        return targetedPreview
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

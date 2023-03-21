@@ -64,6 +64,12 @@ class PlaylistViewModel {
         2
     }
 
+    var selectedIndexPath: IndexPath?
+
+    func numberOfRows(in section: Int) -> Int {
+        totalCount
+    }
+
     func track(forCellAt index: Int) -> Track? {
         guard index < tracks.count else { return nil }
         return tracks[index]
