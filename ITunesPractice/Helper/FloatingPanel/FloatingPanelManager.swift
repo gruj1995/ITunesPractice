@@ -34,30 +34,32 @@ class FloatingPanelManager {
         }
     }
 
-    func show(on viewController: UIViewController) {
+    func present(from viewController: UIViewController) {
         viewController.present(fpc, animated: true, completion: nil)
     }
 
     // MARK: Private
 
     /// 可設置錨點的容器
-    private lazy var fpc: FloatingPanelController = {
+     lazy var fpc: FloatingPanelController = {
         let fpc = FloatingPanelController()
         fpc.delegate = self
-
-        // 容器內容頁填充容器的模式
-//        fpc.contentMode = .fitToBounds
 
         // 隱藏頂部拖動指示器
         fpc.surfaceView.grabberHandle.isHidden = false
 
-        // 是否允許下滑時關閉頁面
-        fpc.isRemovalInteractionEnabled = true
-
         // 頂部 grabber view 與邊緣的距離
         fpc.surfaceView.grabberHandlePadding = 40
 
+        fpc.surfaceView.backgroundColor = .clear
+
+        // 是否允許下滑時關閉頁面
+        fpc.isRemovalInteractionEnabled = true
+
         fpc.behavior = DisableBouncePanelBehavior()
+
+        // 容器內容頁填充容器的模式
+//        fpc.contentMode = .fitToBounds
 
         return fpc
     }()

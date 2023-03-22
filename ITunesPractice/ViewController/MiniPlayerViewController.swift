@@ -147,7 +147,7 @@ class MiniPlayerViewController: UIViewController {
         // fullScreen 背景遮罩會是黑色的，所以設 overFullScreen
         vc.modalPresentationStyle = .overFullScreen
         FloatingPanelManager.shared.set(contentVC: vc, layoutType: .modalFullScreen, track: vc.tableView)
-        FloatingPanelManager.shared.show(on: self)
+        FloatingPanelManager.shared.present(from: self)
     }
 
     @objc
