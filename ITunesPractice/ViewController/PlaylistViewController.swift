@@ -93,13 +93,14 @@ class PlaylistViewController: UIViewController {
     private var lastContentOffset: CGFloat = 0
 
     private var playerContainerViewBottom: Constraint?
-    /// 月份下拉選單隱藏時頂部constraint移動的距離
-    private let calendarAlertTopConstraintValueWhenHide: CGFloat = -300
 
     private var isPlayerHidden: Bool = false {
         didSet {
+            let hiddenInset = playerHiddenInset
             let inset = isPlayerHidden ? playerHiddenInset : 0
             playerContainerViewBottom?.update(inset: inset)
+            let tinset = isPlayerHidden ?  0 : -hiddenInset
+//            tableViewBottom?.update(inset: tinset)
         }
     }
 
@@ -120,12 +121,16 @@ class PlaylistViewController: UIViewController {
     private func setupLayout() {
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(UIEdgeInsets(top: 150, left: 0, bottom: 0, right: 0))
+            make.top.equalToSuperview().inset(150)
+            make.leading.trailing.equalToSuperview()
+//            tableViewBottom = make.bottom.equalToSuperview().constraint
+//            make.edges.equalToSuperview().inset(UIEdgeInsets(top: 150, left: 0, bottom: 0, right: 0))
         }
 
         let height = Constants.screenHeight * 0.27
         view.addSubview(playerContainerView)
         playerContainerView.snp.makeConstraints { make in
+            make.top.equalTo(tableView.snp.bottom)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(height)
             playerContainerViewBottom = make.bottom.equalToSuperview().constraint
@@ -186,11 +191,11 @@ class PlaylistViewController: UIViewController {
     }
 
     private func hideViewsIfNeeded() {
-        // 超出範圍隱藏 headerView
-        let visibleHeaders = tableView.subviews.filter { $0 is PlayListHeaderView }
-        for header in visibleHeaders {
-            header.headerHideWhenScrolling(scrollView: tableView, bottomView: playerContainerView)
-        }
+//        // 超出範圍隱藏 headerView
+//        let visibleHeaders = tableView.subviews.filter { $0 is PlayListHeaderView }
+//        for header in visibleHeaders {
+//            header.headerHideWhenScrolling(scrollView: tableView, bottomView: playerContainerView)
+//        }
 
         // 超出範圍隱藏 cell
         for cell in tableView.visibleCells {
@@ -288,16 +293,16 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        cellHeight
+        0
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y < lastContentOffset {
-            isPlayerHidden = isLastSectionReached
-        } else if scrollView.contentOffset.y > lastContentOffset {
-            isPlayerHidden = !isLastSectionReached
-        }
-        lastContentOffset = scrollView.contentOffset.y
+//        if scrollView.contentOffset.y < lastContentOffset {
+//            isPlayerHidden = isLastSectionReached
+//        } else if scrollView.contentOffset.y > lastContentOffset {
+//            isPlayerHidden = !isLastSectionReached
+//        }
+//        lastContentOffset = scrollView.contentOffset.y
         hideViewsIfNeeded()
     }
 }
@@ -333,12 +338,12 @@ extension UIView {
                 let hiddenFrameHeight = scrollView.contentOffset.y + 60 - frame.origin.y
                 mask(margin: Float(hiddenFrameHeight))
             } else {
-                // 往下碰到 player
-                let maskRect = CGRect(x: 0, y: 0, width: frame.width, height: viewMinY - minY)
-                let maskPath = UIBezierPath(rect: maskRect)
-                let maskLayer = CAShapeLayer()
-                maskLayer.path = maskPath.cgPath
-                layer.mask = maskLayer
+//                // 往下碰到 player
+//                let maskRect = CGRect(x: 0, y: 0, width: frame.width, height: viewMinY - minY)
+//                let maskPath = UIBezierPath(rect: maskRect)
+//                let maskLayer = CAShapeLayer()
+//                maskLayer.path = maskPath.cgPath
+//                layer.mask = maskLayer
             }
         }
     }
