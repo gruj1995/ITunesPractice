@@ -16,7 +16,6 @@
 		8B3F9BCB29C3AF9C0050CFC9 /* PlayListPlayer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B3F9BCA29C3AF9C0050CFC9 /* PlayListPlayer.storyboard */; };
 		8B3F9BCE29C5C64F0050CFC9 /* FloatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F9BCD29C5C64F0050CFC9 /* FloatingViewController.swift */; };
 		8B3F9BD129C5EDB10050CFC9 /* FloatingPanel in Frameworks */ = {isa = PBXBuildFile; productRef = 8B3F9BD029C5EDB10050CFC9 /* FloatingPanel */; };
-		8B3F9BD329C5FBC70050CFC9 /* FloatingPanelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F9BD229C5FBC70050CFC9 /* FloatingPanelManager.swift */; };
 		8B3F9BD829C6012E0050CFC9 /* FloatingPanel+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F9BD729C6012E0050CFC9 /* FloatingPanel+Layout.swift */; };
 		8B3F9BDA29C619A00050CFC9 /* FloatingPanel+Behavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F9BD929C6199F0050CFC9 /* FloatingPanel+Behavior.swift */; };
 		8B3F9BDE29C6AF850050CFC9 /* PlaylistPlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F9BDD29C6AF850050CFC9 /* PlaylistPlayerViewModel.swift */; };
@@ -56,6 +55,7 @@
 		8B6B56C429B577C200F099DD /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6B56C329B577C200F099DD /* SearchViewController.swift */; };
 		8B6B56C629B577D200F099DD /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6B56C529B577D200F099DD /* SearchViewModel.swift */; };
 		8B6B56C829B5931200F099DD /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6B56C729B5931200F099DD /* Utils.swift */; };
+		8B6EB8B229CBE26100A684A5 /* BottomFloatingPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6EB8B129CBE26100A684A5 /* BottomFloatingPanelViewController.swift */; };
 		8BB69BB829BC5E2A00F09793 /* TrackDetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BB729BC5E2A00F09793 /* TrackDetailViewModelTests.swift */; };
 		8BB69BBF29BC93C800F09793 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BBE29BC93C800F09793 /* APIRequest.swift */; };
 		8BB69BC129BC94BB00F09793 /* SearchAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BC029BC94BB00F09793 /* SearchAPIRequest.swift */; };
@@ -157,7 +157,6 @@
 		8B3F9BC729C3791C0050CFC9 /* KingFisherAdaper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KingFisherAdaper.swift; sourceTree = "<group>"; };
 		8B3F9BCA29C3AF9C0050CFC9 /* PlayListPlayer.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PlayListPlayer.storyboard; sourceTree = "<group>"; };
 		8B3F9BCD29C5C64F0050CFC9 /* FloatingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingViewController.swift; sourceTree = "<group>"; };
-		8B3F9BD229C5FBC70050CFC9 /* FloatingPanelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanelManager.swift; sourceTree = "<group>"; };
 		8B3F9BD729C6012E0050CFC9 /* FloatingPanel+Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FloatingPanel+Layout.swift"; sourceTree = "<group>"; };
 		8B3F9BD929C6199F0050CFC9 /* FloatingPanel+Behavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FloatingPanel+Behavior.swift"; sourceTree = "<group>"; };
 		8B3F9BDD29C6AF850050CFC9 /* PlaylistPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistPlayerViewModel.swift; sourceTree = "<group>"; };
@@ -195,6 +194,7 @@
 		8B6B56C329B577C200F099DD /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		8B6B56C529B577D200F099DD /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		8B6B56C729B5931200F099DD /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		8B6EB8B129CBE26100A684A5 /* BottomFloatingPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomFloatingPanelViewController.swift; sourceTree = "<group>"; };
 		8BB69BB729BC5E2A00F09793 /* TrackDetailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailViewModelTests.swift; sourceTree = "<group>"; };
 		8BB69BBE29BC93C800F09793 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
 		8BB69BC029BC94BB00F09793 /* SearchAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchAPIRequest.swift; sourceTree = "<group>"; };
@@ -346,7 +346,7 @@
 		8B3F9BD429C5FFAC0050CFC9 /* FloatingPanel */ = {
 			isa = PBXGroup;
 			children = (
-				8B3F9BD229C5FBC70050CFC9 /* FloatingPanelManager.swift */,
+				8B6EB8B129CBE26100A684A5 /* BottomFloatingPanelViewController.swift */,
 				8B3F9BD729C6012E0050CFC9 /* FloatingPanel+Layout.swift */,
 				8B3F9BD929C6199F0050CFC9 /* FloatingPanel+Behavior.swift */,
 			);
@@ -988,7 +988,6 @@
 				8BFDF17F29A313D5008E2C23 /* DateUtility.swift in Sources */,
 				8BBCE35829C1F56D0084BF44 /* PlaylistPlayerViewController.swift in Sources */,
 				8BB74C6C29A14BEF000B9D59 /* HTTPMethod.swift in Sources */,
-				8B3F9BD329C5FBC70050CFC9 /* FloatingPanelManager.swift in Sources */,
 				8BFDF17729A23142008E2C23 /* UISearchBar+Extensions.swift in Sources */,
 				8BD1C65329AF37AA00337EF3 /* PreviewViewController.swift in Sources */,
 				8BFDF17929A24D37008E2C23 /* UIColor+Extensions.swift in Sources */,
@@ -1013,6 +1012,7 @@
 				8B3F9BD829C6012E0050CFC9 /* FloatingPanel+Layout.swift in Sources */,
 				8BB74C6129A13DF4000B9D59 /* Logger.swift in Sources */,
 				8B6B56AD29B1854B00F099DD /* UserDefaultsHelper.swift in Sources */,
+				8B6EB8B229CBE26100A684A5 /* BottomFloatingPanelViewController.swift in Sources */,
 				8B3F9BDE29C6AF850050CFC9 /* PlaylistPlayerViewModel.swift in Sources */,
 				8BFDF17129A2180E008E2C23 /* String+Extensins.swift in Sources */,
 				8BFDF18129A31568008E2C23 /* Date+Extensions.swift in Sources */,

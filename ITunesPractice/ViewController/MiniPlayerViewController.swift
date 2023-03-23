@@ -8,6 +8,7 @@
 import Kingfisher
 import SnapKit
 import UIKit
+import FloatingPanel
 
 // MARK: - MiniPlayerViewController
 
@@ -21,7 +22,7 @@ import UIKit
  */
 
 // 參考 https://github.com/LeoNatan/LNPopupController
-class MiniPlayerViewController: UIViewController {
+class MiniPlayerViewController: BottomFloatingPanelViewController {
     // MARK: Internal
 
     var isPlaying: Bool = false {
@@ -145,9 +146,12 @@ class MiniPlayerViewController: UIViewController {
     private func presentPlaylistVC() {
         let vc = PlaylistViewController()
         // fullScreen 背景遮罩會是黑色的，所以設 overFullScreen
-        vc.modalPresentationStyle = .overFullScreen
-        FloatingPanelManager.shared.set(contentVC: vc, layoutType: .modalFullScreen, track: vc.tableView)
-        FloatingPanelManager.shared.present(from: self)
+        vc.modalPresentationStyle = .pageSheet
+
+        let fpc = getFpc()
+        fpc.set(contentViewController: vc)
+        fpc.track(scrollView: vc.tableView)
+        present(fpc, animated: true)
     }
 
     @objc
