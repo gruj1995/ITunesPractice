@@ -55,7 +55,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yTr-rq-9Q9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="65" y="-644"/>
+            <point key="canvasLocation" x="638" y="-121"/>
         </scene>
         <!--Playlist Player View Controller-->
         <scene sceneID="bsM-CY-zlo">
@@ -66,13 +66,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="anq-y9-Bid">
-                                <rect key="frame" x="20" y="10" width="350" height="232"/>
+                                <rect key="frame" x="20" y="20" width="350" height="222"/>
                                 <subviews>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="50" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="3WM-GU-W8q">
                                         <rect key="frame" x="-2" y="0.0" width="354" height="31"/>
                                     </slider>
                                     <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" distribution="equalSpacing" spacing="60" translatesAutoresizingMaskIntoConstraints="NO" id="yqS-W8-zMH">
-                                        <rect key="frame" x="55" y="69" width="240" height="40"/>
+                                        <rect key="frame" x="55" y="64" width="240" height="40"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zZN-27-igB" customClass="RippleEffectButton" customModule="ITunesPractice" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -109,7 +109,7 @@
                                         </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="J47-nY-SAW">
-                                        <rect key="frame" x="0.0" y="147.66666666666666" width="350" height="84.333333333333343"/>
+                                        <rect key="frame" x="0.0" y="137.66666666666666" width="350" height="84.333333333333343"/>
                                         <subviews>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="50" minValue="0.0" maxValue="100" minimumValueImage="speaker.fill" catalog="system" maximumValueImage="speaker.wave.3.fill" translatesAutoresizingMaskIntoConstraints="NO" id="g4B-i9-X7Z">
                                                 <rect key="frame" x="-2" y="0.0" width="354" height="31"/>
@@ -159,7 +159,7 @@
                         <constraints>
                             <constraint firstItem="anq-y9-Bid" firstAttribute="leading" secondItem="9xc-dB-Bs7" secondAttribute="leading" constant="20" id="6Dh-G2-gdG"/>
                             <constraint firstItem="9xc-dB-Bs7" firstAttribute="bottom" secondItem="anq-y9-Bid" secondAttribute="bottom" constant="15" id="Gdw-IA-aqI"/>
-                            <constraint firstItem="anq-y9-Bid" firstAttribute="top" secondItem="rml-vO-FrI" secondAttribute="top" constant="10" id="Kid-l5-5H2"/>
+                            <constraint firstItem="anq-y9-Bid" firstAttribute="top" secondItem="rml-vO-FrI" secondAttribute="top" constant="20" id="Kid-l5-5H2"/>
                             <constraint firstItem="9xc-dB-Bs7" firstAttribute="trailing" secondItem="anq-y9-Bid" secondAttribute="trailing" constant="20" id="gU9-zS-SEr"/>
                         </constraints>
                     </view>

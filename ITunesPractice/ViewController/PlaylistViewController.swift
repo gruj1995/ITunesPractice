@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Foundation
 import SnapKit
 import UIKit
 
@@ -52,9 +53,9 @@ class PlaylistViewController: UIViewController {
         setupUI()
         bindViewModel()
 
-        NetStatus.shared.netStatusChangeHandler = {
-            DispatchQueue.main.async { [unowned self] in
-                self.updateUI()
+        NetStatus.shared.netStatusChangeHandler = { [weak self] in
+            DispatchQueue.main.async {
+                self?.updateUI()
             }
         }
     }
@@ -84,7 +85,7 @@ class PlaylistViewController: UIViewController {
         let gradient = CAGradientLayer()
         gradient.frame = view.bounds
         // 顏色起始點與終點
-//        gradient.locations = [0.3, 0.8, 1]
+//        gradient.locations = [0.3, 0.7, 1]
         view.layer.insertSublayer(gradient, at: 0)
         return gradient
     }()
@@ -157,16 +158,14 @@ class PlaylistViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] colors in
                 guard let self = self else { return }
-                self.updateGradientLayer(with: colors)
+                self.updateGradientLayers(with: colors)
             }.store(in: &cancellables)
     }
 
-    private func updateGradientLayer(with colors: [UIColor]) {
+    private func updateGradientLayers(with colors: [UIColor]) {
         let animator = UIViewPropertyAnimator(duration: 1, curve: .easeInOut) { [weak self] in
-            guard let self = self else { return }
-            // UIColor 要轉換成 cgColor 才行
-            // colors 至少要有兩個以上element才會正常顯示
-            self.gradient.colors = colors.map { $0.cgColor }
+            self?.gradient.colors = colors.map { $0.cgColor }
+            self?.playerVC.updateGradientView(with: colors.last)
         }
         animator.startAnimation()
     }
@@ -265,8 +264,9 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
     // 解決開啟 context menu 後 cell 出現黑色背景的問題 (因為背景設為 .clear 引起)
     // 參考: https://reurl.cc/b73dgl
     func tableView(_ tableView: UITableView, previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
-        guard let indexPath =  viewModel.selectedIndexPath,
-              let cell = tableView.cellForRow(at: indexPath) else {
+        guard let indexPath = viewModel.selectedIndexPath,
+              let cell = tableView.cellForRow(at: indexPath)
+        else {
             return nil
         }
         let targetedPreview = UITargetedPreview(view: cell)

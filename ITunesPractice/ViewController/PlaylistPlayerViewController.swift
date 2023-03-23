@@ -49,10 +49,34 @@ class PlaylistPlayerViewController: UIViewController {
         updateUI()
 
         let notificationPublisher = NotificationCenter.default.publisher(for: .addTrack)
+
+//        musicProgressSlider.publisher
+//            .sink { <#UISlider#> in
+//            <#code#>
+//        }
     }
 
     // MARK: Private
 
+    /// 頂端模糊效果
+    private lazy var gradientView: UIView = UIView()
+
+    private lazy var gradientLayer: CAGradientLayer = {
+        let gradient = CAGradientLayer()
+        gradient.locations = [0, 0.15, 1]
+        return gradient
+    }()
+
+    func updateGradientView(with color: UIColor?) {
+        guard let color = color else { return }
+        let red = UIColor.red
+//        gradientView.backgroundColor = UIColor.red
+        gradientLayer.colors = [UIColor.white.withAlphaComponent(0).cgColor,
+                                UIColor.white.cgColor]
+        gradientLayer.frame = gradientView.bounds
+        gradientView.layer.mask = gradientLayer
+    }
+    
     private lazy var currentTimeLabel: UILabel = {
         let label = UILabel()
         label.text = "1:20"
@@ -73,26 +97,10 @@ class PlaylistPlayerViewController: UIViewController {
 
     private let viewModel: PlaylistPlayerViewModel = .init()
 
-    lazy var gradient: CAGradientLayer = {
-        let gradient = CAGradientLayer()
-//        gradient.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: view.bounds.height)
-        gradient.frame = UIScreen.main.bounds
-//        view.layer.insertSublayer(gradient, at: 0)
-        return gradient
-    }()
-
     private func updateUI() {}
-
-//    private let blurEffect = UIBlurEffect(style: .systemUltraThinMaterialLight)
-//    // 毛玻璃view
-//    private lazy var blurView: UIVisualEffectView = .init(effect: blurEffect)
-
-    private var blurView: UIView = UIView()
 
     private func setupUI() {
         view.backgroundColor = .clear
-        blurView.backgroundColor = .white
-        blurView.alpha = 0.05
         setupLayout()
 
         playButtons.forEach { $0.tintColor = .white }
@@ -143,10 +151,10 @@ class PlaylistPlayerViewController: UIViewController {
             make.top.equalTo(musicProgressSlider.snp.bottom)
         }
 
-        view.addSubview(blurView)
-        blurView.snp.makeConstraints { make in
+        view.addSubview(gradientView)
+        gradientView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(stackView.snp.top)
+            make.height.equalTo(20)
         }
     }
 
