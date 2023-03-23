@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 extension ITunesService {
     /// 搜尋
@@ -105,6 +106,28 @@ extension ITunesService {
             }
 
             session.resume()
+        }
+
+        func fetchTracksURLSessionPublisher() -> AnyPublisher<[Track], Error> {
+            guard let request = try? self.buildRequest(),
+                  let url = request.url else {
+                return Fail(error: RequestError.urlError)
+                    .eraseToAnyPublisher()
+            }
+
+            return URLSession.shared.dataTaskPublisher(for: url)
+                       .map { $0.data }
+                       .decode(type: SearchResponse.self, decoder: JSONDecoder())
+                       .map { $0.results }
+                       .mapError { error -> Error in
+                           switch error {
+                           case is URLError:
+                               return ResponseError.nilData
+                           default:
+                               return ResponseError.nonHTTPResponse
+                           }
+                       }
+                       .eraseToAnyPublisher()
         }
     }
 }
