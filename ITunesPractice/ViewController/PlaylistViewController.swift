@@ -68,7 +68,7 @@ class PlaylistViewController: UIViewController {
     private let viewModel: PlaylistViewModel = .init()
 
     // 觀察者
-    private var cancellables: Set<AnyCancellable> = []
+    private var cancellables: Set<AnyCancellable> = .init()
 
     private var animator: UIViewPropertyAnimator!
 

@@ -22,7 +22,10 @@ class PlaylistViewModel {
 
     // MARK: Internal
 
-    let colorsSubject = PassthroughSubject<[UIColor], Never>()
+    // TODO: 為什麼PassthroughSubject只觸發一次？
+    var colorsSubject = CurrentValueSubject<[UIColor], Never>([])
+
+    var selectedIndexPath: IndexPath?
 
     private(set) var selectedTrack: Track? {
         didSet {
@@ -64,8 +67,6 @@ class PlaylistViewModel {
         2
     }
 
-    var selectedIndexPath: IndexPath?
-
     func numberOfRows(in section: Int) -> Int {
         totalCount
     }
@@ -81,14 +82,9 @@ class PlaylistViewModel {
         selectedTrack = tracks[index]
     }
 
-    func numberOfRows(in section: Int) -> Int {
-        totalCount
-    }
-
     // MARK: Private
 
     private let tracksSubject = CurrentValueSubject<[Track], Error>([])
-    private let searchTermSubject = CurrentValueSubject<String, Never>("")
     private let stateSubject = CurrentValueSubject<ViewState, Never>(.none)
 
     private var currentPage: Int = 0
@@ -116,6 +112,7 @@ class PlaylistViewModel {
             switch result {
             case .success(let value):
                 Logger.log("Image: \(value.image). Got from: \(value.cacheType)")
+                // TODO: 這邊是同步會導致近頁面卡頓，但沒有先做完的話頁面會沒有背景色，看如何取捨
                 self.generateColors(by: value.image)
             case .failure(let error):
                 Logger.log(error.localizedDescription)
@@ -126,11 +123,13 @@ class PlaylistViewModel {
     /// 從圖檔提取出主要顏色，再依淺到深順序，取最深的3個顏色回傳
     private func generateColors(by image: UIImage) {
         do {
+            // - quality: 決定取色的品質
+            // - algorithm: 使用 kMensCluster 算法或是迭代像素算法
             let allColors = try image.dominantColors(with: .fair, algorithm: .kMeansClustering)
             let sortedColors = allColors.sortedByGrayValue(isDesc: false)
             colorsSubject.send(Array(sortedColors.suffix(3)))
         } catch {
-            print(error)
+            Logger.log(error)
         }
     }
 }
