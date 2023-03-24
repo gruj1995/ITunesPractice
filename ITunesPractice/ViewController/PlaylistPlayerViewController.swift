@@ -58,25 +58,6 @@ class PlaylistPlayerViewController: UIViewController {
 
     // MARK: Private
 
-    /// 頂端模糊效果
-    private lazy var gradientView: UIView = UIView()
-
-    private lazy var gradientLayer: CAGradientLayer = {
-        let gradient = CAGradientLayer()
-        gradient.locations = [0, 0.15, 1]
-        return gradient
-    }()
-
-    func updateGradientView(with color: UIColor?) {
-        guard let color = color else { return }
-        let red = UIColor.red
-//        gradientView.backgroundColor = UIColor.red
-        gradientLayer.colors = [UIColor.white.withAlphaComponent(0).cgColor,
-                                UIColor.white.cgColor]
-        gradientLayer.frame = gradientView.bounds
-        gradientView.layer.mask = gradientLayer
-    }
-    
     private lazy var currentTimeLabel: UILabel = {
         let label = UILabel()
         label.text = "1:20"
@@ -149,12 +130,6 @@ class PlaylistPlayerViewController: UIViewController {
             make.height.equalTo(15)
             make.trailing.equalTo(musicProgressSlider)
             make.top.equalTo(musicProgressSlider.snp.bottom)
-        }
-
-        view.addSubview(gradientView)
-        gradientView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
-            make.height.equalTo(20)
         }
     }
 
