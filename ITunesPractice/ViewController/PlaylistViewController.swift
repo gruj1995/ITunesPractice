@@ -6,7 +6,6 @@
 //
 
 import Combine
-import Foundation
 import SnapKit
 import UIKit
 
@@ -43,8 +42,14 @@ class PlaylistViewController: UIViewController {
         tableView.dataSource = self
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
-        tableView.clipsToBounds = true
-        tableView.keyboardDismissMode = .onDrag // 捲動就隱藏鍵盤
+        tableView.keyboardDismissMode = .onDrag
+
+//        // 是否允許拖動操作(要放在以下兩者前)
+//        tableView.dragInteractionEnabled = true
+//        // 拖放事件
+//        tableView.dragDelegate = self
+//        tableView.dropDelegate = self
+
         return tableView
     }()
 
@@ -132,7 +137,7 @@ class PlaylistViewController: UIViewController {
         playerContainerView.snp.makeConstraints { make in
             make.top.equalTo(tableView.snp.bottom)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(height)
+            make.height.equalTo(view.safeAreaLayoutGuide).multipliedBy(0.32)
             playerContainerViewBottom = make.bottom.equalToSuperview().constraint
         }
 
@@ -169,8 +174,8 @@ class PlaylistViewController: UIViewController {
 
     private func updateGradientLayers(with colors: [UIColor]) {
         let animator = UIViewPropertyAnimator(duration: 1, curve: .easeInOut) { [weak self] in
-            self?.gradient.colors = colors.map { $0.cgColor }
-            self?.playerVC.updateGradientView(with: colors.last)
+            guard let self = self else { return }
+            self.gradient.colors = colors.map { $0.cgColor }
         }
         animator.startAnimation()
     }
@@ -184,10 +189,6 @@ class PlaylistViewController: UIViewController {
     private func handleError(_ error: Error) {
         tableView.tableFooterView = nil
         Utils.toast(error.localizedDescription, at: .center)
-//        let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-//        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-//        alert.addAction(okAction)
-//        present(alert, animated: true, completion: nil)
     }
 
     private func hideViewsIfNeeded() {
