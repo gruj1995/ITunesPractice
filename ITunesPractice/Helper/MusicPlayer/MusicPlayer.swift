@@ -17,6 +17,7 @@ class MusicPlayer: MusicPlayerProtocol {
 
     var isPlaying: Bool = false
 
+    /// 播放清單
     var tracks: [Track] = []
 
     /// 上首歌曲播放結束，判斷播放下一首的邏輯

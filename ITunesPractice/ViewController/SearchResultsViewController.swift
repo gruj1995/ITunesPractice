@@ -26,6 +26,7 @@ class SearchResultsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupUI()
         bindViewModel()
 
         NetStatus.shared.netStatusChangeHandler = {
@@ -33,20 +34,13 @@ class SearchResultsViewController: UIViewController {
                 self.updateUI()
             }
         }
-
-        setupUI()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
     }
 
     // MARK: Private
 
     private let viewModel: SearchResultsViewModel = .init()
 
-    // 觀察者
-    private var cancellables: Set<AnyCancellable> = []
+    private var cancellables: Set<AnyCancellable> = .init()
 
     // 抓取資料時的旋轉讀條 (可以搜尋"egaf"，觀察在資料筆數小的情況下怎麼顯示)
     private lazy var activityIndicator: UIActivityIndicatorView = {
@@ -142,10 +136,6 @@ class SearchResultsViewController: UIViewController {
     private func handleError(_ error: Error) {
         tableView.tableFooterView = nil
         Utils.toast(error.localizedDescription, at: .center)
-//        let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-//        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-//        alert.addAction(okAction)
-//        present(alert, animated: true, completion: nil)
     }
 }
 
@@ -175,6 +165,7 @@ extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegat
         // 解除cell被選中的狀態
         tableView.deselectRow(at: indexPath, animated: true)
         viewModel.setSelectedTrack(forCellAt: indexPath.row)
+
         let vc = TrackDetailViewController()
         vc.dataSource = self
         // 由 SearchViewController push
@@ -196,7 +187,8 @@ extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegat
      */
     func tableView(_ tableView: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
         if let identifier = configuration.identifier as? String,
-           let index = Int(identifier) {
+           let index = Int(identifier)
+        {
             animator.addCompletion { [weak self] in
                 guard let self = self else { return }
                 self.viewModel.setSelectedTrack(forCellAt: index)
