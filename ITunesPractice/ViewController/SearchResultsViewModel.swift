@@ -15,7 +15,7 @@ class SearchResultsViewModel {
 
     init() {
         searchTermSubject
-            .debounce(for: 0.3, scheduler: RunLoop.main) // 延遲觸發搜索操作
+            .debounce(for: 0.5, scheduler: RunLoop.main) // 延遲觸發搜索操作(0.5s)
             .removeDuplicates() // 避免在使用者輸入相同的搜索文字時重複執行搜索操作
             .sink { [weak self] term in
                 self?.searchTrack(with: term)
