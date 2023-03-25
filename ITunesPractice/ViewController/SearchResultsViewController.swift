@@ -104,7 +104,6 @@ class SearchResultsViewController: UIViewController {
             // 要放在 tableView.reloadData() 前
             tableView.tableFooterView = nil
             tableView.reloadData()
-            tableView.scrollToTop(animated: false)
             showTableView()
         }
     }
@@ -236,5 +235,6 @@ extension SearchResultsViewController: TrackDetailViewControllerDatasource {
 extension SearchResultsViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         viewModel.searchTerm = searchController.searchBar.text ?? ""
+        tableView.scrollToTop(animated: false)
     }
 }
