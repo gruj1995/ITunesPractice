@@ -35,11 +35,14 @@ struct SearchRequest: APIRequest {
     ///  e.g. 全部12首歌 -> limit 設為 10，offset 設為 1 -> 回傳第 2~11 首
     let offset: Int
 
+    // TODO: 加上國家與語言，讓搜尋結果更加精準
     var parameters: [String: Any]? {
         return ["term": term,
                 "media": media,
                 "limit": limit,
-                "offset": offset]
+                "offset": offset,
+                "country": country,
+                "lang": language]
     }
 
     var body: Data? {
@@ -50,4 +53,14 @@ struct SearchRequest: APIRequest {
 
     /// 媒體種類(強制設為音樂)
     private let media: String = "music"
+
+    /// 國家代碼
+    private var country: String {
+        LocaleManager.countryCode
+    }
+
+    /// 語言代碼
+    private var language: String {
+        LocaleManager.languageId
+    }
 }
