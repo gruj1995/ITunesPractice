@@ -25,3 +25,21 @@ extension RangeReplaceableCollection where Element: Equatable {
         }
     }
 }
+
+extension Collection {
+    func isValidIndex(_ index: Index) -> Bool {
+        return indices.contains(index)
+    }
+
+    func isNotEmpty() -> Bool {
+        return !isEmpty
+    }
+}
+
+extension Collection where Index == Int {
+    /// 取得陣列中排除指定 index 外的隨機索引
+    func randomIndexExcluding(_ index: Int) -> Index {
+        let indices = self.indices.filter { $0 != index }
+        return indices.randomElement() ?? 0
+    }
+}

@@ -106,6 +106,12 @@
 		8BD1C64F29AEDEAE00337EF3 /* ITunesImageSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD1C64E29AEDEAE00337EF3 /* ITunesImageSize.swift */; };
 		8BD1C65329AF37AA00337EF3 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD1C65229AF37AA00337EF3 /* PreviewViewController.swift */; };
 		8BF2026029A99DF7005FF2E4 /* SearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF2025F29A99DF7005FF2E4 /* SearchResponse.swift */; };
+		8BF7183329CDEEFB002CEFD6 /* MusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF7183229CDEEFB002CEFD6 /* MusicPlayer.swift */; };
+		8BF7183529CDF68D002CEFD6 /* Error+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF7183429CDF68D002CEFD6 /* Error+Extensions.swift */; };
+		8BF7183829CDF7FE002CEFD6 /* MusicPlayerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF7183729CDF7FE002CEFD6 /* MusicPlayerError.swift */; };
+		8BF7183A29CDFA50002CEFD6 /* MusicPlayer+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF7183929CDFA50002CEFD6 /* MusicPlayer+Protocols.swift */; };
+		8BF7183E29CE2863002CEFD6 /* RepeatMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF7183D29CE2863002CEFD6 /* RepeatMode.swift */; };
+		8BF7184029CE818C002CEFD6 /* LocaleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF7183F29CE818C002CEFD6 /* LocaleManager.swift */; };
 		8BFDF16A29A1EB39008E2C23 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8BFDF16929A1EB39008E2C23 /* SnapKit */; };
 		8BFDF16C29A1F55F008E2C23 /* ITunesServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFDF16B29A1F55F008E2C23 /* ITunesServiceProvider.swift */; };
 		8BFDF16E29A1F835008E2C23 /* ITunesServiceProviderInpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFDF16D29A1F835008E2C23 /* ITunesServiceProviderInpl.swift */; };
@@ -245,6 +251,12 @@
 		8BD1C64E29AEDEAE00337EF3 /* ITunesImageSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITunesImageSize.swift; sourceTree = "<group>"; };
 		8BD1C65229AF37AA00337EF3 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
 		8BF2025F29A99DF7005FF2E4 /* SearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResponse.swift; sourceTree = "<group>"; };
+		8BF7183229CDEEFB002CEFD6 /* MusicPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayer.swift; sourceTree = "<group>"; };
+		8BF7183429CDF68D002CEFD6 /* Error+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+Extensions.swift"; sourceTree = "<group>"; };
+		8BF7183729CDF7FE002CEFD6 /* MusicPlayerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayerError.swift; sourceTree = "<group>"; };
+		8BF7183929CDFA50002CEFD6 /* MusicPlayer+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MusicPlayer+Protocols.swift"; sourceTree = "<group>"; };
+		8BF7183D29CE2863002CEFD6 /* RepeatMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatMode.swift; sourceTree = "<group>"; };
+		8BF7183F29CE818C002CEFD6 /* LocaleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocaleManager.swift; sourceTree = "<group>"; };
 		8BFDF16B29A1F55F008E2C23 /* ITunesServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITunesServiceProvider.swift; sourceTree = "<group>"; };
 		8BFDF16D29A1F835008E2C23 /* ITunesServiceProviderInpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITunesServiceProviderInpl.swift; sourceTree = "<group>"; };
 		8BFDF17029A2180E008E2C23 /* String+Extensins.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensins.swift"; sourceTree = "<group>"; };
@@ -591,10 +603,12 @@
 		8BB74C7129A150F2000B9D59 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				8BF7183629CDF7E1002CEFD6 /* MusicPlayer */,
 				8B3F9BD429C5FFAC0050CFC9 /* FloatingPanel */,
 				8BB74C6029A13DF4000B9D59 /* Logger.swift */,
 				8B6B56AC29B1854B00F099DD /* UserDefaultsHelper.swift */,
 				8B6B56B629B4821600F099DD /* ToastHelper.swift */,
+				8BF7183F29CE818C002CEFD6 /* LocaleManager.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -643,6 +657,17 @@
 			path = Enumerations;
 			sourceTree = "<group>";
 		};
+		8BF7183629CDF7E1002CEFD6 /* MusicPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				8BF7183929CDFA50002CEFD6 /* MusicPlayer+Protocols.swift */,
+				8BF7183229CDEEFB002CEFD6 /* MusicPlayer.swift */,
+				8BF7183729CDF7FE002CEFD6 /* MusicPlayerError.swift */,
+				8BF7183D29CE2863002CEFD6 /* RepeatMode.swift */,
+			);
+			path = MusicPlayer;
+			sourceTree = "<group>";
+		};
 		8BFDF16F29A217F8008E2C23 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -658,6 +683,7 @@
 				8BFDF17029A2180E008E2C23 /* String+Extensins.swift */,
 				8BFDF18029A31568008E2C23 /* Date+Extensions.swift */,
 				8B6B56B429B4491500F099DD /* RangeReplaceableCollection+Extensions.swift */,
+				8BF7183429CDF68D002CEFD6 /* Error+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -957,6 +983,7 @@
 				8BB69BDE29BE239C00F09793 /* UITableView+Extensions.swift in Sources */,
 				8BB69BD829BE1B1500F09793 /* PlaylistViewController.swift in Sources */,
 				8BFDF17329A21CB0008E2C23 /* MainTabBarController.swift in Sources */,
+				8BF7183329CDEEFB002CEFD6 /* MusicPlayer.swift in Sources */,
 				8B677CC729BEF7F400F73FE5 /* RippleEffectButton.swift in Sources */,
 				8BBCE35429C0D67B0084BF44 /* HighlightBlurView.swift in Sources */,
 				8B3B6CCD29AD8C0E00A6352A /* TrackDetailViewController.swift in Sources */,
@@ -991,11 +1018,14 @@
 				8BFDF17729A23142008E2C23 /* UISearchBar+Extensions.swift in Sources */,
 				8BD1C65329AF37AA00337EF3 /* PreviewViewController.swift in Sources */,
 				8BFDF17929A24D37008E2C23 /* UIColor+Extensions.swift in Sources */,
+				8BF7183529CDF68D002CEFD6 /* Error+Extensions.swift in Sources */,
 				8BB74C7529A15425000B9D59 /* Constants.swift in Sources */,
+				8BF7183E29CE2863002CEFD6 /* RepeatMode.swift in Sources */,
 				8B3F9BE329C6EA820050CFC9 /* GradientColorManager.swift in Sources */,
 				8BB74C8529A1CBD3000B9D59 /* Defs.swift in Sources */,
 				8BB74C8929A1CCEB000B9D59 /* CustomJsonBodyParamsAdapter.swift in Sources */,
 				8B677CCA29BF922400F73FE5 /* GesturePublisher.swift in Sources */,
+				8BF7184029CE818C002CEFD6 /* LocaleManager.swift in Sources */,
 				8B4D3708299FCA5B00059381 /* SearchTestViewController.swift in Sources */,
 				8BBCE34F29C0B6D60084BF44 /* PresentationController.swift in Sources */,
 				8BB74C7929A1C687000B9D59 /* ITunesService.swift in Sources */,
@@ -1014,6 +1044,7 @@
 				8B6B56AD29B1854B00F099DD /* UserDefaultsHelper.swift in Sources */,
 				8B6EB8B229CBE26100A684A5 /* BottomFloatingPanelViewController.swift in Sources */,
 				8B3F9BDE29C6AF850050CFC9 /* PlaylistPlayerViewModel.swift in Sources */,
+				8BF7183829CDF7FE002CEFD6 /* MusicPlayerError.swift in Sources */,
 				8BFDF17129A2180E008E2C23 /* String+Extensins.swift in Sources */,
 				8BFDF18129A31568008E2C23 /* Date+Extensions.swift in Sources */,
 				8BD1C64F29AEDEAE00337EF3 /* ITunesImageSize.swift in Sources */,
@@ -1043,6 +1074,7 @@
 				8B3B6CCB29AC788400A6352A /* ITunesService+Lookup.swift in Sources */,
 				8BF2026029A99DF7005FF2E4 /* SearchResponse.swift in Sources */,
 				8BB74C6E29A14E01000B9D59 /* CustomRequestAdapter.swift in Sources */,
+				8BF7183A29CDFA50002CEFD6 /* MusicPlayer+Protocols.swift in Sources */,
 				8BB74C8329A1CB57000B9D59 /* CustomQueryParamsAdapter.swift in Sources */,
 				8BBCE35029C0B6D60084BF44 /* Presenter.swift in Sources */,
 				8BB74C5F29A13C33000B9D59 /* ApiEventMonitor.swift in Sources */,
