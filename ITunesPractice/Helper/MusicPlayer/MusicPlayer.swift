@@ -11,14 +11,50 @@ import Foundation
 // MARK: - MusicPlayer
 
 class MusicPlayer: MusicPlayerProtocol {
+    // MARK: Lifecycle
+
+    private init() {
+        player = AVPlayer()
+    }
+
     // MARK: Internal
 
     static let shared = MusicPlayer()
 
+    var currentTrack: Track?
+
     var isPlaying: Bool = false
 
-    /// 播放清單
+    // 播放清單
     var tracks: [Track] = []
+
+    // 目前選中的歌曲索引
+    var currentTrackIndex: Int?
+
+    // 是否隨機播放
+    var isShuffleMode: Bool = false
+
+    // 重複的模式
+    var repeatMode: RepeatMode = .none
+
+    // 播放速率
+    var playbackRate: Float = 1.0
+
+    // 音量
+    var volume: Float {
+        get { player.volume }
+        set { player.volume = newValue }
+    }
+
+    // 播放速率下限
+    var minPlaybackRate: Float {
+        0.5
+    }
+
+    // 播放速率上限
+    var maxPlaybackRate: Float {
+        2.0
+    }
 
     /// 上首歌曲播放結束，判斷播放下一首的邏輯
     func playNextTrack() throws {
@@ -48,19 +84,7 @@ class MusicPlayer: MusicPlayerProtocol {
 
     // MARK: Private
 
-    private var player: AVPlayer?
-    // 目前選中的歌曲索引
-    private var currentTrackIndex: Int?
-    // 是否隨機播放
-    private var isShuffleMode: Bool = false
-    // 重複的模式
-    private var repeatMode: RepeatMode = .none
-    // 播放速率
-    private var playbackRate: Float = 1.0
-    // 播放速率上限
-    private let maxPlaybackRate: Float = 2.0
-    // 播放速率下限
-    private let minPlaybackRate: Float = 0.5
+    private var player: AVPlayer!
 
     /// 播放指定索引的歌曲
     private func play(at index: Int) throws {
@@ -70,21 +94,13 @@ class MusicPlayer: MusicPlayerProtocol {
         guard tracks.isValidIndex(index) else {
             throw MusicPlayerError.invalidIndex
         }
-
-        let track = tracks[index]
-        guard let audioURL = URL(string: track.previewUrl) else {
+        guard let audioURL = URL(string: tracks[index].previewUrl) else {
             throw MusicPlayerError.invalidTrack
         }
 
         let playerItem = AVPlayerItem(url: audioURL)
-
-        if let player = player {
-            player.replaceCurrentItem(with: playerItem)
-        } else {
-            player = AVPlayer(playerItem: playerItem)
-        }
-
-        player?.play()
+        player.replaceCurrentItem(with: playerItem)
+        player.play()
         isPlaying = true
         currentTrackIndex = index
     }
@@ -94,7 +110,7 @@ class MusicPlayer: MusicPlayerProtocol {
         if isPlaying {
             // 屬性需要在主線程上訪問 rate
             DispatchQueue.main.async { [weak self] in
-                self?.player?.rate = rate
+                self?.player.rate = rate
             }
         }
         playbackRate = rate
@@ -115,29 +131,29 @@ extension MusicPlayer {
 
     /// 暫停
     func pause() {
-        player?.pause()
+        player.pause()
         isPlaying = false
     }
 
     /// 繼續播放
     func resume() {
-        player?.play()
+        player.play()
         isPlaying = true
     }
 
     /// 停止播放(清除目前播放的)
     func stop() {
-        player?.pause()
+        player.pause()
         isPlaying = false
-        player?.replaceCurrentItem(with: nil)
+        player.replaceCurrentItem(with: nil)
         currentTrackIndex = nil
     }
 
 //    /// 停止播放(暫停並將時間設到歌曲開始)
 //    func stop() {
-//        player?.pause()
+//        player.pause()
 //        isPlaying = false
-//        player?.seek(to: CMTime.zero)
+//        player.seek(to: CMTime.zero)
 //    }
 }
 
@@ -198,6 +214,22 @@ extension MusicPlayer {
 
     func unshuffle() {
         isShuffleMode = false
+    }
+}
+
+extension MusicPlayer {
+    func increaseVolume() {
+        let currentVolume = player.volume
+        if currentVolume < 1.0 {
+            player.volume = currentVolume + 0.1
+        }
+    }
+
+    func decreaseVolume() {
+        let currentVolume = player.volume
+        if currentVolume > 0.0 {
+            player.volume = currentVolume - 0.1
+        }
     }
 }
 

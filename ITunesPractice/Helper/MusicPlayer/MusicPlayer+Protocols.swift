@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - MusicPlayerProtocol
 
-protocol MusicPlayerProtocol: MusicPlayerControl, MusicPlayerPlaylistControl, MusicPlayerShuffleControl, MusicPlayerRepeatControl, MusicPlayerSpeedControl {}
+protocol MusicPlayerProtocol: MusicPlayerControl, MusicPlayerPlaylistControl, MusicPlayerShuffleControl, MusicPlayerRepeatControl, MusicPlayerSpeedControl, MusicPlayerVolumeControl {}
 
 // MARK: - MusicPlayerControl
 
@@ -23,7 +23,15 @@ protocol MusicPlayerControl {
 // MARK: - MusicPlayerPlaylistControl
 
 protocol MusicPlayerPlaylistControl {
-    var tracks: [Track] { get }
+    var tracks: [Track] { get } // 播放清單
+    var currentTrack: Track? { get } // 當前播放曲目
+    var currentTrackIndex: Int? { get set } // 目前選中的曲目的索引
+    var isShuffleMode: Bool { get set } // 是否隨機播放
+    var repeatMode: RepeatMode { get set } // 重複的模式
+    var playbackRate: Float { get set } // 播放速率
+    var maxPlaybackRate: Float { get } // 播放速率上限
+    var minPlaybackRate: Float { get } // 播放速率下限
+
     func play(track: Track) throws //  播放清單內指定曲目
     func nextTrack() throws //  播放清單內的下一首
     func previousTrack() throws //  播放清單內的前一首
@@ -49,4 +57,13 @@ protocol MusicPlayerRepeatControl {
 protocol MusicPlayerSpeedControl {
     func fastForward() // 快轉
     func rewind() // 倒帶
+}
+
+// MARK: - MusicPlayerVolumeControl
+
+protocol MusicPlayerVolumeControl {
+    var volume: Float { get set } // 音量大小
+
+    func increaseVolume() // 增加音量
+    func decreaseVolume() // 減少音量
 }
