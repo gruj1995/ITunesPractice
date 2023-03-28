@@ -65,16 +65,6 @@ class PlaylistViewController: UIViewController {
         }
     }
 
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y < lastContentOffset {
-            isPlayerHidden = isLastSectionReached
-        } else if scrollView.contentOffset.y > lastContentOffset {
-            isPlayerHidden = !isLastSectionReached
-        }
-        lastContentOffset = scrollView.contentOffset.y
-        hideCellsIfTouchingHeader()
-    }
-
     // MARK: Private
 
     private let viewModel: PlaylistViewModel = .init()
@@ -89,24 +79,7 @@ class PlaylistViewController: UIViewController {
 
     private var playerContainerViewBottom: Constraint?
 
-    private var isPlayerHidden: Bool = false {
-        didSet {
-            let inset = isPlayerHidden ? playerHiddenInset : 0
-            playerContainerViewBottom?.update(inset: inset)
-        }
-    }
-
     private let playerContainerViewHeight = Constants.screenHeight * 0.35
-
-    private var playerHiddenInset: CGFloat {
-        // 20 是 playerContainerView 上方模糊邊緣的高度
-        -playerContainerViewHeight + 10
-    }
-
-    /// 是否滑動到tableview最後一個section
-    private var isLastSectionReached: Bool {
-        tableView.isLastSectionReached()
-    }
 
     private var animator: UIViewPropertyAnimator!
 
@@ -132,6 +105,18 @@ class PlaylistViewController: UIViewController {
         view.layer.insertSublayer(gradient, at: 0)
         return gradient
     }()
+
+    private var isPlayerHidden: Bool = false {
+        didSet {
+            let inset = isPlayerHidden ? playerHiddenInset : 0
+            playerContainerViewBottom?.update(inset: inset)
+        }
+    }
+
+    private var playerHiddenInset: CGFloat {
+        // 10 是 playerContainerView 隱藏時上方要露出的高度
+        -playerContainerViewHeight + 10
+    }
 
     private func setupUI() {
         setupLayout()
@@ -221,7 +206,7 @@ class PlaylistViewController: UIViewController {
     }
 
     private func hideCellsIfTouchingHeader() {
-        // 超出範圍隱藏 cell
+        // 隱藏 cell 與 header 接觸的部分
         for cell in tableView.visibleCells {
             cell.sectionHeaderMask(delegate: self)
         }
@@ -231,6 +216,45 @@ class PlaylistViewController: UIViewController {
 // MARK: UITableViewDataSource, UITableViewDelegate
 
 extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
+    // 滑動時觸發
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let contentOffset = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let frameHeight = scrollView.frame.size.height
+
+        if contentOffset <= 0 {
+            // 滑到最上方了，隱藏播放器
+            isPlayerHidden = true
+        } else if contentOffset >= contentHeight - frameHeight {
+            // 滑到最底部了，顯示播放器
+            isPlayerHidden = false
+        } else if contentOffset > lastContentOffset {
+            // 上滑，隱藏播放器
+            isPlayerHidden = true
+        } else {
+            // 下滑，顯示播放器
+            isPlayerHidden = false
+        }
+
+        lastContentOffset = contentOffset
+        hideCellsIfTouchingHeader()
+    }
+
+    // 停止滑動時觸發
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let contentOffset = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let frameHeight = scrollView.frame.size.height
+
+        if contentOffset <= 0 {
+            // 滑到最上方了，隱藏播放器
+            isPlayerHidden = true
+        } else if contentOffset >= contentHeight - frameHeight {
+            // 滑到最底部了，顯示播放器
+            isPlayerHidden = false
+        }
+    }
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.numberOfSections
     }
