@@ -340,8 +340,12 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
         return header
     }
 
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        UIView.emptyView()
+    }
+
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return isPlayerHidden ? 30 : playerContainerViewHeight - 10
+        return playerContainerViewHeight
     }
 }
 
