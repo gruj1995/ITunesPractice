@@ -7,7 +7,8 @@
 
 import UIKit
 
-extension UIImage {
+extension UIImageView {
+    /// 專輯封面圖示
     class func coverImageView(cornerRadius: CGFloat = 5) -> UIImageView {
         let imageView = UIImageView()
         imageView.backgroundColor = .clear
@@ -16,7 +17,9 @@ extension UIImage {
         imageView.clipsToBounds = true
         return imageView
     }
-    
+}
+
+extension UIImage {
     /// 取得圖片指定位置 pixel 的顏色
     func getPixelColor(_ pos: CGPoint) -> UIColor {
         guard let pixelData = cgImage?.dataProvider?.data else {

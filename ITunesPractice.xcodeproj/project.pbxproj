@@ -690,6 +690,7 @@
 			children = (
 				8BB69BDB29BE1C9500F09793 /* UIApplication+Extensions.swift */,
 				8BFDF17829A24D37008E2C23 /* UIColor+Extensions.swift */,
+				8B5FCD3629D2C59000C763DB /* UIImage+Extensions.swift */,
 				8B677CC429BEC97600F73FE5 /* UIView+Extensions.swift */,
 				8B677CCF29BF942200F73FE5 /* UIView+Ripple.swift */,
 				8B6B56B829B48C6400F099DD /* UIViewController+Extensions.swift */,
@@ -703,7 +704,6 @@
 				8BF7183429CDF68D002CEFD6 /* Error+Extensions.swift */,
 				8B58CFBF29D0562000B36C71 /* Double+Extensions.swift */,
 				8B5FCD3429D2C50500C763DB /* CAGradientLayer+Extensions.swift */,
-				8B5FCD3629D2C59000C763DB /* UIImage+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
