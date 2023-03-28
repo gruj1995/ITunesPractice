@@ -64,6 +64,15 @@
       }
     },
     {
+      "identity" : "marqueelabel",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/cbpowell/MarqueeLabel",
+      "state" : {
+        "revision" : "f2c72a5f8568579dade6350dc26a482076d3d346",
+        "version" : "4.3.0"
+      }
+    },
+    {
       "identity" : "snapkit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SnapKit/SnapKit.git",

@@ -126,7 +126,7 @@ class PlaylistViewController: UIViewController {
         view.addSubview(currentTrackView)
         currentTrackView.snp.makeConstraints { make in
             // 與頂部的距離和 fpc.surfaceView.grabberHandlePadding 有關
-            make.top.equalToSuperview().offset(45)
+            make.top.equalToSuperview().offset(50)
             make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(50)
         }

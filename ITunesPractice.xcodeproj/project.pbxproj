@@ -42,6 +42,7 @@
 		8B5FCD3329D1CC9400C763DB /* CurrentTrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5FCD3229D1CC9400C763DB /* CurrentTrackView.swift */; };
 		8B5FCD3529D2C50500C763DB /* CAGradientLayer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5FCD3429D2C50500C763DB /* CAGradientLayer+Extensions.swift */; };
 		8B5FCD3729D2C59000C763DB /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5FCD3629D2C59000C763DB /* UIImage+Extensions.swift */; };
+		8B5FCD3C29D3281A00C763DB /* MarqueeLabel in Frameworks */ = {isa = PBXBuildFile; productRef = 8B5FCD3B29D3281A00C763DB /* MarqueeLabel */; };
 		8B677CC529BEC97600F73FE5 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B677CC429BEC97600F73FE5 /* UIView+Extensions.swift */; };
 		8B677CC729BEF7F400F73FE5 /* RippleEffectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B677CC629BEF7F400F73FE5 /* RippleEffectButton.swift */; };
 		8B677CCA29BF922400F73FE5 /* GesturePublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B677CC929BF922400F73FE5 /* GesturePublisher.swift */; };
@@ -292,6 +293,7 @@
 				8B3F9BD129C5EDB10050CFC9 /* FloatingPanel in Frameworks */,
 				8BFDF18C29A3ACEF008E2C23 /* CombineSchedulers in Frameworks */,
 				8B4D3703299FC4D800059381 /* IQKeyboardManagerSwift in Frameworks */,
+				8B5FCD3C29D3281A00C763DB /* MarqueeLabel in Frameworks */,
 				8B4D3700299FC4A300059381 /* Kingfisher in Frameworks */,
 				8B4D36FD299FC48E00059381 /* SwiftyJSON in Frameworks */,
 				8B3F9BE629C6F0660050CFC9 /* ColorKit in Frameworks */,
@@ -748,6 +750,7 @@
 				8BFDF18B29A3ACEF008E2C23 /* CombineSchedulers */,
 				8B3F9BD029C5EDB10050CFC9 /* FloatingPanel */,
 				8B3F9BE529C6F0660050CFC9 /* ColorKit */,
+				8B5FCD3B29D3281A00C763DB /* MarqueeLabel */,
 			);
 			productName = ITunesPractice;
 			productReference = 8B4D36C0299FBD7E00059381 /* ITunesPractice.app */;
@@ -834,6 +837,7 @@
 				8BFDF18A29A3ACEF008E2C23 /* XCRemoteSwiftPackageReference "combine-schedulers" */,
 				8B3F9BCF29C5EDB10050CFC9 /* XCRemoteSwiftPackageReference "FloatingPanel" */,
 				8B3F9BE429C6F0660050CFC9 /* XCRemoteSwiftPackageReference "ColorKit" */,
+				8B5FCD3A29D3281A00C763DB /* XCRemoteSwiftPackageReference "MarqueeLabel" */,
 			);
 			productRefGroup = 8B4D36C1299FBD7E00059381 /* Products */;
 			projectDirPath = "";
@@ -1504,6 +1508,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		8B5FCD3A29D3281A00C763DB /* XCRemoteSwiftPackageReference "MarqueeLabel" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/cbpowell/MarqueeLabel";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
 		8BFDF16829A1EB39008E2C23 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -1557,6 +1569,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8B4D3704299FC50D00059381 /* XCRemoteSwiftPackageReference "FLEX" */;
 			productName = FLEX;
+		};
+		8B5FCD3B29D3281A00C763DB /* MarqueeLabel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B5FCD3A29D3281A00C763DB /* XCRemoteSwiftPackageReference "MarqueeLabel" */;
+			productName = MarqueeLabel;
 		};
 		8BFDF16929A1EB39008E2C23 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
