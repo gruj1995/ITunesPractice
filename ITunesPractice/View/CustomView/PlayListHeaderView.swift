@@ -91,7 +91,7 @@ final class PlayListHeaderView: UIView {
     private lazy var buttonsStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [shuffleButton, repeatButton, infinityButton])
         stackView.axis = .horizontal
-        stackView.spacing = 10
+        stackView.spacing = 15
         stackView.alignment = .fill
         stackView.distribution = .fillEqually
         return stackView
@@ -122,6 +122,7 @@ final class PlayListHeaderView: UIView {
         buttonsStackView.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(20)
             make.centerY.equalToSuperview()
+            make.height.equalTo(30)
         }
     }
 }

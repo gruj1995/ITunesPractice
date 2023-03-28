@@ -65,20 +65,58 @@ class PlaylistViewController: UIViewController {
         }
     }
 
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y < lastContentOffset {
+            isPlayerHidden = isLastSectionReached
+        } else if scrollView.contentOffset.y > lastContentOffset {
+            isPlayerHidden = !isLastSectionReached
+        }
+        lastContentOffset = scrollView.contentOffset.y
+        hideCellsIfTouchingHeader()
+    }
+
     // MARK: Private
+
+    private let viewModel: PlaylistViewModel = .init()
+
+    private var cancellables: Set<AnyCancellable> = .init()
 
     private var lastVelocityYSign = 0
 
     private let cellHeight: CGFloat = 60
 
-    private let viewModel: PlaylistViewModel = .init()
+    private var lastContentOffset: CGFloat = 0
 
-    // 觀察者
-    private var cancellables: Set<AnyCancellable> = .init()
+    private var playerContainerViewBottom: Constraint?
+
+    private var isPlayerHidden: Bool = false {
+        didSet {
+            let inset = isPlayerHidden ? playerHiddenInset : 0
+            playerContainerViewBottom?.update(inset: inset)
+        }
+    }
+
+    private let playerContainerViewHeight = Constants.screenHeight * 0.35
+
+    private var playerHiddenInset: CGFloat {
+        // 20 是 playerContainerView 上方模糊邊緣的高度
+        -playerContainerViewHeight + 10
+    }
+
+    /// 是否滑動到tableview最後一個section
+    private var isLastSectionReached: Bool {
+        tableView.isLastSectionReached()
+    }
 
     private var animator: UIViewPropertyAnimator!
 
     private lazy var playerContainerView: UIView = .init()
+
+    private lazy var currentTrackView: CurrentTrackView = {
+        let currentTrackView = CurrentTrackView()
+        currentTrackView.configure(trackName: "abcccccccccccccccccccccccccccccccccccccccccccc", artistName: "sssssss")
+        return currentTrackView
+    }()
 
     // 音樂播放器
     private lazy var playerVC: PlaylistPlayerViewController = {
@@ -95,49 +133,31 @@ class PlaylistViewController: UIViewController {
         return gradient
     }()
 
-    private var lastContentOffset: CGFloat = 0
-
-    private var playerContainerViewBottom: Constraint?
-
-    private var isPlayerHidden: Bool = false {
-        didSet {
-            let hiddenInset = playerHiddenInset
-            let inset = isPlayerHidden ? playerHiddenInset : 0
-            playerContainerViewBottom?.update(inset: inset)
-            let tinset = isPlayerHidden ?  0 : -hiddenInset
-//            tableViewBottom?.update(inset: tinset)
-        }
-    }
-
-    private var playerHiddenInset: CGFloat {
-        // 20 是 playerContainerView 上方模糊邊緣的高度
-        -playerContainerView.frame.height + 20
-    }
-
-    /// 是否滑動到tableview最後一個section
-    private var isLastSectionReached: Bool {
-        tableView.isLastSectionReached()
-    }
-
     private func setupUI() {
         setupLayout()
     }
 
     private func setupLayout() {
+        view.addSubview(currentTrackView)
+        currentTrackView.snp.makeConstraints { make in
+            // 與頂部的距離和 fpc.surfaceView.grabberHandlePadding 有關
+            make.top.equalToSuperview().offset(45)
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.height.equalTo(50)
+        }
+
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(150)
-            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(currentTrackView.snp.bottom)
+            make.bottom.leading.trailing.equalToSuperview()
 //            tableViewBottom = make.bottom.equalToSuperview().constraint
 //            make.edges.equalToSuperview().inset(UIEdgeInsets(top: 150, left: 0, bottom: 0, right: 0))
         }
 
-        let height = Constants.screenHeight * 0.27
         view.addSubview(playerContainerView)
         playerContainerView.snp.makeConstraints { make in
-            make.top.equalTo(tableView.snp.bottom)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(view.safeAreaLayoutGuide).multipliedBy(0.32)
+            make.height.equalTo(playerContainerViewHeight)
             playerContainerViewBottom = make.bottom.equalToSuperview().constraint
         }
 
@@ -175,7 +195,16 @@ class PlaylistViewController: UIViewController {
     private func updateGradientLayers(with colors: [UIColor]) {
         let animator = UIViewPropertyAnimator(duration: 1, curve: .easeInOut) { [weak self] in
             guard let self = self else { return }
-            self.gradient.colors = colors.map { $0.cgColor }
+            let cgColors = colors.map { $0.cgColor }
+            self.gradient.colors = cgColors
+
+            // 取得 gradient 由上往下幾 % 位置的漸層顏色作為交界色
+            guard let bottomThirdColor = self.gradient.color(atPosition: 0.45)?.cgColor else {
+                return
+            }
+            let playerVCColors = [bottomThirdColor.copy(alpha: 0.05)!, bottomThirdColor, cgColors[2]]
+
+            self.playerVC.gradient.colors = playerVCColors
         }
         animator.startAnimation()
     }
@@ -191,16 +220,10 @@ class PlaylistViewController: UIViewController {
         Utils.toast(error.localizedDescription, at: .center)
     }
 
-    private func hideViewsIfNeeded() {
-//        // 超出範圍隱藏 headerView
-//        let visibleHeaders = tableView.subviews.filter { $0 is PlayListHeaderView }
-//        for header in visibleHeaders {
-//            header.headerHideWhenScrolling(scrollView: tableView, bottomView: playerContainerView)
-//        }
-
+    private func hideCellsIfTouchingHeader() {
         // 超出範圍隱藏 cell
         for cell in tableView.visibleCells {
-            cell.hideWhenScrolling(scrollView: tableView, bottomView: playerContainerView)
+            cell.sectionHeaderMask(delegate: self)
         }
     }
 }
@@ -294,17 +317,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        0
-    }
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        if scrollView.contentOffset.y < lastContentOffset {
-//            isPlayerHidden = isLastSectionReached
-//        } else if scrollView.contentOffset.y > lastContentOffset {
-//            isPlayerHidden = !isLastSectionReached
-//        }
-//        lastContentOffset = scrollView.contentOffset.y
-        hideViewsIfNeeded()
+        return isPlayerHidden ? 30 : playerContainerViewHeight - 10
     }
 }
 
@@ -313,6 +326,31 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
 extension PlaylistViewController: TrackDetailViewControllerDatasource {
     func trackId(_ trackDetailViewController: TrackDetailViewController) -> Int? {
         return viewModel.selectedTrack?.trackId
+    }
+}
+
+public extension UITableViewCell {
+    func sectionHeaderMask<T: UITableViewDelegate>(delegate: T, systemTopInset: CGFloat = 0) {
+        guard let tableView = superview as? UITableView else { return }
+        guard let indexPath = tableView.indexPath(for: self) else { return }
+        guard let heightForHeader = delegate.tableView?(tableView, heightForHeaderInSection: indexPath.section) else { return }
+        let hiddenFrameHeight = tableView.contentOffset.y - frame.origin.y + heightForHeader + tableView.contentInset.top + systemTopInset
+        if hiddenFrameHeight >= 0 || hiddenFrameHeight <= frame.size.height {
+            mask(margin: Float(hiddenFrameHeight))
+        }
+    }
+
+    private func mask(margin: Float) {
+        layer.mask = visibilityMask(location: margin / Float(frame.size.height))
+        layer.masksToBounds = true
+    }
+
+    private func visibilityMask(location: Float) -> CAGradientLayer {
+        let mask = CAGradientLayer()
+        mask.frame = bounds
+        mask.colors = [UIColor(white: 1, alpha: 0).cgColor, UIColor(white: 1, alpha: 1).cgColor]
+        mask.locations = [NSNumber(value: location), NSNumber(value: location)]
+        return mask
     }
 }
 
@@ -339,34 +377,13 @@ extension UIView {
                 let hiddenFrameHeight = scrollView.contentOffset.y + 60 - frame.origin.y
                 mask(margin: Float(hiddenFrameHeight))
             } else {
-//                // 往下碰到 player
-//                let maskRect = CGRect(x: 0, y: 0, width: frame.width, height: viewMinY - minY)
-//                let maskPath = UIBezierPath(rect: maskRect)
-//                let maskLayer = CAShapeLayer()
-//                maskLayer.path = maskPath.cgPath
-//                layer.mask = maskLayer
+                // 往下碰到 player
+                let maskRect = CGRect(x: 0, y: 0, width: frame.width, height: viewMinY - minY)
+                let maskPath = UIBezierPath(rect: maskRect)
+                let maskLayer = CAShapeLayer()
+                maskLayer.path = maskPath.cgPath
+                layer.mask = maskLayer
             }
-        }
-    }
-
-    /// header 碰到 playerView 時添加遮罩讓碰到的部分隱藏
-    func headerHideWhenScrolling(scrollView: UIScrollView, bottomView view: UIView) {
-        let minY = frame.minY
-        let maxY = frame.maxY
-
-        // 下方 player view
-        let viewMinY = scrollView.convert(view.frame.origin, from: view.superview).y
-
-        if maxY < viewMinY {
-            // 如果 cell 和 view 不相交，就移除遮罩
-            layer.mask = nil
-        } else {
-            // 如果 cell 和 view 相交，就設置遮罩隱藏 cell 的部分
-            let maskRect = CGRect(x: 0, y: 0, width: frame.width, height: viewMinY - minY)
-            let maskPath = UIBezierPath(rect: maskRect)
-            let maskLayer = CAShapeLayer()
-            maskLayer.path = maskPath.cgPath
-            layer.mask = maskLayer
         }
     }
 
