@@ -70,11 +70,7 @@ class TrackDetailViewController: UIViewController {
     }()
 
     /// 專輯封面圖示
-    private lazy var coverImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        return imageView
-    }()
+    private lazy var coverImageView: UIImageView = UIImageView.coverImageView()
 
     private lazy var trackNameLabel: UILabel = {
         let label = UILabel()

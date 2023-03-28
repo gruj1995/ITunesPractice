@@ -42,13 +42,7 @@ class TrackCell: UITableViewCell {
 
     // MARK: Private
 
-    /// 專輯封面圖示
-    private lazy var coverImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.layer.cornerRadius = 5
-        imageView.clipsToBounds = true
-        return imageView
-    }()
+    private lazy var coverImageView: UIImageView = UIImageView.coverImageView()
 
     private lazy var trackNameLabel: UILabel = {
         let label = UILabel()

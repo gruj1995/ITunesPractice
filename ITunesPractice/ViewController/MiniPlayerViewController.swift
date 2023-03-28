@@ -54,13 +54,7 @@ class MiniPlayerViewController: BottomFloatingPanelViewController {
 
     private lazy var highlightBlurView: HighlightBlurView = .init()
 
-    private lazy var coverImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.layer.cornerRadius = 5
-        imageView.contentMode = .scaleAspectFit
-        imageView.clipsToBounds = true
-        return imageView
-    }()
+    private lazy var coverImageView: UIImageView = UIImageView.coverImageView()
 
     private lazy var songTitleLabel: UILabel = {
         let label = UILabel()

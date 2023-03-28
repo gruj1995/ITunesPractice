@@ -47,12 +47,7 @@ class TrackContextMenuViewController: UIViewController {
         return imageView
     }()
 
-    private lazy var coverImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.layer.cornerRadius = 10
-        imageView.clipsToBounds = true
-        return imageView
-    }()
+    private lazy var coverImageView: UIImageView = UIImageView.coverImageView(cornerRadius: 10)
 
     private lazy var trackNameLabel: UILabel = {
         let label = UILabel()

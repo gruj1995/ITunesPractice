@@ -8,6 +8,15 @@
 import UIKit
 
 extension UIImage {
+    class func coverImageView(cornerRadius: CGFloat = 5) -> UIImageView {
+        let imageView = UIImageView()
+        imageView.backgroundColor = .clear
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = cornerRadius
+        imageView.clipsToBounds = true
+        return imageView
+    }
+    
     /// 取得圖片指定位置 pixel 的顏色
     func getPixelColor(_ pos: CGPoint) -> UIColor {
         guard let pixelData = cgImage?.dataProvider?.data else {
