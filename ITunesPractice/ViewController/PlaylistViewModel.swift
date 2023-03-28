@@ -10,22 +10,32 @@ import Combine
 import Kingfisher
 import UIKit
 
+let defaultGradientColors: [UIColor] = [.systemGray, .gray, .darkGray]
+
 // MARK: - PlaylistViewModel
 
 class PlaylistViewModel {
     // MARK: Lifecycle
 
     init() {
-        tracks = UserDefaults.standard.tracks
-        setSelectedTrack(tracks.first)
+//        tracks = UserDefaults.standard.tracks
+        // 監聽歌曲選中事件
+//        selectTrackPublisher
+//            .sink { [weak self] track in
+//                self?.musicPlayer.selectTrack(track)
+//            }
+//            .store(in: &cancellables)
+//        setSelectedTrack(player.)
     }
 
     // MARK: Internal
 
     // TODO: 為什麼PassthroughSubject只觸發一次？
-    var colorsSubject = CurrentValueSubject<[UIColor], Never>([])
+    var colorsSubject = CurrentValueSubject<[UIColor], Never>(defaultGradientColors)
 
     var selectedIndexPath: IndexPath?
+
+    // MARK: - Outputs
 
     private(set) var selectedTrack: Track? {
         didSet {
@@ -46,17 +56,8 @@ class PlaylistViewModel {
         return stateSubject.eraseToAnyPublisher()
     }
 
-    var tracksPublisher: AnyPublisher<[Track], Error> {
-        return tracksSubject.eraseToAnyPublisher()
-    }
-
     var tracks: [Track] {
-        get {
-            tracksSubject.value
-        }
-        set {
-            tracksSubject.value = newValue
-        }
+        musicPlayer.tracks
     }
 
     var totalCount: Int {
@@ -64,7 +65,7 @@ class PlaylistViewModel {
     }
 
     var numberOfSections: Int {
-        2
+        1
     }
 
     func numberOfRows(in section: Int) -> Int {
@@ -76,43 +77,58 @@ class PlaylistViewModel {
         return tracks[index]
     }
 
-    /// 設定選取的歌曲
     func setSelectedTrack(forCellAt index: Int) {
         guard index < tracks.count else { return }
         selectedTrack = tracks[index]
+        musicPlayer.play(track: tracks[index])
+    }
+
+    // MARK: MusicPlayer
+
+    func toggleShuffleMode() {
+        musicPlayer.toggleShuffleMode()
     }
 
     // MARK: Private
 
-    private let tracksSubject = CurrentValueSubject<[Track], Error>([])
+    private var cancellables: Set<AnyCancellable> = .init()
+
+    // MARK: - Inputs
+    private let musicPlayer: MusicPlayer = .shared
+
+    // 當歌曲被選中時，通過這個Subject發布選中事件
+    private let selectTrackPublisher = CurrentValueSubject<Track?, Never>(nil)
     private let stateSubject = CurrentValueSubject<ViewState, Never>(.none)
 
     private var currentPage: Int = 0
     private var totalPages: Int = 0
     private var pageSize: Int = 20
 
-    private var cancellables: Set<AnyCancellable> = []
-
     private func setSelectedTrack(_ track: Track?) {
         selectedTrack = track
     }
 
     private func changeImage() {
-        guard let track = selectedTrack else { return }
-        downloadImage(with: track.artworkUrl100)
+        downloadImage(with: selectedTrack?.artworkUrl100)
     }
 
     /// 使用kingfisher下載圖檔
-    private func downloadImage(with urlString: String) {
+    private func downloadImage(with urlString: String?) {
+        guard let urlString = urlString else {
+            colorsSubject.send(defaultGradientColors)
+            return
+        }
+
         guard let url = URL(string: urlString) else {
             return
         }
+
         KingfisherManager.shared.retrieveImage(with: url) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let value):
                 Logger.log("Image: \(value.image). Got from: \(value.cacheType)")
-                // TODO: 這邊是同步會導致近頁面卡頓，但沒有先做完的話頁面會沒有背景色，看如何取捨
+                // TODO: 這邊同步會導致進頁面卡頓，但沒有先做完的話頁面會沒有背景色，看如何取捨
                 self.generateColors(by: value.image)
             case .failure(let error):
                 Logger.log(error.localizedDescription)
