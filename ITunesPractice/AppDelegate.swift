@@ -28,6 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // 設置所有 UIBarButtonItem 的 tinitColor
         UIBarButtonItem.appearance().tintColor = .appColor(.red1)
 
+        MusicPlayer.shared.configure()
 //        setNavigationBarAppearance()
 
         // 監控網路變化

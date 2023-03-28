@@ -5,6 +5,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,38 +19,33 @@
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="42m-l6-FIk">
-                                <rect key="frame" x="123" y="391" width="245" height="75"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="sMN-jI-QZr">
+                                <rect key="frame" x="19.666666666666657" y="408.33333333333331" width="351" height="40.333333333333314"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RB1-dZ-6ug">
-                                        <rect key="frame" x="0.0" y="0.0" width="75" height="75"/>
-                                        <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="Button"/>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m1w-Ia-Zbw">
-                                        <rect key="frame" x="85" y="0.0" width="75" height="75"/>
-                                        <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="Button"/>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0e6-Od-bS9">
-                                        <rect key="frame" x="170" y="0.0" width="75" height="75"/>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LabelssssLabelssssLabelssssLabelssssLabelssssLabelssssLabelssss" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pVB-x4-hOQ">
+                                        <rect key="frame" x="0.0" y="0.0" width="351" height="20.333333333333332"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HBt-17-yts">
+                                        <rect key="frame" x="0.0" y="20.333333333333371" width="108.33333333333333" height="20"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" secondItem="0e6-Od-bS9" secondAttribute="height" multiplier="1:1" id="HoF-6K-4lA"/>
+                                            <constraint firstAttribute="height" constant="20" id="vUM-Xg-mao"/>
                                         </constraints>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Buttonssss"/>
                                     </button>
                                 </subviews>
+                                <color key="backgroundColor" name="red_1"/>
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="cWL-1v-Gje"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="42m-l6-FIk" firstAttribute="leading" secondItem="cWL-1v-Gje" secondAttribute="leading" constant="123" id="TBd-Pi-cri"/>
-                            <constraint firstItem="42m-l6-FIk" firstAttribute="centerY" secondItem="cWL-1v-Gje" secondAttribute="centerY" id="eeY-TO-R8g"/>
+                            <constraint firstItem="sMN-jI-QZr" firstAttribute="centerY" secondItem="cWL-1v-Gje" secondAttribute="centerY" id="1xK-P9-9fq"/>
+                            <constraint firstItem="sMN-jI-QZr" firstAttribute="width" secondItem="b5X-Ct-Tci" secondAttribute="width" multiplier="0.9" id="8on-x4-p23"/>
+                            <constraint firstItem="sMN-jI-QZr" firstAttribute="centerX" secondItem="cWL-1v-Gje" secondAttribute="centerX" id="vXh-fr-cN0"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -66,16 +62,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="anq-y9-Bid">
-                                <rect key="frame" x="20" y="20" width="350" height="222"/>
+                                <rect key="frame" x="20" y="20" width="350" height="212"/>
                                 <subviews>
-                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="50" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="3WM-GU-W8q">
-                                        <rect key="frame" x="-2" y="0.0" width="354" height="31"/>
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="50" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="3WM-GU-W8q" customClass="AnimatedThumbSlider" customModule="ITunesPractice" customModuleProvider="target">
+                                        <rect key="frame" x="-2" y="0.0" width="354" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="20" id="11P-Um-org"/>
+                                        </constraints>
                                     </slider>
-                                    <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" distribution="equalSpacing" spacing="60" translatesAutoresizingMaskIntoConstraints="NO" id="yqS-W8-zMH">
-                                        <rect key="frame" x="55" y="64" width="240" height="40"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" distribution="equalSpacing" spacing="55" translatesAutoresizingMaskIntoConstraints="NO" id="yqS-W8-zMH">
+                                        <rect key="frame" x="45" y="46" width="260" height="50"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zZN-27-igB" customClass="RippleEffectButton" customModule="ITunesPractice" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="zZN-27-igB" secondAttribute="height" multiplier="1:1" id="cmS-pe-vPd"/>
                                                 </constraints>
@@ -85,7 +84,7 @@
                                                 </buttonConfiguration>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="koE-d1-2p7" customClass="RippleEffectButton" customModule="ITunesPractice" customModuleProvider="target">
-                                                <rect key="frame" x="100" y="0.0" width="40" height="40"/>
+                                                <rect key="frame" x="105" y="0.0" width="50" height="50"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain">
                                                     <imageReference key="image" image="play.fill" catalog="system" symbolScale="large"/>
@@ -93,7 +92,7 @@
                                                 </buttonConfiguration>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MVn-bO-a6f" customClass="RippleEffectButton" customModule="ITunesPractice" customModuleProvider="target">
-                                                <rect key="frame" x="200" y="0.0" width="40" height="40"/>
+                                                <rect key="frame" x="210" y="0.0" width="50" height="50"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="MVn-bO-a6f" secondAttribute="height" multiplier="1:1" id="CB3-AI-CkD"/>
                                                 </constraints>
@@ -104,18 +103,18 @@
                                             </button>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="40" id="PvO-2a-71K"/>
+                                            <constraint firstAttribute="height" constant="50" id="PvO-2a-71K"/>
                                             <constraint firstItem="koE-d1-2p7" firstAttribute="width" secondItem="yqS-W8-zMH" secondAttribute="height" multiplier="1:1" id="bed-5J-ss1"/>
                                         </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="J47-nY-SAW">
-                                        <rect key="frame" x="0.0" y="137.66666666666666" width="350" height="84.333333333333343"/>
+                                        <rect key="frame" x="0.0" y="122" width="350" height="90"/>
                                         <subviews>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="50" minValue="0.0" maxValue="100" minimumValueImage="speaker.fill" catalog="system" maximumValueImage="speaker.wave.3.fill" translatesAutoresizingMaskIntoConstraints="NO" id="g4B-i9-X7Z">
-                                                <rect key="frame" x="-2" y="0.0" width="354" height="31"/>
+                                                <rect key="frame" x="-2" y="0.0" width="354" height="36.666666666666664"/>
                                             </slider>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="55" translatesAutoresizingMaskIntoConstraints="NO" id="Kyf-RD-Q8D">
-                                                <rect key="frame" x="43" y="50" width="264" height="34.333333333333343"/>
+                                                <rect key="frame" x="43" y="55.666666666666657" width="264" height="34.333333333333343"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WYi-8a-IHq">
                                                         <rect key="frame" x="0.0" y="0.0" width="53" height="34.333333333333336"/>
@@ -143,6 +142,7 @@
                                             </stackView>
                                         </subviews>
                                         <constraints>
+                                            <constraint firstAttribute="height" constant="90" id="HVJ-pJ-V5O"/>
                                             <constraint firstItem="g4B-i9-X7Z" firstAttribute="width" secondItem="J47-nY-SAW" secondAttribute="width" id="UQU-lz-aRc"/>
                                         </constraints>
                                     </stackView>
@@ -158,14 +158,14 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="anq-y9-Bid" firstAttribute="leading" secondItem="9xc-dB-Bs7" secondAttribute="leading" constant="20" id="6Dh-G2-gdG"/>
-                            <constraint firstItem="9xc-dB-Bs7" firstAttribute="bottom" secondItem="anq-y9-Bid" secondAttribute="bottom" constant="15" id="Gdw-IA-aqI"/>
+                            <constraint firstItem="9xc-dB-Bs7" firstAttribute="bottom" secondItem="anq-y9-Bid" secondAttribute="bottom" constant="25" id="Gdw-IA-aqI"/>
                             <constraint firstItem="anq-y9-Bid" firstAttribute="top" secondItem="rml-vO-FrI" secondAttribute="top" constant="20" id="Kid-l5-5H2"/>
                             <constraint firstItem="9xc-dB-Bs7" firstAttribute="trailing" secondItem="anq-y9-Bid" secondAttribute="trailing" constant="20" id="gU9-zS-SEr"/>
                         </constraints>
                     </view>
                     <size key="freeformSize" width="390" height="257"/>
                     <connections>
-                        <outlet property="musicProgressSlider" destination="3WM-GU-W8q" id="Ni6-XE-6E8"/>
+                        <outlet property="musicProgressSlider" destination="3WM-GU-W8q" id="DIA-mP-y9h"/>
                         <outlet property="stackView" destination="anq-y9-Bid" id="yNZ-9Q-aTB"/>
                         <outlet property="volumeSlider" destination="g4B-i9-X7Z" id="ibt-c0-oVj"/>
                         <outletCollection property="playButtons" destination="zZN-27-igB" collectionClass="NSMutableArray" id="LVu-lG-PXO"/>
@@ -178,7 +178,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HiM-zZ-xik" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-95.384615384615387" y="-308.53080568720378"/>
+            <point key="canvasLocation" x="-95.384615384615387" y="-308.8862559241706"/>
         </scene>
     </scenes>
     <resources>
@@ -190,6 +190,9 @@
         <image name="quote.bubble" catalog="system" width="128" height="110"/>
         <image name="speaker.fill" catalog="system" width="128" height="125"/>
         <image name="speaker.wave.3.fill" catalog="system" width="128" height="84"/>
+        <namedColor name="red_1">
+            <color red="0.98431372549019602" green="0.031372549019607843" blue="0.031372549019607843" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

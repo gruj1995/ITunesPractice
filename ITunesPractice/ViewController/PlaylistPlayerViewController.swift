@@ -5,6 +5,7 @@
 //  Created by 李品毅 on 2023/3/15.
 //
 
+import Combine
 import SnapKit
 import UIKit
 
@@ -33,34 +34,41 @@ class PlaylistPlayerViewController: UIViewController {
         return String(describing: self)
     }
 
-    @IBOutlet var musicProgressSlider: UISlider!
+    @IBOutlet var musicProgressSlider: AnimatedThumbSlider!
+
+    @IBOutlet var volumeSlider: UISlider!
 
     @IBOutlet var playButtons: [RippleEffectButton]!
 
     @IBOutlet var advancedButtons: [UIButton]!
 
-    @IBOutlet var volumeSlider: UISlider!
+    @IBOutlet var stackView: UIStackView!
 
-    @IBOutlet weak var stackView: UIStackView!
+    lazy var gradient: CAGradientLayer = {
+        let gradient = CAGradientLayer()
+        gradient.frame = view.bounds
+
+        // 指定第一個顏色佔 15 px 高度
+        let firstColorHeightPercentage = NSNumber(value: 15.0 / view.bounds.height)
+        // 顏色起始點與終點
+        gradient.locations = [0, firstColorHeightPercentage]
+        view.layer.insertSublayer(gradient, at: 0)
+        return gradient
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        updateUI()
-
-        let notificationPublisher = NotificationCenter.default.publisher(for: .addTrack)
-
-//        musicProgressSlider.publisher
-//            .sink { <#UISlider#> in
-//            <#code#>
-//        }
+        setupGestures()
+        bindViewModel()
     }
 
     // MARK: Private
 
+    private var cancellables: Set<AnyCancellable> = .init()
+
     private lazy var currentTimeLabel: UILabel = {
         let label = UILabel()
-        label.text = "1:20"
         label.textColor = .lightText
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 10)
@@ -69,7 +77,6 @@ class PlaylistPlayerViewController: UIViewController {
 
     private lazy var remainingTimeLabel: UILabel = {
         let label = UILabel()
-        label.text = "2:45"
         label.textColor = .lightText
         label.textAlignment = .right
         label.font = .systemFont(ofSize: 10)
@@ -78,66 +85,165 @@ class PlaylistPlayerViewController: UIViewController {
 
     private let viewModel: PlaylistPlayerViewModel = .init()
 
-    private func updateUI() {}
+    private var isManualSeeking = false
 
     private func setupUI() {
         view.backgroundColor = .clear
         setupLayout()
 
-        playButtons.forEach { $0.tintColor = .white }
+        playButtons.indices.forEach {
+            playButtons[$0].tintColor = .white
+            playButtons[$0].tag = $0 + 1
+        }
         advancedButtons.forEach { $0.tintColor = .white }
         setupVolumeSlider()
         setupMusicProgressSlider()
+
+        updateMusicSlider()
+        updatePlayOrPauseButtonUI()
+    }
+
+    private func bindViewModel() {
+        viewModel.playbackTimePublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                self.updateMusicSlider()
+                self.updateTimeLabels()
+            }.store(in: &cancellables)
+    }
+
+    private func setupGestures() {
+        if playButtons.count == 3 {
+            let previousButton = playButtons[0]
+            let playOrPauseButton = playButtons[1]
+            let nextButton = playButtons[2]
+
+            previousButton.addTarget(self, action: #selector(previousButtonTapped), for: .touchUpInside)
+            playOrPauseButton.addTarget(self, action: #selector(playOrPauseButtonTapped), for: .touchUpInside)
+            nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        }
     }
 
     private func setupMusicProgressSlider() {
-        // 滑軌填滿時顏色
-        musicProgressSlider.minimumTrackTintColor = .white
-        // 滑軌未填滿時顏色
-        musicProgressSlider.maximumTrackTintColor = .lightText
-        musicProgressSlider.minimumValue = 0
-        musicProgressSlider.maximumValue = 100
-    }
-
-//    private func
-
-    private func setupVolumeSlider() {
         // 圓點圖換小一點
         // 這邊要注意官方文件說不能同時設置圖案跟 thumbTintColor，因為只會取用一邊的結果
-        volumeSlider.setThumbImage(AppImages.circleFill, for: .normal)
-        volumeSlider.setThumbImage(AppImages.circleFill, for: .highlighted)
+        musicProgressSlider.setImage(AppImages.circleFill)
+        musicProgressSlider.isContinuous = true // 拖動時會不會發送事件
+        musicProgressSlider.minimumTrackTintColor = .white // 滑軌填滿時顏色
+        musicProgressSlider.maximumTrackTintColor = .lightText // 滑軌未填滿時顏色
+        musicProgressSlider.tintColor = .white // 影響 icon 圖片顏色
+        musicProgressSlider.minimumValue = 0
+        musicProgressSlider.maximumValue = viewModel.totalDurationFloatValue // 設置為歌曲總時長
+        musicProgressSlider.value = viewModel.currentTimeFloatValue
+        musicProgressSlider.addTarget(self, action: #selector(musicProgressSliderValueChanged), for: .valueChanged)
+        musicProgressSlider.addTarget(self, action: #selector(musicProgressSliderTouchUpInside), for: .touchUpInside)
+    }
+
+    private func setupVolumeSlider() {
+        volumeSlider.setThumbImage(AppImages.circleFillSmall, for: .normal)
+        volumeSlider.setThumbImage(AppImages.circleFillSmall, for: .highlighted)
+        volumeSlider.isContinuous = true
         // slider 兩側 icon
         volumeSlider.minimumValueImage = AppImages.speakerSmall
         volumeSlider.maximumValueImage = AppImages.speakerWaveSmall
-        // icon 圖片顏色
         volumeSlider.tintColor = .white
         volumeSlider.minimumTrackTintColor = .white
         volumeSlider.maximumTrackTintColor = .lightText
-        volumeSlider.minimumValue = 0
-        volumeSlider.maximumValue = 100
+        volumeSlider.minimumValue = viewModel.minimumVolume
+        volumeSlider.maximumValue = viewModel.maximumVolume
+        volumeSlider.value = viewModel.volume
+        volumeSlider.addTarget(self, action: #selector(volumeSliderValueChanged), for: .valueChanged)
     }
 
     private func setupLayout() {
         view.addSubview(currentTimeLabel)
         currentTimeLabel.snp.makeConstraints { make in
-            make.height.equalTo(15)
+            make.height.equalTo(20)
             make.leading.equalTo(musicProgressSlider)
-            make.top.equalTo(musicProgressSlider.snp.bottom)
+            make.top.equalTo(musicProgressSlider.snp.bottom).offset(3)
         }
 
         view.addSubview(remainingTimeLabel)
         remainingTimeLabel.snp.makeConstraints { make in
-            make.height.equalTo(15)
+            make.height.equalTo(20)
             make.trailing.equalTo(musicProgressSlider)
-            make.top.equalTo(musicProgressSlider.snp.bottom)
+            make.top.equalTo(musicProgressSlider.snp.bottom).offset(3)
         }
     }
 
+    private func updatePlayOrPauseButtonUI() {
+        let isPlaying = viewModel.isPlaying
+        let image = isPlaying ? AppImages.pause : AppImages.play
+        playButtons[1].setImage(image, for: .normal)
+    }
+
+    // 更新已播放時間和剩餘時間標籤
+    private func updateMusicSlider() {
+        let currentTime = viewModel.currentTimeFloatValue
+        let totalTime = viewModel.totalDurationFloatValue
+
+        // 沒有被拖動時才更新時間
+        if !musicProgressSlider.isTracking {
+            musicProgressSlider.value = currentTime / totalTime
+        }
+    }
+
+    private func updateTimeLabels() {
+        // 沒有選中的曲目時，時間標籤顯示為 "--:--"
+        guard let totalDuration = viewModel.totalDuration?.floatValue else {
+            currentTimeLabel.text = formatTime(nil)
+            remainingTimeLabel.text = formatTime(nil)
+            return
+        }
+        let newCurrentTime = musicProgressSlider.value * totalDuration
+        let newRemainingTime = -totalDuration + newCurrentTime
+        currentTimeLabel.text = formatTime(newCurrentTime)
+        remainingTimeLabel.text = formatTime(newRemainingTime, isNegative: true)
+    }
+
+    // 拖動音樂時間軸
     @objc
-    private func playPauseButtonTapped(_ sender: UIButton) {
-//        isPlaying.toggle()
+    private func musicProgressSliderValueChanged(_ sender: UISlider) {
+        updateTimeLabels()
+        viewModel.targetTime = sender.value
+    }
+
+    // 結束拖動音樂時間軸
+    @objc
+    private func musicProgressSliderTouchUpInside(_ sender: UISlider) {
+        let time = Double(viewModel.targetTime * viewModel.totalDurationFloatValue)
+        viewModel.seek(to: time)
+    }
+
+    // 拖動音量時間軸
+    @objc
+    private func volumeSliderValueChanged(_ sender: UISlider) {
+        viewModel.volume = sender.value
     }
 
     @objc
-    private func nextButtonTapped(_ sender: UIButton) {}
+    private func playOrPauseButtonTapped(_ sender: UIButton) {
+        viewModel.isPlaying.toggle()
+        updatePlayOrPauseButtonUI()
+    }
+
+    @objc
+    private func nextButtonTapped(_ sender: UIButton) {
+        viewModel.next()
+    }
+
+    @objc
+    private func previousButtonTapped(_ sender: UIButton) {
+        viewModel.previous()
+    }
+
+    // 格式化時間
+    private func formatTime(_ time: Float?, isNegative: Bool = false) -> String {
+        guard let time = time else { return "--:--" }
+        let minutes = Int(time) / 60
+        let seconds = Int(time) % 60
+        let sign = isNegative ? "-" : ""
+        return "\(sign)\(minutes):\(String(format: "%02d", abs(seconds)))"
+    }
 }
