@@ -32,10 +32,15 @@ class CurrentTrackView: UIView {
 //        menuButtonBackgroundView.layer.cornerRadius = menuButtonBackgroundView.frame.height * 0.5
     }
 
-    func configure(trackName: String, artistName: String) {
+    func configure(trackName: String, artistName: String?) {
         // 讓左邊多出一塊空間滿足UI效果所以加上 \t
-        trackNameLabel.text = "\t\(trackName)"
-        artistButton.setTitle("\t\(artistName)", for: .normal)
+        trackLabel.text = "\t\(trackName)"
+        if let artistName = artistName {
+            artistLabel.text = "\t\(artistName)"
+            artistLabel.isHidden = false
+        } else {
+            artistLabel.isHidden = true
+        }
     }
 
     // MARK: Private
@@ -57,29 +62,12 @@ class CurrentTrackView: UIView {
         return button
     }()
 
-    private lazy var trackNameLabel: MarqueeLabel = {
-        let label = MarqueeLabel()
-        label.textAlignment = .left
-        label.font = .systemFont(ofSize: 18, weight: .semibold)
-        label.textColor = .white
+    private lazy var trackLabel: MarqueeLabel = getMarqueeLabel(textColor: .white)
 
-        // 跑馬燈相關參數設置
-        label.type = .continuous // 向左滾動
-        label.animationDelay = 3 // 跑馬燈跑完一輪後暫停時間
-        label.speed = .rate(30) // 每秒移動多少pt
-        label.fadeLength = 20 // 左右淡出效果長度
-        return label
-    }()
-
-    private lazy var artistButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.titleLabel?.font = .systemFont(ofSize: 18)
-        button.setTitleColor(.lightText, for: .normal)
-        return button
-    }()
+    private lazy var artistLabel: MarqueeLabel = getMarqueeLabel(textColor: .lightText)
 
     private lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [trackNameLabel, artistButton])
+        let stackView = UIStackView(arrangedSubviews: [trackLabel, artistLabel])
         stackView.axis = .vertical
         stackView.alignment = .leading
         stackView.distribution = .equalSpacing
@@ -96,12 +84,8 @@ class CurrentTrackView: UIView {
     private func setupLayout() {
         addSubview(stackView)
         stackView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(30)
+            make.leading.equalToSuperview().inset(50)
             make.centerY.equalToSuperview()
-        }
-
-        artistButton.snp.makeConstraints { make in
-            make.height.equalTo(20)
         }
 
         addSubview(menuButton)
@@ -110,6 +94,20 @@ class CurrentTrackView: UIView {
             make.trailing.centerY.equalToSuperview()
             make.width.height.equalTo(30)
         }
+    }
+
+    private func getMarqueeLabel(textColor: UIColor) -> MarqueeLabel {
+        let label = MarqueeLabel()
+        label.textAlignment = .left
+        label.font = .systemFont(ofSize: 15, weight: .medium)
+        label.textColor = textColor
+
+        // 跑馬燈相關參數設置
+        label.type = .continuous // 向左滾動
+        label.animationDelay = 3 // 跑馬燈跑完一輪後暫停時間
+        label.speed = .rate(30) // 每秒移動多少pt
+        label.fadeLength = 20 // 左右淡出效果長度
+        return label
     }
 }
 

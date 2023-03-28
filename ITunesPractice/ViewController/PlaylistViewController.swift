@@ -8,6 +8,7 @@
 import Combine
 import SnapKit
 import UIKit
+import Kingfisher
 
 // MARK: - PlaylistViewController
 
@@ -85,11 +86,19 @@ class PlaylistViewController: UIViewController {
 
     private lazy var playerContainerView: UIView = .init()
 
-    private lazy var currentTrackView: CurrentTrackView = {
-        let currentTrackView = CurrentTrackView()
-        currentTrackView.configure(trackName: "abcccccccccccccccccccccccccccccccccccccccccccc", artistName: "sssssss")
-        return currentTrackView
+    private lazy var currentTrackView: CurrentTrackView = CurrentTrackView()
+
+    private lazy var coverImageContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        view.layer.shadowColor = UIColor.black.cgColor
+        view.layer.shadowOffset = .zero
+        view.layer.shadowOpacity = 0.5
+        view.layer.shadowRadius = 7
+        return view
     }()
+
+    private lazy var coverImageView: UIImageView = UIImageView.coverImageView()
 
     // 音樂播放器
     private lazy var playerVC: PlaylistPlayerViewController = {
@@ -115,20 +124,35 @@ class PlaylistViewController: UIViewController {
 
     private var playerHiddenInset: CGFloat {
         // 10 是 playerContainerView 隱藏時上方要露出的高度
-        -playerContainerViewHeight + 10
+        -playerContainerViewHeight + 5
     }
 
     private func setupUI() {
         setupLayout()
+        updateCurrentTrack()
     }
 
     private func setupLayout() {
+        let topViewHeight = 62
         view.addSubview(currentTrackView)
         currentTrackView.snp.makeConstraints { make in
             // 與頂部的距離和 fpc.surfaceView.grabberHandlePadding 有關
             make.top.equalToSuperview().offset(50)
             make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(50)
+            make.height.equalTo(topViewHeight)
+        }
+
+        coverImageContainerView.addSubview(coverImageView)
+        coverImageView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
+        view.addSubview(coverImageContainerView)
+        coverImageContainerView.snp.makeConstraints { make in
+            // 與頂部的距離和 fpc.surfaceView.grabberHandlePadding 有關
+            make.top.equalToSuperview().offset(50)
+            make.leading.equalToSuperview().inset(20)
+            make.height.width.equalTo(topViewHeight)
         }
 
         view.addSubview(tableView)
@@ -174,7 +198,20 @@ class PlaylistViewController: UIViewController {
             .sink { [weak self] colors in
                 guard let self = self else { return }
                 self.updateGradientLayers(with: colors)
+                self.updateCurrentTrack()
             }.store(in: &cancellables)
+    }
+
+    private func updateCurrentTrack() {
+        let track = viewModel.selectedTrack
+        let url = track?.getArtworkImageWithSize(size: .square800)
+        coverImageView.kf.setImage(with: url, placeholder: AppImages.musicNote)
+
+        let showDefaultImage = coverImageView.image == AppImages.musicNote
+        coverImageView.backgroundColor = showDefaultImage ? UIColor.appColor(.gray3) : .clear
+        coverImageContainerView.layer.shadowColor = showDefaultImage ? UIColor.clear.cgColor : UIColor.black.cgColor
+
+        currentTrackView.configure(trackName: track?.trackName ?? "尚無曲目", artistName: track?.artistName)
     }
 
     private func updateGradientLayers(with colors: [UIColor]) {

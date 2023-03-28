@@ -51,7 +51,7 @@ class PlaylistPlayerViewController: UIViewController {
         // 指定第一個顏色佔 15 px 高度
         let firstColorHeightPercentage = NSNumber(value: 15.0 / view.bounds.height)
         // 顏色起始點與終點
-        gradient.locations = [0, firstColorHeightPercentage]
+        gradient.locations = [0, firstColorHeightPercentage, 0.4]
         view.layer.insertSublayer(gradient, at: 0)
         return gradient
     }()
