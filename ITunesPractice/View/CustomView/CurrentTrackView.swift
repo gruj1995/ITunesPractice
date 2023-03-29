@@ -28,8 +28,8 @@ class CurrentTrackView: UIView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-//        menuButtonBackgroundView.frame = menuButton.bounds
-//        menuButtonBackgroundView.layer.cornerRadius = menuButtonBackgroundView.frame.height * 0.5
+        menuButtonBackgroundLayer.frame = menuButton.bounds
+        menuButtonBackgroundLayer.cornerRadius = menuButton.bounds.height * 0.5
     }
 
     func configure(trackName: String, artistName: String?) {
@@ -45,20 +45,18 @@ class CurrentTrackView: UIView {
 
     // MARK: Private
 
-    private lazy var menuButtonBackgroundView: UIVisualEffectView = {
-        let effect = UIBlurEffect(style: .light)
-        let backgroundView = UIVisualEffectView(effect: effect)
-        backgroundView.clipsToBounds = true
-        return backgroundView
+    private lazy var menuButtonBackgroundLayer: CALayer = {
+        let layer = CALayer()
+        layer.backgroundColor = UIColor(white: 1, alpha: 0.1).cgColor
+        return layer
     }()
 
     private lazy var menuButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(AppImages.ellipsis, for: .normal)
         button.tintColor = .white
-//        button.backgroundColor = .clear
-//        menuButtonBackgroundView.frame = button.bounds
-//        button.insertSubview(menuButtonBackgroundView, at: 0)
+        button.backgroundColor = .clear
+        button.layer.insertSublayer(menuButtonBackgroundLayer, at: 0)
         return button
     }()
 
@@ -78,7 +76,6 @@ class CurrentTrackView: UIView {
     private func setupUI() {
         backgroundColor = .clear
         setupLayout()
-        menuButton.addBlurEffect()
     }
 
     private func setupLayout() {
@@ -92,7 +89,7 @@ class CurrentTrackView: UIView {
         menuButton.snp.makeConstraints { make in
             make.leading.equalTo(stackView.snp.trailing).offset(20)
             make.trailing.centerY.equalToSuperview()
-            make.width.height.equalTo(30)
+            make.width.height.equalTo(27)
         }
     }
 
@@ -108,18 +105,5 @@ class CurrentTrackView: UIView {
         label.speed = .rate(30) // 每秒移動多少pt
         label.fadeLength = 20 // 左右淡出效果長度
         return label
-    }
-}
-
-extension UIButton {
-    func addBlurEffect() {
-        let blur = UIVisualEffectView(effect: UIBlurEffect(style: .light))
-        blur.frame = bounds
-        blur.isUserInteractionEnabled = false
-        blur.clipsToBounds = true
-        insertSubview(blur, at: 0)
-        if let imageView = imageView {
-            bringSubviewToFront(imageView)
-        }
     }
 }
