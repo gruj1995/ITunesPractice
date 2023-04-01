@@ -10,11 +10,10 @@ import Foundation
 extension Error {
     /// 如果是自訂的錯誤，印出對應的 errorDescription
     var unwrapDescription: String {
-        switch self {
-        case let musicPlayerError as MusicPlayerError:
-            return musicPlayerError.errorDescription ?? ""
-        default:
-            return localizedDescription
+        if let localizedError = self as? LocalizedError {
+            return localizedError.errorDescription ?? localizedError.localizedDescription
+        } else {
+            return self.localizedDescription
         }
     }
 }
