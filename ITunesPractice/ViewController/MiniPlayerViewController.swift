@@ -5,10 +5,9 @@
 //  Created by 李品毅 on 2023/3/13.
 //
 
-import Kingfisher
+import Combine
 import SnapKit
 import UIKit
-import FloatingPanel
 
 // MARK: - MiniPlayerViewController
 
@@ -54,7 +53,7 @@ class MiniPlayerViewController: BottomFloatingPanelViewController {
 
     private lazy var highlightBlurView: HighlightBlurView = .init()
 
-    private lazy var coverImageView: UIImageView = UIImageView.coverImageView()
+    private lazy var coverImageView: UIImageView = .coverImageView()
 
     private lazy var songTitleLabel: UILabel = {
         let label = UILabel()

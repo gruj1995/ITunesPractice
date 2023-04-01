@@ -34,7 +34,8 @@ class TrackCell: UITableViewCell {
     }
 
     func configure(artworkUrl: String, collectionName: String, artistName: String, trackName: String, showsHighlight: Bool = false) {
-        coverImageView.kf.setImage(with: URL(string: artworkUrl))
+        let url = URL(string: artworkUrl)
+        coverImageView.loadCoverImage(with: url)
         trackNameLabel.text = trackName
         albumInfoLabel.text = "\(artistName) · \(collectionName)"
         highlightIfNeeded(showsHighlight)

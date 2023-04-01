@@ -114,7 +114,8 @@ class TrackContextMenuViewController: UIViewController {
         setupLayout()
 
         guard let track = track else { return }
-        coverImageView.kf.setImage(with: URL(string: track.artworkUrl100))
+        let url = URL(string: track.artworkUrl100)
+        coverImageView.loadCoverImage(with: url)
         trackNameLabel.text = track.trackName
         artistNameLabel.text = track.artistName
         albumInfoLabel.text = "\(track.collectionName) · \(track.releaseDateValue?.toString(dateFormat: "yyyy年") ?? "") "

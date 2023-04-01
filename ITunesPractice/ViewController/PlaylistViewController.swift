@@ -8,7 +8,6 @@
 import Combine
 import SnapKit
 import UIKit
-import Kingfisher
 
 // MARK: - PlaylistViewController
 
@@ -205,13 +204,14 @@ class PlaylistViewController: UIViewController {
     private func updateCurrentTrack() {
         let track = viewModel.selectedTrack
         let url = track?.getArtworkImageWithSize(size: .square800)
-        coverImageView.kf.setImage(with: url, placeholder: AppImages.musicNote)
+        coverImageView.loadCoverImage(with: url)
 
-        let showDefaultImage = coverImageView.image == AppImages.musicNote
+        let showDefaultImage = coverImageView.image == DefaultTrack.coverImage
         coverImageView.backgroundColor = showDefaultImage ? UIColor.appColor(.gray3) : .clear
         coverImageContainerView.layer.shadowColor = showDefaultImage ? UIColor.clear.cgColor : UIColor.black.cgColor
 
-        currentTrackView.configure(trackName: track?.trackName ?? "尚無曲目", artistName: track?.artistName)
+        let trackName = track?.trackName ?? DefaultTrack.trackName
+        currentTrackView.configure(trackName: trackName, artistName: track?.artistName)
     }
 
     private func updateGradientLayers(with colors: [UIColor]) {

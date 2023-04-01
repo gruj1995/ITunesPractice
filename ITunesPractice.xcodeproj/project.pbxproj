@@ -43,6 +43,7 @@
 		8B5FCD3529D2C50500C763DB /* CAGradientLayer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5FCD3429D2C50500C763DB /* CAGradientLayer+Extensions.swift */; };
 		8B5FCD3729D2C59000C763DB /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5FCD3629D2C59000C763DB /* UIImage+Extensions.swift */; };
 		8B5FCD3C29D3281A00C763DB /* MarqueeLabel in Frameworks */ = {isa = PBXBuildFile; productRef = 8B5FCD3B29D3281A00C763DB /* MarqueeLabel */; };
+		8B5FCD3E29D3C9B500C763DB /* MiniPlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5FCD3D29D3C9B500C763DB /* MiniPlayerViewModel.swift */; };
 		8B677CC529BEC97600F73FE5 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B677CC429BEC97600F73FE5 /* UIView+Extensions.swift */; };
 		8B677CC729BEF7F400F73FE5 /* RippleEffectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B677CC629BEF7F400F73FE5 /* RippleEffectButton.swift */; };
 		8B677CCA29BF922400F73FE5 /* GesturePublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B677CC929BF922400F73FE5 /* GesturePublisher.swift */; };
@@ -63,6 +64,7 @@
 		8B6B56C629B577D200F099DD /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6B56C529B577D200F099DD /* SearchViewModel.swift */; };
 		8B6B56C829B5931200F099DD /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6B56C729B5931200F099DD /* Utils.swift */; };
 		8B6EB8B229CBE26100A684A5 /* BottomFloatingPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6EB8B129CBE26100A684A5 /* BottomFloatingPanelViewController.swift */; };
+		8B882E8F29D872ED000AA1DE /* UIImageView+Kingfisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B882E8E29D872ED000AA1DE /* UIImageView+Kingfisher.swift */; };
 		8BB69BB829BC5E2A00F09793 /* TrackDetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BB729BC5E2A00F09793 /* TrackDetailViewModelTests.swift */; };
 		8BB69BBF29BC93C800F09793 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BBE29BC93C800F09793 /* APIRequest.swift */; };
 		8BB69BC129BC94BB00F09793 /* SearchAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BC029BC94BB00F09793 /* SearchAPIRequest.swift */; };
@@ -194,6 +196,7 @@
 		8B5FCD3229D1CC9400C763DB /* CurrentTrackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentTrackView.swift; sourceTree = "<group>"; };
 		8B5FCD3429D2C50500C763DB /* CAGradientLayer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAGradientLayer+Extensions.swift"; sourceTree = "<group>"; };
 		8B5FCD3629D2C59000C763DB /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
+		8B5FCD3D29D3C9B500C763DB /* MiniPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniPlayerViewModel.swift; sourceTree = "<group>"; };
 		8B677CC429BEC97600F73FE5 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		8B677CC629BEF7F400F73FE5 /* RippleEffectButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RippleEffectButton.swift; sourceTree = "<group>"; };
 		8B677CC929BF922400F73FE5 /* GesturePublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GesturePublisher.swift; sourceTree = "<group>"; };
@@ -214,6 +217,7 @@
 		8B6B56C529B577D200F099DD /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		8B6B56C729B5931200F099DD /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		8B6EB8B129CBE26100A684A5 /* BottomFloatingPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomFloatingPanelViewController.swift; sourceTree = "<group>"; };
+		8B882E8E29D872ED000AA1DE /* UIImageView+Kingfisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Kingfisher.swift"; sourceTree = "<group>"; };
 		8BB69BB729BC5E2A00F09793 /* TrackDetailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailViewModelTests.swift; sourceTree = "<group>"; };
 		8BB69BBE29BC93C800F09793 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
 		8BB69BC029BC94BB00F09793 /* SearchAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchAPIRequest.swift; sourceTree = "<group>"; };
@@ -465,6 +469,7 @@
 				8BB69BD329BDB49400F09793 /* SearchResultsViewController.swift */,
 				8BB69BD529BDB4A500F09793 /* SearchResultsViewModel.swift */,
 				8BB69BDF29BE5A5900F09793 /* MiniPlayerViewController.swift */,
+				8B5FCD3D29D3C9B500C763DB /* MiniPlayerViewModel.swift */,
 				8BB69BD729BE1B1500F09793 /* PlaylistViewController.swift */,
 				8BB69BD929BE1B3100F09793 /* PlaylistViewModel.swift */,
 				8B6B56C529B577D200F099DD /* SearchViewModel.swift */,
@@ -692,6 +697,7 @@
 				8BFDF17829A24D37008E2C23 /* UIColor+Extensions.swift */,
 				8B5FCD3629D2C59000C763DB /* UIImage+Extensions.swift */,
 				8B677CC429BEC97600F73FE5 /* UIView+Extensions.swift */,
+				8B882E8E29D872ED000AA1DE /* UIImageView+Kingfisher.swift */,
 				8B677CCF29BF942200F73FE5 /* UIView+Ripple.swift */,
 				8B6B56B829B48C6400F099DD /* UIViewController+Extensions.swift */,
 				8BFDF17629A23142008E2C23 /* UISearchBar+Extensions.swift */,
@@ -1054,6 +1060,7 @@
 				8BF7184029CE818C002CEFD6 /* LocaleManager.swift in Sources */,
 				8B4D3708299FCA5B00059381 /* SearchTestViewController.swift in Sources */,
 				8B5FCD3729D2C59000C763DB /* UIImage+Extensions.swift in Sources */,
+				8B882E8F29D872ED000AA1DE /* UIImageView+Kingfisher.swift in Sources */,
 				8BBCE34F29C0B6D60084BF44 /* PresentationController.swift in Sources */,
 				8BB74C7929A1C687000B9D59 /* ITunesService.swift in Sources */,
 				8BB69BD429BDB49400F09793 /* SearchResultsViewController.swift in Sources */,
@@ -1110,6 +1117,7 @@
 				8B677CD029BF942200F73FE5 /* UIView+Ripple.swift in Sources */,
 				8BB69BE429BE5CC600F09793 /* AppImages.swift in Sources */,
 				8BBC8F6529B7632300ACB0EA /* UIButton+Extensions.swift in Sources */,
+				8B5FCD3E29D3C9B500C763DB /* MiniPlayerViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

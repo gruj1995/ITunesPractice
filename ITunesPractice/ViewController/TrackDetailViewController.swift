@@ -6,7 +6,6 @@
 //
 
 import Combine
-import Kingfisher
 import UIKit
 
 // MARK: - TrackDetailViewControllerDatasource
@@ -124,7 +123,7 @@ class TrackDetailViewController: UIViewController {
             .receive(on: RunLoop.main)
             .sink { [weak self] track in
                 guard let self = self, let track = track else { return }
-                self.coverImageView.kf.setImage(with: track.getArtworkImageWithSize(size: .square800))
+                self.coverImageView.loadCoverImage(with: track.getArtworkImageWithSize(size: .square800))
                 self.trackNameLabel.text = track.trackName
                 self.artistNameLabel.text = track.artistName
                 self.dateLabel.text = track.releaseDateValue?.toString(dateFormat: "yyyy/MM/dd") ?? ""
