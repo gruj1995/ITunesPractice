@@ -108,6 +108,7 @@ class PlaylistPlayerViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 guard let self = self else { return }
+                self.viewModel.updateDisplayedTime()
                 self.updateMusicSlider()
                 self.updateTimeLabels()
             }.store(in: &cancellables)
@@ -134,8 +135,7 @@ class PlaylistPlayerViewController: UIViewController {
         musicProgressSlider.maximumTrackTintColor = .lightText // 滑軌未填滿時顏色
         musicProgressSlider.tintColor = .white // 影響 icon 圖片顏色
         musicProgressSlider.minimumValue = 0
-        musicProgressSlider.maximumValue = viewModel.totalDurationFloatValue // 設置為歌曲總時長
-        musicProgressSlider.value = viewModel.currentTimeFloatValue
+        musicProgressSlider.maximumValue = 1
         musicProgressSlider.addTarget(self, action: #selector(musicProgressSliderValueChanged), for: .valueChanged)
         musicProgressSlider.addTarget(self, action: #selector(musicProgressSliderTouchUpInside), for: .touchUpInside)
     }
@@ -150,8 +150,8 @@ class PlaylistPlayerViewController: UIViewController {
         volumeSlider.tintColor = .white
         volumeSlider.minimumTrackTintColor = .white
         volumeSlider.maximumTrackTintColor = .lightText
-        volumeSlider.minimumValue = viewModel.minimumVolume
-        volumeSlider.maximumValue = viewModel.maximumVolume
+        volumeSlider.minimumValue = 0
+        volumeSlider.maximumValue = 1
         volumeSlider.value = viewModel.volume
         volumeSlider.addTarget(self, action: #selector(volumeSliderValueChanged), for: .valueChanged)
     }
@@ -180,40 +180,28 @@ class PlaylistPlayerViewController: UIViewController {
 
     // 更新已播放時間和剩餘時間標籤
     private func updateMusicSlider() {
-        let currentTime = viewModel.currentTimeFloatValue
-        let totalTime = viewModel.totalDurationFloatValue
-
         // 沒有被拖動時才更新時間
         if !musicProgressSlider.isTracking {
-            musicProgressSlider.value = currentTime / totalTime
+            musicProgressSlider.value = viewModel.playbackPercentage
         }
     }
 
     private func updateTimeLabels() {
-        // 沒有選中的曲目時，時間標籤顯示為 "--:--"
-        guard let totalDuration = viewModel.totalDuration?.floatValue else {
-            currentTimeLabel.text = formatTime(nil)
-            remainingTimeLabel.text = formatTime(nil)
-            return
-        }
-        let newCurrentTime = musicProgressSlider.value * totalDuration
-        let newRemainingTime = -totalDuration + newCurrentTime
-        currentTimeLabel.text = formatTime(newCurrentTime)
-        remainingTimeLabel.text = formatTime(newRemainingTime, isNegative: true)
+        currentTimeLabel.text = viewModel.$displayedCurrentTime
+        remainingTimeLabel.text = viewModel.$displayedRemainingTime
     }
 
     // 拖動音樂時間軸
     @objc
     private func musicProgressSliderValueChanged(_ sender: UISlider) {
+        viewModel.newPlaybackPercentage = sender.value
         updateTimeLabels()
-        viewModel.targetTime = sender.value
     }
 
     // 結束拖動音樂時間軸
     @objc
     private func musicProgressSliderTouchUpInside(_ sender: UISlider) {
-        let time = Double(viewModel.targetTime * viewModel.totalDurationFloatValue)
-        viewModel.seek(to: time)
+        viewModel.seekToNewTime()
     }
 
     // 拖動音量時間軸
@@ -225,7 +213,6 @@ class PlaylistPlayerViewController: UIViewController {
     @objc
     private func playOrPauseButtonTapped(_ sender: UIButton) {
         viewModel.isPlaying.toggle()
-        updatePlayOrPauseButtonUI()
     }
 
     @objc
@@ -236,14 +223,5 @@ class PlaylistPlayerViewController: UIViewController {
     @objc
     private func previousButtonTapped(_ sender: UIButton) {
         viewModel.previous()
-    }
-
-    // 格式化時間
-    private func formatTime(_ time: Float?, isNegative: Bool = false) -> String {
-        guard let time = time else { return "--:--" }
-        let minutes = Int(time) / 60
-        let seconds = Int(time) % 60
-        let sign = isNegative ? "-" : ""
-        return "\(sign)\(minutes):\(String(format: "%02d", abs(seconds)))"
     }
 }
