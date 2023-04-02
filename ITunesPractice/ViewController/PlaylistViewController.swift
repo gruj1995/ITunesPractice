@@ -252,7 +252,9 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
         let contentHeight = scrollView.contentSize.height
         let frameHeight = scrollView.frame.size.height
 
-        if contentOffset <= 0 {
+        if viewModel.tracks.isEmpty {
+            isPlayerHidden = false
+        } else if contentOffset <= 0 {
             // 滑到最上方了，隱藏播放器
             isPlayerHidden = true
         } else if contentOffset >= contentHeight - frameHeight {
