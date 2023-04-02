@@ -7,6 +7,7 @@
 
 import ColorKit
 import Combine
+import Kingfisher
 import UIKit
 
 // MARK: - PlaylistViewModel
@@ -15,7 +16,6 @@ class PlaylistViewModel {
     // MARK: Lifecycle
 
     init() {
-
         // 監聽歌曲選中事件
 //        selectTrackPublisher
 //            .sink { [weak self] track in
@@ -39,7 +39,7 @@ class PlaylistViewModel {
             musicPlayer.currentTrack
         }
         set {
-            if let index = tracks.firstIndex(where: {$0 == newValue}) {
+            if let index = tracks.firstIndex(where: { $0 == newValue }) {
                 musicPlayer.currentTrackIndex = index
                 changeImage()
             }
@@ -97,6 +97,7 @@ class PlaylistViewModel {
     private var cancellables: Set<AnyCancellable> = .init()
 
     // MARK: - Inputs
+
     private let musicPlayer: MusicPlayer = .shared
 
     // 當歌曲被選中時，通過這個Subject發布選中事件
@@ -118,7 +119,7 @@ class PlaylistViewModel {
     /// 使用kingfisher下載圖檔
     private func downloadImage(with urlString: String?) {
         guard let urlString = urlString else {
-            colorsSubject.send(defaultGradientColors)
+            colorsSubject.send(DefaultTrack.gradientColors)
             return
         }
 
