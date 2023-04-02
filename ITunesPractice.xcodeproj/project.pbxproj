@@ -66,6 +66,7 @@
 		8B6EB8B229CBE26100A684A5 /* BottomFloatingPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6EB8B129CBE26100A684A5 /* BottomFloatingPanelViewController.swift */; };
 		8B882E8F29D872ED000AA1DE /* UIImageView+Kingfisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B882E8E29D872ED000AA1DE /* UIImageView+Kingfisher.swift */; };
 		8B882E9129D93D45000AA1DE /* DefaultTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B882E9029D93D45000AA1DE /* DefaultTrack.swift */; };
+		8B882E9429D940C3000AA1DE /* FormattedTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B882E9329D940C3000AA1DE /* FormattedTime.swift */; };
 		8BB69BB829BC5E2A00F09793 /* TrackDetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BB729BC5E2A00F09793 /* TrackDetailViewModelTests.swift */; };
 		8BB69BBF29BC93C800F09793 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BBE29BC93C800F09793 /* APIRequest.swift */; };
 		8BB69BC129BC94BB00F09793 /* SearchAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BC029BC94BB00F09793 /* SearchAPIRequest.swift */; };
@@ -220,6 +221,7 @@
 		8B6EB8B129CBE26100A684A5 /* BottomFloatingPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomFloatingPanelViewController.swift; sourceTree = "<group>"; };
 		8B882E8E29D872ED000AA1DE /* UIImageView+Kingfisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Kingfisher.swift"; sourceTree = "<group>"; };
 		8B882E9029D93D45000AA1DE /* DefaultTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTrack.swift; sourceTree = "<group>"; };
+		8B882E9329D940C3000AA1DE /* FormattedTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattedTime.swift; sourceTree = "<group>"; };
 		8BB69BB729BC5E2A00F09793 /* TrackDetailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailViewModelTests.swift; sourceTree = "<group>"; };
 		8BB69BBE29BC93C800F09793 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
 		8BB69BC029BC94BB00F09793 /* SearchAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchAPIRequest.swift; sourceTree = "<group>"; };
@@ -532,6 +534,7 @@
 		8B6B56BC29B4995A00F099DD /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				8B882E9229D940B1000AA1DE /* PropertyWrapper */,
 				8B677CC829BF921800F73FE5 /* Combine */,
 				8BD1C64D29AEDE9200337EF3 /* Enumerations */,
 				8BFDF16F29A217F8008E2C23 /* Extensions */,
@@ -549,6 +552,14 @@
 				8B6B56A129B1118D00F099DD /* ContextMenu */,
 			);
 			path = TableView;
+			sourceTree = "<group>";
+		};
+		8B882E9229D940B1000AA1DE /* PropertyWrapper */ = {
+			isa = PBXGroup;
+			children = (
+				8B882E9329D940C3000AA1DE /* FormattedTime.swift */,
+			);
+			path = PropertyWrapper;
 			sourceTree = "<group>";
 		};
 		8BB69BB929BC924000F09793 /* NetworkService */ = {
@@ -684,8 +695,8 @@
 		8BF7183629CDF7E1002CEFD6 /* MusicPlayer */ = {
 			isa = PBXGroup;
 			children = (
-				8BF7183929CDFA50002CEFD6 /* MusicPlayer+Protocols.swift */,
 				8BF7183229CDEEFB002CEFD6 /* MusicPlayer.swift */,
+				8BF7183929CDFA50002CEFD6 /* MusicPlayer+Protocols.swift */,
 				8BF7183729CDF7FE002CEFD6 /* MusicPlayerError.swift */,
 				8BF7183D29CE2863002CEFD6 /* RepeatMode.swift */,
 				8B5FCD3029D1624D00C763DB /* MPVolumeView+Extensions.swift */,
@@ -1094,6 +1105,7 @@
 				8BB74C8F29A1DC9F000B9D59 /* ApiEngineError.swift in Sources */,
 				8B6B56B529B4491500F099DD /* RangeReplaceableCollection+Extensions.swift in Sources */,
 				8B4D36C4299FBD7E00059381 /* AppDelegate.swift in Sources */,
+				8B882E9429D940C3000AA1DE /* FormattedTime.swift in Sources */,
 				8BBC8F4529B6662F00ACB0EA /* TrackDetailViewControllerView.swift in Sources */,
 				8BFDF18329A32B68008E2C23 /* NilDataResponse.swift in Sources */,
 				8BBC8F4129B6522400ACB0EA /* TrackCellView.swift in Sources */,
