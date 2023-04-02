@@ -84,9 +84,3 @@ struct Track: Codable, Equatable, CustomStringConvertible {
         case artworkUrl100, collectionName, artistName, trackId, trackName, releaseDate, artistViewUrl, collectionViewUrl, previewUrl, trackViewUrl
     }
 }
-
-// 沒有選中曲目時的預設圖片與文字
-struct DefaultTrack {
-    static let coverImage = AppImages.musicNote
-    static let trackName = "尚無曲目"
-}

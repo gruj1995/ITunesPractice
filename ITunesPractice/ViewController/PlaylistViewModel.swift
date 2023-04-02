@@ -7,10 +7,7 @@
 
 import ColorKit
 import Combine
-import Kingfisher
 import UIKit
-
-let defaultGradientColors: [UIColor] = [.systemGray, .gray, .darkGray]
 
 // MARK: - PlaylistViewModel
 
@@ -18,7 +15,7 @@ class PlaylistViewModel {
     // MARK: Lifecycle
 
     init() {
-//        tracks = UserDefaults.standard.tracks
+
         // 監聽歌曲選中事件
 //        selectTrackPublisher
 //            .sink { [weak self] track in
@@ -31,15 +28,21 @@ class PlaylistViewModel {
     // MARK: Internal
 
     // TODO: 為什麼PassthroughSubject只觸發一次？
-    var colorsSubject = CurrentValueSubject<[UIColor], Never>(defaultGradientColors)
+    var colorsSubject = CurrentValueSubject<[UIColor], Never>(DefaultTrack.gradientColors)
 
     var selectedIndexPath: IndexPath?
 
     // MARK: - Outputs
 
-    private(set) var selectedTrack: Track? {
-        didSet {
-            changeImage()
+    var selectedTrack: Track? {
+        get {
+            musicPlayer.currentTrack
+        }
+        set {
+            if let index = tracks.firstIndex(where: {$0 == newValue}) {
+                musicPlayer.currentTrackIndex = index
+                changeImage()
+            }
         }
     }
 
@@ -104,9 +107,9 @@ class PlaylistViewModel {
     private var totalPages: Int = 0
     private var pageSize: Int = 20
 
-    private func setSelectedTrack(_ track: Track?) {
-        selectedTrack = track
-    }
+//    private func setSelectedTrack(_ track: Track?) {
+//        selectedTrack = track
+//    }
 
     private func changeImage() {
         downloadImage(with: selectedTrack?.artworkUrl100)
