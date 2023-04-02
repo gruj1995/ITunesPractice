@@ -7,14 +7,13 @@
 
 import AVFoundation
 import AVKit
-import Foundation
 import Combine
+import Foundation
 import MediaPlayer // MPVolumeView
 
 // MARK: - MusicPlayer
 
 class MusicPlayer: MusicPlayerProtocol {
-
     // MARK: Lifecycle
 
     private init() {
@@ -26,16 +25,11 @@ class MusicPlayer: MusicPlayerProtocol {
 
     static let shared = MusicPlayer()
 
-    /// 在 AppDelegate 呼叫，讓 MusicPlayer 在開啟app時就建立
-    func configure() {}
-
-    // 用來控制系統音量（只使用它裡面的 slider ）
-    private let mpVolumeView: MPVolumeView = MPVolumeView()
+    var player: AVQueuePlayer!
+    private var looper: AVPlayerLooper?
 
     // 播放清單
     var tracks: [Track] = []
-
-    var currentTrackIndex: Int? 
 
     // 是否隨機播放
     var isShuffleMode: Bool = false
@@ -49,11 +43,25 @@ class MusicPlayer: MusicPlayerProtocol {
     // 播放速率上限
     let maxPlaybackRate: Float = 2.0
 
-    var player: AVQueuePlayer!
+    var currentTrackIndex: Int {
+        get {
+            currentTrackIndexSubject.value
+        }
+        set {
+            currentTrackIndexSubject.value = newValue
+            play(at: newValue)
+        }
+    }
 
-    var isPlaying: Bool = false {
-        didSet {
-            if isPlaying {
+    // 是否正在播放
+    var isPlaying: Bool {
+        get {
+            isPlayingSubject.value
+        }
+        set {
+            isPlayingSubject.value = newValue
+
+            if newValue {
                 player.play()
             } else {
                 player.pause()
@@ -61,14 +69,11 @@ class MusicPlayer: MusicPlayerProtocol {
         }
     }
 
-    // 當前的播放狀態，包含暫停、等待播放指定曲目、播放中
-    var playStatus: AVPlayer.TimeControlStatus {
-        player.timeControlStatus
-    }
-
     var currentTrack: Track? {
-        guard let index = currentTrackIndex else { return nil }
-        return tracks[index]
+        guard tracks.indices.contains(currentTrackIndex) else {
+            return nil
+        }
+        return tracks[currentTrackIndex]
     }
 
     // 當前播放進度（單位：秒）
@@ -85,16 +90,6 @@ class MusicPlayer: MusicPlayerProtocol {
     var currentPlaybackDuration: Double? {
         player.currentItem?.duration.seconds
     }
-
-//    // 當前曲目剩餘時間（單位：秒）
-//    var currentPlaybackRemainingTime: Double? {
-//        guard let currentTime = currentPlaybackTime,
-//              let totalDuration = currentPlaybackDuration
-//        else {
-//            return nil
-//        }
-//        return totalDuration - currentTime
-//    }
 
     // 指定播放速率
     // 0.0 暫停
@@ -134,50 +129,95 @@ class MusicPlayer: MusicPlayerProtocol {
         set { player.isMuted = newValue }
     }
 
-    /// 上首歌曲播放結束，判斷播放下一首的邏輯
-    func playNextTrack() throws {
-        guard !tracks.isEmpty else {
-            throw MusicPlayerError.emptyPlaylist
-        }
-
-        var nextIndex: Int
-        switch repeatMode {
-        case .all:
-            nextIndex = (currentTrackIndex ?? -1) + 1
-            if !tracks.isValidIndex(nextIndex) {
-                nextIndex = 0
-            }
-        case .one:
-            nextIndex = currentTrackIndex ?? 0
-        case .none:
-            nextIndex = (currentTrackIndex ?? -1) + 1
-            if !tracks.isValidIndex(nextIndex) {
-                stop()
-                return
-            }
-        }
-
-        player.advanceToNextItem()
-//        play(at: nextIndex)
+    var currentTrackIndexPublisher: AnyPublisher<Int, Never> {
+        return currentTrackIndexSubject.eraseToAnyPublisher()
     }
 
+    var playbackTimePublisher: AnyPublisher<Double?, Never> {
+        return timeSubject.eraseToAnyPublisher()
+    }
+
+    var isPlayingPublisher: AnyPublisher<Bool, Never> {
+        return isPlayingSubject.eraseToAnyPublisher()
+    }
+
+    /// 在 AppDelegate 呼叫，讓 MusicPlayer 在開啟app時就建立
+    func configure() {}
+
+    /// 上首歌曲播放結束，判斷播放下一首的邏輯
+//    func playNextTrack() throws {
+//        guard !tracks.isEmpty else {
+//            throw MusicPlayerError.emptyPlaylist
+//        }
+//
+//        var nextIndex: Int
+//        switch repeatMode {
+//        case .all:
+//            nextIndex = currentTrackIndex + 1
+//            if !tracks.isValidIndex(nextIndex) {
+//                nextIndex = 0
+//            }
+//        case .one:
+//            nextIndex = currentTrackIndex
+//        case .none:
+//            nextIndex = currentTrackIndex + 1
+//            if !tracks.isValidIndex(nextIndex) {
+//                stop()
+//                return
+//            }
+//        }
+//
+//        player.advanceToNextItem()
+//        currentTrackIndex = nextIndex
+//        //        play(at: nextIndex)
+//    }
+
+//        func playPreviousTrack() {
+//            guard currentTrackIndex > 0 else {
+//                return
+//            }
+//
+//            let previousTrackIndex = currentTrackIndex - 1
+//            let previousTrack = tracks[previousTrackIndex]
+//
+//            player.pause()
+//            player.replaceCurrentItem(with: previousTrack)
+//            currentTrackIndex = previousTrackIndex
+//            player.play()
+//        }
+
     // MARK: Private
+
+    // 用來控制系統音量（只使用它裡面的 slider ）
+    private let mpVolumeView: MPVolumeView = .init()
+
+    private var timeObserverToken: Any?
+
+    private let currentTrackIndexSubject = CurrentValueSubject<Int, Never>(0)
+    private let timeSubject = CurrentValueSubject<Double?, Never>(nil)
+    private let isPlayingSubject = CurrentValueSubject<Bool, Never>(false)
 
     private func initQueuePlayer() {
         // 取得儲存在本地的播放清單資料
         tracks = UserDefaults.standard.tracks
 
         // 將 tracks 陣列中的每個元素轉換成 AVPlayerItem 並加入到 playerItems 陣列中
-        let playerItems = tracks.compactMap { track -> AVPlayerItem? in
+        playerItems = storedPlayerItems
+
+        // 建立 AVQueuePlayer 並將 playerItems 陣列設定為播放清單
+        player = AVQueuePlayer(items: playerItems)
+    }
+
+    var storedPlayerItems: [AVPlayerItem] {
+        tracks.compactMap { track -> AVPlayerItem? in
             guard let url = URL(string: track.previewUrl) else {
                 return nil
             }
             return AVPlayerItem(url: url)
         }
-
-        // 建立 AVQueuePlayer 並將 playerItems 陣列設定為播放清單
-        player = AVQueuePlayer(items: playerItems)
     }
+
+    private var playerItems: [AVPlayerItem] = []
 
     /// 播放指定索引的歌曲
     private func play(at index: Int) {
@@ -193,33 +233,43 @@ class MusicPlayer: MusicPlayerProtocol {
             Utils.toast(MusicPlayerError.invalidTrack.unwrapDescription)
             return
         }
+        // 回到開頭
+        player.seek(to: .zero)
 
         let playerItem = AVPlayerItem(url: audioURL)
-//        player.replaceCurrentItem(with: playerItem)
-        player.insert(playerItem, after: nil)
+        player.replaceCurrentItem(with: playerItem)
+
         // TODO: 確認要哪一個
-//        // 播放下一首
-//        player.advanceToNextItem()
-        isPlaying = true
+        //        // 播放下一首
+        //        player.advanceToNextItem()
     }
 
-    private var timeObserverToken: Any?
-
     private func addTimeObserver() {
-        // 每 0.1 秒發送一次監聽事件
-        timeObserverToken = player.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 1, timescale: 10), queue: .main) { [weak self] _ in
+        // 每秒發送 timescale 次監聽事件
+        timeObserverToken = player.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 1, timescale: 30), queue: .main) { [weak self] _ in
             guard let self = self else { return }
             if self.player.currentItem?.status == .readyToPlay {
-                self.timeSubject.send(self.player.currentItem?.currentTime().seconds)
+                self.currentPlaybackTime = self.player.currentItem?.currentTime().seconds
             }
         }
     }
 
-    var playbackTimePublisher: AnyPublisher<Double?, Never> {
-        return timeSubject.eraseToAnyPublisher()
-    }
+    // MARK: 暫時關閉
 
-    private let timeSubject = CurrentValueSubject<Double?, Never>(nil)
+    //    // 當前的播放狀態，包含暫停、等待播放指定曲目、播放中
+    //    var playStatus: AVPlayer.TimeControlStatus {
+    //        player.timeControlStatus
+    //    }
+
+    //    // 當前曲目剩餘時間（單位：秒）
+    //    var currentPlaybackRemainingTime: Double? {
+    //        guard let currentTime = currentPlaybackTime,
+    //              let totalDuration = currentPlaybackDuration
+    //        else {
+    //            return nil
+    //        }
+    //        return totalDuration - currentTime
+    //    }
 }
 
 // MARK: MusicPlayerControl
@@ -227,11 +277,9 @@ class MusicPlayer: MusicPlayerProtocol {
 extension MusicPlayer {
     ///  播放當前曲目(從頭開始播放)
     func play() {
-        guard let index = currentTrackIndex else {
-            Utils.toast(MusicPlayerError.emptyPlaylist.unwrapDescription)
-            return
-        }
+        let index = currentTrackIndex
         play(at: index)
+        isPlaying = true
     }
 
     /// 暫停
@@ -281,28 +329,25 @@ extension MusicPlayer {
             return
         }
         play(at: index)
+        isPlaying = true
     }
 
     /// 播放清單內的下一首
     func nextTrack() {
-        player.advanceToNextItem()
-//        guard let index = currentTrackIndex else {
-//            Utils.toast(MusicPlayerError.emptyPlaylist.unwrapDescription)
-//            return
-//        }
-//        let nextIndex = isShuffleMode ? tracks.randomIndexExcluding(index) : index + 1
-//        play(at: nextIndex)
+//        player.advanceToNextItem()
+//        currentTrackIndex += 1
+        let index = currentTrackIndex
+        let nextIndex = isShuffleMode ? tracks.randomIndexExcluding(index) : index + 1
+        currentTrackIndex = nextIndex
+        play(at: nextIndex)
     }
 
     /// 播放清單內的上一首
     func previousTrack() {
-        guard let index = currentTrackIndex else {
-            Utils.toast(MusicPlayerError.emptyPlaylist.unwrapDescription)
-            return
-        }
+        let index = currentTrackIndex
         // 前面還有歌時
         if index > 0 {
-            let items = player.items()
+            let items = storedPlayerItems
             let previousItem = items[index - 1]
             player.seek(to: CMTime.zero)
             player.replaceCurrentItem(with: previousItem)
@@ -382,4 +427,3 @@ extension MusicPlayer {
  */
 
 // player.addBoundaryTimeObserver  傳入指定時間(陣列)要進行的行為
-

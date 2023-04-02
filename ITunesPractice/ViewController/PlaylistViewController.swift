@@ -60,7 +60,7 @@ class PlaylistViewController: UIViewController {
 
         NetStatus.shared.netStatusChangeHandler = { [weak self] in
             DispatchQueue.main.async {
-                self?.updateUI()
+                self?.updateTableView()
             }
         }
     }
@@ -128,7 +128,6 @@ class PlaylistViewController: UIViewController {
 
     private func setupUI() {
         setupLayout()
-        updateCurrentTrack()
     }
 
     private func setupLayout() {
@@ -178,31 +177,24 @@ class PlaylistViewController: UIViewController {
     }
 
     private func bindViewModel() {
-        viewModel.statePublisher
+        viewModel.currentTrackIndexPublisher
             .receive(on: RunLoop.main)
-            .sink { [weak self] state in
+            .sink { [weak self] _ in
                 guard let self = self else { return }
-                switch state {
-                case .success:
-                    self.updateUI()
-                case .failed(let error):
-                    self.handleError(error)
-                case .loading, .none:
-                    return
-                }
+                self.updateCurrentTrack()
+                self.updateTableView()
             }.store(in: &cancellables)
 
-        viewModel.colorsSubject
-            .receive(on: DispatchQueue.main)
+        viewModel.colorsPublisher
+            .receive(on: RunLoop.main)
             .sink { [weak self] colors in
                 guard let self = self else { return }
                 self.updateGradientLayers(with: colors)
-                self.updateCurrentTrack()
             }.store(in: &cancellables)
     }
 
     private func updateCurrentTrack() {
-        let track = viewModel.selectedTrack
+        let track = viewModel.currentTrack
         let url = track?.getArtworkImageWithSize(size: .square800)
         coverImageView.loadCoverImage(with: url)
 
@@ -231,10 +223,11 @@ class PlaylistViewController: UIViewController {
         animator.startAnimation()
     }
 
-    private func updateUI() {
+    private func updateTableView() {
         // 要放在 tableView.reloadData() 前
         tableView.tableFooterView = nil
         tableView.reloadData()
+        hideCellsIfTouchingHeader()
     }
 
     private func handleError(_ error: Error) {
@@ -348,7 +341,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         viewModel.setSelectedTrack(forCellAt: indexPath.row)
         viewModel.selectedIndexPath = indexPath
-        return tableView.createTrackContextMenuConfiguration(indexPath: indexPath, track: viewModel.selectedTrack)
+        return tableView.createTrackContextMenuConfiguration(indexPath: indexPath, track: viewModel.currentTrack)
     }
 
     // 解決開啟 context menu 後 cell 出現黑色背景的問題 (因為背景設為 .clear 引起)
@@ -390,7 +383,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension PlaylistViewController: TrackDetailViewControllerDatasource {
     func trackId(_ trackDetailViewController: TrackDetailViewController) -> Int? {
-        return viewModel.selectedTrack?.trackId
+        return viewModel.currentTrack?.trackId
     }
 }
 

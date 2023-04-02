@@ -57,7 +57,11 @@ class PlaylistPlayerViewModel {
     }
 
     var playbackTimePublisher: AnyPublisher<Double?, Never> {
-        return musicPlayer.playbackTimePublisher
+        musicPlayer.playbackTimePublisher
+    }
+
+    var isPlayingPublisher: AnyPublisher<Bool, Never> {
+        musicPlayer.isPlayingPublisher
     }
 
     var isPlaying: Bool {
@@ -90,14 +94,6 @@ class PlaylistPlayerViewModel {
             displayedCurrentTime = nil
             displayedRemainingTime = nil
         }
-    }
-
-    func play() {
-        musicPlayer.play()
-    }
-
-    func pause() {
-        musicPlayer.pause()
     }
 
     func next() {

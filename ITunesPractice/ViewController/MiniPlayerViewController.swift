@@ -34,16 +34,15 @@ class MiniPlayerViewController: BottomFloatingPanelViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        updateUI()
-
-        let notificationPublisher = NotificationCenter.default.publisher(for: .addTrack)
-
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(highlightBlurViewTapped))
-        highlightBlurView.isUserInteractionEnabled = true
-        highlightBlurView.addGestureRecognizer(tapGesture)
+        setupGestures()
+        bindViewModel()
     }
 
     // MARK: Private
+
+    private var viewModel: MiniPlayerViewModel = .init()
+
+    private var cancellables: Set<AnyCancellable> = .init()
 
     private lazy var separatorView: UIView = {
         let view = UIView()
@@ -70,7 +69,7 @@ class MiniPlayerViewController: BottomFloatingPanelViewController {
         config.image = AppImages.play
         config.baseForegroundColor = .white
         button.configuration = config
-        button.addTarget(self, action: #selector(playPauseButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(playOrPauseButtonTapped), for: .touchUpInside)
         return button
     }()
 
@@ -85,10 +84,38 @@ class MiniPlayerViewController: BottomFloatingPanelViewController {
         return button
     }()
 
-    private func updateUI() {
-//        coverImageView.kf.setImage(with: URL(string: "https://is4-ssl.mzstatic.com/image/thumb/Features115/v4/2a/e1/fc/2ae1fc34-a98d-20bf-33ed-71e321773b0a/dj.lykipmdm.jpg/100x100bb.jpg"))
-        coverImageView.image = AppImages.musicNote
-        songTitleLabel.text = "鄧紫棋-倒數"
+    private func bindViewModel() {
+        viewModel.currentTrackIndexPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                self.updateCurrentTrackUI()
+            }.store(in: &cancellables)
+
+        viewModel.isPlayingPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                self.updatePlayOrPauseButtonUI()
+            }.store(in: &cancellables)
+    }
+
+    private func setupGestures() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(highlightBlurViewTapped))
+        highlightBlurView.isUserInteractionEnabled = true
+        highlightBlurView.addGestureRecognizer(tapGesture)
+    }
+
+    private func updateCurrentTrackUI() {
+        guard let currentTrack = viewModel.currentTrack,
+              let url = currentTrack.getArtworkImageWithSize(size: .square800)
+        else {
+            coverImageView.image = DefaultTrack.coverImage
+            songTitleLabel.text = DefaultTrack.trackName
+            return
+        }
+        coverImageView.loadCoverImage(with: url)
+        songTitleLabel.text = currentTrack.trackName
     }
 
     private func setupUI() {
@@ -136,6 +163,12 @@ class MiniPlayerViewController: BottomFloatingPanelViewController {
         }
     }
 
+    private func updatePlayOrPauseButtonUI() {
+        let isPlaying = viewModel.isPlaying
+        let image = isPlaying ? AppImages.pause : AppImages.play
+        playPauseButton.setImage(image, for: .normal)
+    }
+
     private func presentPlaylistVC() {
         let vc = PlaylistViewController()
         // fullScreen 背景遮罩會是黑色的，所以設 overFullScreen
@@ -153,15 +186,12 @@ class MiniPlayerViewController: BottomFloatingPanelViewController {
     }
 
     @objc
-    private func playPauseButtonTapped(_ sender: UIButton) {
-        isPlaying.toggle()
+    private func playOrPauseButtonTapped(_ sender: UIButton) {
+        viewModel.isPlaying.toggle()
     }
 
     @objc
-    private func nextButtonTapped(_ sender: UIButton) {}
-}
-
-extension Notification.Name {
-    static let addTrack = Notification.Name("addTrack")
-    static let playTrack = Notification.Name("playTrack")
+    private func nextButtonTapped(_ sender: UIButton) {
+        viewModel.next()
+    }
 }

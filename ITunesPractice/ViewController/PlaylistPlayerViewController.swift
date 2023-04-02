@@ -51,7 +51,7 @@ class PlaylistPlayerViewController: UIViewController {
         // 指定第一個顏色佔 15 px 高度
         let firstColorHeightPercentage = NSNumber(value: 15.0 / view.bounds.height)
         // 顏色起始點與終點
-        gradient.locations = [0, firstColorHeightPercentage, 0.4]
+        gradient.locations = [0, firstColorHeightPercentage, 0.37]
         view.layer.insertSublayer(gradient, at: 0)
         return gradient
     }()
@@ -107,6 +107,13 @@ class PlaylistPlayerViewController: UIViewController {
                 guard let self = self else { return }
                 self.updateMusicSlider()
                 self.updateTimeLabels()
+            }.store(in: &cancellables)
+
+        viewModel.isPlayingPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                self.updatePlayOrPauseButtonUI()
             }.store(in: &cancellables)
     }
 

@@ -27,36 +27,19 @@ class PlaylistViewModel {
 
     // MARK: Internal
 
-    // TODO: 為什麼PassthroughSubject只觸發一次？
-    var colorsSubject = CurrentValueSubject<[UIColor], Never>(DefaultTrack.gradientColors)
-
     var selectedIndexPath: IndexPath?
 
-    // MARK: - Outputs
-
-    var selectedTrack: Track? {
+    var currentTrack: Track? {
         get {
             musicPlayer.currentTrack
         }
         set {
             if let index = tracks.firstIndex(where: { $0 == newValue }) {
                 musicPlayer.currentTrackIndex = index
+                musicPlayer.play()
                 changeImage()
             }
         }
-    }
-
-    var state: ViewState {
-        get {
-            return stateSubject.value
-        }
-        set {
-            stateSubject.value = newValue
-        }
-    }
-
-    var statePublisher: AnyPublisher<ViewState, Never> {
-        return stateSubject.eraseToAnyPublisher()
     }
 
     var tracks: [Track] {
@@ -64,11 +47,19 @@ class PlaylistViewModel {
     }
 
     var totalCount: Int {
-        return tracks.count
+        tracks.count
     }
 
     var numberOfSections: Int {
         1
+    }
+
+    var currentTrackIndexPublisher: AnyPublisher<Int, Never> {
+        musicPlayer.currentTrackIndexPublisher
+    }
+
+    var colorsPublisher: AnyPublisher<[UIColor], Never> {
+        colorsSubject.eraseToAnyPublisher()
     }
 
     func numberOfRows(in section: Int) -> Int {
@@ -82,11 +73,8 @@ class PlaylistViewModel {
 
     func setSelectedTrack(forCellAt index: Int) {
         guard index < tracks.count else { return }
-        selectedTrack = tracks[index]
-        musicPlayer.play(track: tracks[index])
+        currentTrack = tracks[index]
     }
-
-    // MARK: MusicPlayer
 
     func toggleShuffleMode() {
         musicPlayer.toggleShuffleMode()
@@ -94,29 +82,21 @@ class PlaylistViewModel {
 
     // MARK: Private
 
+    // TODO: 為什麼PassthroughSubject只觸發一次？
+    private let colorsSubject = CurrentValueSubject<[UIColor], Never>(DefaultTrack.gradientColors)
+
     private var cancellables: Set<AnyCancellable> = .init()
 
     // MARK: - Inputs
 
     private let musicPlayer: MusicPlayer = .shared
 
-    // 當歌曲被選中時，通過這個Subject發布選中事件
-    private let selectTrackPublisher = CurrentValueSubject<Track?, Never>(nil)
-    private let stateSubject = CurrentValueSubject<ViewState, Never>(.none)
-
-    private var currentPage: Int = 0
-    private var totalPages: Int = 0
-    private var pageSize: Int = 20
-
-//    private func setSelectedTrack(_ track: Track?) {
-//        selectedTrack = track
-//    }
-
     private func changeImage() {
-        downloadImage(with: selectedTrack?.artworkUrl100)
+        let url = currentTrack?.artworkUrl100
+        downloadImage(with: url)
     }
 
-    /// 使用kingfisher下載圖檔
+    /// 異步下載圖檔
     private func downloadImage(with urlString: String?) {
         guard let urlString = urlString else {
             colorsSubject.send(DefaultTrack.gradientColors)
