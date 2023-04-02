@@ -8,19 +8,35 @@
 import Combine
 import Foundation
 
+enum SliderUpdateType {
+    case automatic // 自動更新
+    case manual // 手動更新
+}
+
 class PlaylistPlayerViewModel {
+    
     // MARK: Lifecycle
 
     init() {}
 
     // MARK: Internal
 
-    /// 新拖動的播放進度百分比 (0~1)
-    var newPlaybackPercentage: Float = 0
+    // 當前播放進度（單位：秒）
+    @FormattedTime var displayedCurrentTime: Float?
 
-    /// 播放進度百分比 (0~1)
+    // 剩餘播放進度（單位：秒）
+    @FormattedTime var displayedRemainingTime: Float?
+
+    // 當前的播放進度百分比 (0~1)
     var playbackPercentage: Float {
         currentTimeFloatValue / totalDurationFloatValue
+    }
+
+    // 用戶拖動 slider 後新的播放進度百分比
+    var newPlaybackPercentage: Float = 0 {
+        didSet {
+            updateDisplayedTime(type: .manual)
+        }
     }
 
     var currentTime: Double? {
@@ -31,11 +47,6 @@ class PlaylistPlayerViewModel {
             musicPlayer.currentPlaybackTime = newValue
         }
     }
-
-    // 當前播放進度（單位：秒）
-    @FormattedTime var displayedCurrentTime: Float?
-    // 剩餘播放進度（單位：秒）
-    @FormattedTime var displayedRemainingTime: Float?
 
     var volume: Float {
         get { musicPlayer.volume }
@@ -61,20 +72,21 @@ class PlaylistPlayerViewModel {
         musicPlayer.currentPlaybackTime?.floatValue ?? 0
     }
 
-    func updateDisplayedTime() {
+    // 當前曲目總長度 Float 值
+    var totalDurationFloatValue: Float {
+        musicPlayer.currentPlaybackDuration?.floatValue ?? 1
+    }
+
+    func updateDisplayedTime(type: SliderUpdateType) {
         if let totalDuration = totalDuration?.floatValue {
-            let newCurrentTime = playbackPercentage * totalDuration
+            let newPercentage = type == .automatic ? playbackPercentage : newPlaybackPercentage
+            let newCurrentTime = newPercentage * totalDuration
             displayedCurrentTime = newCurrentTime
             displayedRemainingTime = -totalDuration + newCurrentTime
         } else {
             displayedCurrentTime = nil
             displayedRemainingTime = nil
         }
-    }
-
-    // 當前曲目總長度 Float 值
-    var totalDurationFloatValue: Float {
-        musicPlayer.currentPlaybackDuration?.floatValue ?? 1
     }
 
     func play() {

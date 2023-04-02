@@ -98,9 +98,6 @@ class PlaylistPlayerViewController: UIViewController {
         advancedButtons.forEach { $0.tintColor = .white }
         setupVolumeSlider()
         setupMusicProgressSlider()
-
-        updateMusicSlider()
-        updatePlayOrPauseButtonUI()
     }
 
     private func bindViewModel() {
@@ -108,7 +105,6 @@ class PlaylistPlayerViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 guard let self = self else { return }
-                self.viewModel.updateDisplayedTime()
                 self.updateMusicSlider()
                 self.updateTimeLabels()
             }.store(in: &cancellables)
@@ -180,8 +176,12 @@ class PlaylistPlayerViewController: UIViewController {
 
     // 更新已播放時間和剩餘時間標籤
     private func updateMusicSlider() {
-        // 沒有被拖動時才更新時間
-        if !musicProgressSlider.isTracking {
+        let updateType: SliderUpdateType = musicProgressSlider.isTracking ? .manual : .automatic
+        viewModel.updateDisplayedTime(type: updateType)
+
+        if updateType == .manual {
+            musicProgressSlider.value = viewModel.newPlaybackPercentage
+        } else {
             musicProgressSlider.value = viewModel.playbackPercentage
         }
     }
