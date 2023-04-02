@@ -12,25 +12,27 @@ import Foundation
 struct FormattedTime {
     // MARK: Lifecycle
 
-    init() {
+    init(showsSign: Bool = true) {
+        self.showsSign = showsSign
         self.time = nil
     }
 
     // MARK: Internal
 
-    var isNegative: Bool = false
+    var showsSign: Bool = true
 
     var wrappedValue: Float? {
-          get { time }
-          set { time = newValue }
-      }
+        get { time }
+        set { time = newValue }
+    }
 
-      var projectedValue: String {
-          guard let time = time else { return "--:--" }
-          let minutes = Int(time) / 60
-          let seconds = Int(time) % 60
-          return "\(minutes):\(String(format: "%02d", abs(seconds)))"
-      }
+    var projectedValue: String {
+        guard let time = time else { return "--:--" }
+        let sign = showsSign && time < 0 ? "-" : ""
+        let minutes = Int(abs(time)) / 60
+        let seconds = Int(abs(time)) % 60
+        return "\(sign)\(minutes):\(String(format: "%02d", seconds))"
+    }
 
     // MARK: Private
 
