@@ -8,13 +8,16 @@
 import Combine
 import Foundation
 
+// MARK: - SliderUpdateType
+
 enum SliderUpdateType {
     case automatic // 自動更新
     case manual // 手動更新
 }
 
+// MARK: - PlaylistPlayerViewModel
+
 class PlaylistPlayerViewModel {
-    
     // MARK: Lifecycle
 
     init() {}

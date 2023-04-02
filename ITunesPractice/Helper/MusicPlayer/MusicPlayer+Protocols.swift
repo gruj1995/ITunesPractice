@@ -16,7 +16,7 @@ protocol MusicPlayerProtocol: MusicPlayerControl, MusicPlayerPlaylistControl, Mu
 protocol MusicPlayerControl {
     var currentPlaybackTime: Double? { get } // 當前播放進度（單位：秒）
     var currentPlaybackDuration: Double? { get } // 當前曲目總長度（單位：秒）
-    var currentPlaybackRemainingTime: Double? { get } // 當前曲目剩餘時間（單位：秒）
+//    var currentPlaybackRemainingTime: Double? { get } // 當前曲目剩餘時間（單位：秒）
     var volume: Float { get set } // 音量大小
 
     func play()  // 從頭開始播放

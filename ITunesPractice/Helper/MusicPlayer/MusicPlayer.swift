@@ -29,6 +29,7 @@ class MusicPlayer: MusicPlayerProtocol {
     /// 在 AppDelegate 呼叫，讓 MusicPlayer 在開啟app時就建立
     func configure() {}
 
+    // 用來控制系統音量（只使用它裡面的 slider ）
     private let mpVolumeView: MPVolumeView = MPVolumeView()
 
     // 播放清單
@@ -72,7 +73,12 @@ class MusicPlayer: MusicPlayerProtocol {
 
     // 當前播放進度（單位：秒）
     var currentPlaybackTime: Double? {
-        timeSubject.value
+        get {
+            timeSubject.value
+        }
+        set {
+            timeSubject.value = newValue
+        }
     }
 
     // 當前曲目總長度（單位：秒）
@@ -80,17 +86,20 @@ class MusicPlayer: MusicPlayerProtocol {
         player.currentItem?.duration.seconds
     }
 
-    // 當前曲目剩餘時間（單位：秒）
-    var currentPlaybackRemainingTime: Double? {
-        guard let currentTime = currentPlaybackTime,
-              let totalDuration = currentPlaybackDuration
-        else {
-            return nil
-        }
-        return totalDuration - currentTime
-    }
+//    // 當前曲目剩餘時間（單位：秒）
+//    var currentPlaybackRemainingTime: Double? {
+//        guard let currentTime = currentPlaybackTime,
+//              let totalDuration = currentPlaybackDuration
+//        else {
+//            return nil
+//        }
+//        return totalDuration - currentTime
+//    }
 
-    // 指定播放速率，0.0 表示暫停，1.0 表示播放原始速率
+    // 指定播放速率
+    // 0.0 暫停
+    // 1.0 原始速率
+    // 大於0快轉; 小於0倒轉
     var playbackRate: Float {
         get { player.rate }
         set {
