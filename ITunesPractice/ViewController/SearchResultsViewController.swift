@@ -49,10 +49,12 @@ class SearchResultsViewController: UIViewController {
         return activityIndicator
     }()
 
+    private let cellHeight: CGFloat = 60
+
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(TrackCell.self, forCellReuseIdentifier: TrackCell.reuseIdentifier)
-        tableView.rowHeight = 60
+        tableView.rowHeight = cellHeight
         tableView.delegate = self
         tableView.dataSource = self
 //        tableView.prefetchDataSource = self // 懶加載
@@ -182,13 +184,12 @@ extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegat
     }
 
     /*
-       點擊 context menu 的預覽圖後觸發，如果沒實作此 funtion，則點擊預覽圖後直接關閉 context menu
-            - animator  跳轉動畫執行者，可以添加要跳轉到的頁面和跳轉動畫
+     點擊 context menu 的預覽圖後觸發，如果沒實作此 funtion，則點擊預覽圖後直接關閉 context menu
+     - animator  跳轉動畫執行者，可以添加要跳轉到的頁面和跳轉動畫
      */
     func tableView(_ tableView: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
         if let identifier = configuration.identifier as? String,
-           let index = Int(identifier)
-        {
+           let index = Int(identifier) {
             animator.addCompletion { [weak self] in
                 guard let self = self else { return }
                 self.viewModel.setSelectedTrack(forCellAt: index)
@@ -210,7 +211,15 @@ extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegat
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return UIView.emptyView()
+        UIView.emptyView()
+    }
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        cellHeight
+    }
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        UIView.emptyView()
     }
 }
 

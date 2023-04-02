@@ -67,6 +67,7 @@ class CurrentTrackView: UIView {
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [trackLabel, artistLabel])
         stackView.axis = .vertical
+        stackView.spacing = 2
         stackView.alignment = .leading
         stackView.distribution = .equalSpacing
         stackView.backgroundColor = .clear

@@ -122,7 +122,7 @@ class PlaylistViewController: UIViewController {
     }
 
     private var playerHiddenInset: CGFloat {
-        // 10 是 playerContainerView 隱藏時上方要露出的高度
+        // 加號後的值是 playerContainerView 隱藏時上方要露出的高度
         -playerContainerViewHeight + 5
     }
 
