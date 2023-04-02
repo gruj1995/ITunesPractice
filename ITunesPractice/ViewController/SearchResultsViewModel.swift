@@ -92,6 +92,7 @@ class SearchResultsViewModel {
                 self.currentPage += 1
                 self.totalPages = response.resultCount / self.pageSize + 1
                 self.tracks.append(contentsOf: response.results)
+//                Utils.addTracksToUserDefaults(self.tracks)
                 self.state = .success
             case .failure(let error):
                 Logger.log(error.localizedDescription)
