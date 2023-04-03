@@ -236,15 +236,12 @@ class MusicPlayer: MusicPlayerProtocol {
             Utils.toast(MusicPlayerError.invalidTrack.unwrapDescription)
             return
         }
-        // 回到開頭
+        // 回到歌曲開頭
         player.seek(to: .zero)
 
         let playerItem = AVPlayerItem(url: audioURL)
         player.replaceCurrentItem(with: playerItem)
-
-        // TODO: 確認要哪一個
-        //        // 播放下一首
-        //        player.advanceToNextItem()
+        currentTrackIndex = index
     }
 
     private func addTimeObserver() {
@@ -341,23 +338,14 @@ extension MusicPlayer {
 //        currentTrackIndex += 1
         let index = currentTrackIndex
         let nextIndex = isShuffleMode ? tracks.randomIndexExcluding(index) : index + 1
-        currentTrackIndex = nextIndex
         play(at: nextIndex)
     }
 
     /// 播放清單內的上一首
     func previousTrack() {
         let index = currentTrackIndex
-        // 前面還有歌時
-        if index > 0 {
-            let items = storedPlayerItems
-            let previousItem = items[index - 1]
-            player.seek(to: CMTime.zero)
-            player.replaceCurrentItem(with: previousItem)
-            player.play()
-        }
-//        let previousIndex = isShuffleMode ? tracks.randomIndexExcluding(index) : index - 1
-//        play(at: previousIndex)
+        let previousIndex = isShuffleMode ? tracks.randomIndexExcluding(index) : index - 1
+        play(at: previousIndex)
     }
 
     // 移除所有播放清單中的歌曲
