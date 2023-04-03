@@ -17,19 +17,22 @@ extension UITableView {
                 var storedTracks = UserDefaults.standard.tracks
                 storedTracks.appendIfNotContains(track)
                 UserDefaults.standard.tracks = storedTracks
+
             // 從資料庫刪除
             case .deleteFromLibrary(let track):
-                var storedTracks = UserDefaults.standard.tracks
-                storedTracks.removeAll(where: { $0 == track })
-                UserDefaults.standard.tracks = storedTracks
+                var toBePlayedTracks = UserDefaults.standard.tracks
+                toBePlayedTracks.removeAll(where: { $0 == track })
+                UserDefaults.standard.tracks = toBePlayedTracks
+
             // 分享歌曲
             case .share(let track):
                 guard let sharedUrl = URL(string: track.trackViewUrl) else {
                     Logger.log("Shared url is nil")
+                    Utils.toast("分享失敗".localizedString())
                     return
                 }
                 let activityVC = UIActivityViewController(activityItems: [sharedUrl], applicationActivities: nil)
-                // 設定分享完成後的事件
+                // 分享完成後的事件
                 activityVC.completionWithItemsHandler = { _, completed, _, error in
                     if completed {
                         Utils.toast("分享成功".localizedString())

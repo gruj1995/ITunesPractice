@@ -37,7 +37,7 @@ extension Collection {
 }
 
 extension Collection where Index == Int {
-    /// 取得陣列中排除指定 index 外的隨機索引
+    /// 取得陣列的隨機索引（不含指定 index）
     func randomIndexExcluding(_ index: Int) -> Index {
         let indices = self.indices.filter { $0 != index }
         return indices.randomElement() ?? 0

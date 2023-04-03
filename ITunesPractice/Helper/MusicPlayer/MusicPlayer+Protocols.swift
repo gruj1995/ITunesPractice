@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - MusicPlayerProtocol
 
-protocol MusicPlayerProtocol: MusicPlayerControl, MusicPlayerPlaylistControl, MusicPlayerShuffleControl, MusicPlayerRepeatControl, MusicPlayerSpeedControl {}
+protocol MusicPlayerProtocol: MusicPlayerControl, MusicPlayerPlaylistControl, MusicPlayerRepeatControl, MusicPlayerSpeedControl {}
 
 // MARK: - MusicPlayerControl
 
@@ -44,11 +44,11 @@ protocol MusicPlayerPlaylistControl {
 }
 
 // MARK: - MusicPlayerShuffleControl
-
-protocol MusicPlayerShuffleControl {
-    func shuffle() //  隨機播放
-    func unshuffle() //  依序播放
-}
+//
+//protocol MusicPlayerShuffleControl {
+//    func shuffle() //  隨機播放
+//    func unshuffle() //  依序播放
+//}
 
 // MARK: - MusicPlayerRepeatControl
 
