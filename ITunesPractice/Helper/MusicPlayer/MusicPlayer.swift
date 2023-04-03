@@ -34,6 +34,9 @@ class MusicPlayer: MusicPlayerProtocol {
     // 是否隨機播放
     var isShuffleMode: Bool = false
 
+    // 是否無限循環
+    var isInfinityMode: Bool = false
+
     // 重複的模式
     var repeatMode: RepeatMode = .none
 
@@ -378,22 +381,6 @@ extension MusicPlayer {
         // 越來越慢直到下限
         let newRewindRate = max(playbackRate - 0.1, minPlaybackRate)
         playbackRate = newRewindRate
-    }
-}
-
-// MARK: MusicPlayerShuffleControl
-
-extension MusicPlayer {
-    func toggleShuffleMode() {
-        isShuffleMode.toggle()
-    }
-
-    func shuffle() {
-        isShuffleMode = true
-    }
-
-    func unshuffle() {
-        isShuffleMode = false
     }
 }
 

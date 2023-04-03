@@ -46,12 +46,47 @@ class PlaylistViewModel {
         musicPlayer.tracks
     }
 
+    var headerButtonBgColor: UIColor? {
+        if colorsSubject.value.count >= 3 {
+            return colorsSubject.value[1]
+        } else {
+            return nil
+        }
+    }
+
     var totalCount: Int {
         tracks.count
     }
 
     var numberOfSections: Int {
         1
+    }
+
+    var isShuffleMode: Bool {
+        get {
+            musicPlayer.isShuffleMode
+        }
+        set {
+            musicPlayer.isShuffleMode = newValue
+        }
+    }
+
+    var isInfinityMode: Bool {
+        get {
+            musicPlayer.isInfinityMode
+        }
+        set {
+            musicPlayer.isInfinityMode = newValue
+        }
+    }
+
+    var repeatMode: RepeatMode {
+        get {
+            musicPlayer.repeatMode
+        }
+        set {
+            musicPlayer.repeatMode = newValue
+        }
     }
 
     var currentTrackIndexPublisher: AnyPublisher<Int, Never> {
@@ -74,10 +109,6 @@ class PlaylistViewModel {
     func setSelectedTrack(forCellAt index: Int) {
         guard index < tracks.count else { return }
         currentTrack = tracks[index]
-    }
-
-    func toggleShuffleMode() {
-        musicPlayer.toggleShuffleMode()
     }
 
     // MARK: Private

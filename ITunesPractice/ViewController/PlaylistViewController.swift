@@ -37,6 +37,7 @@ class PlaylistViewController: UIViewController {
     lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.register(TrackCell.self, forCellReuseIdentifier: TrackCell.reuseIdentifier)
+        tableView.register(PlayListHeaderView.self, forHeaderFooterViewReuseIdentifier: PlayListHeaderView.reuseIdentifier)
         tableView.rowHeight = 60
         tableView.delegate = self
         tableView.dataSource = self
@@ -85,7 +86,7 @@ class PlaylistViewController: UIViewController {
 
     private lazy var playerContainerView: UIView = .init()
 
-    private lazy var currentTrackView: CurrentTrackView = CurrentTrackView()
+    private lazy var currentTrackView: CurrentTrackView = .init()
 
     private lazy var coverImageContainerView: UIView = {
         let view = UIView()
@@ -97,7 +98,7 @@ class PlaylistViewController: UIViewController {
         return view
     }()
 
-    private lazy var coverImageView: UIImageView = UIImageView.coverImageView()
+    private lazy var coverImageView: UIImageView = .coverImageView()
 
     // 音樂播放器
     private lazy var playerVC: PlaylistPlayerViewController = {
@@ -367,8 +368,41 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
 //        guard !viewModel.bookKeepDayGroups.isEmpty, let bookKeepDayGroup = viewModel.bookKeepDayGroup(forHeaderAt: section) else {
 //            return nil
 //        }
-        let header = PlayListHeaderView()
-        header.configure(title: "待播清單", subTitle: nil)
+        guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: PlayListHeaderView.reuseIdentifier) as? PlayListHeaderView else {
+            return nil
+        }
+
+        if section == 0 {
+            header.configure(title: PlayListHeaderTitle.toBePlayed, subTitle: nil)
+
+            header.onShuffleButtonTapped = { [weak self] _ in
+                guard let self = self else { return }
+                self.viewModel.isShuffleMode.toggle()
+                let isSelected = self.viewModel.isShuffleMode
+                let tintColor = self.viewModel.headerButtonBgColor
+                header.shuffleButton.setButtonAppearance(isSelected: isSelected, tintColor: tintColor)
+            }
+
+            header.onInfinityButtonTapped = { [weak self] _ in
+                guard let self = self else { return }
+                self.viewModel.isInfinityMode.toggle()
+                let isSelected = self.viewModel.isInfinityMode
+                let tintColor = self.viewModel.headerButtonBgColor
+                let subTitle = isSelected ? "自動播放類似音樂".localizedString() : nil
+                header.infinityButton.setButtonAppearance(isSelected: isSelected, tintColor: tintColor)
+                header.configure(title: PlayListHeaderTitle.toBePlayed, subTitle: subTitle)
+            }
+
+            header.onRepeatButtonTapped = { [weak self] _ in
+                guard let self = self else { return }
+                self.viewModel.repeatMode = self.viewModel.repeatMode.next()
+                let isSelected = self.viewModel.repeatMode != .none
+                let tintColor = self.viewModel.headerButtonBgColor
+                let image = self.viewModel.repeatMode.image
+                header.repeatButton.setButtonAppearance(isSelected: isSelected, tintColor: tintColor, image: image)
+            }
+        }
+
         return header
     }
 
