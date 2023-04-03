@@ -60,9 +60,9 @@ class CurrentTrackView: UIView {
         return button
     }()
 
-    private lazy var trackLabel: MarqueeLabel = getMarqueeLabel(textColor: .white)
+    private lazy var trackLabel: MarqueeLabel = createMarqueeLabel(textColor: .white)
 
-    private lazy var artistLabel: MarqueeLabel = getMarqueeLabel(textColor: .lightText)
+    private lazy var artistLabel: MarqueeLabel = createMarqueeLabel(textColor: .lightText)
 
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [trackLabel, artistLabel])
@@ -94,7 +94,8 @@ class CurrentTrackView: UIView {
         }
     }
 
-    private func getMarqueeLabel(textColor: UIColor) -> MarqueeLabel {
+    // TODO: 讓比較早滾動完的label等待未滾完的，到齊後再一起等待指定秒數後開始下一輪
+    private func createMarqueeLabel(textColor: UIColor) -> MarqueeLabel {
         let label = MarqueeLabel()
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 15, weight: .medium)
