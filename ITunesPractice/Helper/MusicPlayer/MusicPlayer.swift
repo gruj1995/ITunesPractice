@@ -17,20 +17,17 @@ class MusicPlayer: MusicPlayerProtocol {
     // MARK: Lifecycle
 
     private init() {
-        initQueuePlayer()
+        setAVQueuePlayer()
         addTimeObserver()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(userDefaultsDidChange), name: UserDefaults.didChangeNotification, object: nil)
     }
 
     // MARK: Internal
 
     static let shared = MusicPlayer()
 
-    var player: AVQueuePlayer!
-    private var looper: AVPlayerLooper?
-
-    // 播放清單
-    var tracks: [Track] = []
-
+    var player: AVQueuePlayer = .init()
     // 是否隨機播放
     var isShuffleMode: Bool = false
 
@@ -46,13 +43,20 @@ class MusicPlayer: MusicPlayerProtocol {
     // 播放速率上限
     let maxPlaybackRate: Float = 2.0
 
+    // 播放清單
+    var tracks: [Track] {
+        get {
+            UserDefaults.standard.tracks
+        }
+        set {}
+    }
+
     var currentTrackIndex: Int {
         get {
             currentTrackIndexSubject.value
         }
         set {
             currentTrackIndexSubject.value = newValue
-            play(at: newValue)
         }
     }
 
@@ -144,6 +148,11 @@ class MusicPlayer: MusicPlayerProtocol {
         return isPlayingSubject.eraseToAnyPublisher()
     }
 
+    @objc
+    func userDefaultsDidChange() {
+        setAVQueuePlayer()
+    }
+
     /// 在 AppDelegate 呼叫，讓 MusicPlayer 在開啟app時就建立
     func configure() {}
 
@@ -191,6 +200,8 @@ class MusicPlayer: MusicPlayerProtocol {
 
     // MARK: Private
 
+    private var looper: AVPlayerLooper?
+
     // 用來控制系統音量（只使用它裡面的 slider ）
     private let mpVolumeView: MPVolumeView = .init()
 
@@ -200,27 +211,24 @@ class MusicPlayer: MusicPlayerProtocol {
     private let timeSubject = CurrentValueSubject<Double?, Never>(nil)
     private let isPlayingSubject = CurrentValueSubject<Bool, Never>(false)
 
-    private func initQueuePlayer() {
-        // 取得儲存在本地的播放清單資料
-        tracks = UserDefaults.standard.tracks
+    private var toBePlayedItems: [AVPlayerItem] = []
 
+    private func setAVQueuePlayer() {
         // 將 tracks 陣列中的每個元素轉換成 AVPlayerItem 並加入到 playerItems 陣列中
-        playerItems = storedPlayerItems
+        toBePlayedItems = convertTracksToPlayerItems(tracks)
 
         // 建立 AVQueuePlayer 並將 playerItems 陣列設定為播放清單
-        player = AVQueuePlayer(items: playerItems)
+        player = AVQueuePlayer(items: toBePlayedItems)
     }
 
-    var storedPlayerItems: [AVPlayerItem] {
-        tracks.compactMap { track -> AVPlayerItem? in
+    private func convertTracksToPlayerItems(_ tracks: [Track]) -> [AVPlayerItem] {
+        return tracks.compactMap { track -> AVPlayerItem? in
             guard let url = URL(string: track.previewUrl) else {
                 return nil
             }
             return AVPlayerItem(url: url)
         }
     }
-
-    private var playerItems: [AVPlayerItem] = []
 
     /// 播放指定索引的歌曲
     private func play(at index: Int) {
@@ -239,8 +247,9 @@ class MusicPlayer: MusicPlayerProtocol {
         // 回到歌曲開頭
         player.seek(to: .zero)
 
-        let playerItem = AVPlayerItem(url: audioURL)
-        player.replaceCurrentItem(with: playerItem)
+        let playItem = AVPlayerItem(url: audioURL)
+        player.replaceCurrentItem(with: playItem)
+        looper = AVPlayerLooper(player: player, templateItem: playItem)
         currentTrackIndex = index
     }
 
