@@ -254,6 +254,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
         let frameHeight = scrollView.frame.size.height
 
         if viewModel.tracks.isEmpty {
+            // 沒有資料時顯示播放器
             isPlayerHidden = false
         } else if contentOffset <= 0 {
             // 滑到最上方了，隱藏播放器
@@ -344,7 +345,8 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
     // context menu 的清單
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         viewModel.selectedIndexPath = indexPath
-        return tableView.createTrackContextMenuConfiguration(indexPath: indexPath, track: viewModel.currentTrack)
+        let track = viewModel.tracks[indexPath.row]
+        return tableView.createTrackContextMenuConfiguration(indexPath: indexPath, track: track)
     }
 
     // 解決開啟 context menu 後 cell 出現黑色背景的問題 (因為背景設為 .clear 引起)
