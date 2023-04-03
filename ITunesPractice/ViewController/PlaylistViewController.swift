@@ -313,6 +313,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
         // 解除cell被選中的狀態
         tableView.deselectRow(at: indexPath, animated: true)
         viewModel.setSelectedTrack(forCellAt: indexPath.row)
+        viewModel.play()
 
         let vc = TrackDetailViewController()
         vc.dataSource = self
@@ -342,7 +343,6 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
 
     // context menu 的清單
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        viewModel.setSelectedTrack(forCellAt: indexPath.row)
         viewModel.selectedIndexPath = indexPath
         return tableView.createTrackContextMenuConfiguration(indexPath: indexPath, track: viewModel.currentTrack)
     }

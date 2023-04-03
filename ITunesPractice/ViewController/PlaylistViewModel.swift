@@ -36,8 +36,6 @@ class PlaylistViewModel {
         set {
             if let index = tracks.firstIndex(where: { $0 == newValue }) {
                 musicPlayer.currentTrackIndex = index
-                musicPlayer.play()
-                changeImage()
             }
         }
     }
@@ -104,6 +102,11 @@ class PlaylistViewModel {
     func track(forCellAt index: Int) -> Track? {
         guard index < tracks.count else { return nil }
         return tracks[index]
+    }
+
+    func play() {
+        musicPlayer.play()
+        changeImage()
     }
 
     func setSelectedTrack(forCellAt index: Int) {
