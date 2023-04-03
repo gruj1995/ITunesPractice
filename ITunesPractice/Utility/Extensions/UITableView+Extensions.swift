@@ -12,21 +12,34 @@ extension UITableView {
     func createTrackContextMenuConfiguration(indexPath: IndexPath, track: Track?) -> UIContextMenuConfiguration {
         let configuration = TrackContextMenuConfiguration(indexPath: indexPath, track: track) { menuAction in
             switch menuAction {
+            // 加入資料庫
             case .addToLibrary(let track):
                 var storedTracks = UserDefaults.standard.tracks
                 storedTracks.appendIfNotContains(track)
                 UserDefaults.standard.tracks = storedTracks
+            // 從資料庫刪除
             case .deleteFromLibrary(let track):
                 var storedTracks = UserDefaults.standard.tracks
                 storedTracks.removeAll(where: { $0 == track })
                 UserDefaults.standard.tracks = storedTracks
+            // 分享歌曲
             case .share(let track):
                 guard let sharedUrl = URL(string: track.trackViewUrl) else {
                     Logger.log("Shared url is nil")
                     return
                 }
-                let vc = UIActivityViewController(activityItems: [sharedUrl], applicationActivities: nil)
-                UIApplication.shared.keyWindowCompact?.rootViewController?.present(vc, animated: true)
+                let activityVC = UIActivityViewController(activityItems: [sharedUrl], applicationActivities: nil)
+                // 設定分享完成後的事件
+                activityVC.completionWithItemsHandler = { _, completed, _, error in
+                    if completed {
+                        Utils.toast("分享成功".localizedString())
+                    } else {
+                        // 關閉分享彈窗也算分享失敗
+                        Logger.log(error?.localizedDescription ?? "")
+                        Utils.toast("分享失敗".localizedString())
+                    }
+                }
+                UIApplication.shared.keyWindowCompact?.rootViewController?.present(activityVC, animated: true)
                 return
             }
         }
@@ -82,10 +95,10 @@ extension UITableView {
     // github文件 https://stackoverflow.com/questions/15204328/how-to-retrieve-all-visible-table-section-header-views/23538021#23538021
 
     var indexesOfVisibleSections: [Int] {
-        let visibleRect: CGRect = CGRect(x: contentOffset.x, y: contentOffset.y, width: bounds.size.width, height: bounds.size.height)
+        let visibleRect = CGRect(x: contentOffset.x, y: contentOffset.y, width: bounds.size.width, height: bounds.size.height)
 
         return (0 ..< numberOfSections).filter {
-            let headerRect = (self.style == .plain) ? rect(forSection: $0): rectForHeader(inSection: $0)
+            let headerRect = (self.style == .plain) ? rect(forSection: $0) : rectForHeader(inSection: $0)
 
             return visibleRect.intersects(headerRect)
         }
@@ -93,7 +106,7 @@ extension UITableView {
 
     var visibleSectionHeaders: [UITableViewHeaderFooterView] {
         var visibleSects = [UITableViewHeaderFooterView]()
-        for sectionIndex in indexesOfVisibleSections {
+        for sectionIndex in self.indexesOfVisibleSections {
             if let sectionHeader = headerView(forSection: sectionIndex) {
                 visibleSects.append(sectionHeader)
             }
