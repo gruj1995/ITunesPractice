@@ -13,14 +13,15 @@ import MediaPlayer // MPVolumeView
 
 // MARK: - MusicPlayer
 
-class MusicPlayer: MusicPlayerProtocol {
+class MusicPlayer: NSObject, MusicPlayerProtocol {
     // MARK: Lifecycle
 
-    private init() {
+    override private init() {
+        super.init()
         setAVQueuePlayer()
-        addTimeObserver()
 
-        NotificationCenter.default.addObserver(self, selector: #selector(userDefaultsDidChange), name: UserDefaults.didChangeNotification, object: nil)
+        // 觀察待播清單更新
+        NotificationCenter.default.addObserver(self, selector: #selector(userDefaultsDidChange), name: .toBePlayedTracksDidChanged, object: nil)
     }
 
     // MARK: Internal
@@ -28,6 +29,7 @@ class MusicPlayer: MusicPlayerProtocol {
     static let shared = MusicPlayer()
 
     var player: AVQueuePlayer = .init()
+
     // 是否隨機播放
     var isShuffleMode: Bool = false
 
@@ -211,22 +213,35 @@ class MusicPlayer: MusicPlayerProtocol {
     private let timeSubject = CurrentValueSubject<Double?, Never>(nil)
     private let isPlayingSubject = CurrentValueSubject<Bool, Never>(false)
 
+    // 待播清單
     private var toBePlayedItems: [AVPlayerItem] = []
 
     private func setAVQueuePlayer() {
-        // 將 tracks 陣列中的每個元素轉換成 AVPlayerItem 並加入到 playerItems 陣列中
-        toBePlayedItems = convertTracksToPlayerItems(tracks)
+        // 移除時間觀察
+        removeTimeObserver()
 
-        // 建立 AVQueuePlayer 並將 playerItems 陣列設定為播放清單
+        // 建立 AVQueuePlayer 並設定播放清單
+        toBePlayedItems = tracks.convertToPlayerItems()
         player = AVQueuePlayer(items: toBePlayedItems)
+
+        // 新增時間觀察
+        addTimeObserver()
     }
 
-    private func convertTracksToPlayerItems(_ tracks: [Track]) -> [AVPlayerItem] {
-        return tracks.compactMap { track -> AVPlayerItem? in
-            guard let url = URL(string: track.previewUrl) else {
-                return nil
+    private func addTimeObserver() {
+        // 每秒發送 timescale 次監聽事件
+        timeObserverToken = player.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 1, timescale: 30), queue: .main) { [weak self] _ in
+            guard let self = self else { return }
+            if self.player.currentItem?.status == .readyToPlay {
+                self.currentPlaybackTime = self.player.currentItem?.currentTime().seconds
             }
-            return AVPlayerItem(url: url)
+        }
+    }
+
+    private func removeTimeObserver() {
+        if let token = timeObserverToken {
+            player.removeTimeObserver(token)
+            timeObserverToken = nil
         }
     }
 
@@ -249,18 +264,8 @@ class MusicPlayer: MusicPlayerProtocol {
 
         let playItem = AVPlayerItem(url: audioURL)
         player.replaceCurrentItem(with: playItem)
-        looper = AVPlayerLooper(player: player, templateItem: playItem)
+//        looper = AVPlayerLooper(player: player, templateItem: playItem)
         currentTrackIndex = index
-    }
-
-    private func addTimeObserver() {
-        // 每秒發送 timescale 次監聽事件
-        timeObserverToken = player.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 1, timescale: 30), queue: .main) { [weak self] _ in
-            guard let self = self else { return }
-            if self.player.currentItem?.status == .readyToPlay {
-                self.currentPlaybackTime = self.player.currentItem?.currentTime().seconds
-            }
-        }
     }
 
     // MARK: 暫時關閉
@@ -397,6 +402,17 @@ extension MusicPlayer {
     }
 }
 
+extension Array where Element == Track {
+    func convertToPlayerItems() -> [AVPlayerItem] {
+        return compactMap { track -> AVPlayerItem? in
+            guard let url = URL(string: track.previewUrl) else {
+                return nil
+            }
+            return AVPlayerItem(url: url)
+        }
+    }
+}
+
 /**
  在音樂播放器中，RepeatMode和Shuffle通常是獨立的選項，可以搭配使用，也可以單獨使用。
 
@@ -411,3 +427,4 @@ extension MusicPlayer {
  */
 
 // player.addBoundaryTimeObserver  傳入指定時間(陣列)要進行的行為
+

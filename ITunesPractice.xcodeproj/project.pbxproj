@@ -120,6 +120,7 @@
 		8BD1C64F29AEDEAE00337EF3 /* ITunesImageSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD1C64E29AEDEAE00337EF3 /* ITunesImageSize.swift */; };
 		8BD1C65329AF37AA00337EF3 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD1C65229AF37AA00337EF3 /* PreviewViewController.swift */; };
 		8BF2026029A99DF7005FF2E4 /* SearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF2025F29A99DF7005FF2E4 /* SearchResponse.swift */; };
+		8BF66E2529E397BC00C8811E /* NotificationName+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF66E2429E397BC00C8811E /* NotificationName+Extensions.swift */; };
 		8BF7183329CDEEFB002CEFD6 /* MusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF7183229CDEEFB002CEFD6 /* MusicPlayer.swift */; };
 		8BF7183529CDF68D002CEFD6 /* Error+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF7183429CDF68D002CEFD6 /* Error+Extensions.swift */; };
 		8BF7183829CDF7FE002CEFD6 /* MusicPlayerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF7183729CDF7FE002CEFD6 /* MusicPlayerError.swift */; };
@@ -278,6 +279,7 @@
 		8BD1C64E29AEDEAE00337EF3 /* ITunesImageSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITunesImageSize.swift; sourceTree = "<group>"; };
 		8BD1C65229AF37AA00337EF3 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
 		8BF2025F29A99DF7005FF2E4 /* SearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResponse.swift; sourceTree = "<group>"; };
+		8BF66E2429E397BC00C8811E /* NotificationName+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Extensions.swift"; sourceTree = "<group>"; };
 		8BF7183229CDEEFB002CEFD6 /* MusicPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayer.swift; sourceTree = "<group>"; };
 		8BF7183429CDF68D002CEFD6 /* Error+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+Extensions.swift"; sourceTree = "<group>"; };
 		8BF7183729CDF7FE002CEFD6 /* MusicPlayerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayerError.swift; sourceTree = "<group>"; };
@@ -733,6 +735,7 @@
 				8B58CFBF29D0562000B36C71 /* Double+Extensions.swift */,
 				8B5FCD3429D2C50500C763DB /* CAGradientLayer+Extensions.swift */,
 				8B882E9729DA71A9000AA1DE /* CaseIterable+Extensions.swift */,
+				8BF66E2429E397BC00C8811E /* NotificationName+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1132,6 +1135,7 @@
 				8BB74C9129A1DD7F000B9D59 /* ApiComponentSendable.swift in Sources */,
 				8B4D36C6299FBD7E00059381 /* SceneDelegate.swift in Sources */,
 				8B3F9BE129C6EA270050CFC9 /* UIColor+Extension.swift in Sources */,
+				8BF66E2529E397BC00C8811E /* NotificationName+Extensions.swift in Sources */,
 				8BB69BDA29BE1B3100F09793 /* PlaylistViewModel.swift in Sources */,
 				8BB69BC929BCB71C00F09793 /* ApiEngine+Extensions.swift in Sources */,
 				8B3B6CCB29AC788400A6352A /* ITunesService+Lookup.swift in Sources */,

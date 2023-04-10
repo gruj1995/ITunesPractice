@@ -21,6 +21,7 @@ extension UserDefaults {
         }
         set {
             UserDefaultsHelper.shared.set(newValue, forKey: Keys.tracks)
+            NotificationCenter.default.post(name: .toBePlayedTracksDidChanged, object: self)
         }
     }
 }
