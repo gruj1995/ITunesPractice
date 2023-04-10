@@ -1,13 +1,16 @@
 # ITunesPractice
 這個專案主要是模仿 Apple Music 的 side project，尚在開發中，所以 developer 分支會是最新進度。
 
+
 ## 專案環境
 - Bundle Identifier: com.pinyi.ITunesPractice
 - Xcode Version: 14.0.1
 - minimumVersion: iOS 15.0
 
+
 ## 軟體架構
 MVVM
+
 
 ## 重要 Class
 | Tab | Class | Name              | Description                
@@ -30,6 +33,7 @@ Tab2 |LibraryViewController |「資料庫」
 	 - 播放器頁： PlaylistPlayerViewController
 	 
 - MusicPlayer 音樂播放的 Helper
+
 
 ## 練習使用的技術/套件/框架
 
