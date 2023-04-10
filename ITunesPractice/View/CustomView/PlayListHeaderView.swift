@@ -107,7 +107,6 @@ final class PlayListHeaderView: UITableViewHeaderFooterView {
     }()
 
     private func setupUI() {
-        backgroundColor = .clear
         backgroundView = UIView.emptyView() // 避免 highlight 效果
         setupLayout()
     }
