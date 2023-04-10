@@ -16,17 +16,17 @@ Tab1 |SearchViewController | 「搜尋」
 Tab2 |LibraryViewController |「資料庫」
 
 - MainTabBarController  TabBar控制頁
--- 迷你播放器頁面：MiniPlayerViewController
+	 - 迷你播放器頁面：MiniPlayerViewController
 
 - SearchViewController  搜尋頁
--- 搜尋結果頁：SearchResultsViewController
--- 搜尋結果資訊頁：TrackDetailViewController
--- 預覽頁：PreviewViewController
--- 上下文菜單預覽頁：TrackContextMenuViewController
+	 - 搜尋結果頁：SearchResultsViewController
+	 - 搜尋結果資訊頁：TrackDetailViewController
+	 - 預覽頁：PreviewViewController
+	 - 上下文菜單預覽頁：TrackContextMenuViewController
 
 - LibraryViewController  資料庫頁
 
 - PlaylistViewController 播放清單頁
-	 -- 播放器頁： PlaylistPlayerViewController
+	 - 播放器頁： PlaylistPlayerViewController
 	 
 - MusicPlayer 音樂播放的 Helper
