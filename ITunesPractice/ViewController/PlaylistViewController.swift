@@ -115,6 +115,8 @@ class PlaylistViewController: UIViewController {
         return gradient
     }()
 
+    private var isInitialUpdateColors = false
+
     private var isPlayerHidden: Bool = false {
         didSet {
             let inset = isPlayerHidden ? playerHiddenInset : 0
@@ -158,8 +160,6 @@ class PlaylistViewController: UIViewController {
         tableView.snp.makeConstraints { make in
             make.top.equalTo(currentTrackView.snp.bottom)
             make.bottom.leading.trailing.equalToSuperview()
-//            tableViewBottom = make.bottom.equalToSuperview().constraint
-//            make.edges.equalToSuperview().inset(UIEdgeInsets(top: 150, left: 0, bottom: 0, right: 0))
         }
 
         view.addSubview(playerContainerView)
@@ -182,19 +182,23 @@ class PlaylistViewController: UIViewController {
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 guard let self = self else { return }
-                self.updateCurrentTrack()
+                if !self.isInitialUpdateColors {
+                    self.viewModel.changeImage()
+                    self.isInitialUpdateColors = true
+                }
+                self.updateCurrentTrackView()
                 self.updateTableView()
             }.store(in: &cancellables)
 
         viewModel.colorsPublisher
             .receive(on: RunLoop.main)
-            .sink { [weak self] colors in
+            .sink { [weak self] _ in
                 guard let self = self else { return }
-                self.updateGradientLayers(with: colors)
+                self.updateGradientLayers()
             }.store(in: &cancellables)
     }
 
-    private func updateCurrentTrack() {
+    private func updateCurrentTrackView() {
         let track = viewModel.currentTrack
         let url = track?.getArtworkImageWithSize(size: .square800)
         coverImageView.loadCoverImage(with: url)
@@ -207,28 +211,30 @@ class PlaylistViewController: UIViewController {
         currentTrackView.configure(trackName: trackName, artistName: track?.artistName)
     }
 
-    private func updateGradientLayers(with colors: [UIColor]) {
-        let animator = UIViewPropertyAnimator(duration: 1, curve: .easeInOut) { [weak self] in
-            guard let self = self else { return }
-            let cgColors = colors.map { $0.cgColor }
-            self.gradient.colors = cgColors
-
-            // 取得 gradient 由上往下幾 % 位置的漸層顏色作為交界色
-            guard let bottomThirdColor = self.gradient.color(atPosition: 0.45)?.cgColor else {
-                return
-            }
-            let playerVCColors = [bottomThirdColor.copy(alpha: 0.05)!, bottomThirdColor, cgColors[2]]
-
-            self.playerVC.gradient.colors = playerVCColors
-        }
-        animator.startAnimation()
-    }
-
     private func updateTableView() {
         // 要放在 tableView.reloadData() 前
         tableView.tableFooterView = nil
         tableView.reloadData()
         hideCellsIfTouchingHeader()
+    }
+
+    private func updateGradientLayers() {
+        let cgColors = viewModel.colors.map { $0.cgColor }
+        // 更新主要漸層色
+        gradient.updateColors(with: cgColors)
+
+        // 取得漸層的底部三分之一位置的顏色，作為交界色
+        guard let bottomThirdColor = gradient.color(atPosition: 0.45)?.cgColor else {
+            return
+        }
+        // 建立包含三種顏色的漸層色陣列，用於更新 playerVC 的漸層色
+        let playerVCColors = [
+            bottomThirdColor.copy(alpha: 0.05)!,
+            bottomThirdColor,
+            cgColors[2]
+        ]
+        // 更新 playerVC 的漸層色
+        playerVC.gradient.updateColors(with: playerVCColors)
     }
 
     private func handleError(_ error: Error) {
@@ -314,6 +320,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
         // 解除cell被選中的狀態
         tableView.deselectRow(at: indexPath, animated: true)
         viewModel.setSelectedTrack(forCellAt: indexPath.row)
+        viewModel.changeImage()
         viewModel.play()
 
         let vc = TrackDetailViewController()

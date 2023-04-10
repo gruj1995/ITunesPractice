@@ -50,7 +50,9 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
         get {
             UserDefaults.standard.tracks
         }
-        set {}
+        set {
+            UserDefaults.standard.tracks = newValue
+        }
     }
 
     var currentTrackIndex: Int {
@@ -348,8 +350,6 @@ extension MusicPlayer {
 
     /// 播放清單內的下一首
     func nextTrack() {
-//        player.advanceToNextItem()
-//        currentTrackIndex += 1
         let index = currentTrackIndex
         let nextIndex = isShuffleMode ? tracks.randomIndexExcluding(index) : index + 1
         play(at: nextIndex)

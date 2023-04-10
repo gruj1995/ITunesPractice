@@ -15,15 +15,7 @@ import UIKit
 class PlaylistViewModel {
     // MARK: Lifecycle
 
-    init() {
-        // 監聽歌曲選中事件
-//        selectTrackPublisher
-//            .sink { [weak self] track in
-//                self?.musicPlayer.selectTrack(track)
-//            }
-//            .store(in: &cancellables)
-//        setSelectedTrack(player.)
-    }
+    init() {}
 
     // MARK: Internal
 
@@ -44,12 +36,20 @@ class PlaylistViewModel {
         musicPlayer.tracks
     }
 
-    var headerButtonBgColor: UIColor? {
-        if colorsSubject.value.count >= 3 {
-            return colorsSubject.value[1]
-        } else {
-            return nil
+    var colors: [UIColor] {
+        get {
+            colorsSubject.value
         }
+        set {
+            colorsSubject.value = newValue
+        }
+    }
+
+    var headerButtonBgColor: UIColor? {
+        if colors.count >= 3 {
+            return colors[1]
+        }
+        return nil
     }
 
     var totalCount: Int {
@@ -106,7 +106,6 @@ class PlaylistViewModel {
 
     func play() {
         musicPlayer.play()
-        changeImage()
     }
 
     func setSelectedTrack(forCellAt index: Int) {
@@ -125,7 +124,12 @@ class PlaylistViewModel {
 
     private let musicPlayer: MusicPlayer = .shared
 
-    private func changeImage() {
+    // TODO: 改善邏輯，因為目前有點 work around
+    var isFirstChangeColors: Bool {
+        colors == DefaultTrack.gradientColors && currentTrack?.trackName != DefaultTrack.trackName
+    }
+
+    func changeImage() {
         let url = currentTrack?.artworkUrl100
         downloadImage(with: url)
     }
@@ -133,10 +137,9 @@ class PlaylistViewModel {
     /// 異步下載圖檔
     private func downloadImage(with urlString: String?) {
         guard let urlString = urlString else {
-            colorsSubject.send(DefaultTrack.gradientColors)
+            colors = DefaultTrack.gradientColors
             return
         }
-
         guard let url = URL(string: urlString) else {
             return
         }
@@ -161,7 +164,7 @@ class PlaylistViewModel {
             // - algorithm: 使用 kMensCluster 算法或是迭代像素算法
             let allColors = try image.dominantColors(with: .fair, algorithm: .kMeansClustering)
             let sortedColors = allColors.sortedByGrayValue(isDesc: false)
-            colorsSubject.send(Array(sortedColors.suffix(3)))
+            colors = Array(sortedColors.suffix(3))
         } catch {
             Logger.log(error)
         }
