@@ -16,7 +16,7 @@ import MediaPlayer // MPVolumeView
 class MusicPlayer: NSObject, MusicPlayerProtocol {
     // MARK: Lifecycle
 
-    override private init() {
+    private override init() {
         super.init()
         setAVQueuePlayer()
 
@@ -427,4 +427,3 @@ extension Array where Element == Track {
  */
 
 // player.addBoundaryTimeObserver  傳入指定時間(陣列)要進行的行為
-

@@ -256,12 +256,12 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
         if viewModel.tracks.isEmpty {
             // 沒有資料時顯示播放器
             isPlayerHidden = false
-        } else if contentOffset <= 0 {
-            // 滑到最上方了，隱藏播放器
-            isPlayerHidden = true
         } else if contentOffset >= contentHeight - frameHeight {
             // 滑到最底部了，顯示播放器
             isPlayerHidden = false
+        } else if contentOffset <= 0 {
+            // 滑到最上方了，隱藏播放器
+            isPlayerHidden = true
         } else if contentOffset > lastContentOffset {
             // 上滑，隱藏播放器
             isPlayerHidden = true
