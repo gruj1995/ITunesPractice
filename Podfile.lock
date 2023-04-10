@@ -1,16 +1,20 @@
 PODS:
   - SwiftLint (0.50.3)
+  - UIImageColors (2.1.0)
 
 DEPENDENCIES:
   - SwiftLint
+  - UIImageColors
 
 SPEC REPOS:
   trunk:
     - SwiftLint
+    - UIImageColors
 
 SPEC CHECKSUMS:
   SwiftLint: 77f7cb2b9bb81ab4a12fcc86448ba3f11afa50c6
+  UIImageColors: d2ef3b0877d203cbb06489eeb78ea8b7788caabe
 
-PODFILE CHECKSUM: f35edef87029daaefa634a0e64e2725f37053f5e
+PODFILE CHECKSUM: 6552347dc72890ba08e310517abb11c712e33d55
 
 COCOAPODS: 1.11.3
