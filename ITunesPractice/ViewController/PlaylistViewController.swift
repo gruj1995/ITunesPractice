@@ -11,7 +11,7 @@ import UIKit
 
 // MARK: - PlaylistViewController
 
-/*
+/**
   - 沒網路時，網路音樂文字變灰色且不可選擇，本地音樂維持白字可選擇
   - tableView 滑動到待播清單時：
         上滑隱藏播放器; 下滑顯示播放器
@@ -44,13 +44,11 @@ class PlaylistViewController: UIViewController {
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
         tableView.keyboardDismissMode = .onDrag
-
 //        // 是否允許拖動操作(要放在以下兩者前)
 //        tableView.dragInteractionEnabled = true
 //        // 拖放事件
 //        tableView.dragDelegate = self
 //        tableView.dropDelegate = self
-
         return tableView
     }()
 
@@ -69,25 +67,18 @@ class PlaylistViewController: UIViewController {
     // MARK: Private
 
     private let viewModel: PlaylistViewModel = .init()
-
-    private var cancellables: Set<AnyCancellable> = .init()
-
-    private var lastVelocityYSign = 0
-
+    private let playerContainerViewHeight = Constants.screenHeight * 0.35
     private let cellHeight: CGFloat = 60
 
+    private var cancellables: Set<AnyCancellable> = .init()
+    private var lastVelocityYSign = 0
     private var lastContentOffset: CGFloat = 0
-
     private var playerContainerViewBottom: Constraint?
-
-    private let playerContainerViewHeight = Constants.screenHeight * 0.35
-
     private var animator: UIViewPropertyAnimator!
 
     private lazy var playerContainerView: UIView = .init()
-
     private lazy var currentTrackView: CurrentTrackView = .init()
-
+    private lazy var coverImageView: UIImageView = .coverImageView()
     private lazy var coverImageContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = .clear
@@ -98,9 +89,7 @@ class PlaylistViewController: UIViewController {
         return view
     }()
 
-    private lazy var coverImageView: UIImageView = .coverImageView()
-
-    // 音樂播放器
+    // 音樂播放器頁
     private lazy var playerVC: PlaylistPlayerViewController = {
         let vc = UIStoryboard(name: "PlayListPlayer", bundle: nil).instantiateViewController(withIdentifier: PlaylistPlayerViewController.storyboardIdentifier) as! PlaylistPlayerViewController
         return vc
@@ -114,8 +103,6 @@ class PlaylistViewController: UIViewController {
         view.layer.insertSublayer(gradient, at: 0)
         return gradient
     }()
-
-    private var isInitialUpdateColors = false
 
     private var isPlayerHidden: Bool = false {
         didSet {
@@ -180,18 +167,18 @@ class PlaylistViewController: UIViewController {
     private func bindViewModel() {
         viewModel.currentTrackIndexPublisher
             .receive(on: RunLoop.main)
+            .removeDuplicates() // 為什麼會觸發多次？
             .sink { [weak self] _ in
                 guard let self = self else { return }
-                if !self.isInitialUpdateColors {
-                    self.viewModel.changeImage()
-                    self.isInitialUpdateColors = true
-                }
+                self.viewModel.changeImage()
                 self.updateCurrentTrackView()
                 self.updateTableView()
             }.store(in: &cancellables)
 
         viewModel.colorsPublisher
             .receive(on: RunLoop.main)
+            .dropFirst()
+            .removeDuplicates() // 為什麼會觸發多次？
             .sink { [weak self] _ in
                 guard let self = self else { return }
                 self.updateGradientLayers()
@@ -319,8 +306,8 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // 解除cell被選中的狀態
         tableView.deselectRow(at: indexPath, animated: true)
+        // 更新選中歌曲
         viewModel.setSelectedTrack(forCellAt: indexPath.row)
-        viewModel.changeImage()
         viewModel.play()
 
         let vc = TrackDetailViewController()

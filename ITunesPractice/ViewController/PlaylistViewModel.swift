@@ -113,6 +113,11 @@ class PlaylistViewModel {
         currentTrack = tracks[index]
     }
 
+    func changeImage() {
+        let url = currentTrack?.artworkUrl100
+        downloadImage(with: url)
+    }
+
     // MARK: Private
 
     // TODO: 為什麼PassthroughSubject只觸發一次？
@@ -120,37 +125,21 @@ class PlaylistViewModel {
 
     private var cancellables: Set<AnyCancellable> = .init()
 
-    // MARK: - Inputs
-
     private let musicPlayer: MusicPlayer = .shared
-
-    // TODO: 改善邏輯，因為目前有點 work around
-    var isFirstChangeColors: Bool {
-        colors == DefaultTrack.gradientColors && currentTrack?.trackName != DefaultTrack.trackName
-    }
-
-    func changeImage() {
-        let url = currentTrack?.artworkUrl100
-        downloadImage(with: url)
-    }
 
     /// 異步下載圖檔
     private func downloadImage(with urlString: String?) {
-        guard let urlString = urlString else {
+        guard let urlString = urlString, let url = URL(string: urlString) else {
             colors = DefaultTrack.gradientColors
-            return
-        }
-        guard let url = URL(string: urlString) else {
             return
         }
 
         KingfisherManager.shared.retrieveImage(with: url) { [weak self] result in
-            guard let self = self else { return }
             switch result {
             case .success(let value):
                 Logger.log("Image: \(value.image). Got from: \(value.cacheType)")
-                // TODO: 這邊同步會導致進頁面卡頓，但沒有先做完的話頁面會沒有背景色，看如何取捨
-                self.generateColors(by: value.image)
+                // TODO: 目前用同步方式提取漸層色會導致進頁面卡頓，但沒有先等的話頁面會沒有背景色，之後考慮使用catche暫存顏色解決此問題
+                self?.generateColors(by: value.image)
             case .failure(let error):
                 Logger.log(error.localizedDescription)
             }
@@ -162,7 +151,7 @@ class PlaylistViewModel {
         do {
             // - quality: 決定取色的品質
             // - algorithm: 使用 kMensCluster 算法或是迭代像素算法
-            let allColors = try image.dominantColors(with: .fair, algorithm: .kMeansClustering)
+            let allColors = try image.dominantColors(with: .fair, algorithm: .iterative)
             let sortedColors = allColors.sortedByGrayValue(isDesc: false)
             colors = Array(sortedColors.suffix(3))
         } catch {
