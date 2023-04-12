@@ -22,6 +22,12 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
 
         // 觀察待播清單更新
         NotificationCenter.default.addObserver(self, selector: #selector(userDefaultsDidChange), name: .toBePlayedTracksDidChanged, object: nil)
+
+        // 每首歌曲播放完畢時更新索引
+        NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: nil, queue: .main) { [weak self] _ in
+            guard let self = self else { return }
+            self.nextTrack()
+        }
     }
 
     // MARK: Internal
@@ -47,28 +53,18 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
 
     // 播放清單
     var tracks: [Track] {
-        get {
-            UserDefaults.standard.tracks
-        }
-        set {
-            UserDefaults.standard.tracks = newValue
-        }
+        get { UserDefaults.standard.tracks }
+        set { UserDefaults.standard.tracks = newValue }
     }
 
     var currentTrackIndex: Int {
-        get {
-            currentTrackIndexSubject.value
-        }
-        set {
-            currentTrackIndexSubject.value = newValue
-        }
+        get { currentTrackIndexSubject.value }
+        set { currentTrackIndexSubject.value = newValue }
     }
 
     // 是否正在播放
     var isPlaying: Bool {
-        get {
-            isPlayingSubject.value
-        }
+        get { isPlayingSubject.value }
         set {
             isPlayingSubject.value = newValue
 
@@ -89,12 +85,8 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
 
     // 當前播放進度（單位：秒）
     var currentPlaybackTime: Double? {
-        get {
-            timeSubject.value
-        }
-        set {
-            timeSubject.value = newValue
-        }
+        get { timeSubject.value }
+        set { timeSubject.value = newValue }
     }
 
     // 當前曲目總長度（單位：秒）
@@ -160,48 +152,6 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
     /// 在 AppDelegate 呼叫，讓 MusicPlayer 在開啟app時就建立
     func configure() {}
 
-    /// 上首歌曲播放結束，判斷播放下一首的邏輯
-//    func playNextTrack() throws {
-//        guard !tracks.isEmpty else {
-//            throw MusicPlayerError.emptyPlaylist
-//        }
-//
-//        var nextIndex: Int
-//        switch repeatMode {
-//        case .all:
-//            nextIndex = currentTrackIndex + 1
-//            if !tracks.isValidIndex(nextIndex) {
-//                nextIndex = 0
-//            }
-//        case .one:
-//            nextIndex = currentTrackIndex
-//        case .none:
-//            nextIndex = currentTrackIndex + 1
-//            if !tracks.isValidIndex(nextIndex) {
-//                stop()
-//                return
-//            }
-//        }
-//
-//        player.advanceToNextItem()
-//        currentTrackIndex = nextIndex
-//        //        play(at: nextIndex)
-//    }
-
-//        func playPreviousTrack() {
-//            guard currentTrackIndex > 0 else {
-//                return
-//            }
-//
-//            let previousTrackIndex = currentTrackIndex - 1
-//            let previousTrack = tracks[previousTrackIndex]
-//
-//            player.pause()
-//            player.replaceCurrentItem(with: previousTrack)
-//            currentTrackIndex = previousTrackIndex
-//            player.play()
-//        }
-
     // MARK: Private
 
     private var looper: AVPlayerLooper?
@@ -262,11 +212,21 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
             return
         }
         // 回到歌曲開頭
-        player.seek(to: .zero)
+        seek(to: 0)
 
         let playItem = AVPlayerItem(url: audioURL)
         player.replaceCurrentItem(with: playItem)
-//        looper = AVPlayerLooper(player: player, templateItem: playItem)
+
+        // 停止當前的循環
+        if looper != nil {
+            looper?.disableLooping()
+            looper = nil
+        }
+        // 使用 AVPlayerLooper 實現單曲循環
+        if repeatMode == .one {
+            looper = AVPlayerLooper(player: player, templateItem: playItem)
+        }
+
         currentTrackIndex = index
     }
 
@@ -308,18 +268,12 @@ extension MusicPlayer {
         isPlaying = true
     }
 
-    /// 停止播放(清除目前播放的)
+    /// 停止播放(暫停並將時間設到歌曲開始)
     func stop() {
-        isPlaying = false
-        player.replaceCurrentItem(with: nil)
-    }
-
-//    /// 停止播放(暫停並將時間設到歌曲開始)
-//    func stop() {
-//        player.pause()
+//        play(at: 0)
 //        isPlaying = false
 //        player.seek(to: CMTime.zero)
-//    }
+    }
 
     /**
      搜尋至指定時間位置
@@ -351,7 +305,27 @@ extension MusicPlayer {
     /// 播放清單內的下一首
     func nextTrack() {
         let index = currentTrackIndex
-        let nextIndex = isShuffleMode ? tracks.randomIndexExcluding(index) : index + 1
+        var nextIndex: Int
+
+        switch repeatMode {
+        // 循環播放單曲
+        case .one:
+            nextIndex = currentTrackIndex
+        // 循環播放全部/不循環播放
+        case .all, .none:
+            if isShuffleMode {
+                // TODO: 隨機播放時原本的播放清單要怎麼處理？
+                nextIndex = tracks.randomIndexExcluding(index)
+            } else {
+                nextIndex = currentTrackIndex + 1
+                // 播放到最後一首時
+                if nextIndex >= tracks.count {
+                    playlistDidFinishPlaying()
+                    return
+                }
+            }
+        }
+
         play(at: nextIndex)
     }
 
@@ -365,6 +339,21 @@ extension MusicPlayer {
     // 移除所有播放清單中的歌曲
     func removeAllItems() {
         player.removeAllItems()
+    }
+
+    /// 播放清單內的歌曲都播放完畢
+    private func playlistDidFinishPlaying() {
+        // 重整播放清單
+        setAVQueuePlayer()
+        // 切回第一首歌開頭
+        seek(to: 0)
+        currentTrackIndex = 0
+
+        if repeatMode == .all {
+            isPlaying = true
+        } else if repeatMode == .none {
+            isPlaying = false
+        }
     }
 }
 

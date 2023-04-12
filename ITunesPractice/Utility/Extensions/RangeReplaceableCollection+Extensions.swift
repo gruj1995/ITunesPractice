@@ -28,11 +28,7 @@ extension RangeReplaceableCollection where Element: Equatable {
 
 extension Collection {
     func isValidIndex(_ index: Index) -> Bool {
-        return indices.contains(index)
-    }
-
-    func isNotEmpty() -> Bool {
-        return !isEmpty
+        indices.contains(index)
     }
 }
 
