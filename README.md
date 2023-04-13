@@ -4,7 +4,7 @@
 
 ## 專案環境
 - Bundle Identifier: com.pinyi.ITunesPractice
-- Xcode Version: 14.0.1
+- Xcode Version: 14.2.0
 - minimumVersion: iOS 15.0
 
 
