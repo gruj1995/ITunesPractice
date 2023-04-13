@@ -103,7 +103,7 @@ class SearchResultsViewModel {
 
     /// 用戶滑到最底且後面還有資料時，載入下一頁資料
     func loadMoreIfNeeded(currentRowIndex: Int, lastRowIndex: Int) {
-        if currentRowIndex == lastRowIndex && hasMoreData {
+        if currentRowIndex == lastRowIndex, hasMoreData {
             loadNextPage()
         }
     }
@@ -112,6 +112,13 @@ class SearchResultsViewModel {
     func setSelectedTrack(forCellAt index: Int) {
         guard index < tracks.count else { return }
         selectedTrack = tracks[index]
+    }
+
+    func reloadTracks() {
+        currentPage = 0
+        totalPages = 0
+        tracks.removeAll()
+        loadNextPage()
     }
 
     // MARK: Private
@@ -131,9 +138,6 @@ class SearchResultsViewModel {
     // 回傳404，錯誤訊息 Your request produced an error. [newNullResponse]
     private func searchTrack(with term: String) {
         searchTerm = term
-        currentPage = 0
-        totalPages = 0
-        tracks.removeAll()
-        loadNextPage()
+        reloadTracks()
     }
 }

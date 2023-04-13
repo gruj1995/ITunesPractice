@@ -49,10 +49,24 @@ class SearchResultsViewController: UIViewController {
         return activityIndicator
     }()
 
+    // 下拉 tableView 更新資料
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = .lightGray
+        let attributedString = NSAttributedString(string: "更新資料".localizedString(), attributes: [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14),
+            NSAttributedString.Key.foregroundColor: UIColor.lightGray
+        ])
+        refreshControl.attributedTitle = attributedString
+        refreshControl.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
+        refreshControl.addTarget(self, action: #selector(reloadTracks), for: .valueChanged)
+        return refreshControl
+    }()
+
     private let cellHeight: CGFloat = 60
 
     private lazy var tableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.register(TrackCell.self, forCellReuseIdentifier: TrackCell.reuseIdentifier)
         tableView.rowHeight = cellHeight
         tableView.delegate = self
@@ -61,6 +75,7 @@ class SearchResultsViewController: UIViewController {
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
         tableView.keyboardDismissMode = .onDrag // 捲動就隱藏鍵盤
+        tableView.addSubview(refreshControl)
         return tableView
     }()
 
@@ -72,6 +87,20 @@ class SearchResultsViewController: UIViewController {
 
     private func setupUI() {
         setupLayout()
+    }
+
+    private func setupLayout() {
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
+        view.addSubview(emptyStateView)
+        emptyStateView.snp.makeConstraints { make in
+            make.centerX.equalTo(view.safeAreaLayoutGuide)
+            make.centerY.equalTo(view.safeAreaLayoutGuide).multipliedBy(0.9)
+            make.width.equalToSuperview().multipliedBy(0.8)
+        }
     }
 
     private func bindViewModel() {
@@ -92,6 +121,8 @@ class SearchResultsViewController: UIViewController {
     }
 
     private func updateUI() {
+        refreshControl.endRefreshing()
+
         if viewModel.totalCount == 0, !viewModel.searchTerm.isEmpty {
             showNoResultView()
         } else if !NetStatus.shared.isConnected {
@@ -121,23 +152,15 @@ class SearchResultsViewController: UIViewController {
         tableView.isHidden = true
     }
 
-    private func setupLayout() {
-        view.addSubview(tableView)
-        tableView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-
-        view.addSubview(emptyStateView)
-        emptyStateView.snp.makeConstraints { make in
-            make.centerX.equalTo(view.safeAreaLayoutGuide)
-            make.centerY.equalTo(view.safeAreaLayoutGuide).multipliedBy(0.9)
-            make.width.equalToSuperview().multipliedBy(0.8)
-        }
-    }
-
     private func handleError(_ error: Error) {
+        refreshControl.endRefreshing()
         tableView.tableFooterView = nil
         Utils.toast(error.localizedDescription, at: .center)
+    }
+
+    @objc
+    private func reloadTracks() {
+        viewModel.reloadTracks()
     }
 }
 
