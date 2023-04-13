@@ -71,7 +71,6 @@ class SearchResultsViewModel {
     }
 
     func loadNextPage() {
-//        guard currentPage < totalPages || totalPages == 0 else { return }
         guard !searchTerm.isEmpty else {
             tracks.removeAll()
             return
@@ -92,12 +91,20 @@ class SearchResultsViewModel {
                 self.currentPage += 1
                 self.totalPages = response.resultCount / self.pageSize + 1
                 self.tracks.append(contentsOf: response.results)
-//                Utils.addTracksToUserDefaults(self.tracks)
+                // 如果數據的數量小於每頁的大小，表示已經下載完所有數據
+                self.hasMoreData = response.resultCount == self.pageSize
                 self.state = .success
             case .failure(let error):
                 Logger.log(error.localizedDescription)
                 self.state = .failed(error: error)
             }
+        }
+    }
+
+    /// 用戶滑到最底且後面還有資料時，載入下一頁資料
+    func loadMoreIfNeeded(currentRowIndex: Int, lastRowIndex: Int) {
+        if currentRowIndex == lastRowIndex && hasMoreData {
+            loadNextPage()
         }
     }
 
@@ -116,6 +123,7 @@ class SearchResultsViewModel {
     private var currentPage: Int = 0
     private var totalPages: Int = 0
     private var pageSize: Int = 20
+    private var hasMoreData: Bool = true
 
     private var cancellables: Set<AnyCancellable> = []
 
