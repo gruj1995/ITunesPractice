@@ -44,8 +44,8 @@ class AnimatedThumbSlider: UISlider {
         super.touchesBegan(touches, with: event)
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            // 碰觸到 thumbImageView 時，使用動畫將 thumbImageView 放大
-            if let touch = touches.first, self.thumbImageView.frame.contains(touch.location(in: self)) {
+            // 碰觸到 thumbImageView 時(有擴大偵測範圍)，使用動畫將 thumbImageView 放大
+            if let touch = touches.first, self.thumbImageView.frame.insetBy(dx: -20.0, dy: -20.0).contains(touch.location(in: self)) {
                 UIView.animate(withDuration: self.animateDuration, delay: 0.0, options: .curveLinear, animations: {
                     self.thumbImageView.transform = CGAffineTransform(scaleX: self.thumbScale, y: self.thumbScale)
                 }, completion: nil)
