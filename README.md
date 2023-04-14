@@ -7,8 +7,9 @@
 	- 上一曲、下一曲
 	- 調整系統音量
 	- 拖曳調整播放進度
-	- 重複播放、隨機播放(尚有bug)
-其他功能：
+	- 重複播放、隨機播放
+	
+- 其他功能：
 	- 專輯封面漸層色<br>
 	<img src="https://user-images.githubusercontent.com/70060071/231921683-2fb87a50-1297-487c-ba7a-aacc6a496a6f.png" alt="simulator_screenshot_1CF8119B-0706-4AFE-83F3-80352FDA9559" style="width:360px"><br>
 	
