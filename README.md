@@ -10,11 +10,14 @@
 	- 重複播放、隨機播放
 	
 - 其他功能：
+	- 列表在滾到頁面底部時,透過分頁機制載入新的分頁,直到沒有更多的歌曲。<br>
+	![703133132 870802](https://user-images.githubusercontent.com/70060071/231930096-1c92fa66-b09e-4b4e-8deb-b743cf5b2ed0.gif)<br>
+	
 	- 專輯封面漸層色<br>
 	<img src="https://user-images.githubusercontent.com/70060071/231921683-2fb87a50-1297-487c-ba7a-aacc6a496a6f.png" alt="simulator_screenshot_1CF8119B-0706-4AFE-83F3-80352FDA9559" style="width:360px"><br>
 	
 	- 支援背景播放(靜音模式、關閉螢幕、將app滑入背景時都可以繼續播放音樂)<br>
-	<img src="https://user-images.githubusercontent.com/70060071/231921514-f57f3439-de78-4181-8fcf-060ccc729cbc.jpg" alt="S__23265288" style="width:360px;"><br>
+	<img src="https://user-images.githubusercontent.com/70060071/231921514-f57f3439-de78-4181-8fcf-060ccc729cbc.jpg" alt="S__23265288" style="width:360px;"><br> 
 	
 	- 長按cell出現快捷選單<br>
 	<img src="https://user-images.githubusercontent.com/70060071/231921272-4ef915a5-9ddb-4a03-8080-6b6c22bba338.png" alt="simulator_screenshot_6DE22608-56AE-47DE-8B69-841FFFA74E92" style="width:360px;"><br>
