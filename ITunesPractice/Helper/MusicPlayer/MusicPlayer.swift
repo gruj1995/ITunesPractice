@@ -14,11 +14,18 @@ import MediaPlayer // MPVolumeView
 // MARK: - MusicPlayer
 
 class MusicPlayer: NSObject, MusicPlayerProtocol {
+
     // MARK: Lifecycle
 
     private override init() {
         super.init()
         setAVQueuePlayer()
+
+        UIApplication.shared.beginReceivingRemoteControlEvents()
+        //  設定背景&鎖定播放
+        setupRemoteTransportControls()
+
+        currentTrackIndex = 0
 
         // 觀察待播清單更新
         NotificationCenter.default.addObserver(self, selector: #selector(userDefaultsDidChange), name: .toBePlayedTracksDidChanged, object: nil)
@@ -59,7 +66,11 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
 
     var currentTrackIndex: Int {
         get { currentTrackIndexSubject.value }
-        set { currentTrackIndexSubject.value = newValue }
+        set {
+            currentTrackIndexSubject.value = newValue
+            // 設定背景當前播放資訊
+            setupNowPlaying()
+        }
     }
 
     // 是否正在播放
@@ -92,6 +103,16 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
     // 當前曲目總長度（單位：秒）
     var currentPlaybackDuration: Double? {
         player.currentItem?.duration.seconds
+    }
+
+    // 當前播放進度 Float 值
+    var currentTimeFloatValue: Float {
+        currentPlaybackTime?.floatValue ?? 0
+    }
+
+    // 當前曲目總長度 Float 值
+    var totalDurationFloatValue: Float {
+        currentPlaybackDuration?.floatValue ?? 1
     }
 
     // 指定播放速率
@@ -198,18 +219,19 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
     }
 
     /// 播放指定索引的歌曲
-    private func play(at index: Int) {
+    @discardableResult
+    private func play(at index: Int) -> Bool {
         guard !tracks.isEmpty else {
             Utils.toast(MusicPlayerError.emptyPlaylist.unwrapDescription)
-            return
+            return false
         }
         guard tracks.isValidIndex(index) else {
             Utils.toast(MusicPlayerError.invalidIndex.unwrapDescription)
-            return
+            return false
         }
         guard let audioURL = URL(string: tracks[index].previewUrl) else {
             Utils.toast(MusicPlayerError.invalidTrack.unwrapDescription)
-            return
+            return false
         }
         // 回到歌曲開頭
         seek(to: 0)
@@ -228,6 +250,7 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
         }
 
         currentTrackIndex = index
+        return true
     }
 
     // MARK: 暫時關閉
@@ -287,6 +310,11 @@ extension MusicPlayer {
         let cmTime = CMTime(seconds: time, preferredTimescale: 1000)
         player.seek(to: cmTime)
     }
+
+    func seek(to time: Double, completionHandler: @escaping (Bool) -> Void) {
+        let cmTime = CMTime(seconds: time, preferredTimescale: 1000)
+        player.seek(to: cmTime, completionHandler: completionHandler)
+    }
 }
 
 // MARK: MusicPlayerPlaylistControl
@@ -303,7 +331,8 @@ extension MusicPlayer {
     }
 
     /// 播放清單內的下一首
-    func nextTrack() {
+    @discardableResult
+    func nextTrack() -> Bool {
         let index = currentTrackIndex
         var nextIndex: Int
 
@@ -321,19 +350,22 @@ extension MusicPlayer {
                 // 播放到最後一首時
                 if nextIndex >= tracks.count {
                     playlistDidFinishPlaying()
-                    return
+                    return true
                 }
             }
         }
 
-        play(at: nextIndex)
+        let isSuccess = play(at: nextIndex)
+        return isSuccess
     }
 
     /// 播放清單內的上一首
-    func previousTrack() {
+    @discardableResult
+    func previousTrack() -> Bool {
         let index = currentTrackIndex
         let previousIndex = isShuffleMode ? tracks.randomIndexExcluding(index) : index - 1
-        play(at: previousIndex)
+        let isSuccess = play(at: previousIndex)
+        return isSuccess
     }
 
     // 移除所有播放清單中的歌曲

@@ -42,15 +42,6 @@ class PlaylistPlayerViewModel {
         }
     }
 
-    var currentTime: Double? {
-        get {
-            musicPlayer.currentPlaybackTime
-        }
-        set {
-            musicPlayer.currentPlaybackTime = newValue
-        }
-    }
-
     var volume: Float {
         get { musicPlayer.volume }
         set { musicPlayer.volume = newValue }
