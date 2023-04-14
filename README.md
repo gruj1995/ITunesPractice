@@ -10,7 +10,7 @@
 	- 重複播放、隨機播放(尚有bug)
 其他功能：
 	- 專輯封面漸層色
-	![simulator_screenshot_1CF8119B-0706-4AFE-83F3-80352FDA9559](https://user-images.githubusercontent.com/70060071/231921683-2fb87a50-1297-487c-ba7a-aacc6a496a6f.png)
+	<img src="https://user-images.githubusercontent.com/70060071/231921683-2fb87a50-1297-487c-ba7a-aacc6a496a6f.png" width="480" height="854">
 	- 支援背景播放(靜音模式、關閉螢幕、將app滑入背景時都可以繼續播放音樂)
 	![S__23265288](https://user-images.githubusercontent.com/70060071/231921514-f57f3439-de78-4181-8fcf-060ccc729cbc.jpg)
 	- 長按cell出現快捷選單
