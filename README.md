@@ -1,6 +1,20 @@
 # ITunesPractice
 這個專案主要是模仿 Apple Music 的 side project，尚在開發中，所以 developer 分支會是最新進度。
 
+## 功能展示
+- 基本播放功能：
+	- 播放、暫停
+	- 上一曲、下一曲
+	- 調整系統音量
+	- 拖曳調整播放進度
+	- 重複播放、隨機播放(尚有bug)
+其他功能：
+	- 專輯封面漸層色
+	![simulator_screenshot_1CF8119B-0706-4AFE-83F3-80352FDA9559](https://user-images.githubusercontent.com/70060071/231921683-2fb87a50-1297-487c-ba7a-aacc6a496a6f.png)
+	- 支援背景播放(靜音模式、關閉螢幕、將app滑入背景時都可以繼續播放音樂)
+	![S__23265288](https://user-images.githubusercontent.com/70060071/231921514-f57f3439-de78-4181-8fcf-060ccc729cbc.jpg)
+	- 長按cell出現快捷選單
+	![simulator_screenshot_6DE22608-56AE-47DE-8B69-841FFFA74E92](https://user-images.githubusercontent.com/70060071/231921272-4ef915a5-9ddb-4a03-8080-6b6c22bba338.png)
 
 ## 專案環境
 - Bundle Identifier: com.pinyi.ITunesPractice
