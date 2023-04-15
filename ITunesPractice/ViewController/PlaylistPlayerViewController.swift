@@ -190,7 +190,7 @@ class PlaylistPlayerViewController: UIViewController {
         viewModel.playbackTimePublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                guard let self = self else { return }
+                guard let self else { return }
                 self.updateMusicSlider()
                 self.updateTimeLabels()
             }.store(in: &cancellables)
@@ -209,9 +209,10 @@ class PlaylistPlayerViewController: UIViewController {
         playButtons[1].setImage(image, for: .normal)
     }
 
-    // 更新已播放時間和剩餘時間標籤
+    /// 更新已播放時間和剩餘時間標籤
     // TODO: 修正拖曳放開slider後閃爍問題
     private func updateMusicSlider() {
+        // isTracking 代表正在拖動slider
         let isTracking = musicProgressSlider.isTracking
         viewModel.updateDisplayedTime(isTracking: isTracking)
         if isTracking {

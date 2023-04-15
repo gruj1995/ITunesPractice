@@ -83,7 +83,7 @@ class PlaylistPlayerViewModel {
 
     func updateDisplayedTime(isTracking: Bool) {
         if let totalDuration = totalDuration?.floatValue {
-            let newPercentage = isTracking ? playbackPercentage : newPlaybackPercentage
+            let newPercentage = isTracking ? newPlaybackPercentage : playbackPercentage
             let newCurrentTime = newPercentage * totalDuration
             displayedCurrentTime = newCurrentTime
             displayedRemainingTime = -totalDuration + newCurrentTime
