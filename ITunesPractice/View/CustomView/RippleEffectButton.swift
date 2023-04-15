@@ -45,7 +45,10 @@ class RippleEffectButton: UIButton {
 
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesCancelled(touches, with: event)
-        hideCircleLayer()
+        // 避免觸發長按手勢時隱藏 circleLayer
+        if !isLongPressActive {
+            hideCircleLayer()
+        }
     }
 
     // MARK: Private
@@ -62,7 +65,6 @@ class RippleEffectButton: UIButton {
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
         longPressGesture.minimumPressDuration = 0.5 // 認定為長按手勢的最短時間
         longPressGesture.allowableMovement = 10 // 允許移動的最大距離
-        longPressGesture.cancelsTouchesInView = false // 不取消之前正在進行的觸摸事件
         return longPressGesture
     }()
 
@@ -71,6 +73,9 @@ class RippleEffectButton: UIButton {
             circleLayer.opacity = isCircleLayerHidden ? 0 : 1
         }
     }
+
+    // 長按手勢是否正在進行
+    private var isLongPressActive: Bool = false
 
     private func setup() {
         layer.addSublayer(circleLayer)
@@ -142,10 +147,10 @@ class RippleEffectButton: UIButton {
 
     @objc
     private func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
-        switch gesture.state {
-        case .began: longPressAction?(true)
-        case .ended: longPressAction?(false)
-        default: break
+        isLongPressActive = gesture.state == .began
+        if !isLongPressActive {
+            hideCircleLayer()
         }
+        longPressAction?(!isLongPressActive)
     }
 }

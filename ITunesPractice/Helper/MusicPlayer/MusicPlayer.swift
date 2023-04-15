@@ -28,6 +28,9 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
 
     static let shared = MusicPlayer()
 
+    // 用來來逐漸增加播放速度的計時器(快轉/倒帶)
+    private var speedIncreasingTimer: Timer?
+
     var player: AVQueuePlayer = .init()
     var cancellables: Set<AnyCancellable> = .init()
 
@@ -40,11 +43,8 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
     // 重複的模式
     var repeatMode: RepeatMode = .none
 
-    // 播放速率下限
-    let minPlaybackRate: Float = 0.5
-
     // 播放速率上限
-    let maxPlaybackRate: Float = 2.0
+    let maxPlaybackRate: Float = 3.0
 
     // 播放清單
     var tracks: [Track] {
@@ -417,15 +417,26 @@ extension MusicPlayer {
     /// 快轉
     func fastForward() {
         // 越來越快直到上限
-        let newFastForwardRate = min(playbackRate + 0.1, maxPlaybackRate)
-        playbackRate = newFastForwardRate
+        speedIncreasingTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+            guard let self = self else { return }
+            let newRate = min(self.playbackRate + 0.1, self.maxPlaybackRate)
+            self.playbackRate = newRate
+        }
     }
 
     /// 倒帶
     func rewind() {
-        // 越來越慢直到下限
-        let newRewindRate = max(playbackRate - 0.1, minPlaybackRate)
-        playbackRate = newRewindRate
+        speedIncreasingTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+            guard let self = self else { return }
+            let newRate = min(abs(self.playbackRate) + 0.1, self.maxPlaybackRate)
+            self.playbackRate = -newRate // 倒轉要用負的
+        }
+    }
+
+    func resetPlaybackRate() {
+        speedIncreasingTimer?.invalidate()
+        speedIncreasingTimer = nil
+        playbackRate = 1
     }
 }
 

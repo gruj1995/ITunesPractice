@@ -105,6 +105,18 @@ class PlaylistPlayerViewModel {
         musicPlayer.previousTrack()
     }
 
+    func fastForward() {
+        musicPlayer.fastForward()
+    }
+
+    func rewind() {
+        musicPlayer.rewind()
+    }
+
+    func resetPlaybackRate() {
+        musicPlayer.resetPlaybackRate()
+    }
+
     func seekToNewTime() {
         let time = Double(newPlaybackPercentage * totalDurationFloatValue)
         musicPlayer.seek(to: time)

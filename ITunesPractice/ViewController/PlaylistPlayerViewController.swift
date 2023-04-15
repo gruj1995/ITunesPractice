@@ -37,6 +37,8 @@ class PlaylistPlayerViewController: UIViewController {
         return String(describing: self)
     }
 
+    // MARK: - IBOutlets
+
     @IBOutlet var musicProgressSlider: AnimatedThumbSlider!
 
     @IBOutlet var volumeSlider: UISlider!
@@ -64,6 +66,8 @@ class PlaylistPlayerViewController: UIViewController {
             updateAdvancedButtons()
         }
     }
+
+    // MARK: - View Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,19 +108,18 @@ class PlaylistPlayerViewController: UIViewController {
 
     private lazy var advancedButtons: [UIView] = [lyricsButton, routePickerView, listButton]
 
+    // MARK: - Properties
+
     private let viewModel: PlaylistPlayerViewModel = .init()
     private var cancellables: Set<AnyCancellable> = .init()
     private var isManualSeeking = false
 
+    // MARK: - Setup
+
     private func setupUI() {
         view.backgroundColor = .clear
+        playButtons.forEach { $0.tintColor = .white }
         setupLayout()
-
-        playButtons.indices.forEach {
-            playButtons[$0].tintColor = .white
-            playButtons[$0].tag = $0 + 1
-        }
-
         setupVolumeSlider()
         setupMusicProgressSlider()
     }
@@ -124,12 +127,32 @@ class PlaylistPlayerViewController: UIViewController {
     private func setupGestures() {
         if playButtons.count == 3 {
             let previousButton = playButtons[0]
-            let playOrPauseButton = playButtons[1]
+            let togglePlayPauseButton = playButtons[1]
             let nextButton = playButtons[2]
 
             previousButton.addTarget(self, action: #selector(previousButtonTapped), for: .touchUpInside)
-            playOrPauseButton.addTarget(self, action: #selector(togglePlayPauseButtonTapped), for: .touchUpInside)
             nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+            togglePlayPauseButton.addTarget(self, action: #selector(togglePlayPauseButtonTapped), for: .touchUpInside)
+
+            // 長按倒帶
+            previousButton.longPressAction = { [weak self] isFinish in
+                guard let self else { return }
+                if isFinish {
+                    self.viewModel.resetPlaybackRate()
+                } else {
+                    self.viewModel.rewind()
+                }
+            }
+
+            // 長按快轉
+            nextButton.longPressAction = { [weak self] isFinish in
+                guard let self else { return }
+                if isFinish {
+                    self.viewModel.resetPlaybackRate()
+                } else {
+                    self.viewModel.fastForward()
+                }
+            }
         }
     }
 
@@ -248,6 +271,8 @@ class PlaylistPlayerViewController: UIViewController {
         let isPlaylistMode = viewModel.displayMode == .playlist
         listButton.setRoundCornerButtonAppearance(isSelected: isPlaylistMode, tintColor: selectedColor)
     }
+
+    // MARK: - Actions
 
     // 拖動音樂時間軸
     @objc
