@@ -31,10 +31,7 @@ class RippleEffectButton: UIButton {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
-        if isCircleLayerHidden {
-            circleLayer.opacity = 1
-            isCircleLayerHidden = false
-        }
+        isCircleLayerHidden = false
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -57,7 +54,11 @@ class RippleEffectButton: UIButton {
         return sLayer
     }()
 
-    private var isCircleLayerHidden = true
+    private var isCircleLayerHidden = true {
+        didSet {
+            circleLayer.opacity = isCircleLayerHidden ? 0 : 1
+        }
+    }
 
     private func configure() {
         layer.addSublayer(circleLayer)
@@ -118,7 +119,6 @@ class RippleEffectButton: UIButton {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + rippleAnimationDuration) {
             // All animations are done, so remove the layer.
             self.circleLayer.removeAllAnimations()
-            self.circleLayer.opacity = 0
             self.isCircleLayerHidden = true
         }
     }
