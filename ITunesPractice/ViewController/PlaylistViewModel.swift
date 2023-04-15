@@ -137,7 +137,7 @@ class PlaylistViewModel {
         KingfisherManager.shared.retrieveImage(with: url) { [weak self] result in
             switch result {
             case .success(let value):
-                Logger.log("Image: \(value.image). Got from: \(value.cacheType)")
+//                Logger.log("Image: \(value.image). Got from: \(value.cacheType)")
                 // TODO: 目前用同步方式提取漸層色會導致進頁面卡頓，但沒有先等的話頁面會沒有背景色，之後考慮使用catche暫存顏色解決此問題
                 self?.generateColors(by: value.image)
             case .failure(let error):
