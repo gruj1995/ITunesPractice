@@ -72,6 +72,7 @@
 		8B882E9829DA71A9000AA1DE /* CaseIterable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B882E9729DA71A9000AA1DE /* CaseIterable+Extensions.swift */; };
 		8B882E9A29DAA092000AA1DE /* TrackDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B882E9929DAA092000AA1DE /* TrackDataManager.swift */; };
 		8B882E9C29DB2A99000AA1DE /* ActionButtonAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B882E9B29DB2A99000AA1DE /* ActionButtonAlertController.swift */; };
+		8B8B3DF929EA50E400308778 /* PlayerDisplayMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8B3DF829EA50E400308778 /* PlayerDisplayMode.swift */; };
 		8BB69BB829BC5E2A00F09793 /* TrackDetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BB729BC5E2A00F09793 /* TrackDetailViewModelTests.swift */; };
 		8BB69BBF29BC93C800F09793 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BBE29BC93C800F09793 /* APIRequest.swift */; };
 		8BB69BC129BC94BB00F09793 /* SearchAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BC029BC94BB00F09793 /* SearchAPIRequest.swift */; };
@@ -233,6 +234,7 @@
 		8B882E9729DA71A9000AA1DE /* CaseIterable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CaseIterable+Extensions.swift"; sourceTree = "<group>"; };
 		8B882E9929DAA092000AA1DE /* TrackDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDataManager.swift; sourceTree = "<group>"; };
 		8B882E9B29DB2A99000AA1DE /* ActionButtonAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonAlertController.swift; sourceTree = "<group>"; };
+		8B8B3DF829EA50E400308778 /* PlayerDisplayMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerDisplayMode.swift; sourceTree = "<group>"; };
 		8BB69BB729BC5E2A00F09793 /* TrackDetailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailViewModelTests.swift; sourceTree = "<group>"; };
 		8BB69BBE29BC93C800F09793 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
 		8BB69BC029BC94BB00F09793 /* SearchAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchAPIRequest.swift; sourceTree = "<group>"; };
@@ -703,6 +705,7 @@
 				8BD1C64E29AEDEAE00337EF3 /* ITunesImageSize.swift */,
 				8B6B569E29B0EA3000F099DD /* PreviewType.swift */,
 				8BB69BD129BDAFF500F09793 /* ViewState.swift */,
+				8B8B3DF829EA50E400308778 /* PlayerDisplayMode.swift */,
 			);
 			path = Enumerations;
 			sourceTree = "<group>";
@@ -1044,6 +1047,7 @@
 				8BB69BD829BE1B1500F09793 /* PlaylistViewController.swift in Sources */,
 				8B58CFC229D0832E00B36C71 /* AnimatedThumbSlider.swift in Sources */,
 				8BFDF17329A21CB0008E2C23 /* MainTabBarController.swift in Sources */,
+				8B8B3DF929EA50E400308778 /* PlayerDisplayMode.swift in Sources */,
 				8B5FCD3529D2C50500C763DB /* CAGradientLayer+Extensions.swift in Sources */,
 				8BF7183329CDEEFB002CEFD6 /* MusicPlayer.swift in Sources */,
 				8B0265DB29E856FF00BB732D /* MusicPlayer+Extensions.swift in Sources */,
