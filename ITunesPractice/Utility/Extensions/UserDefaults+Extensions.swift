@@ -11,17 +11,28 @@ import Combine
 extension UserDefaults {
     private enum Keys {
         static let tracks = "tracks"
+        static let playerDisplayMode = "playerDisplayMode"
     }
 
     // MARK: - Tracks In Library
 
     var tracks: [Track] {
         get {
-            return UserDefaultsHelper.shared.get(forKey: Keys.tracks, as: [Track].self)  ?? []
+            UserDefaultsHelper.shared.get(forKey: Keys.tracks, as: [Track].self)  ?? []
         }
         set {
             UserDefaultsHelper.shared.set(newValue, forKey: Keys.tracks)
             NotificationCenter.default.post(name: .toBePlayedTracksDidChanged, object: self)
+        }
+    }
+
+    var playerDisplayMode: PlayerDisplayMode {
+        get {
+            UserDefaultsHelper.shared.get(forKey: Keys.playerDisplayMode, as: PlayerDisplayMode.self) ?? .trackInfo
+        }
+        set {
+            UserDefaultsHelper.shared.set(newValue, forKey: Keys.playerDisplayMode)
+            NotificationCenter.default.post(name: .playerDisplayModeDidChanged, object: self)
         }
     }
 }
