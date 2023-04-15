@@ -47,12 +47,6 @@ class PlaylistPlayerViewController: UIViewController {
 
     @IBOutlet var advancedFeaturesStackView: UIStackView!
 
-    var advancedButtonSelectedColor: UIColor? {
-        didSet {
-            updateAdvancedButtons()
-        }
-    }
-
     // 由 PlaylistVC 更新漸層色
     lazy var gradient: CAGradientLayer = {
         let gradient = CAGradientLayer()
@@ -65,18 +59,18 @@ class PlaylistPlayerViewController: UIViewController {
         return gradient
     }()
 
+    var advancedButtonSelectedColor: UIColor? {
+        didSet {
+            updateAdvancedButtons()
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupGestures()
         bindViewModel()
     }
-
-    // MARK: IBAction
-
-//    @IBAction func presentPickerView(_ sender: UIButton) {
-//        routePickerView.present()
-//    }
 
     // MARK: Private
 
@@ -98,20 +92,17 @@ class PlaylistPlayerViewController: UIViewController {
 
     private lazy var lyricsButton: UIButton = UIButton.createRoundCornerButton(image: AppImages.quoteBubble, target: self, action: #selector(lyricsButtonTapped))
 
-    private lazy var airPlayButton: UIButton = UIButton.createRoundCornerButton(image: AppImages.airplayaudio, target: self, action: #selector(airPlayButtonTapped))
-
     private lazy var listButton: UIButton = UIButton.createRoundCornerButton(image: AppImages.listBullet, target: self, action: #selector(listButtonTapped))
 
-    private lazy var advancedButtons: [UIButton] = [lyricsButton, airPlayButton, listButton]
-
+    /// 顯示附近媒體接收器列表的 View (本身就有點擊事件和圖案，不用另外設定)
     private lazy var routePickerView: AVRoutePickerView = {
         let routePickerView = AVRoutePickerView(frame: .zero)
-        routePickerView.backgroundColor = .green
-        routePickerView.tintColor = .yellow
-        routePickerView.activeTintColor = .red
-        routePickerView.isHidden = true
+        routePickerView.tintColor = .white
+        routePickerView.activeTintColor = .white // 選中時的顏色
         return routePickerView
     }()
+
+    private lazy var advancedButtons: [UIView] = [lyricsButton, routePickerView, listButton]
 
     private let viewModel: PlaylistPlayerViewModel = .init()
     private var cancellables: Set<AnyCancellable> = .init()
@@ -173,13 +164,6 @@ class PlaylistPlayerViewController: UIViewController {
     }
 
     private func setupLayout() {
-        advancedButtons.forEach { button in
-            advancedFeaturesStackView.addArrangedSubview(button)
-            button.snp.makeConstraints { make in
-                make.width.equalTo(button.snp.height)
-            }
-        }
-
         view.addSubview(currentTimeLabel)
         currentTimeLabel.snp.makeConstraints { make in
             make.height.equalTo(20)
@@ -194,11 +178,11 @@ class PlaylistPlayerViewController: UIViewController {
             make.top.equalTo(musicProgressSlider.snp.bottom).offset(3)
         }
 
-        airPlayButton.addSubview(routePickerView)
-        routePickerView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.width.equalTo(view).inset(10)
-            make.height.equalTo(400)
+        advancedButtons.forEach { button in
+            advancedFeaturesStackView.addArrangedSubview(button)
+            button.snp.makeConstraints { make in
+                make.width.equalTo(button.snp.height)
+            }
         }
     }
 
@@ -291,19 +275,6 @@ class PlaylistPlayerViewController: UIViewController {
     }
 
     @objc
-    private func airPlayButtonTapped() {
-        let menuController = UIMenuController.shared
-//        menuController.delegate = self
-
-        let routePickerItem = UIMenuItem(title: "AirPlay", action: #selector(showRoutePicker(_:)))
-
-        let menuItems = [routePickerItem]
-        menuController.menuItems = menuItems
-
-        menuController.showMenu(from: airPlayButton, rect: view.bounds)
-    }
-
-    @objc
     private func lyricsButtonTapped(_ sender: UIButton) {
         viewModel.handleLyricsButtonTapped()
         updateAdvancedButtons()
@@ -313,17 +284,5 @@ class PlaylistPlayerViewController: UIViewController {
     private func listButtonTapped(_ sender: UIButton) {
         viewModel.handleListButtonTapped()
         updateAdvancedButtons()
-    }
-
-    @objc
-    private func showRoutePicker(_ sender: UIMenuController) {
-        routePickerView.isHidden = false
-    }
-}
-
-private extension AVRoutePickerView {
-    func present() {
-        let routePickerButton = subviews.first { $0 is UIButton } as? UIButton
-        routePickerButton?.sendActions(for: .touchUpInside)
     }
 }

@@ -37,7 +37,6 @@ enum AppImages {
     static let speakerWaveSmall = UIImage(systemName: "speaker.wave.3.fill", withConfiguration: speakerConfiguration)
     static let ellipsis = UIImage(systemName: "ellipsis")
 
-    static let airplayaudio = UIImage(systemName: "airplayaudio", withConfiguration: roundConfiguration2)
     static let quoteBubble = UIImage(systemName: "quote.bubble", withConfiguration: roundConfiguration2)
     static let quoteBubbleFill = UIImage(systemName: "quote.bubble.fill", withConfiguration: roundConfiguration2)
     static let listBullet = UIImage(systemName: "list.bullet", withConfiguration: roundConfiguration2)

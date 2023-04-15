@@ -16,7 +16,7 @@ class PlaylistPlayerViewModel {
     init() {}
 
     // MARK: Internal
-    
+
     // 當前播放進度（單位：秒）
     @FormattedTime var displayedCurrentTime: Float?
 
@@ -45,14 +45,6 @@ class PlaylistPlayerViewModel {
         set { UserDefaults.standard.playerDisplayMode = newValue }
     }
 
-    func handleLyricsButtonTapped() {
-        displayMode = (displayMode == .lyrics) ? .trackInfo : .lyrics
-    }
-
-    func handleListButtonTapped() {
-        displayMode = (displayMode == .playlist) ? .trackInfo : .playlist
-    }
-
     var playbackTimePublisher: AnyPublisher<Double?, Never> {
         musicPlayer.playbackTimePublisher
     }
@@ -79,6 +71,14 @@ class PlaylistPlayerViewModel {
     // 當前曲目總長度 Float 值
     var totalDurationFloatValue: Float {
         musicPlayer.currentPlaybackDuration?.floatValue ?? 1
+    }
+
+    func handleLyricsButtonTapped() {
+        displayMode = (displayMode == .lyrics) ? .trackInfo : .lyrics
+    }
+
+    func handleListButtonTapped() {
+        displayMode = (displayMode == .playlist) ? .trackInfo : .playlist
     }
 
     func updateDisplayedTime(isTracking: Bool) {
