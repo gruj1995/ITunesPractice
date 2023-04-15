@@ -14,36 +14,22 @@ import MediaPlayer // MPVolumeView
 // MARK: - MusicPlayer
 
 class MusicPlayer: NSObject, MusicPlayerProtocol {
-
     // MARK: Lifecycle
 
     private override init() {
         super.init()
         setAVQueuePlayer()
-
-        UIApplication.shared.beginReceivingRemoteControlEvents()
-        //  設定背景&鎖定播放
-        setupRemoteTransportControls()
-
+        setupRemoteControl()
         currentTrackIndex = 0
-
-        // 觀察待播清單更新
-        NotificationCenter.default.addObserver(self, selector: #selector(userDefaultsDidChange), name: .toBePlayedTracksDidChanged, object: nil)
-
-        // 每首歌曲播放完畢時更新索引
-        NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: nil, queue: .main) { [weak self] _ in
-            guard let self = self else { return }
-            self.nextTrack()
-        }
+        setupNotificationObservers()
     }
 
     // MARK: Internal
 
     static let shared = MusicPlayer()
 
-    var cancellables: Set<AnyCancellable> = .init()
-
     var player: AVQueuePlayer = .init()
+    var cancellables: Set<AnyCancellable> = .init()
 
     // 是否隨機播放
     var isShuffleMode: Bool = false
@@ -133,18 +119,12 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
 
     // 系統音量，取值範圍為 0.0 到 1.0 之間
     var volume: Float {
-        get {
-            guard let slider = mpVolumeView.subviews.first(where: { $0 is UISlider }) as? UISlider else {
-                return 0
-            }
-            return slider.value
-        }
+        get { mpVolumeView.volumeSlider?.value ?? 0 }
         set {
-            guard let slider = mpVolumeView.subviews.first(where: { $0 is UISlider }) as? UISlider else {
-                return
-            }
+            guard let slider = mpVolumeView.volumeSlider else { return }
             DispatchQueue.main.async {
                 slider.value = newValue
+                self.volumeSubject.value = newValue // 將新的音量值發送到 volumeSubject 中
             }
         }
     }
@@ -163,33 +143,70 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
         return timeSubject.eraseToAnyPublisher()
     }
 
+    var volumePublisher: AnyPublisher<Float, Never> {
+        return volumeSubject.eraseToAnyPublisher()
+    }
+
     var isPlayingPublisher: AnyPublisher<Bool, Never> {
         return isPlayingSubject.eraseToAnyPublisher()
     }
+
+    // MARK: Init
+
+    /// 在 AppDelegate 呼叫，讓 MusicPlayer 在開啟app時就建立
+    func configure() {}
 
     @objc
     func userDefaultsDidChange() {
         setAVQueuePlayer()
     }
 
-    /// 在 AppDelegate 呼叫，讓 MusicPlayer 在開啟app時就建立
-    func configure() {}
-
     // MARK: Private
-
-    private var looper: AVPlayerLooper?
 
     // 用來控制系統音量（只使用它裡面的 slider ）
     private let mpVolumeView: MPVolumeView = .init()
-
+    private let audioSession = AVAudioSession.sharedInstance()
+    private var volumeObserver: NSKeyValueObservation?
+    // 控制循環播放
+    private var looper: AVPlayerLooper?
+    // 觀察播放進度
     private var timeObserverToken: Any?
+    // 待播清單
+    private var toBePlayedItems: [AVPlayerItem] = []
 
     private let currentTrackIndexSubject = CurrentValueSubject<Int, Never>(0)
     private let timeSubject = CurrentValueSubject<Double?, Never>(nil)
+    private let volumeSubject = CurrentValueSubject<Float, Never>(0)
     private let isPlayingSubject = CurrentValueSubject<Bool, Never>(false)
 
-    // 待播清單
-    private var toBePlayedItems: [AVPlayerItem] = []
+    // MARK: Setup
+
+    private func setupRemoteControl() {
+        UIApplication.shared.beginReceivingRemoteControlEvents()
+        //  設定背景&鎖定播放
+        setupRemoteTransportControls()
+    }
+
+    private func setupNotificationObservers() {
+        // 觀察待播清單更新
+        NotificationCenter.default.addObserver(self, selector: #selector(userDefaultsDidChange), name: .toBePlayedTracksDidChanged, object: nil)
+
+        // 每首歌曲播放完畢時更新索引
+        NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: nil, queue: .main) { [weak self] _ in
+            guard let self = self else { return }
+            self.nextTrack()
+        }
+
+        // 監聽系統音量變化
+        // 參考 https://stackoverflow.com/questions/68249775/system-volume-change-observer-not-working-on-ios-15
+        try? audioSession.setActive(true)
+        volumeObserver = audioSession.observe(\.outputVolume, options: [.new]) { [weak self] _, change in
+            guard let newVolume = change.newValue else { return }
+            self?.volumeChanged(newVolume)
+        }
+    }
+
+    // MARK: Player
 
     private func setAVQueuePlayer() {
         // 移除時間觀察
@@ -252,6 +269,10 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
 
         currentTrackIndex = index
         return true
+    }
+
+    private func volumeChanged(_ newVolume: Float) {
+        volume = newVolume
     }
 
     // MARK: 暫時關閉
@@ -449,3 +470,10 @@ extension Array where Element == Track {
  */
 
 // player.addBoundaryTimeObserver  傳入指定時間(陣列)要進行的行為
+
+extension MPVolumeView {
+    /// 取得 MPVolumeView 的 slider 以操控系統音量
+    var volumeSlider: UISlider? {
+        subviews.first { $0 is UISlider } as? UISlider
+    }
+}

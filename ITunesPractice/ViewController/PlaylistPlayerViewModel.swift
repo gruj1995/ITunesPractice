@@ -49,6 +49,10 @@ class PlaylistPlayerViewModel {
         musicPlayer.playbackTimePublisher
     }
 
+    var volumePublisher: AnyPublisher<Float, Never> {
+        musicPlayer.volumePublisher
+    }
+
     var isPlayingPublisher: AnyPublisher<Bool, Never> {
         musicPlayer.isPlayingPublisher
     }

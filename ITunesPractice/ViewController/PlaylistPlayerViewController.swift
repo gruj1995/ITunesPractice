@@ -201,6 +201,13 @@ class PlaylistPlayerViewController: UIViewController {
                 guard let self = self else { return }
                 self.updateTogglePlayPauseButton()
             }.store(in: &cancellables)
+
+        viewModel.volumePublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                self.updateVolumeSlider()
+            }.store(in: &cancellables)
     }
 
     private func updateTogglePlayPauseButton() {
@@ -209,7 +216,7 @@ class PlaylistPlayerViewController: UIViewController {
         playButtons[1].setImage(image, for: .normal)
     }
 
-    /// 更新已播放時間和剩餘時間標籤
+    // 更新已播放時間和剩餘時間標籤
     // TODO: 修正拖曳放開slider後閃爍問題
     private func updateMusicSlider() {
         // isTracking 代表正在拖動slider
@@ -220,6 +227,10 @@ class PlaylistPlayerViewController: UIViewController {
         } else {
             musicProgressSlider.value = viewModel.playbackPercentage
         }
+    }
+
+    private func updateVolumeSlider() {
+        volumeSlider.value = viewModel.volume
     }
 
     private func updateTimeLabels() {
