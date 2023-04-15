@@ -57,9 +57,6 @@ class PlaylistViewController: UIViewController {
         setupUI()
         bindViewModel()
 
-        // 觀察切換顯示模式
-//        NotificationCenter.default.addObserver(self, selector: #selector(updateAdvancedButtons), name: .playerDisplayModeDidChanged, object: nil)
-
         NetStatus.shared.netStatusChangeHandler = { [weak self] in
             DispatchQueue.main.async {
                 self?.updateTableView()
@@ -83,8 +80,7 @@ class PlaylistViewController: UIViewController {
     private lazy var currentTrackView: CurrentTrackView = .init()
     private lazy var coverImageView: UIImageView = .coverImageView()
     private lazy var coverImageContainerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .clear
+        let view = UIView.emptyView()
         view.layer.shadowColor = UIColor.black.cgColor
         view.layer.shadowOffset = .zero
         view.layer.shadowOpacity = 0.5
