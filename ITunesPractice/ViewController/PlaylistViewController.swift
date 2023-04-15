@@ -372,7 +372,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
                 self.viewModel.isShuffleMode.toggle()
                 let isSelected = self.viewModel.isShuffleMode
                 let tintColor = self.viewModel.headerButtonBgColor
-                header.shuffleButton.setButtonAppearance(isSelected: isSelected, tintColor: tintColor)
+                header.shuffleButton.setRoundCornerButtonAppearance(isSelected: isSelected, tintColor: tintColor)
             }
 
             header.onInfinityButtonTapped = { [weak self] _ in
@@ -381,7 +381,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
                 let isSelected = self.viewModel.isInfinityMode
                 let tintColor = self.viewModel.headerButtonBgColor
                 let subTitle = isSelected ? "自動播放類似音樂".localizedString() : nil
-                header.infinityButton.setButtonAppearance(isSelected: isSelected, tintColor: tintColor)
+                header.infinityButton.setRoundCornerButtonAppearance(isSelected: isSelected, tintColor: tintColor)
                 header.configure(title: PlayListHeaderTitle.toBePlayed, subTitle: subTitle)
             }
 
@@ -391,7 +391,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
                 let isSelected = self.viewModel.repeatMode != .none
                 let tintColor = self.viewModel.headerButtonBgColor
                 let image = self.viewModel.repeatMode.image
-                header.repeatButton.setButtonAppearance(isSelected: isSelected, tintColor: tintColor, image: image)
+                header.repeatButton.setRoundCornerButtonAppearance(isSelected: isSelected, tintColor: tintColor, image: image)
             }
         }
 

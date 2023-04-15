@@ -69,7 +69,7 @@ class MiniPlayerViewController: BottomFloatingPanelViewController {
         config.image = AppImages.play
         config.baseForegroundColor = .white
         button.configuration = config
-        button.addTarget(self, action: #selector(playOrPauseButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(togglePlayPauseButtonTapped), for: .touchUpInside)
         return button
     }()
 
@@ -186,7 +186,7 @@ class MiniPlayerViewController: BottomFloatingPanelViewController {
     }
 
     @objc
-    private func playOrPauseButtonTapped(_ sender: UIButton) {
+    private func togglePlayPauseButtonTapped(_ sender: UIButton) {
         viewModel.isPlaying.toggle()
     }
 
