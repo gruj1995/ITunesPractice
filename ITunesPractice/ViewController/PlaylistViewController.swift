@@ -57,6 +57,9 @@ class PlaylistViewController: UIViewController {
         setupUI()
         bindViewModel()
 
+        // 觀察切換顯示模式
+//        NotificationCenter.default.addObserver(self, selector: #selector(updateAdvancedButtons), name: .playerDisplayModeDidChanged, object: nil)
+
         NetStatus.shared.netStatusChangeHandler = { [weak self] in
             DispatchQueue.main.async {
                 self?.updateTableView()
@@ -222,6 +225,7 @@ class PlaylistViewController: UIViewController {
         ]
         // 更新 playerVC 的漸層色
         playerVC.gradient.updateColors(with: playerVCColors)
+        playerVC.advancedButtonSelectedColor = viewModel.colors.last
     }
 
     private func handleError(_ error: Error) {

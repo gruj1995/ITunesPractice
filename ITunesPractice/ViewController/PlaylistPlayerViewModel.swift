@@ -8,13 +8,6 @@
 import Combine
 import Foundation
 
-// MARK: - SliderUpdateType
-
-enum SliderUpdateType {
-    case automatic // 自動更新
-    case manual // 手動更新
-}
-
 // MARK: - PlaylistPlayerViewModel
 
 class PlaylistPlayerViewModel {
@@ -23,7 +16,7 @@ class PlaylistPlayerViewModel {
     init() {}
 
     // MARK: Internal
-
+    
     // 當前播放進度（單位：秒）
     @FormattedTime var displayedCurrentTime: Float?
 
@@ -38,13 +31,26 @@ class PlaylistPlayerViewModel {
     // 用戶拖動 slider 後新的播放進度百分比
     var newPlaybackPercentage: Float = 0 {
         didSet {
-            updateDisplayedTime(type: .manual)
+            updateDisplayedTime(isTracking: true)
         }
     }
 
     var volume: Float {
         get { musicPlayer.volume }
         set { musicPlayer.volume = newValue }
+    }
+
+    var displayMode: PlayerDisplayMode {
+        get { UserDefaults.standard.playerDisplayMode }
+        set { UserDefaults.standard.playerDisplayMode = newValue }
+    }
+
+    func handleLyricsButtonTapped() {
+        displayMode = (displayMode == .lyrics) ? .trackInfo : .lyrics
+    }
+
+    func handleListButtonTapped() {
+        displayMode = (displayMode == .playlist) ? .trackInfo : .playlist
     }
 
     var playbackTimePublisher: AnyPublisher<Double?, Never> {
@@ -75,9 +81,9 @@ class PlaylistPlayerViewModel {
         musicPlayer.currentPlaybackDuration?.floatValue ?? 1
     }
 
-    func updateDisplayedTime(type: SliderUpdateType) {
+    func updateDisplayedTime(isTracking: Bool) {
         if let totalDuration = totalDuration?.floatValue {
-            let newPercentage = type == .automatic ? playbackPercentage : newPlaybackPercentage
+            let newPercentage = isTracking ? playbackPercentage : newPlaybackPercentage
             let newCurrentTime = newPercentage * totalDuration
             displayedCurrentTime = newCurrentTime
             displayedRemainingTime = -totalDuration + newCurrentTime

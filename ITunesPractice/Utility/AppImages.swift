@@ -9,14 +9,14 @@ import UIKit
 
 // 因為 SF Symbols 是向量圖，所以要改變 icon 尺寸的話要透過 SymbolConfiguration 設置
 let speakerConfiguration = UIImage.SymbolConfiguration(pointSize: 13, weight: .regular, scale: .small)
-
 let roundConfiguration = UIImage.SymbolConfiguration(pointSize: 15, weight: .heavy, scale: .default)
+let roundConfiguration2 = UIImage.SymbolConfiguration(pointSize: 20, weight: .semibold, scale: .medium)
 
 /// 使用 enum 搭配 static let 有兩個原因:
 /// 1. 因為無法初始化沒有case的enum，更能表達常數的概念
 /// 2. 將相關的常數放在 enum 中可能感覺更自然，因為 enum 用於儲存一組相關值
 /// https://forums.swift.org/t/static-let-in-enum-vs-struct/36152/12
-
+///
 enum AppImages {
     // 放大境
     static let magnifyingGlass = UIImage(systemName: "magnifyingglass")
@@ -36,6 +36,11 @@ enum AppImages {
     static let speakerSmall = UIImage(systemName: "speaker.fill", withConfiguration: speakerConfiguration)
     static let speakerWaveSmall = UIImage(systemName: "speaker.wave.3.fill", withConfiguration: speakerConfiguration)
     static let ellipsis = UIImage(systemName: "ellipsis")
+
+    static let airplayaudio = UIImage(systemName: "airplayaudio", withConfiguration: roundConfiguration2)
+    static let quoteBubble = UIImage(systemName: "quote.bubble", withConfiguration: roundConfiguration2)
+    static let quoteBubbleFill = UIImage(systemName: "quote.bubble.fill", withConfiguration: roundConfiguration2)
+    static let listBullet = UIImage(systemName: "list.bullet", withConfiguration: roundConfiguration2)
 
     // context menu
     static let plus = UIImage(systemName: "plus")
