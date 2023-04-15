@@ -35,4 +35,24 @@ extension UIButton {
 
         return frame.contains(point)
     }
+
+    func setRoundCornerButtonAppearance(isSelected: Bool, tintColor: UIColor?, image: UIImage? = nil) {
+        if let image = image {
+            setImage(image, for: .normal)
+        }
+        self.tintColor = isSelected ? tintColor : .white
+        backgroundColor = isSelected ? .white : .clear
+    }
+
+    /// 生成固定圓角值的按鈕
+    static func createRoundCornerButton(image: UIImage?, target: Any?, action: Selector) -> UIButton {
+        let button = UIButton()
+        button.addTarget(target, action: action, for: .touchUpInside)
+        button.tintColor = .white
+        button.backgroundColor = .clear
+        button.layer.cornerRadius = 5
+        button.clipsToBounds = true
+        button.setImage(image, for: .normal)
+        return button
+    }
 }

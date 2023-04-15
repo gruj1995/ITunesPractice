@@ -41,11 +41,11 @@ final class PlayListHeaderView: UITableViewHeaderFooterView {
     var onInfinityButtonTapped: ((UIButton) -> Void)?
     var onRepeatButtonTapped: ((UIButton) -> Void)?
 
-    lazy var shuffleButton: UIButton = UIButton.createButton(image: AppImages.shuffle, target: self, action: #selector(shuffleButtonTapped))
+    lazy var shuffleButton: UIButton = UIButton.createRoundCornerButton(image: AppImages.shuffle, target: self, action: #selector(shuffleButtonTapped))
 
-    lazy var repeatButton: UIButton = UIButton.createButton(image: AppImages.repeat0, target: self, action: #selector(repeatButtonTapped))
+    lazy var repeatButton: UIButton = UIButton.createRoundCornerButton(image: AppImages.repeat0, target: self, action: #selector(repeatButtonTapped))
 
-    lazy var infinityButton: UIButton = UIButton.createButton(image: AppImages.infinity, target: self, action: #selector(infinityButtonTapped))
+    lazy var infinityButton: UIButton = UIButton.createRoundCornerButton(image: AppImages.infinity, target: self, action: #selector(infinityButtonTapped))
 
     func configure(title: String, subTitle: String?) {
         titleLabel.text = title
@@ -144,26 +144,5 @@ final class PlayListHeaderView: UITableViewHeaderFooterView {
     @objc
     private func repeatButtonTapped(_ sender: UIButton) {
         onRepeatButtonTapped?(sender)
-    }
-}
-
-extension UIButton {
-    func setButtonAppearance(isSelected: Bool, tintColor: UIColor?, image: UIImage? = nil) {
-        if let image = image {
-            setImage(image, for: .normal)
-        }
-        self.tintColor = isSelected ? tintColor : .white
-        backgroundColor = isSelected ? .white : .clear
-    }
-
-    static func createButton(image: UIImage?, target: Any?, action: Selector) -> UIButton {
-        let button = UIButton()
-        button.addTarget(target, action: action, for: .touchUpInside)
-        button.tintColor = .white
-        button.backgroundColor = .clear
-        button.layer.cornerRadius = 5
-        button.clipsToBounds = true
-        button.setImage(image, for: .normal)
-        return button
     }
 }
