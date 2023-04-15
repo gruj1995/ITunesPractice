@@ -41,6 +41,8 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
 
     static let shared = MusicPlayer()
 
+    var cancellables: Set<AnyCancellable> = .init()
+
     var player: AVQueuePlayer = .init()
 
     // 是否隨機播放
@@ -203,11 +205,10 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
 
     private func addTimeObserver() {
         // 每秒發送 timescale 次監聽事件
-        timeObserverToken = player.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 1, timescale: 30), queue: .main) { [weak self] _ in
-            guard let self = self else { return }
-            if self.player.currentItem?.status == .readyToPlay {
-                self.currentPlaybackTime = self.player.currentItem?.currentTime().seconds
-            }
+        timeObserverToken = player.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 1, timescale: 30), queue: .main) { [weak self] time in
+            guard let self, self.player.currentItem?.status == .readyToPlay else { return }
+            let currentTime = max(time.seconds, 0) // 避免初始時出現負數秒數
+            self.currentPlaybackTime = currentTime
         }
     }
 
