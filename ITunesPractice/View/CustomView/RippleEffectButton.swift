@@ -7,21 +7,25 @@
 
 import UIKit
 
+// MARK: - RippleEffectButton
+
 // 點擊會產生水波紋動畫的按鈕
 class RippleEffectButton: UIButton {
     // MARK: Lifecycle
 
     override init(frame: CGRect = .zero) {
         super.init(frame: frame)
-        configure()
+        setup()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        configure()
+        setup()
     }
 
     // MARK: Internal
+
+    var longPressAction: ((Bool) -> Void)?
 
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -31,17 +35,17 @@ class RippleEffectButton: UIButton {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
-        isCircleLayerHidden = false
+        showCircleLayer()
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
-        hideLayer()
+        hideCircleLayer()
     }
 
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesCancelled(touches, with: event)
-        hideLayer()
+        hideCircleLayer()
     }
 
     // MARK: Private
@@ -54,14 +58,23 @@ class RippleEffectButton: UIButton {
         return sLayer
     }()
 
+    private lazy var longPressGesture: UILongPressGestureRecognizer = {
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+        longPressGesture.minimumPressDuration = 0.5 // 認定為長按手勢的最短時間
+        longPressGesture.allowableMovement = 10 // 允許移動的最大距離
+        longPressGesture.cancelsTouchesInView = false // 不取消之前正在進行的觸摸事件
+        return longPressGesture
+    }()
+
     private var isCircleLayerHidden = true {
         didSet {
             circleLayer.opacity = isCircleLayerHidden ? 0 : 1
         }
     }
 
-    private func configure() {
+    private func setup() {
         layer.addSublayer(circleLayer)
+        addGestureRecognizer(longPressGesture)
         clipsToBounds = false
     }
 
@@ -72,8 +85,12 @@ class RippleEffectButton: UIButton {
         circleLayer.path = UIBezierPath(arcCenter: arcCenter, radius: diameter / 2, startAngle: 0, endAngle: .pi * 2, clockwise: true).cgPath
     }
 
+    private func showCircleLayer() {
+        isCircleLayerHidden = false
+    }
+
     /// 顯示波紋動畫，顯示完移除動畫圖層
-    private func hideLayer() {
+    private func hideCircleLayer() {
         let arcCenter = CGPoint(x: bounds.midX, y: bounds.midY)
         // 動畫持續時間
         let rippleAnimationDuration = 0.3
@@ -116,17 +133,19 @@ class RippleEffectButton: UIButton {
         circleLayer.add(groupAnimation, forKey: "RippleGroupAnimation")
 
         // 等動畫結束隱藏 circleLayer
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + rippleAnimationDuration) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + rippleAnimationDuration) {
             // All animations are done, so remove the layer.
             self.circleLayer.removeAllAnimations()
             self.isCircleLayerHidden = true
         }
     }
-}
 
-/// CABasicAnimation 的 keyPath 參數
-enum AnimationKeyPath: String {
-    case opacity // 透明度
-    case path // 路徑
-    case position
+    @objc
+    private func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
+        switch gesture.state {
+        case .began: longPressAction?(true)
+        case .ended: longPressAction?(false)
+        default: break
+        }
+    }
 }
