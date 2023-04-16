@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>為了能夠識別音頻，我們的應用程序需要訪問你的麥克風。這將使我們能夠捕捉周圍的聲音並將其與我們的數據庫進行比對，以識別出正在播放的歌曲或其他聲音。我們保證不會在未經你同意的情況下存儲或分享任何麥克風數據，你的隱私和安全是我們最重要的考慮。</string>
+	<string>以便聽到和辨識音樂</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
