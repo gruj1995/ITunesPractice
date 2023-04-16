@@ -23,6 +23,10 @@ enum AppImages {
     static let magnifyingGlass = UIImage(systemName: "magnifyingglass")
     static let waveformAndMic = UIImage(systemName: "waveform.and.mic")
 
+    // shazam
+    static let micFill = UIImage(systemName: "mic.fill", withConfiguration: roundConfiguration)
+    static let shazamLarge = UIImage(named: "shazam_large")
+
     // 播放器
     static let pause = UIImage(systemName: "pause.fill")
     static let play = UIImage(systemName: "play.fill")

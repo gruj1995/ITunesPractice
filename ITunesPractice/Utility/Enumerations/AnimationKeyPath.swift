@@ -12,4 +12,5 @@ enum AnimationKeyPath: String {
     case opacity // 透明度
     case path // 路徑
     case position
+    case transformScale = "transform.scale"
 }

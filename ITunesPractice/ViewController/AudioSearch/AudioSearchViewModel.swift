@@ -15,17 +15,10 @@ class AudioSearchViewModel {
 
     // MARK: Internal
 
-    @Published var tracks: [Track] = []
+    var track: Track?
 
     // MARK: Private
 
     private var cancellables = Set<AnyCancellable>()
 
-    func loadTracksFromUserDefaults() {
-        // Load the latest data from UserDefaults and update the ViewModel state.
-        let storedTracks = UserDefaults.standard.tracks
-        if tracks != storedTracks {
-            tracks = storedTracks
-        }
-    }
 }
