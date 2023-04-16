@@ -5,15 +5,18 @@
 //  Created by 李品毅 on 2023/2/19.
 //
 
-import SnapKit
 import Combine
+import SnapKit
 import UIKit
+
+// MARK: - MainTabBarController
 
 class MainTabBarController: UITabBarController {
     // MARK: Internal
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.delegate = self
         addChildView()
         setupUI()
     }
@@ -87,5 +90,14 @@ class MainTabBarController: UITabBarController {
         // tabBar 標籤被選取時的顏色
         itemAppearance.selected.iconColor = .appColor(.red1)
         itemAppearance.selected.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.appColor(.red1)!]
+    }
+}
+
+// MARK: UITabBarControllerDelegate
+
+extension MainTabBarController: UITabBarControllerDelegate {
+    // 切換tabbar觸發
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        miniPlayerVC.view.isHidden = viewController == viewControllers?.last
     }
 }
