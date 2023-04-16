@@ -48,25 +48,14 @@ class SearchResultsViewModel {
         return stateSubject.eraseToAnyPublisher()
     }
 
-    var tracksPublisher: AnyPublisher<[Track], Error> {
-        return tracksSubject.eraseToAnyPublisher()
-    }
-
-    var tracks: [Track] {
-        get {
-            tracksSubject.value
-        }
-        set {
-            tracksSubject.value = newValue
-        }
-    }
+    private var tracks: [Track] = []
 
     var totalCount: Int {
         return tracks.count
     }
 
     func track(forCellAt index: Int) -> Track? {
-        guard index < tracks.count else { return nil }
+        guard tracks.indices.contains(index) else { return nil }
         return tracks[index]
     }
 
@@ -123,7 +112,6 @@ class SearchResultsViewModel {
 
     // MARK: Private
 
-    private let tracksSubject = CurrentValueSubject<[Track], Error>([])
     private let searchTermSubject = CurrentValueSubject<String, Never>("")
     private let stateSubject = CurrentValueSubject<ViewState, Never>(.none)
 
