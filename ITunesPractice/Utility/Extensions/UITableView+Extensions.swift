@@ -12,7 +12,7 @@ extension UITableView {
     func createTrackContextMenuConfiguration(indexPath: IndexPath, track: Track?) -> UIContextMenuConfiguration {
         let configuration = TrackContextMenuConfiguration(indexPath: indexPath, track: track) { menuAction in
 
-            let rootVC = UIApplication.shared.keyWindowCompact?.rootViewController
+            let rootVC = UIApplication.shared.rootViewController
 
             switch menuAction {
             // 加入資料庫
