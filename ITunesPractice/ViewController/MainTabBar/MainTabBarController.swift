@@ -33,16 +33,19 @@ class MainTabBarController: UITabBarController {
 
     private func setTabBarItems() {
         let searchVC = SearchViewController()
-        let searchNavVC = UINavigationController(rootViewController: searchVC)
-        searchNavVC.tabBarItem.image = AppImages.magnifyingGlass
-        searchNavVC.tabBarItem.title = "搜尋".localizedString()
+        let searchNavVC = createNavigationController(rootViewController: searchVC, image: AppImages.magnifyingGlass, title: "搜尋".localizedString())
 
         let libraryVC = LibraryViewController()
-        let libraryNavVC = UINavigationController(rootViewController: libraryVC)
-        libraryNavVC.tabBarItem.image = AppImages.musicHouse
-        libraryNavVC.tabBarItem.title = "資料庫".localizedString()
+        let libraryNavVC = createNavigationController(rootViewController: searchVC, image: AppImages.musicHouse, title: "資料庫".localizedString())
 
         viewControllers = [searchNavVC, libraryNavVC]
+    }
+
+    private func createNavigationController(rootViewController: UIViewController, image: UIImage?, title: String) -> UINavigationController {
+        let navController = UINavigationController(rootViewController: rootViewController)
+        navController.tabBarItem.image = image
+        navController.tabBarItem.title = title
+        return navController
     }
 
     private func addChildView() {
