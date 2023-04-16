@@ -5,6 +5,7 @@
 //  Created by 李品毅 on 2023/2/17.
 //
 
+import AVFoundation
 import UIKit
 #if DEBUG
 import FLEX
@@ -28,8 +29,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // 設置所有 UIBarButtonItem 的 tinitColor
         UIBarButtonItem.appearance().tintColor = .appColor(.red1)
 
+        // 初始化 MusicPlayer
         MusicPlayer.shared.configure()
-//        setNavigationBarAppearance()
+
+        // 指定音訊會話類型為 .playback，讓 App 在背景、螢幕鎖定、silent mode 都能繼續播放音樂
+        try? AVAudioSession.sharedInstance().setCategory(.playback)
 
         // 監控網路變化
         NetStatus.shared.startMonitoring()

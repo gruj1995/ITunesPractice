@@ -7,21 +7,25 @@
 
 import UIKit
 
+// MARK: - RippleEffectButton
+
 // 點擊會產生水波紋動畫的按鈕
 class RippleEffectButton: UIButton {
     // MARK: Lifecycle
 
     override init(frame: CGRect = .zero) {
         super.init(frame: frame)
-        configure()
+        setup()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        configure()
+        setup()
     }
 
     // MARK: Internal
+
+    var longPressAction: ((Bool) -> Void)?
 
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -31,20 +35,20 @@ class RippleEffectButton: UIButton {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
-        if isCircleLayerHidden {
-            circleLayer.opacity = 1
-            isCircleLayerHidden = false
-        }
+        showCircleLayer()
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
-        hideLayer()
+        hideCircleLayer()
     }
 
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesCancelled(touches, with: event)
-        hideLayer()
+        // 確認是否有正在進行的長按手勢，如果沒有才隱藏 circleLayer，避免從點擊事件到觸發長按手勢中間的閃爍
+        if !isLongPressActive {
+            hideCircleLayer()
+        }
     }
 
     // MARK: Private
@@ -57,11 +61,27 @@ class RippleEffectButton: UIButton {
         return sLayer
     }()
 
-    private var isCircleLayerHidden = true
+    private lazy var longPressGesture: UILongPressGestureRecognizer = {
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+        longPressGesture.minimumPressDuration = 1 // 認定為長按手勢的最短時間
+        longPressGesture.allowableMovement = 10 // 允許移動的最大距離
+        return longPressGesture
+    }()
 
-    private func configure() {
+    private var isCircleLayerHidden = true {
+        didSet {
+            circleLayer.opacity = isCircleLayerHidden ? 0 : 1
+        }
+    }
+
+    // 長按手勢是否正在進行
+    private var isLongPressActive: Bool = false
+
+    private func setup() {
         layer.addSublayer(circleLayer)
+        addGestureRecognizer(longPressGesture)
         clipsToBounds = false
+        isCircleLayerHidden = true
     }
 
     /// 更新圓圈圖層位址
@@ -71,8 +91,12 @@ class RippleEffectButton: UIButton {
         circleLayer.path = UIBezierPath(arcCenter: arcCenter, radius: diameter / 2, startAngle: 0, endAngle: .pi * 2, clockwise: true).cgPath
     }
 
+    private func showCircleLayer() {
+        isCircleLayerHidden = false
+    }
+
     /// 顯示波紋動畫，顯示完移除動畫圖層
-    private func hideLayer() {
+    private func hideCircleLayer() {
         let arcCenter = CGPoint(x: bounds.midX, y: bounds.midY)
         // 動畫持續時間
         let rippleAnimationDuration = 0.3
@@ -115,18 +139,28 @@ class RippleEffectButton: UIButton {
         circleLayer.add(groupAnimation, forKey: "RippleGroupAnimation")
 
         // 等動畫結束隱藏 circleLayer
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + rippleAnimationDuration) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + rippleAnimationDuration) {
             // All animations are done, so remove the layer.
             self.circleLayer.removeAllAnimations()
-            self.circleLayer.opacity = 0
             self.isCircleLayerHidden = true
         }
     }
-}
 
-/// CABasicAnimation 的 keyPath 參數
-enum AnimationKeyPath: String {
-    case opacity // 透明度
-    case path // 路徑
-    case position
+    @objc
+    private func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
+        // 判斷長按手勢是否正在進行
+        isLongPressActive = gesture.state == .began || gesture.state == .changed
+
+        // 判斷是否結束或取消長按手勢
+        let isFinished = gesture.state == .ended || gesture.state == .cancelled
+        if isFinished {
+            // 隱藏圓形圖層
+            hideCircleLayer()
+        }
+
+        // 只在開始或結束長按手勢時傳遞事件
+        if gesture.state != .changed {
+            longPressAction?(isFinished)
+        }
+    }
 }

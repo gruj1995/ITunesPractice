@@ -5,13 +5,19 @@
 //  Created by 李品毅 on 2023/3/15.
 //
 
+import AVKit
 import Combine
 import SnapKit
 import UIKit
 
-/*
- https://reurl.cc/9V7KjV
-  - view 上方有模糊邊緣，同時整個view應該是透明背景
+// MARK: - PlaylistPlayerViewController
+
+/**
+  - 有3種顯示模式，值的變更會儲存在userdefault中：
+    1. 顯示歌詞
+    2. 顯示音樂清單
+    3. 顯示歌曲資訊
+  - 當音樂有歌詞時，歌詞按鈕才會亮起
   - 下一曲按鈕
     1. 長按觸發快轉，並且會越來越快
     2. 播放按鈕顯示暫停，等放開快轉按鈕後變回播放
@@ -21,11 +27,8 @@ import UIKit
     3. 拖動時音樂正常播放，拖曳結束才切到選中的時間點
     4. 圓點是半透明白色，歌曲無法播放時還是能拖動進度條，圓點變透明色
   - 音量滑軌可以調系統聲音，目前觀察是使用原生slider
-  - 當音樂有歌詞時，左下角按鈕才會亮起
   - 在背景時也要能繼續播放歌曲
  */
-
-// MARK: - PlaylistPlayerViewController
 
 class PlaylistPlayerViewController: UIViewController {
     // MARK: Internal
@@ -34,20 +37,22 @@ class PlaylistPlayerViewController: UIViewController {
         return String(describing: self)
     }
 
+    // MARK: - IBOutlets
+
     @IBOutlet var musicProgressSlider: AnimatedThumbSlider!
 
     @IBOutlet var volumeSlider: UISlider!
 
     @IBOutlet var playButtons: [RippleEffectButton]!
 
-    @IBOutlet var advancedButtons: [UIButton]!
+    @IBOutlet var contentStackView: UIStackView!
 
-    @IBOutlet var stackView: UIStackView!
+    @IBOutlet var advancedFeaturesStackView: UIStackView!
 
+    // 由 PlaylistVC 更新漸層色
     lazy var gradient: CAGradientLayer = {
         let gradient = CAGradientLayer()
         gradient.frame = view.bounds
-
         // 指定第一個顏色佔 15 px 高度
         let firstColorHeightPercentage = NSNumber(value: 15.0 / view.bounds.height)
         // 顏色起始點與終點
@@ -55,6 +60,14 @@ class PlaylistPlayerViewController: UIViewController {
         view.layer.insertSublayer(gradient, at: 0)
         return gradient
     }()
+
+    var advancedButtonSelectedColor: UIColor? {
+        didSet {
+            updateAdvancedButtons()
+        }
+    }
+
+    // MARK: - View Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,8 +77,6 @@ class PlaylistPlayerViewController: UIViewController {
     }
 
     // MARK: Private
-
-    private var cancellables: Set<AnyCancellable> = .init()
 
     private lazy var currentTimeLabel: UILabel = {
         let label = UILabel()
@@ -83,49 +94,65 @@ class PlaylistPlayerViewController: UIViewController {
         return label
     }()
 
-    private let viewModel: PlaylistPlayerViewModel = .init()
+    private lazy var lyricsButton: UIButton = UIButton.createRoundCornerButton(image: AppImages.quoteBubble, target: self, action: #selector(lyricsButtonTapped))
 
+    private lazy var listButton: UIButton = UIButton.createRoundCornerButton(image: AppImages.listBullet, target: self, action: #selector(listButtonTapped))
+
+    /// 顯示附近媒體接收器列表的 View (本身就有點擊事件和圖案，不用另外設定)
+    private lazy var routePickerView: AVRoutePickerView = {
+        let routePickerView = AVRoutePickerView(frame: .zero)
+        routePickerView.tintColor = .white
+        routePickerView.activeTintColor = .white // 選中時的顏色
+        return routePickerView
+    }()
+
+    private lazy var advancedButtons: [UIView] = [lyricsButton, routePickerView, listButton]
+
+    // MARK: - Properties
+
+    private let viewModel: PlaylistPlayerViewModel = .init()
+    private var cancellables: Set<AnyCancellable> = .init()
     private var isManualSeeking = false
+
+    // MARK: - Setup
 
     private func setupUI() {
         view.backgroundColor = .clear
+        playButtons.forEach { $0.tintColor = .white }
         setupLayout()
-
-        playButtons.indices.forEach {
-            playButtons[$0].tintColor = .white
-            playButtons[$0].tag = $0 + 1
-        }
-        advancedButtons.forEach { $0.tintColor = .white }
         setupVolumeSlider()
         setupMusicProgressSlider()
-    }
-
-    private func bindViewModel() {
-        viewModel.playbackTimePublisher
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                guard let self = self else { return }
-                self.updateMusicSlider()
-                self.updateTimeLabels()
-            }.store(in: &cancellables)
-
-        viewModel.isPlayingPublisher
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                guard let self = self else { return }
-                self.updatePlayOrPauseButtonUI()
-            }.store(in: &cancellables)
     }
 
     private func setupGestures() {
         if playButtons.count == 3 {
             let previousButton = playButtons[0]
-            let playOrPauseButton = playButtons[1]
+            let togglePlayPauseButton = playButtons[1]
             let nextButton = playButtons[2]
 
             previousButton.addTarget(self, action: #selector(previousButtonTapped), for: .touchUpInside)
-            playOrPauseButton.addTarget(self, action: #selector(playOrPauseButtonTapped), for: .touchUpInside)
             nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+            togglePlayPauseButton.addTarget(self, action: #selector(togglePlayPauseButtonTapped), for: .touchUpInside)
+
+            // 長按倒帶
+            previousButton.longPressAction = { [weak self] isFinish in
+                guard let self else { return }
+                if isFinish {
+                    self.viewModel.resetPlaybackRate()
+                } else {
+                    self.viewModel.rewind()
+                }
+            }
+
+            // 長按快轉
+            nextButton.longPressAction = { [weak self] isFinish in
+                guard let self else { return }
+                if isFinish {
+                    self.viewModel.resetPlaybackRate()
+                } else {
+                    self.viewModel.fastForward()
+                }
+            }
         }
     }
 
@@ -173,30 +200,79 @@ class PlaylistPlayerViewController: UIViewController {
             make.trailing.equalTo(musicProgressSlider)
             make.top.equalTo(musicProgressSlider.snp.bottom).offset(3)
         }
+
+        advancedButtons.forEach { button in
+            advancedFeaturesStackView.addArrangedSubview(button)
+            button.snp.makeConstraints { make in
+                make.width.equalTo(button.snp.height)
+            }
+        }
     }
 
-    private func updatePlayOrPauseButtonUI() {
+    private func bindViewModel() {
+        viewModel.playbackTimePublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                self.updateMusicSlider()
+                self.updateTimeLabels()
+            }.store(in: &cancellables)
+
+        viewModel.isPlayingPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                self.updateTogglePlayPauseButton()
+            }.store(in: &cancellables)
+
+        viewModel.volumePublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                self.updateVolumeSlider()
+            }.store(in: &cancellables)
+    }
+
+    private func updateTogglePlayPauseButton() {
         let isPlaying = viewModel.isPlaying
         let image = isPlaying ? AppImages.pause : AppImages.play
         playButtons[1].setImage(image, for: .normal)
     }
 
     // 更新已播放時間和剩餘時間標籤
+    // TODO: 修正拖曳放開slider後閃爍問題
     private func updateMusicSlider() {
-        let updateType: SliderUpdateType = musicProgressSlider.isTracking ? .manual : .automatic
-        viewModel.updateDisplayedTime(type: updateType)
-
-        if updateType == .manual {
+        // isTracking 代表正在拖動slider
+        let isTracking = musicProgressSlider.isTracking
+        viewModel.updateDisplayedTime(isTracking: isTracking)
+        if isTracking {
             musicProgressSlider.value = viewModel.newPlaybackPercentage
         } else {
             musicProgressSlider.value = viewModel.playbackPercentage
         }
     }
 
+    private func updateVolumeSlider() {
+        volumeSlider.value = viewModel.volume
+    }
+
     private func updateTimeLabels() {
         currentTimeLabel.text = viewModel.$displayedCurrentTime
         remainingTimeLabel.text = viewModel.$displayedRemainingTime
     }
+
+    private func updateAdvancedButtons() {
+        let selectedColor = advancedButtonSelectedColor
+
+        let isLyricsMode = viewModel.displayMode == .lyrics
+        let lyricsButtonImage = isLyricsMode ? AppImages.quoteBubbleFill : AppImages.quoteBubble
+        lyricsButton.setRoundCornerButtonAppearance(isSelected: isLyricsMode, tintColor: selectedColor, image: lyricsButtonImage)
+
+        let isPlaylistMode = viewModel.displayMode == .playlist
+        listButton.setRoundCornerButtonAppearance(isSelected: isPlaylistMode, tintColor: selectedColor)
+    }
+
+    // MARK: - Actions
 
     // 拖動音樂時間軸
     @objc
@@ -217,18 +293,33 @@ class PlaylistPlayerViewController: UIViewController {
         viewModel.volume = sender.value
     }
 
+    // 播放/暫停
     @objc
-    private func playOrPauseButtonTapped(_ sender: UIButton) {
+    private func togglePlayPauseButtonTapped(_ sender: UIButton) {
         viewModel.isPlaying.toggle()
     }
 
+    // 下一曲
     @objc
     private func nextButtonTapped(_ sender: UIButton) {
         viewModel.next()
     }
 
+    // 上一曲
     @objc
     private func previousButtonTapped(_ sender: UIButton) {
         viewModel.previous()
+    }
+
+    @objc
+    private func lyricsButtonTapped(_ sender: UIButton) {
+        viewModel.handleLyricsButtonTapped()
+        updateAdvancedButtons()
+    }
+
+    @objc
+    private func listButtonTapped(_ sender: UIButton) {
+        viewModel.handleListButtonTapped()
+        updateAdvancedButtons()
     }
 }

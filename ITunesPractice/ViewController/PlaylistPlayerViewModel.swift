@@ -8,13 +8,6 @@
 import Combine
 import Foundation
 
-// MARK: - SliderUpdateType
-
-enum SliderUpdateType {
-    case automatic // 自動更新
-    case manual // 手動更新
-}
-
 // MARK: - PlaylistPlayerViewModel
 
 class PlaylistPlayerViewModel {
@@ -38,16 +31,7 @@ class PlaylistPlayerViewModel {
     // 用戶拖動 slider 後新的播放進度百分比
     var newPlaybackPercentage: Float = 0 {
         didSet {
-            updateDisplayedTime(type: .manual)
-        }
-    }
-
-    var currentTime: Double? {
-        get {
-            musicPlayer.currentPlaybackTime
-        }
-        set {
-            musicPlayer.currentPlaybackTime = newValue
+            updateDisplayedTime(isTracking: true)
         }
     }
 
@@ -56,8 +40,17 @@ class PlaylistPlayerViewModel {
         set { musicPlayer.volume = newValue }
     }
 
+    var displayMode: PlayerDisplayMode {
+        get { UserDefaults.standard.playerDisplayMode }
+        set { UserDefaults.standard.playerDisplayMode = newValue }
+    }
+
     var playbackTimePublisher: AnyPublisher<Double?, Never> {
         musicPlayer.playbackTimePublisher
+    }
+
+    var volumePublisher: AnyPublisher<Float, Never> {
+        musicPlayer.volumePublisher
     }
 
     var isPlayingPublisher: AnyPublisher<Bool, Never> {
@@ -84,9 +77,17 @@ class PlaylistPlayerViewModel {
         musicPlayer.currentPlaybackDuration?.floatValue ?? 1
     }
 
-    func updateDisplayedTime(type: SliderUpdateType) {
+    func handleLyricsButtonTapped() {
+        displayMode = (displayMode == .lyrics) ? .trackInfo : .lyrics
+    }
+
+    func handleListButtonTapped() {
+        displayMode = (displayMode == .playlist) ? .trackInfo : .playlist
+    }
+
+    func updateDisplayedTime(isTracking: Bool) {
         if let totalDuration = totalDuration?.floatValue {
-            let newPercentage = type == .automatic ? playbackPercentage : newPlaybackPercentage
+            let newPercentage = isTracking ? newPlaybackPercentage : playbackPercentage
             let newCurrentTime = newPercentage * totalDuration
             displayedCurrentTime = newCurrentTime
             displayedRemainingTime = -totalDuration + newCurrentTime
@@ -102,6 +103,18 @@ class PlaylistPlayerViewModel {
 
     func previous() {
         musicPlayer.previousTrack()
+    }
+
+    func fastForward() {
+        musicPlayer.fastForward()
+    }
+
+    func rewind() {
+        musicPlayer.rewind()
+    }
+
+    func resetPlaybackRate() {
+        musicPlayer.resetPlaybackRate()
     }
 
     func seekToNewTime() {

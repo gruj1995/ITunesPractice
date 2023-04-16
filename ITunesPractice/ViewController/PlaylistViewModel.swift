@@ -15,15 +15,7 @@ import UIKit
 class PlaylistViewModel {
     // MARK: Lifecycle
 
-    init() {
-        // 監聽歌曲選中事件
-//        selectTrackPublisher
-//            .sink { [weak self] track in
-//                self?.musicPlayer.selectTrack(track)
-//            }
-//            .store(in: &cancellables)
-//        setSelectedTrack(player.)
-    }
+    init() {}
 
     // MARK: Internal
 
@@ -44,12 +36,20 @@ class PlaylistViewModel {
         musicPlayer.tracks
     }
 
-    var headerButtonBgColor: UIColor? {
-        if colorsSubject.value.count >= 3 {
-            return colorsSubject.value[1]
-        } else {
-            return nil
+    var colors: [UIColor] {
+        get {
+            colorsSubject.value
         }
+        set {
+            colorsSubject.value = newValue
+        }
+    }
+
+    var headerButtonBgColor: UIColor? {
+        if colors.count >= 3 {
+            return colors[1]
+        }
+        return nil
     }
 
     var totalCount: Int {
@@ -106,12 +106,16 @@ class PlaylistViewModel {
 
     func play() {
         musicPlayer.play()
-        changeImage()
     }
 
     func setSelectedTrack(forCellAt index: Int) {
         guard index < tracks.count else { return }
         currentTrack = tracks[index]
+    }
+
+    func changeImage() {
+        let url = currentTrack?.artworkUrl100
+        downloadImage(with: url)
     }
 
     // MARK: Private
@@ -121,33 +125,21 @@ class PlaylistViewModel {
 
     private var cancellables: Set<AnyCancellable> = .init()
 
-    // MARK: - Inputs
-
     private let musicPlayer: MusicPlayer = .shared
-
-    private func changeImage() {
-        let url = currentTrack?.artworkUrl100
-        downloadImage(with: url)
-    }
 
     /// 異步下載圖檔
     private func downloadImage(with urlString: String?) {
-        guard let urlString = urlString else {
-            colorsSubject.send(DefaultTrack.gradientColors)
-            return
-        }
-
-        guard let url = URL(string: urlString) else {
+        guard let urlString = urlString, let url = URL(string: urlString) else {
+            colors = DefaultTrack.gradientColors
             return
         }
 
         KingfisherManager.shared.retrieveImage(with: url) { [weak self] result in
-            guard let self = self else { return }
             switch result {
             case .success(let value):
-                Logger.log("Image: \(value.image). Got from: \(value.cacheType)")
-                // TODO: 這邊同步會導致進頁面卡頓，但沒有先做完的話頁面會沒有背景色，看如何取捨
-                self.generateColors(by: value.image)
+//                Logger.log("Image: \(value.image). Got from: \(value.cacheType)")
+                // TODO: 目前用同步方式提取漸層色會導致進頁面卡頓，但沒有先等的話頁面會沒有背景色，之後考慮使用catche暫存顏色解決此問題
+                self?.generateColors(by: value.image)
             case .failure(let error):
                 Logger.log(error.localizedDescription)
             }
@@ -159,9 +151,9 @@ class PlaylistViewModel {
         do {
             // - quality: 決定取色的品質
             // - algorithm: 使用 kMensCluster 算法或是迭代像素算法
-            let allColors = try image.dominantColors(with: .fair, algorithm: .kMeansClustering)
+            let allColors = try image.dominantColors(with: .fair, algorithm: .iterative)
             let sortedColors = allColors.sortedByGrayValue(isDesc: false)
-            colorsSubject.send(Array(sortedColors.suffix(3)))
+            colors = Array(sortedColors.suffix(3))
         } catch {
             Logger.log(error)
         }

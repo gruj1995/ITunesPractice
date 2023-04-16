@@ -19,16 +19,20 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
     private override init() {
         super.init()
         setAVQueuePlayer()
-
-        // 觀察待播清單更新
-        NotificationCenter.default.addObserver(self, selector: #selector(userDefaultsDidChange), name: .toBePlayedTracksDidChanged, object: nil)
+        setupRemoteControl()
+        currentTrackIndex = 0
+        setupNotificationObservers()
     }
 
     // MARK: Internal
 
     static let shared = MusicPlayer()
 
+    // 用來來逐漸增加播放速度的計時器(快轉/倒帶)
+    private var speedIncreasingTimer: Timer?
+
     var player: AVQueuePlayer = .init()
+    var cancellables: Set<AnyCancellable> = .init()
 
     // 是否隨機播放
     var isShuffleMode: Bool = false
@@ -39,34 +43,27 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
     // 重複的模式
     var repeatMode: RepeatMode = .none
 
-    // 播放速率下限
-    let minPlaybackRate: Float = 0.5
-
     // 播放速率上限
-    let maxPlaybackRate: Float = 2.0
+    let maxPlaybackRate: Float = 3.0
 
     // 播放清單
     var tracks: [Track] {
-        get {
-            UserDefaults.standard.tracks
-        }
-        set {}
+        get { UserDefaults.standard.tracks }
+        set { UserDefaults.standard.tracks = newValue }
     }
 
     var currentTrackIndex: Int {
-        get {
-            currentTrackIndexSubject.value
-        }
+        get { currentTrackIndexSubject.value }
         set {
             currentTrackIndexSubject.value = newValue
+            // 設定背景當前播放資訊
+            setupNowPlaying()
         }
     }
 
     // 是否正在播放
     var isPlaying: Bool {
-        get {
-            isPlayingSubject.value
-        }
+        get { isPlayingSubject.value }
         set {
             isPlayingSubject.value = newValue
 
@@ -87,17 +84,23 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
 
     // 當前播放進度（單位：秒）
     var currentPlaybackTime: Double? {
-        get {
-            timeSubject.value
-        }
-        set {
-            timeSubject.value = newValue
-        }
+        get { timeSubject.value }
+        set { timeSubject.value = newValue }
     }
 
     // 當前曲目總長度（單位：秒）
     var currentPlaybackDuration: Double? {
         player.currentItem?.duration.seconds
+    }
+
+    // 當前播放進度 Float 值
+    var currentTimeFloatValue: Float {
+        currentPlaybackTime?.floatValue ?? 0
+    }
+
+    // 當前曲目總長度 Float 值
+    var totalDurationFloatValue: Float {
+        currentPlaybackDuration?.floatValue ?? 1
     }
 
     // 指定播放速率
@@ -116,18 +119,12 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
 
     // 系統音量，取值範圍為 0.0 到 1.0 之間
     var volume: Float {
-        get {
-            guard let slider = mpVolumeView.subviews.first(where: { $0 is UISlider }) as? UISlider else {
-                return 0
-            }
-            return slider.value
-        }
+        get { mpVolumeView.volumeSlider?.value ?? 0 }
         set {
-            guard let slider = mpVolumeView.subviews.first(where: { $0 is UISlider }) as? UISlider else {
-                return
-            }
+            guard let slider = mpVolumeView.volumeSlider else { return }
             DispatchQueue.main.async {
                 slider.value = newValue
+                self.volumeSubject.value = newValue // 將新的音量值發送到 volumeSubject 中
             }
         }
     }
@@ -146,75 +143,70 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
         return timeSubject.eraseToAnyPublisher()
     }
 
+    var volumePublisher: AnyPublisher<Float, Never> {
+        return volumeSubject.eraseToAnyPublisher()
+    }
+
     var isPlayingPublisher: AnyPublisher<Bool, Never> {
         return isPlayingSubject.eraseToAnyPublisher()
     }
+
+    // MARK: Init
+
+    /// 在 AppDelegate 呼叫，讓 MusicPlayer 在開啟app時就建立
+    func configure() {}
 
     @objc
     func userDefaultsDidChange() {
         setAVQueuePlayer()
     }
 
-    /// 在 AppDelegate 呼叫，讓 MusicPlayer 在開啟app時就建立
-    func configure() {}
-
-    /// 上首歌曲播放結束，判斷播放下一首的邏輯
-//    func playNextTrack() throws {
-//        guard !tracks.isEmpty else {
-//            throw MusicPlayerError.emptyPlaylist
-//        }
-//
-//        var nextIndex: Int
-//        switch repeatMode {
-//        case .all:
-//            nextIndex = currentTrackIndex + 1
-//            if !tracks.isValidIndex(nextIndex) {
-//                nextIndex = 0
-//            }
-//        case .one:
-//            nextIndex = currentTrackIndex
-//        case .none:
-//            nextIndex = currentTrackIndex + 1
-//            if !tracks.isValidIndex(nextIndex) {
-//                stop()
-//                return
-//            }
-//        }
-//
-//        player.advanceToNextItem()
-//        currentTrackIndex = nextIndex
-//        //        play(at: nextIndex)
-//    }
-
-//        func playPreviousTrack() {
-//            guard currentTrackIndex > 0 else {
-//                return
-//            }
-//
-//            let previousTrackIndex = currentTrackIndex - 1
-//            let previousTrack = tracks[previousTrackIndex]
-//
-//            player.pause()
-//            player.replaceCurrentItem(with: previousTrack)
-//            currentTrackIndex = previousTrackIndex
-//            player.play()
-//        }
-
     // MARK: Private
-
-    private var looper: AVPlayerLooper?
 
     // 用來控制系統音量（只使用它裡面的 slider ）
     private let mpVolumeView: MPVolumeView = .init()
-
+    private let audioSession = AVAudioSession.sharedInstance()
+    private var volumeObserver: NSKeyValueObservation?
+    // 控制循環播放
+    private var looper: AVPlayerLooper?
+    // 觀察播放進度
     private var timeObserverToken: Any?
+    // 待播清單
+    private var toBePlayedItems: [AVPlayerItem] = []
 
     private let currentTrackIndexSubject = CurrentValueSubject<Int, Never>(0)
     private let timeSubject = CurrentValueSubject<Double?, Never>(nil)
+    private let volumeSubject = CurrentValueSubject<Float, Never>(0)
     private let isPlayingSubject = CurrentValueSubject<Bool, Never>(false)
 
-    // 待播清單
-    private var toBePlayedItems: [AVPlayerItem] = []
+    // MARK: Setup
+
+    private func setupRemoteControl() {
+        UIApplication.shared.beginReceivingRemoteControlEvents()
+        //  設定背景&鎖定播放
+        setupRemoteTransportControls()
+    }
+
+    private func setupNotificationObservers() {
+        // 觀察待播清單更新
+        NotificationCenter.default.addObserver(self, selector: #selector(userDefaultsDidChange), name: .toBePlayedTracksDidChanged, object: nil)
+
+        // 每首歌曲播放完畢時更新索引
+        NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: nil, queue: .main) { [weak self] _ in
+            guard let self = self else { return }
+            self.nextTrack()
+        }
+
+        // 監聽系統音量變化
+        // 參考 https://stackoverflow.com/questions/68249775/system-volume-change-observer-not-working-on-ios-15
+        try? audioSession.setActive(true)
+        volumeObserver = audioSession.observe(\.outputVolume, options: [.new]) { [weak self] _, change in
+            guard let newVolume = change.newValue else { return }
+            self?.volumeChanged(newVolume)
+        }
+    }
+
+    // MARK: Player
 
     private func setAVQueuePlayer() {
         // 移除時間觀察
@@ -230,11 +222,10 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
 
     private func addTimeObserver() {
         // 每秒發送 timescale 次監聽事件
-        timeObserverToken = player.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 1, timescale: 30), queue: .main) { [weak self] _ in
-            guard let self = self else { return }
-            if self.player.currentItem?.status == .readyToPlay {
-                self.currentPlaybackTime = self.player.currentItem?.currentTime().seconds
-            }
+        timeObserverToken = player.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 1, timescale: 30), queue: .main) { [weak self] time in
+            guard let self, self.player.currentItem?.status == .readyToPlay else { return }
+            let currentTime = max(time.seconds, 0) // 避免初始時出現負數秒數
+            self.currentPlaybackTime = currentTime
         }
     }
 
@@ -246,26 +237,42 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
     }
 
     /// 播放指定索引的歌曲
-    private func play(at index: Int) {
+    @discardableResult
+    private func play(at index: Int) -> Bool {
         guard !tracks.isEmpty else {
             Utils.toast(MusicPlayerError.emptyPlaylist.unwrapDescription)
-            return
+            return false
         }
         guard tracks.isValidIndex(index) else {
             Utils.toast(MusicPlayerError.invalidIndex.unwrapDescription)
-            return
+            return false
         }
         guard let audioURL = URL(string: tracks[index].previewUrl) else {
             Utils.toast(MusicPlayerError.invalidTrack.unwrapDescription)
-            return
+            return false
         }
         // 回到歌曲開頭
-        player.seek(to: .zero)
+        seek(to: 0)
 
         let playItem = AVPlayerItem(url: audioURL)
         player.replaceCurrentItem(with: playItem)
-//        looper = AVPlayerLooper(player: player, templateItem: playItem)
+
+        // 停止當前的循環
+        if looper != nil {
+            looper?.disableLooping()
+            looper = nil
+        }
+        // 使用 AVPlayerLooper 實現單曲循環
+        if repeatMode == .one {
+            looper = AVPlayerLooper(player: player, templateItem: playItem)
+        }
+
         currentTrackIndex = index
+        return true
+    }
+
+    private func volumeChanged(_ newVolume: Float) {
+        volume = newVolume
     }
 
     // MARK: 暫時關閉
@@ -306,18 +313,12 @@ extension MusicPlayer {
         isPlaying = true
     }
 
-    /// 停止播放(清除目前播放的)
+    /// 停止播放(暫停並將時間設到歌曲開始)
     func stop() {
-        isPlaying = false
-        player.replaceCurrentItem(with: nil)
-    }
-
-//    /// 停止播放(暫停並將時間設到歌曲開始)
-//    func stop() {
-//        player.pause()
+//        play(at: 0)
 //        isPlaying = false
 //        player.seek(to: CMTime.zero)
-//    }
+    }
 
     /**
      搜尋至指定時間位置
@@ -330,6 +331,11 @@ extension MusicPlayer {
         // preferredTimescale 為時間尺度，表示一秒有多少幀，即 1 秒 = 1000/1000 秒
         let cmTime = CMTime(seconds: time, preferredTimescale: 1000)
         player.seek(to: cmTime)
+    }
+
+    func seek(to time: Double, completionHandler: @escaping (Bool) -> Void) {
+        let cmTime = CMTime(seconds: time, preferredTimescale: 1000)
+        player.seek(to: cmTime, completionHandler: completionHandler)
     }
 }
 
@@ -347,24 +353,61 @@ extension MusicPlayer {
     }
 
     /// 播放清單內的下一首
-    func nextTrack() {
-//        player.advanceToNextItem()
-//        currentTrackIndex += 1
+    @discardableResult
+    func nextTrack() -> Bool {
         let index = currentTrackIndex
-        let nextIndex = isShuffleMode ? tracks.randomIndexExcluding(index) : index + 1
-        play(at: nextIndex)
+        var nextIndex: Int
+
+        switch repeatMode {
+        // 循環播放單曲
+        case .one:
+            nextIndex = currentTrackIndex
+        // 循環播放全部/不循環播放
+        case .all, .none:
+            if isShuffleMode {
+                // TODO: 隨機播放時原本的播放清單要怎麼處理？
+                nextIndex = tracks.randomIndexExcluding(index)
+            } else {
+                nextIndex = currentTrackIndex + 1
+                // 播放到最後一首時
+                if nextIndex >= tracks.count {
+                    playlistDidFinishPlaying()
+                    return true
+                }
+            }
+        }
+
+        let isSuccess = play(at: nextIndex)
+        return isSuccess
     }
 
     /// 播放清單內的上一首
-    func previousTrack() {
+    @discardableResult
+    func previousTrack() -> Bool {
         let index = currentTrackIndex
         let previousIndex = isShuffleMode ? tracks.randomIndexExcluding(index) : index - 1
-        play(at: previousIndex)
+        let isSuccess = play(at: previousIndex)
+        return isSuccess
     }
 
     // 移除所有播放清單中的歌曲
     func removeAllItems() {
         player.removeAllItems()
+    }
+
+    /// 播放清單內的歌曲都播放完畢
+    private func playlistDidFinishPlaying() {
+        // 重整播放清單
+        setAVQueuePlayer()
+        // 切回第一首歌開頭
+        seek(to: 0)
+        currentTrackIndex = 0
+
+        if repeatMode == .all {
+            isPlaying = true
+        } else if repeatMode == .none {
+            isPlaying = false
+        }
     }
 }
 
@@ -374,15 +417,26 @@ extension MusicPlayer {
     /// 快轉
     func fastForward() {
         // 越來越快直到上限
-        let newFastForwardRate = min(playbackRate + 0.1, maxPlaybackRate)
-        playbackRate = newFastForwardRate
+        speedIncreasingTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+            guard let self = self else { return }
+            let newRate = min(self.playbackRate + 0.1, self.maxPlaybackRate)
+            self.playbackRate = newRate
+        }
     }
 
     /// 倒帶
     func rewind() {
-        // 越來越慢直到下限
-        let newRewindRate = max(playbackRate - 0.1, minPlaybackRate)
-        playbackRate = newRewindRate
+        speedIncreasingTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+            guard let self = self else { return }
+            let newRate = min(abs(self.playbackRate) + 0.1, self.maxPlaybackRate)
+            self.playbackRate = -newRate // 倒轉要用負的
+        }
+    }
+
+    func resetPlaybackRate() {
+        speedIncreasingTimer?.invalidate()
+        speedIncreasingTimer = nil
+        playbackRate = 1
     }
 }
 
@@ -427,3 +481,10 @@ extension Array where Element == Track {
  */
 
 // player.addBoundaryTimeObserver  傳入指定時間(陣列)要進行的行為
+
+extension MPVolumeView {
+    /// 取得 MPVolumeView 的 slider 以操控系統音量
+    var volumeSlider: UISlider? {
+        subviews.first { $0 is UISlider } as? UISlider
+    }
+}

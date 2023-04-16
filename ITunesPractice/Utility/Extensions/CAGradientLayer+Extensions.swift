@@ -48,4 +48,20 @@ extension CAGradientLayer {
         // 回傳在此位置上的顏色。
         return UIColor(red: red, green: green, blue: blue, alpha: 1.0)
     }
+
+    func updateColors(with cgColors: [CGColor], animated: Bool = true, duration: CGFloat = 1.0) {
+        removeAllAnimations()
+        if animated {
+            // 創建漸層色過渡動畫
+            let animation = CABasicAnimation(keyPath: "colors")
+            animation.fromValue = colors
+            animation.toValue = cgColors
+            animation.duration = CFTimeInterval(duration)
+            colors = cgColors
+            add(animation, forKey: "colors transition")
+        } else {
+            // 立即更新漸層色
+            self.colors = cgColors
+        }
+    }
 }

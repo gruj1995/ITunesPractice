@@ -35,20 +35,11 @@ protocol MusicPlayerPlaylistControl {
     var isShuffleMode: Bool { get set } // 是否隨機播放
     var repeatMode: RepeatMode { get set } // 重複的模式
     var playbackRate: Float { get set } // 播放速率
-    var maxPlaybackRate: Float { get } // 播放速率上限
-    var minPlaybackRate: Float { get } // 播放速率下限
-
+    
     func play(track: Track) //  播放清單內指定曲目
-    func nextTrack() //  播放清單內的下一首
-    func previousTrack() //  播放清單內的前一首
+    func nextTrack() -> Bool //  播放清單內的下一首
+    func previousTrack() -> Bool //  播放清單內的前一首
 }
-
-// MARK: - MusicPlayerShuffleControl
-//
-//protocol MusicPlayerShuffleControl {
-//    func shuffle() //  隨機播放
-//    func unshuffle() //  依序播放
-//}
 
 // MARK: - MusicPlayerRepeatControl
 

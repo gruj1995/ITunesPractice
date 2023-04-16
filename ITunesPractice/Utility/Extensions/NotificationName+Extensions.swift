@@ -11,4 +11,6 @@ import Foundation
 extension Notification.Name {
     // 待播清單更新
     static let toBePlayedTracksDidChanged = Notification.Name("toBePlayedTracksDidChanged")
+    // 播放器顯示模式更新
+    static let playerDisplayModeDidChanged = Notification.Name("playerDisplayModeDidChanged")
 }

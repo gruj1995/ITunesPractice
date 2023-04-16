@@ -8,6 +8,13 @@
 import UIKit
 
 extension UIView {
+    var isVisible: Bool {
+        if let window = window, superview != nil {
+            return frame.intersects(window.bounds) && !isHidden
+        }
+        return false
+    }
+
     func gesture(_ gestureType: GestureType) -> GesturePublisher {
         .init(view: self, gestureType: gestureType)
     }

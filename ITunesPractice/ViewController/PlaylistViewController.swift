@@ -11,7 +11,7 @@ import UIKit
 
 // MARK: - PlaylistViewController
 
-/*
+/**
   - 沒網路時，網路音樂文字變灰色且不可選擇，本地音樂維持白字可選擇
   - tableView 滑動到待播清單時：
         上滑隱藏播放器; 下滑顯示播放器
@@ -44,13 +44,11 @@ class PlaylistViewController: UIViewController {
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
         tableView.keyboardDismissMode = .onDrag
-
 //        // 是否允許拖動操作(要放在以下兩者前)
 //        tableView.dragInteractionEnabled = true
 //        // 拖放事件
 //        tableView.dragDelegate = self
 //        tableView.dropDelegate = self
-
         return tableView
     }()
 
@@ -69,28 +67,20 @@ class PlaylistViewController: UIViewController {
     // MARK: Private
 
     private let viewModel: PlaylistViewModel = .init()
-
-    private var cancellables: Set<AnyCancellable> = .init()
-
-    private var lastVelocityYSign = 0
-
+    private let playerContainerViewHeight = Constants.screenHeight * 0.35
     private let cellHeight: CGFloat = 60
 
+    private var cancellables: Set<AnyCancellable> = .init()
+    private var lastVelocityYSign = 0
     private var lastContentOffset: CGFloat = 0
-
     private var playerContainerViewBottom: Constraint?
-
-    private let playerContainerViewHeight = Constants.screenHeight * 0.35
-
     private var animator: UIViewPropertyAnimator!
 
     private lazy var playerContainerView: UIView = .init()
-
     private lazy var currentTrackView: CurrentTrackView = .init()
-
+    private lazy var coverImageView: UIImageView = .coverImageView()
     private lazy var coverImageContainerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .clear
+        let view = UIView.emptyView()
         view.layer.shadowColor = UIColor.black.cgColor
         view.layer.shadowOffset = .zero
         view.layer.shadowOpacity = 0.5
@@ -98,9 +88,7 @@ class PlaylistViewController: UIViewController {
         return view
     }()
 
-    private lazy var coverImageView: UIImageView = .coverImageView()
-
-    // 音樂播放器
+    // 音樂播放器頁
     private lazy var playerVC: PlaylistPlayerViewController = {
         let vc = UIStoryboard(name: "PlayListPlayer", bundle: nil).instantiateViewController(withIdentifier: PlaylistPlayerViewController.storyboardIdentifier) as! PlaylistPlayerViewController
         return vc
@@ -126,6 +114,8 @@ class PlaylistViewController: UIViewController {
         // 加號後的值是 playerContainerView 隱藏時上方要露出的高度
         -playerContainerViewHeight + 5
     }
+
+    // MARK: Setup
 
     private func setupUI() {
         setupLayout()
@@ -158,8 +148,6 @@ class PlaylistViewController: UIViewController {
         tableView.snp.makeConstraints { make in
             make.top.equalTo(currentTrackView.snp.bottom)
             make.bottom.leading.trailing.equalToSuperview()
-//            tableViewBottom = make.bottom.equalToSuperview().constraint
-//            make.edges.equalToSuperview().inset(UIEdgeInsets(top: 150, left: 0, bottom: 0, right: 0))
         }
 
         view.addSubview(playerContainerView)
@@ -180,21 +168,27 @@ class PlaylistViewController: UIViewController {
     private func bindViewModel() {
         viewModel.currentTrackIndexPublisher
             .receive(on: RunLoop.main)
+            .removeDuplicates() // 為什麼會觸發多次？
             .sink { [weak self] _ in
                 guard let self = self else { return }
-                self.updateCurrentTrack()
+                self.viewModel.changeImage()
+                self.updateCurrentTrackView()
                 self.updateTableView()
             }.store(in: &cancellables)
 
         viewModel.colorsPublisher
             .receive(on: RunLoop.main)
-            .sink { [weak self] colors in
+            .dropFirst()
+            .removeDuplicates() // 為什麼會觸發多次？
+            .sink { [weak self] _ in
                 guard let self = self else { return }
-                self.updateGradientLayers(with: colors)
+                self.updateGradientLayers()
             }.store(in: &cancellables)
     }
 
-    private func updateCurrentTrack() {
+    // MARK: Update
+
+    private func updateCurrentTrackView() {
         let track = viewModel.currentTrack
         let url = track?.getArtworkImageWithSize(size: .square800)
         coverImageView.loadCoverImage(with: url)
@@ -207,28 +201,33 @@ class PlaylistViewController: UIViewController {
         currentTrackView.configure(trackName: trackName, artistName: track?.artistName)
     }
 
-    private func updateGradientLayers(with colors: [UIColor]) {
-        let animator = UIViewPropertyAnimator(duration: 1, curve: .easeInOut) { [weak self] in
-            guard let self = self else { return }
-            let cgColors = colors.map { $0.cgColor }
-            self.gradient.colors = cgColors
-
-            // 取得 gradient 由上往下幾 % 位置的漸層顏色作為交界色
-            guard let bottomThirdColor = self.gradient.color(atPosition: 0.45)?.cgColor else {
-                return
-            }
-            let playerVCColors = [bottomThirdColor.copy(alpha: 0.05)!, bottomThirdColor, cgColors[2]]
-
-            self.playerVC.gradient.colors = playerVCColors
-        }
-        animator.startAnimation()
-    }
-
     private func updateTableView() {
+        // 在 viewDidLoad 時使用 Combine 綁定數據，可能會導致 UITableView 在還未加入視圖階層的情況下被 layoutIfNeeded 呼叫，從而觸發出現警告的問題，所以這邊加上判斷避免此狀況發生。
+        guard tableView.isVisible else { return }
         // 要放在 tableView.reloadData() 前
         tableView.tableFooterView = nil
         tableView.reloadData()
         hideCellsIfTouchingHeader()
+    }
+
+    private func updateGradientLayers() {
+        let cgColors = viewModel.colors.map { $0.cgColor }
+        // 更新主要漸層色
+        gradient.updateColors(with: cgColors)
+
+        // 取得漸層的底部三分之一位置的顏色，作為交界色
+        guard let bottomThirdColor = gradient.color(atPosition: 0.45)?.cgColor else {
+            return
+        }
+        // 建立包含三種顏色的漸層色陣列，用於更新 playerVC 的漸層色
+        let playerVCColors = [
+            bottomThirdColor.copy(alpha: 0.05)!,
+            bottomThirdColor,
+            cgColors[2]
+        ]
+        // 更新 playerVC 的漸層色
+        playerVC.gradient.updateColors(with: playerVCColors)
+        playerVC.advancedButtonSelectedColor = viewModel.colors.last
     }
 
     private func handleError(_ error: Error) {
@@ -313,6 +312,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // 解除cell被選中的狀態
         tableView.deselectRow(at: indexPath, animated: true)
+        // 更新選中歌曲
         viewModel.setSelectedTrack(forCellAt: indexPath.row)
         viewModel.play()
 
@@ -322,11 +322,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        // 用戶滑到最底時載入下一頁資料
-        let lastRowIndex = tableView.numberOfRows(inSection: 0) - 1
-        if indexPath.row == lastRowIndex {
-//            viewModel.loadNextPage()
-        }
+        return
     }
 
     func tableView(_ tableView: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
@@ -382,7 +378,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
                 self.viewModel.isShuffleMode.toggle()
                 let isSelected = self.viewModel.isShuffleMode
                 let tintColor = self.viewModel.headerButtonBgColor
-                header.shuffleButton.setButtonAppearance(isSelected: isSelected, tintColor: tintColor)
+                header.shuffleButton.setRoundCornerButtonAppearance(isSelected: isSelected, tintColor: tintColor)
             }
 
             header.onInfinityButtonTapped = { [weak self] _ in
@@ -391,7 +387,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
                 let isSelected = self.viewModel.isInfinityMode
                 let tintColor = self.viewModel.headerButtonBgColor
                 let subTitle = isSelected ? "自動播放類似音樂".localizedString() : nil
-                header.infinityButton.setButtonAppearance(isSelected: isSelected, tintColor: tintColor)
+                header.infinityButton.setRoundCornerButtonAppearance(isSelected: isSelected, tintColor: tintColor)
                 header.configure(title: PlayListHeaderTitle.toBePlayed, subTitle: subTitle)
             }
 
@@ -401,7 +397,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
                 let isSelected = self.viewModel.repeatMode != .none
                 let tintColor = self.viewModel.headerButtonBgColor
                 let image = self.viewModel.repeatMode.image
-                header.repeatButton.setButtonAppearance(isSelected: isSelected, tintColor: tintColor, image: image)
+                header.repeatButton.setRoundCornerButtonAppearance(isSelected: isSelected, tintColor: tintColor, image: image)
             }
         }
 
