@@ -12,37 +12,30 @@ class LibraryViewModel {
     // MARK: Lifecycle
 
     init() {
-
-//        UserDefaults.standard.publisher(for: \.tracks)
-//            .sink { [weak self] _ in
-//                guard let self = self else { return }
-//                self.loadDataFromUserDefaults()
-//            }
-//            .store(in: &cancellables)
-//
-//        UserDefaults.standard.publisher(for: \.tracks)
-//            .map { data in
-//                // 轉換成自訂的 struct 陣列
-//                let tracks = try? PropertyListDecoder().decode([Track].self, from: data)
-//                return tracks ?? []
-//            }
-//             .assign(to: \.tracks, on: self)
-//             .store(in: &cancellables)
+        // 觀察待播清單更新
+        NotificationCenter.default.addObserver(self, selector: #selector(userDefaultsDidChange), name: .toBePlayedTracksDidChanged, object: nil)
     }
 
     // MARK: Internal
 
-    @Published var tracks: [Track] = []
+    @Published var tracks: [Track] = UserDefaults.standard.tracks
+
+    func track(forCellAt index: Int) -> Track? {
+        guard tracks.indices.contains(index) else { return nil }
+        return tracks[index]
+    }
+
+    func setSelectedTrack(forCellAt index: Int) {
+        guard tracks.indices.contains(index) else { return }
+        selectedTrack = tracks[index]
+    }
 
     // MARK: Private
 
-    private var cancellables = Set<AnyCancellable>()
+    private(set) var selectedTrack: Track?
 
-    func loadTracksFromUserDefaults() {
-        // Load the latest data from UserDefaults and update the ViewModel state.
-        let storedTracks = UserDefaults.standard.tracks
-        if tracks != storedTracks {
-            tracks = storedTracks
-        }
+    @objc
+    private func userDefaultsDidChange() {
+        tracks = UserDefaults.standard.tracks
     }
 }
