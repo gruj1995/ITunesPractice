@@ -552,7 +552,6 @@
 				8BB74C7429A15425000B9D59 /* Constants.swift */,
 				8BFDF17E29A313D5008E2C23 /* DateUtility.swift */,
 				8B6B56C729B5931200F099DD /* Utils.swift */,
-				8BB69BE329BE5CC600F09793 /* AppImages.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -774,6 +773,8 @@
 				8BB69BD129BDAFF500F09793 /* ViewState.swift */,
 				8B8B3DF829EA50E400308778 /* PlayerDisplayMode.swift */,
 				8B8B3DFA29EB082800308778 /* AnimationKeyPath.swift */,
+				8BB69BE329BE5CC600F09793 /* AppImages.swift */,
+				8B8B3E0929EC197500308778 /* AppInfo.swift */,
 			);
 			path = Enumerations;
 			sourceTree = "<group>";
