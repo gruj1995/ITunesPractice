@@ -18,6 +18,8 @@ class AudioSearchViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         bindViewModel()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(startAnimation), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -44,6 +46,13 @@ class AudioSearchViewController: UIViewController {
         return label
     }()
 
+    private lazy var trackInfoLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 16, weight: .medium)
+        return label
+    }()
+
     private lazy var micImageView: UIImageView = {
         let imageView = UIImageView(image: AppImages.micFill)
         imageView.tintColor = .white
@@ -62,6 +71,10 @@ class AudioSearchViewController: UIViewController {
         let imageView = UIImageView(image: AppImages.shazamLarge)
         imageView.tintColor = .white
         imageView.contentMode = .scaleAspectFit
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(shazamImageViewTapped))
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(tapGesture)
         return imageView
     }()
 
@@ -84,23 +97,47 @@ class AudioSearchViewController: UIViewController {
             make.bottom.equalTo(shazamImageView.snp.top).offset(-40)
             make.centerX.equalToSuperview()
         }
+
+        view.addSubview(trackInfoLabel)
+        trackInfoLabel.snp.makeConstraints { make in
+            make.top.equalTo(shazamImageView.snp.bottom).offset(40)
+            make.centerX.equalToSuperview()
+        }
     }
 
     private func bindViewModel() {
-        // 使用 $ 屬性獲取 @Published 屬性的 Publisher，監聽數據模型的變化
-//        viewModel.$tracks
-//            .receive(on: RunLoop.main)
-//            .sink { [weak self] _ in
-//                guard let self = self else { return }
-//                self.tableView.reloadData()
-//            }.store(in: &cancellables)
+        viewModel.matchingHelper.$isRecording
+            .receive(on: DispatchQueue.main)
+            .removeDuplicates()
+            .sink { [weak self] isRecording in
+                guard let self = self else { return }
+                self.updateRecordState(isRecording)
+            }.store(in: &cancellables)
+
+        viewModel.trackPublisher
+            .receive(on: DispatchQueue.main)
+            .dropFirst()
+            .removeDuplicates()
+            .sink { [weak self] track in
+                guard let self = self else { return }
+                self.updateTrackInfo(track)
+            }.store(in: &cancellables)
     }
 
+    private func updateRecordState(_ isRecording: Bool) {
+        trackInfoLabel.text = isRecording ? "辨識中" : ""
+    }
+
+    private func updateTrackInfo(_ track: Track?) {
+        trackInfoLabel.text = track?.description ?? "辨識失敗"
+    }
+
+    @objc
     private func startAnimation() {
         let animationDuration = 1.0         // 動畫持續時間
         let animationScale: CGFloat = 1.05   // 縮放比例
 
-        // 创建动画缩放的transform
+        // 動畫縮放
         let transform = CABasicAnimation(keyPath: AnimationKeyPath.transformScale.rawValue)
         transform.fromValue = 1.0
         transform.toValue = animationScale
@@ -114,5 +151,10 @@ class AudioSearchViewController: UIViewController {
 
     private func stopAnimation() {
         shazamImageView.layer.removeAllAnimations()
+    }
+
+    @objc
+    private func shazamImageViewTapped(_ sender: UITapGestureRecognizer) {
+        viewModel.listenMusic()
     }
 }

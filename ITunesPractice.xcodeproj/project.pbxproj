@@ -77,6 +77,7 @@
 		8B8B3DFE29EB7E8900308778 /* MatchingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8B3DFD29EB7E8900308778 /* MatchingHelper.swift */; };
 		8B8B3E0629EB8C8600308778 /* AudioSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8B3E0529EB8C8600308778 /* AudioSearchViewController.swift */; };
 		8B8B3E0829EB8C9100308778 /* AudioSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8B3E0729EB8C9100308778 /* AudioSearchViewModel.swift */; };
+		8B8B3E0A29EC197500308778 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8B3E0929EC197500308778 /* AppInfo.swift */; };
 		8BB69BB829BC5E2A00F09793 /* TrackDetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BB729BC5E2A00F09793 /* TrackDetailViewModelTests.swift */; };
 		8BB69BBF29BC93C800F09793 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BBE29BC93C800F09793 /* APIRequest.swift */; };
 		8BB69BC129BC94BB00F09793 /* SearchAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BC029BC94BB00F09793 /* SearchAPIRequest.swift */; };
@@ -243,6 +244,7 @@
 		8B8B3DFD29EB7E8900308778 /* MatchingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingHelper.swift; sourceTree = "<group>"; };
 		8B8B3E0529EB8C8600308778 /* AudioSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSearchViewController.swift; sourceTree = "<group>"; };
 		8B8B3E0729EB8C9100308778 /* AudioSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSearchViewModel.swift; sourceTree = "<group>"; };
+		8B8B3E0929EC197500308778 /* AppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
 		8BB69BB729BC5E2A00F09793 /* TrackDetailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailViewModelTests.swift; sourceTree = "<group>"; };
 		8BB69BBE29BC93C800F09793 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
 		8BB69BC029BC94BB00F09793 /* SearchAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchAPIRequest.swift; sourceTree = "<group>"; };
@@ -1145,6 +1147,7 @@
 				8BB74C7B29A1C91B000B9D59 /* ITunesService+Search.swift in Sources */,
 				8B8B3DFB29EB082800308778 /* AnimationKeyPath.swift in Sources */,
 				8BB74C9329A1DDE5000B9D59 /* ApiEngine+ApiComponentSendable.swift in Sources */,
+				8B8B3E0A29EC197500308778 /* AppInfo.swift in Sources */,
 				8BFDF17B29A3024C008E2C23 /* Track.swift in Sources */,
 				8B6B56C429B577C200F099DD /* SearchViewController.swift in Sources */,
 				8B882E9129D93D45000AA1DE /* DefaultTrack.swift in Sources */,

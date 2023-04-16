@@ -17,8 +17,18 @@ class AudioSearchViewModel {
 
     var track: Track?
 
+    let matchingHelper = MatchingHelper.shared
+
     // MARK: Private
 
     private var cancellables = Set<AnyCancellable>()
 
+    var trackPublisher: AnyPublisher<Track?, Never> {
+        matchingHelper.trackPublisher
+    }
+
+    func listenMusic() {
+        // 開始錄音進行匹配
+        matchingHelper.listenMusic()
+    }
 }
