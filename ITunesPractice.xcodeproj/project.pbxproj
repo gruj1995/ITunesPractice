@@ -75,6 +75,8 @@
 		8B8B3DF929EA50E400308778 /* PlayerDisplayMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8B3DF829EA50E400308778 /* PlayerDisplayMode.swift */; };
 		8B8B3DFB29EB082800308778 /* AnimationKeyPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8B3DFA29EB082800308778 /* AnimationKeyPath.swift */; };
 		8B8B3DFE29EB7E8900308778 /* MatchingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8B3DFD29EB7E8900308778 /* MatchingHelper.swift */; };
+		8B8B3E0629EB8C8600308778 /* AudioSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8B3E0529EB8C8600308778 /* AudioSearchViewController.swift */; };
+		8B8B3E0829EB8C9100308778 /* AudioSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8B3E0729EB8C9100308778 /* AudioSearchViewModel.swift */; };
 		8BB69BB829BC5E2A00F09793 /* TrackDetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BB729BC5E2A00F09793 /* TrackDetailViewModelTests.swift */; };
 		8BB69BBF29BC93C800F09793 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BBE29BC93C800F09793 /* APIRequest.swift */; };
 		8BB69BC129BC94BB00F09793 /* SearchAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BC029BC94BB00F09793 /* SearchAPIRequest.swift */; };
@@ -239,6 +241,8 @@
 		8B8B3DF829EA50E400308778 /* PlayerDisplayMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerDisplayMode.swift; sourceTree = "<group>"; };
 		8B8B3DFA29EB082800308778 /* AnimationKeyPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationKeyPath.swift; sourceTree = "<group>"; };
 		8B8B3DFD29EB7E8900308778 /* MatchingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingHelper.swift; sourceTree = "<group>"; };
+		8B8B3E0529EB8C8600308778 /* AudioSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSearchViewController.swift; sourceTree = "<group>"; };
+		8B8B3E0729EB8C9100308778 /* AudioSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSearchViewModel.swift; sourceTree = "<group>"; };
 		8BB69BB729BC5E2A00F09793 /* TrackDetailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailViewModelTests.swift; sourceTree = "<group>"; };
 		8BB69BBE29BC93C800F09793 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
 		8BB69BC029BC94BB00F09793 /* SearchAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchAPIRequest.swift; sourceTree = "<group>"; };
@@ -603,6 +607,8 @@
 		8B8B3E0129EB8A4100308778 /* AudioSearch */ = {
 			isa = PBXGroup;
 			children = (
+				8B8B3E0529EB8C8600308778 /* AudioSearchViewController.swift */,
+				8B8B3E0729EB8C9100308778 /* AudioSearchViewModel.swift */,
 			);
 			path = AudioSearch;
 			sourceTree = "<group>";
@@ -1146,6 +1152,7 @@
 				8B6B569F29B0EA3000F099DD /* PreviewType.swift in Sources */,
 				8BFDF16E29A1F835008E2C23 /* ITunesServiceProviderInpl.swift in Sources */,
 				8BB69BE029BE5A5900F09793 /* MiniPlayerViewController.swift in Sources */,
+				8B8B3E0629EB8C8600308778 /* AudioSearchViewController.swift in Sources */,
 				8BFDF17F29A313D5008E2C23 /* DateUtility.swift in Sources */,
 				8BBCE35829C1F56D0084BF44 /* PlaylistPlayerViewController.swift in Sources */,
 				8BB74C6C29A14BEF000B9D59 /* HTTPMethod.swift in Sources */,
@@ -1186,6 +1193,7 @@
 				8BF7183829CDF7FE002CEFD6 /* MusicPlayerError.swift in Sources */,
 				8BFDF17129A2180E008E2C23 /* String+Extensins.swift in Sources */,
 				8BFDF18129A31568008E2C23 /* Date+Extensions.swift in Sources */,
+				8B8B3E0829EB8C9100308778 /* AudioSearchViewModel.swift in Sources */,
 				8BD1C64F29AEDEAE00337EF3 /* ITunesImageSize.swift in Sources */,
 				8B3F9BC829C3791C0050CFC9 /* KingFisherAdaper.swift in Sources */,
 				8BB74C8B29A1D735000B9D59 /* SearchTestViewModel.swift in Sources */,

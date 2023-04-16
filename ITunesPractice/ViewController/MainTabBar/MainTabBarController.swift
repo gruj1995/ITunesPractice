@@ -36,9 +36,12 @@ class MainTabBarController: UITabBarController {
         let searchNavVC = createNavigationController(rootViewController: searchVC, image: AppImages.magnifyingGlass, title: "搜尋".localizedString())
 
         let libraryVC = LibraryViewController()
-        let libraryNavVC = createNavigationController(rootViewController: searchVC, image: AppImages.musicHouse, title: "資料庫".localizedString())
+        let libraryNavVC = createNavigationController(rootViewController: libraryVC, image: AppImages.musicHouse, title: "資料庫".localizedString())
 
-        viewControllers = [searchNavVC, libraryNavVC]
+        let audioSearchVC = AudioSearchViewController()
+        let audioSearchNavVC = createNavigationController(rootViewController: audioSearchVC, image: AppImages.waveformAndMic, title: "聲音搜尋".localizedString())
+
+        viewControllers = [searchNavVC, libraryNavVC, audioSearchNavVC]
     }
 
     private func createNavigationController(rootViewController: UIViewController, image: UIImage?, title: String) -> UINavigationController {
