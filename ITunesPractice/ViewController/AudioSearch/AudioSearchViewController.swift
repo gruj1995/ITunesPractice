@@ -18,17 +18,16 @@ class AudioSearchViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         bindViewModel()
-        startAnimation()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        navigationController?.navigationBar.isHidden = true
+        startAnimation()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-//        navigationController?.navigationBar.isHidden = false
+        stopAnimation()
     }
 
     // MARK: Private
