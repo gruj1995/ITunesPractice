@@ -81,7 +81,8 @@ class AudioSearchViewController: UIViewController {
 
     // 背景火花
     private lazy var sparkleView: SparkleView = {
-        let sparkleView = SparkleView(frame: .zero)
+        let sparkImage = Utils.createSparkleImage(width: 2, color: .yellow)
+        let sparkleView = SparkleView(frame: .zero, sparkImage: sparkImage)
         sparkleView.velocity = 0
         return sparkleView
     }()
