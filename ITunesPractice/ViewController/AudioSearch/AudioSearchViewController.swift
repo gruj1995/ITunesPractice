@@ -42,7 +42,7 @@ class AudioSearchViewController: UIViewController {
         let label = UILabel()
         label.text = "輕觸 Shazam".localizedString()
         label.textColor = .white
-        label.font = .systemFont(ofSize: 20, weight: .bold)
+        label.font = .systemFont(ofSize: 20, weight: .heavy)
         return label
     }()
 
@@ -67,6 +67,7 @@ class AudioSearchViewController: UIViewController {
         return stackView
     }()
 
+    // 有動畫的圓圈圖片
     private lazy var shazamImageView: UIImageView = {
         let imageView = UIImageView(image: AppImages.shazamLarge)
         imageView.tintColor = .white
@@ -78,12 +79,24 @@ class AudioSearchViewController: UIViewController {
         return imageView
     }()
 
+    // 背景火花
+    private lazy var sparkleView: SparkleView = {
+        let sparkleView = SparkleView(frame: .zero)
+        sparkleView.velocity = 0
+        return sparkleView
+    }()
+
     private func setupUI() {
         view.backgroundColor = .black
         setupLayout()
     }
 
     private func setupLayout() {
+        view.addSubview(sparkleView)
+        sparkleView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
         view.addSubview(shazamImageView)
         shazamImageView.snp.makeConstraints { make in
             make.centerY.equalToSuperview().multipliedBy(0.9)
@@ -108,6 +121,7 @@ class AudioSearchViewController: UIViewController {
     private func bindViewModel() {
         viewModel.matchingHelper.$isRecording
             .receive(on: DispatchQueue.main)
+            .dropFirst()
             .removeDuplicates()
             .sink { [weak self] isRecording in
                 guard let self = self else { return }
@@ -126,6 +140,7 @@ class AudioSearchViewController: UIViewController {
 
     private func updateRecordState(_ isRecording: Bool) {
         trackInfoLabel.text = isRecording ? "辨識中" : ""
+        sparkleView.velocity = isRecording ? 1 : 0
     }
 
     private func updateTrackInfo(_ track: Track?) {
@@ -155,6 +170,7 @@ class AudioSearchViewController: UIViewController {
 
     @objc
     private func shazamImageViewTapped(_ sender: UITapGestureRecognizer) {
+        sparkleView.velocity = 1
         viewModel.listenMusic()
     }
 }
