@@ -114,13 +114,12 @@ class SearchResultsViewModel {
 
     private let searchTermSubject = CurrentValueSubject<String, Never>("")
     private let stateSubject = CurrentValueSubject<ViewState, Never>(.none)
+    private var cancellables: Set<AnyCancellable> = .init()
 
     private var currentPage: Int = 0
     private var totalPages: Int = 0
     private var pageSize: Int = 20
     private var hasMoreData: Bool = true
-
-    private var cancellables: Set<AnyCancellable> = []
 
     // TODO: 搜尋某些字詞 ex: de 會壞掉
     // 回傳404，錯誤訊息 Your request produced an error. [newNullResponse]

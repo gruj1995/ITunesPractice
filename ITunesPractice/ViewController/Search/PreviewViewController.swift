@@ -13,7 +13,6 @@ import WebKit
 
 protocol PreviewViewControllerDatasource: AnyObject {
     func url(_ previewViewController: PreviewViewController) -> URL?
-
     func title(_ previewViewController: PreviewViewController) -> String
 }
 
@@ -33,8 +32,6 @@ class PreviewViewController: UIViewController {
     // MARK: Internal
 
     weak var dataSource: PreviewViewControllerDatasource?
-
-    // MARK: - Properties
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,7 +62,6 @@ class PreviewViewController: UIViewController {
 
     private func setupUI() {
         view.backgroundColor = .black
-
         setupLayout()
     }
 

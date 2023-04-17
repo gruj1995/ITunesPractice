@@ -24,13 +24,6 @@ import UIKit
 class MiniPlayerViewController: BottomFloatingPanelViewController {
     // MARK: Internal
 
-    var isPlaying: Bool = false {
-        didSet {
-            let image = isPlaying ? AppImages.pause : AppImages.play
-            playPauseButton.setImage(image, for: .normal)
-        }
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -41,14 +34,7 @@ class MiniPlayerViewController: BottomFloatingPanelViewController {
     // MARK: Private
 
     private var viewModel: MiniPlayerViewModel = .init()
-
     private var cancellables: Set<AnyCancellable> = .init()
-
-    private lazy var separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .gray
-        return view
-    }()
 
     private lazy var highlightBlurView: HighlightBlurView = .init()
 
@@ -82,6 +68,12 @@ class MiniPlayerViewController: BottomFloatingPanelViewController {
         button.configuration = config
         button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
         return button
+    }()
+
+    private lazy var separatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .gray
+        return view
     }()
 
     private func bindViewModel() {
@@ -124,28 +116,26 @@ class MiniPlayerViewController: BottomFloatingPanelViewController {
 
     private func setupLayout() {
         view.addSubview(coverImageView)
-        view.addSubview(songTitleLabel)
-        view.addSubview(playPauseButton)
-        view.addSubview(nextButton)
-        view.addSubview(separatorView)
-
         coverImageView.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(20)
             make.top.bottom.equalToSuperview().inset(8)
             make.width.equalTo(coverImageView.snp.height)
         }
 
+        view.addSubview(songTitleLabel)
         songTitleLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.equalTo(coverImageView.snp.trailing).offset(8)
         }
 
+        view.addSubview(playPauseButton)
         playPauseButton.snp.makeConstraints { make in
             make.width.height.equalTo(40)
             make.leading.equalTo(songTitleLabel.snp.trailing).offset(8)
             make.centerY.equalToSuperview()
         }
 
+        view.addSubview(nextButton)
         nextButton.snp.makeConstraints { make in
             make.width.height.centerY.equalTo(playPauseButton)
             make.leading.equalTo(playPauseButton.snp.trailing).offset(8)
@@ -157,6 +147,7 @@ class MiniPlayerViewController: BottomFloatingPanelViewController {
             make.edges.equalToSuperview()
         }
 
+        view.addSubview(separatorView)
         separatorView.snp.makeConstraints { make in
             make.bottom.leading.trailing.equalToSuperview()
             make.height.equalTo(0.3)
