@@ -85,7 +85,7 @@
 		8BB69BC329BC9E9600F09793 /* HTTPMethod+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BC229BC9E9600F09793 /* HTTPMethod+Extensions.swift */; };
 		8BB69BC529BCACA500F09793 /* LookupAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BC429BCACA500F09793 /* LookupAPIRequest.swift */; };
 		8BB69BC929BCB71C00F09793 /* ApiEngine+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BC829BCB71C00F09793 /* ApiEngine+Extensions.swift */; };
-		8BB69BCD29BD694B00F09793 /* NetStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BCC29BD694B00F09793 /* NetStatus.swift */; };
+		8BB69BCD29BD694B00F09793 /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BCC29BD694B00F09793 /* NetworkMonitor.swift */; };
 		8BB69BD029BD766400F09793 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BCF29BD766400F09793 /* EmptyStateView.swift */; };
 		8BB69BD229BDAFF500F09793 /* ViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BD129BDAFF500F09793 /* ViewState.swift */; };
 		8BB69BD429BDB49400F09793 /* SearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BD329BDB49400F09793 /* SearchResultsViewController.swift */; };
@@ -253,7 +253,7 @@
 		8BB69BC229BC9E9600F09793 /* HTTPMethod+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HTTPMethod+Extensions.swift"; sourceTree = "<group>"; };
 		8BB69BC429BCACA500F09793 /* LookupAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookupAPIRequest.swift; sourceTree = "<group>"; };
 		8BB69BC829BCB71C00F09793 /* ApiEngine+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiEngine+Extensions.swift"; sourceTree = "<group>"; };
-		8BB69BCC29BD694B00F09793 /* NetStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetStatus.swift; sourceTree = "<group>"; };
+		8BB69BCC29BD694B00F09793 /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		8BB69BCF29BD766400F09793 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		8BB69BD129BDAFF500F09793 /* ViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewState.swift; sourceTree = "<group>"; };
 		8BB69BD329BDB49400F09793 /* SearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewController.swift; sourceTree = "<group>"; };
@@ -652,7 +652,6 @@
 				8BB69BBE29BC93C800F09793 /* APIRequest.swift */,
 				8BB69BC029BC94BB00F09793 /* SearchAPIRequest.swift */,
 				8BB69BC429BCACA500F09793 /* LookupAPIRequest.swift */,
-				8BB69BCC29BD694B00F09793 /* NetStatus.swift */,
 			);
 			path = NetworkService;
 			sourceTree = "<group>";
@@ -732,6 +731,7 @@
 				8B6B56B629B4821600F099DD /* ToastHelper.swift */,
 				8BF7183F29CE818C002CEFD6 /* LocaleManager.swift */,
 				8B882E9929DAA092000AA1DE /* TrackDataManager.swift */,
+				8BB69BCC29BD694B00F09793 /* NetworkMonitor.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -1186,7 +1186,7 @@
 				8B6B56B729B4821600F099DD /* ToastHelper.swift in Sources */,
 				8BB74C8729A1CC8F000B9D59 /* CustomContentTypeAdapter.swift in Sources */,
 				8BFDF17529A229A9008E2C23 /* LibraryViewController.swift in Sources */,
-				8BB69BCD29BD694B00F09793 /* NetStatus.swift in Sources */,
+				8BB69BCD29BD694B00F09793 /* NetworkMonitor.swift in Sources */,
 				8B6B56B929B48C6400F099DD /* UIViewController+Extensions.swift in Sources */,
 				8B8B3DFE29EB7E8900308778 /* MatchingHelper.swift in Sources */,
 				8B6B56C829B5931200F099DD /* Utils.swift in Sources */,
@@ -1412,9 +1412,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5J9S4L22HS;
+				DEVELOPMENT_TEAM = W3L4T944MU;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ITunesPractice/Info.plist;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "以便聽到和辨識音樂";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
@@ -1426,7 +1427,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.pinyi.ITunesPractice;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pinyi.itunesmusic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1442,9 +1443,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5J9S4L22HS;
+				DEVELOPMENT_TEAM = W3L4T944MU;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ITunesPractice/Info.plist;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "以便聽到和辨識音樂";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
@@ -1456,7 +1458,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.pinyi.ITunesPractice;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pinyi.itunesmusic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
