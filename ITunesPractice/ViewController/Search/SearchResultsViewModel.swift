@@ -62,6 +62,7 @@ class SearchResultsViewModel {
     func loadNextPage() {
         guard !searchTerm.isEmpty else {
             tracks.removeAll()
+            state = .success
             return
         }
 
