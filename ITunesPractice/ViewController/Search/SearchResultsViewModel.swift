@@ -102,12 +102,11 @@ class SearchResultsViewModel {
 
     // MARK: Private
 
-    private var tracks: [Track] = []
-
     private let searchTermSubject = CurrentValueSubject<String, Never>("")
     private let stateSubject = CurrentValueSubject<ViewState, Never>(.none)
     private var cancellables: Set<AnyCancellable> = .init()
 
+    private var tracks: [Track] = []
     private var currentPage: Int = 0
     private var totalPages: Int = 0
     private var pageSize: Int = 20

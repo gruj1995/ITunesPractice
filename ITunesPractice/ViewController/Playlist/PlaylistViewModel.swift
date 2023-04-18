@@ -22,9 +22,7 @@ class PlaylistViewModel {
     var selectedIndexPath: IndexPath?
 
     var currentTrack: Track? {
-        get {
-            musicPlayer.currentTrack
-        }
+        get { musicPlayer.currentTrack }
         set {
             if let index = tracks.firstIndex(where: { $0 == newValue }) {
                 musicPlayer.currentTrackIndex = index
@@ -37,12 +35,8 @@ class PlaylistViewModel {
     }
 
     var colors: [UIColor] {
-        get {
-            colorsSubject.value
-        }
-        set {
-            colorsSubject.value = newValue
-        }
+        get { colorsSubject.value }
+        set { colorsSubject.value = newValue }
     }
 
     var headerButtonBgColor: UIColor? {
@@ -61,30 +55,18 @@ class PlaylistViewModel {
     }
 
     var isShuffleMode: Bool {
-        get {
-            musicPlayer.isShuffleMode
-        }
-        set {
-            musicPlayer.isShuffleMode = newValue
-        }
+        get { musicPlayer.isShuffleMode }
+        set { musicPlayer.isShuffleMode = newValue }
     }
 
     var isInfinityMode: Bool {
-        get {
-            musicPlayer.isInfinityMode
-        }
-        set {
-            musicPlayer.isInfinityMode = newValue
-        }
+        get { musicPlayer.isInfinityMode }
+        set { musicPlayer.isInfinityMode = newValue }
     }
 
     var repeatMode: RepeatMode {
-        get {
-            musicPlayer.repeatMode
-        }
-        set {
-            musicPlayer.repeatMode = newValue
-        }
+        get { musicPlayer.repeatMode }
+        set { musicPlayer.repeatMode = newValue }
     }
 
     var currentTrackIndexPublisher: AnyPublisher<Int, Never> {
@@ -100,7 +82,7 @@ class PlaylistViewModel {
     }
 
     func track(forCellAt index: Int) -> Track? {
-        guard index < tracks.count else { return nil }
+        guard tracks.indices.contains(index) else { return nil }
         return tracks[index]
     }
 
@@ -109,7 +91,7 @@ class PlaylistViewModel {
     }
 
     func setSelectedTrack(forCellAt index: Int) {
-        guard index < tracks.count else { return }
+        guard tracks.indices.contains(index) else { return }
         currentTrack = tracks[index]
     }
 
@@ -122,9 +104,7 @@ class PlaylistViewModel {
 
     // TODO: 為什麼PassthroughSubject只觸發一次？
     private let colorsSubject = CurrentValueSubject<[UIColor], Never>(DefaultTrack.gradientColors)
-
     private var cancellables: Set<AnyCancellable> = .init()
-
     private let musicPlayer: MusicPlayer = .shared
 
     /// 異步下載圖檔
