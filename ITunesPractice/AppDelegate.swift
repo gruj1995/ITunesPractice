@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         try? AVAudioSession.sharedInstance().setCategory(.playback)
 
         // 監控網路變化
-        NetStatus.shared.startMonitoring()
+        NetworkMonitor.shared.startMonitoring()
 
         // 修正ios 15 tableView section 上方多出的空白
         if #available(iOS 15.0, *) {

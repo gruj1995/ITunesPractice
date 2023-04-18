@@ -28,18 +28,11 @@ class SearchResultsViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         bindViewModel()
-
-        NetStatus.shared.netStatusChangeHandler = {
-            DispatchQueue.main.async { [unowned self] in
-                self.updateUI()
-            }
-        }
     }
 
     // MARK: Private
 
     private let viewModel: SearchResultsViewModel = .init()
-
     private var cancellables: Set<AnyCancellable> = .init()
 
     // 抓取資料時的旋轉讀條 (可以搜尋"egaf"，觀察在資料筆數小的情況下怎麼顯示)
@@ -86,6 +79,7 @@ class SearchResultsViewController: UIViewController {
     }()
 
     private func setupUI() {
+        view.backgroundColor = .black
         setupLayout()
     }
 
@@ -116,17 +110,22 @@ class SearchResultsViewController: UIViewController {
                 case .loading, .none:
                     return
                 }
-            }
-            .store(in: &cancellables)
+            }.store(in: &cancellables)
+
+        NetworkMonitor.shared.$isConnected
+            .receive(on: DispatchQueue.main)
+            .removeDuplicates()
+            .sink {  [weak self] _ in
+                self?.updateUI()
+            }.store(in: &cancellables)
     }
 
+    @objc
     private func updateUI() {
         refreshControl.endRefreshing()
 
         if viewModel.totalCount == 0, !viewModel.searchTerm.isEmpty {
             showNoResultView()
-        } else if !NetStatus.shared.isConnected {
-            showEmptyView()
         } else {
             // 要放在 tableView.reloadData() 前
             tableView.tableFooterView = nil
@@ -145,17 +144,14 @@ class SearchResultsViewController: UIViewController {
         emptyStateView.isHidden = false
         tableView.isHidden = true
     }
-
-    private func showEmptyView() {
-        emptyStateView.configure(title: "您已離線".localizedString(), message: "關閉「飛航模式」或連接 Wi-Fi。".localizedString())
-        emptyStateView.isHidden = false
-        tableView.isHidden = true
-    }
-
+    
     private func handleError(_ error: Error) {
         refreshControl.endRefreshing()
         tableView.tableFooterView = nil
-        Utils.toast(error.localizedDescription, at: .center)
+        showNoResultView()
+        if NetworkMonitor.shared.isConnected {
+            Utils.toast(error.localizedDescription, at: .center)
+        }
     }
 
     @objc

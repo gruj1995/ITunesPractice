@@ -30,12 +30,6 @@ class SearchViewController: UIViewController {
         super.viewDidLoad()
         bindViewModel()
         setupUI()
-
-        NetStatus.shared.netStatusChangeHandler = {
-            DispatchQueue.main.async { [unowned self] in
-                self.updateUI()
-            }
-        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -104,7 +98,15 @@ class SearchViewController: UIViewController {
             // 調整 searchBar 取消按鈕的文案
             UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).title = "取消".localizedString()
         }
-        setupLayout()
+    }
+
+    private func setupLayout() {
+        view.addSubview(emptyStateView)
+        emptyStateView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().multipliedBy(0.9)
+            make.width.equalToSuperview().multipliedBy(0.8)
+        }
     }
 
     private func bindViewModel() {
@@ -113,63 +115,34 @@ class SearchViewController: UIViewController {
             .sink { [weak self] state in
                 guard let self = self else { return }
                 switch state {
-                case .loading:
-                    break
-//                    self.tableView.reloadData()
                 case .success:
                     self.updateUI()
                 case .failed(let error):
                     self.handleError(error)
-                case .none:
+                case .loading, .none:
                     break
                 }
-            }
-            .store(in: &cancellables)
+            }.store(in: &cancellables)
+
+        NetworkMonitor.shared.$isConnected
+            .receive(on: DispatchQueue.main)
+            .removeDuplicates()
+            .sink {  [weak self] _ in
+                self?.updateUI()
+            }.store(in: &cancellables)
     }
 
     private func updateUI() {
-        if !NetStatus.shared.isConnected {
-            showEmptyView()
+        if !NetworkMonitor.shared.isConnected {
+            showDisconnectView()
+        } else {
+            emptyStateView.isHidden = true
         }
-//        if viewModel.totalCount == 0, !viewModel.searchTerm.isEmpty {
-//            showNoResultView()
-//        } else if !NetStatus.shared.isConnected {
-//            showEmptyView()
-//        } else {
-//            showTableView()
-//        }
     }
 
-    private func showTableView() {
-//        tableView.isHidden = false
-        emptyStateView.isHidden = true
-//        tableView.reloadData()
-    }
-
-    private func showNoResultView() {
-        emptyStateView.configure(title: "沒有結果".localizedString(), message: "嘗試新的搜尋項目。".localizedString())
-        emptyStateView.isHidden = false
-//        tableView.isHidden = true
-    }
-
-    private func showEmptyView() {
+    private func showDisconnectView() {
         emptyStateView.configure(title: "您已離線".localizedString(), message: "關閉「飛航模式」或連接 Wi-Fi。".localizedString())
         emptyStateView.isHidden = false
-//        tableView.isHidden = true
-    }
-
-    private func setupLayout() {
-//        view.addSubview(tableView)
-//        tableView.snp.makeConstraints { make in
-//            make.edges.equalToSuperview()
-//        }
-
-        view.addSubview(emptyStateView)
-        emptyStateView.snp.makeConstraints { make in
-            make.centerX.equalTo(view.safeAreaLayoutGuide)
-            make.centerY.equalTo(view.safeAreaLayoutGuide).multipliedBy(0.9)
-            make.width.equalToSuperview().multipliedBy(0.8)
-        }
     }
 
     private func handleError(_ error: Error) {
