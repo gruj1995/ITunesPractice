@@ -27,7 +27,7 @@
 	<img src="https://user-images.githubusercontent.com/70060071/231921272-4ef915a5-9ddb-4a03-8080-6b6c22bba338.png" alt="simulator_screenshot_6DE22608-56AE-47DE-8B69-841FFFA74E92" style="width:360px;"><br>
 
 ## 專案環境
-- Bundle Identifier: com.pinyi.ITunesPractice
+- Bundle Identifier: com.pinyi.itunesmusic
 - Xcode Version: 14.2.0
 - minimumVersion: iOS 15.0
 
