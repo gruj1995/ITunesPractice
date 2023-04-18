@@ -46,21 +46,15 @@ class SearchViewController: UIViewController {
 
         // 捲動時是否隱藏搜尋框
         navigationItem.hidesSearchBarWhenScrolling = false
-
         navigationItem.title = "搜尋".localizedString()
     }
 
     // MARK: Private
 
     private let viewModel: SearchViewModel = .init()
+    private var cancellables: Set<AnyCancellable> = .init()
 
-    // 觀察者
-    private var cancellables: Set<AnyCancellable> = []
-
-    private lazy var searchResultsVC: SearchResultsViewController = {
-        let searchResultsVC = SearchResultsViewController()
-        return searchResultsVC
-    }()
+    private lazy var searchResultsVC: SearchResultsViewController = .init()
 
     private lazy var searchController: UISearchController = {
         // 参数searchResultsController為nil，表示沒有單獨的顯示搜索结果的界面，也就是使用當前畫面顯示
@@ -83,6 +77,8 @@ class SearchViewController: UIViewController {
         searchController.obscuresBackgroundDuringPresentation = false
         // searchResultsController 是否被加入此VC的view層級中，並跟隨VC生命週期。預設值為false
         searchController.definesPresentationContext = true
+        // 進入搜尋狀態時持續顯示 showsSearchResultsController
+        searchController.showsSearchResultsController = true
         // 轉場方式是否由 searchResultsController 決定，預設值為 false 由系統決定
 //        searchController.providesPresentationContextTransitionStyle = true
         return searchController
@@ -96,8 +92,8 @@ class SearchViewController: UIViewController {
 
     private func setupUI() {
         view.backgroundColor = .black
-        // 添加搜尋框
-        navigationItem.searchController = searchController
+        navigationItem.searchController = searchController // 添加搜尋框
+        setupLayout()
 
         if let searchBar = navigationItem.searchController?.searchBar,
            let textField = searchBar.textField {
