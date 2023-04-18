@@ -27,31 +27,21 @@ class SearchResultsViewModel {
     private(set) var selectedTrack: Track?
 
     var searchTerm: String {
-        get {
-            return searchTermSubject.value
-        }
-        set {
-            searchTermSubject.value = newValue
-        }
+        get { searchTermSubject.value }
+        set { searchTermSubject.value = newValue }
     }
 
     var state: ViewState {
-        get {
-            return stateSubject.value
-        }
-        set {
-            stateSubject.value = newValue
-        }
+        get { stateSubject.value }
+        set { stateSubject.value = newValue }
     }
 
     var statePublisher: AnyPublisher<ViewState, Never> {
-        return stateSubject.eraseToAnyPublisher()
+        stateSubject.eraseToAnyPublisher()
     }
 
-    private var tracks: [Track] = []
-
     var totalCount: Int {
-        return tracks.count
+        tracks.count
     }
 
     func track(forCellAt index: Int) -> Track? {
@@ -66,16 +56,15 @@ class SearchResultsViewModel {
             return
         }
 
-        if case .loading = state {
-            return // 避免同時載入多次
-        }
+        // 避免同時載入多次
+        if case .loading = state { return }
         state = .loading
 
         let offset = currentPage * pageSize
         let request = ITunesService.SearchRequest(term: searchTerm, limit: pageSize, offset: offset)
 
         request.fetchTracksByURLSession { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             switch result {
             case .success(let response):
                 self.currentPage += 1
@@ -100,7 +89,7 @@ class SearchResultsViewModel {
 
     /// 設定選取的歌曲
     func setSelectedTrack(forCellAt index: Int) {
-        guard index < tracks.count else { return }
+        guard tracks.indices.contains(index) else { return }
         selectedTrack = tracks[index]
     }
 
@@ -112,6 +101,8 @@ class SearchResultsViewModel {
     }
 
     // MARK: Private
+
+    private var tracks: [Track] = []
 
     private let searchTermSubject = CurrentValueSubject<String, Never>("")
     private let stateSubject = CurrentValueSubject<ViewState, Never>(.none)
