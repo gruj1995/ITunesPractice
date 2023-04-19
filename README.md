@@ -17,6 +17,9 @@
 	- 抓取專輯封面主色製作漸層背景<br>
 	<img src="https://user-images.githubusercontent.com/70060071/231921683-2fb87a50-1297-487c-ba7a-aacc6a496a6f.png" alt="simulator_screenshot_1CF8119B-0706-4AFE-83F3-80352FDA9559" style="width:360px"><br>
 	
+	- 聲音搜尋辨識功能<br>
+	<img src="https://user-images.githubusercontent.com/70060071/233000733-334a505c-f4bb-4b34-a8aa-4a94941d0dca.png" alt="音樂辨識" style="width:360px"><br>
+	
 	- 支援背景播放(靜音模式、關閉螢幕、將app滑入背景時都可以繼續播放音樂)<br>
 	<img src="https://user-images.githubusercontent.com/70060071/231921514-f57f3439-de78-4181-8fcf-060ccc729cbc.jpg" alt="S__23265288" style="width:360px;"><br> 
 	
@@ -39,6 +42,7 @@ MVVM
 |-----|---|--------|--------------------------
 Tab1 |SearchViewController | 「搜尋」
 Tab2 |LibraryViewController |「資料庫」
+Tab3 |AudioSearchViewController |「聲音搜尋」
 
 - MainTabBarController  TabBar控制頁
 	 - 迷你播放器頁面：MiniPlayerViewController
@@ -51,6 +55,9 @@ Tab2 |LibraryViewController |「資料庫」
 
 - LibraryViewController  資料庫頁
 
+- AudioSearchViewController  聲音搜尋頁
+	 - 聲音搜尋結果頁：AudioSearchResultViewController
+
 - PlaylistViewController 播放清單頁
 	 - 播放器頁： PlaylistPlayerViewController
 	 
@@ -59,6 +66,7 @@ Tab2 |LibraryViewController |「資料庫」
 ## 練習使用的技術/套件/框架
 
 - 音樂播放相關原生庫 (AVFoundation、AVKit、MediaPlayer)
+- ShazamKit 聲音搜尋辨識相關
 - Combine
 - ContextMenu
 - FloatingPanel（調整viewController高度）
