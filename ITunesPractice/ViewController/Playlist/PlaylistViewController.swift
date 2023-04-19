@@ -56,12 +56,6 @@ class PlaylistViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         bindViewModel()
-
-        NetStatus.shared.netStatusChangeHandler = { [weak self] in
-            DispatchQueue.main.async {
-                self?.updateTableView()
-            }
-        }
     }
 
     // MARK: Private
@@ -183,6 +177,13 @@ class PlaylistViewController: UIViewController {
             .sink { [weak self] _ in
                 guard let self = self else { return }
                 self.updateGradientLayers()
+            }.store(in: &cancellables)
+
+        NetworkMonitor.shared.$isConnected
+            .receive(on: DispatchQueue.main)
+            .removeDuplicates()
+            .sink {  [weak self] _ in
+                self?.updateTableView()
             }.store(in: &cancellables)
     }
 

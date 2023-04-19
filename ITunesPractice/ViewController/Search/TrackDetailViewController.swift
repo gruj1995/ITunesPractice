@@ -46,8 +46,7 @@ class TrackDetailViewController: UIViewController {
     // MARK: Private
 
     private var viewModel: TrackDetailViewModel!
-
-    private var cancellables: Set<AnyCancellable> = []
+    private var cancellables: Set<AnyCancellable> = .init()
 
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()

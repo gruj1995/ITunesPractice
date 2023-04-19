@@ -25,4 +25,8 @@ extension String {
        let emailPred = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
        return emailPred.evaluate(with: email)
    }
+
+    func toInt() -> Int {
+        Int(self) ?? 0
+    }
 }

@@ -69,3 +69,20 @@ class EmptyStateView: UIView {
         }
     }
 }
+
+extension EmptyStateView {
+    func updateLabelsWithAnimation(title: String, message: String, animated: Bool, duration: TimeInterval = 0.5) {
+        updateText(titleLabel, text: title, animated: animated, duration: duration)
+        updateText(messageLabel, text: message, animated: animated, duration: duration)
+    }
+
+    private func updateText(_ label: UILabel, text: String, animated: Bool = true, duration: TimeInterval) {
+        if !animated {
+            label.text = text
+            return
+        }
+        UIView.transition(with: label, duration: duration, options: [.transitionCrossDissolve], animations: {
+            label.text = text // 更新 label 的文字
+        }, completion: nil)
+    }
+}

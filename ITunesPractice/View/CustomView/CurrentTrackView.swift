@@ -26,12 +26,6 @@ class CurrentTrackView: UIView {
 
     // MARK: Internal
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        menuButtonBackgroundLayer.frame = menuButton.bounds
-        menuButtonBackgroundLayer.cornerRadius = menuButton.bounds.height * 0.5
-    }
-
     func configure(trackName: String, artistName: String?) {
         // 讓左邊多出一塊空間滿足UI效果所以加上 \t
         trackLabel.text = "\t\(trackName)"
@@ -45,18 +39,10 @@ class CurrentTrackView: UIView {
 
     // MARK: Private
 
-    private lazy var menuButtonBackgroundLayer: CALayer = {
-        let layer = CALayer()
-        layer.backgroundColor = UIColor(white: 1, alpha: 0.1).cgColor
-        return layer
-    }()
-
-    private lazy var menuButton: UIButton = {
-        let button = UIButton(type: .custom)
+    private lazy var menuButton: CircleButton = {
+        let button = CircleButton()
         button.setImage(AppImages.ellipsis, for: .normal)
         button.tintColor = .white
-        button.backgroundColor = .clear
-        button.layer.insertSublayer(menuButtonBackgroundLayer, at: 0)
         return button
     }()
 

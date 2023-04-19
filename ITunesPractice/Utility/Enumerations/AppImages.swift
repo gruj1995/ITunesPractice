@@ -18,11 +18,15 @@ let roundConfiguration2 = UIImage.SymbolConfiguration(pointSize: 20, weight: .se
 /// https://forums.swift.org/t/static-let-in-enum-vs-struct/36152/12
 ///
 enum AppImages {
-    // 放大境
-    static let magnifyingGlass = UIImage(systemName: "magnifyingglass")
-
     // tabbar
     static let musicHouse = UIImage(systemName: "music.note.house.fill")
+    static let magnifyingGlass = UIImage(systemName: "magnifyingglass")
+    static let waveformAndMic = UIImage(systemName: "waveform.and.mic")
+
+    // shazam
+    static let micFill = UIImage(systemName: "mic.fill", withConfiguration: roundConfiguration)
+    static let shazamLarge = UIImage(named: "shazam_large")
+    static let xmark = UIImage(systemName: "xmark", withConfiguration: roundConfiguration)
 
     // 播放器
     static let pause = UIImage(systemName: "pause.fill")

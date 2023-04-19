@@ -30,12 +30,6 @@ class SearchViewController: UIViewController {
         super.viewDidLoad()
         bindViewModel()
         setupUI()
-
-        NetStatus.shared.netStatusChangeHandler = {
-            DispatchQueue.main.async { [unowned self] in
-                self.updateUI()
-            }
-        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -46,21 +40,15 @@ class SearchViewController: UIViewController {
 
         // 捲動時是否隱藏搜尋框
         navigationItem.hidesSearchBarWhenScrolling = false
-
         navigationItem.title = "搜尋".localizedString()
     }
 
     // MARK: Private
 
     private let viewModel: SearchViewModel = .init()
+    private var cancellables: Set<AnyCancellable> = .init()
 
-    // 觀察者
-    private var cancellables: Set<AnyCancellable> = []
-
-    private lazy var searchResultsVC: SearchResultsViewController = {
-        let searchResultsVC = SearchResultsViewController()
-        return searchResultsVC
-    }()
+    private lazy var searchResultsVC: SearchResultsViewController = .init()
 
     private lazy var searchController: UISearchController = {
         // 参数searchResultsController為nil，表示沒有單獨的顯示搜索结果的界面，也就是使用當前畫面顯示
@@ -83,6 +71,8 @@ class SearchViewController: UIViewController {
         searchController.obscuresBackgroundDuringPresentation = false
         // searchResultsController 是否被加入此VC的view層級中，並跟隨VC生命週期。預設值為false
         searchController.definesPresentationContext = true
+        // 進入搜尋狀態時持續顯示 showsSearchResultsController
+        searchController.showsSearchResultsController = true
         // 轉場方式是否由 searchResultsController 決定，預設值為 false 由系統決定
 //        searchController.providesPresentationContextTransitionStyle = true
         return searchController
@@ -96,8 +86,8 @@ class SearchViewController: UIViewController {
 
     private func setupUI() {
         view.backgroundColor = .black
-        // 添加搜尋框
-        navigationItem.searchController = searchController
+        navigationItem.searchController = searchController // 添加搜尋框
+        setupLayout()
 
         if let searchBar = navigationItem.searchController?.searchBar,
            let textField = searchBar.textField {
@@ -108,7 +98,15 @@ class SearchViewController: UIViewController {
             // 調整 searchBar 取消按鈕的文案
             UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).title = "取消".localizedString()
         }
-        setupLayout()
+    }
+
+    private func setupLayout() {
+        view.addSubview(emptyStateView)
+        emptyStateView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().multipliedBy(0.9)
+            make.width.equalToSuperview().multipliedBy(0.8)
+        }
     }
 
     private func bindViewModel() {
@@ -117,63 +115,34 @@ class SearchViewController: UIViewController {
             .sink { [weak self] state in
                 guard let self = self else { return }
                 switch state {
-                case .loading:
-                    break
-//                    self.tableView.reloadData()
                 case .success:
                     self.updateUI()
                 case .failed(let error):
                     self.handleError(error)
-                case .none:
+                case .loading, .none:
                     break
                 }
-            }
-            .store(in: &cancellables)
+            }.store(in: &cancellables)
+
+        NetworkMonitor.shared.$isConnected
+            .receive(on: DispatchQueue.main)
+            .removeDuplicates()
+            .sink {  [weak self] _ in
+                self?.updateUI()
+            }.store(in: &cancellables)
     }
 
     private func updateUI() {
-        if !NetStatus.shared.isConnected {
-            showEmptyView()
+        if !NetworkMonitor.shared.isConnected {
+            showDisconnectView()
+        } else {
+            emptyStateView.isHidden = true
         }
-//        if viewModel.totalCount == 0, !viewModel.searchTerm.isEmpty {
-//            showNoResultView()
-//        } else if !NetStatus.shared.isConnected {
-//            showEmptyView()
-//        } else {
-//            showTableView()
-//        }
     }
 
-    private func showTableView() {
-//        tableView.isHidden = false
-        emptyStateView.isHidden = true
-//        tableView.reloadData()
-    }
-
-    private func showNoResultView() {
-        emptyStateView.configure(title: "沒有結果".localizedString(), message: "嘗試新的搜尋項目。".localizedString())
-        emptyStateView.isHidden = false
-//        tableView.isHidden = true
-    }
-
-    private func showEmptyView() {
+    private func showDisconnectView() {
         emptyStateView.configure(title: "您已離線".localizedString(), message: "關閉「飛航模式」或連接 Wi-Fi。".localizedString())
         emptyStateView.isHidden = false
-//        tableView.isHidden = true
-    }
-
-    private func setupLayout() {
-//        view.addSubview(tableView)
-//        tableView.snp.makeConstraints { make in
-//            make.edges.equalToSuperview()
-//        }
-
-        view.addSubview(emptyStateView)
-        emptyStateView.snp.makeConstraints { make in
-            make.centerX.equalTo(view.safeAreaLayoutGuide)
-            make.centerY.equalTo(view.safeAreaLayoutGuide).multipliedBy(0.9)
-            make.width.equalToSuperview().multipliedBy(0.8)
-        }
     }
 
     private func handleError(_ error: Error) {

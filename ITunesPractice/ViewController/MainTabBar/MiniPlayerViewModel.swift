@@ -16,9 +16,7 @@ class MiniPlayerViewModel {
     // MARK: Internal
 
     var currentTrack: Track? {
-        get {
-            musicPlayer.currentTrack
-        }
+        get { musicPlayer.currentTrack }
         set {
             if let currentTrackIndex = tracks.firstIndex(where: { $0 == newValue }) {
                 musicPlayer.currentTrackIndex = currentTrackIndex

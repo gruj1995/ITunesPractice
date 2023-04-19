@@ -25,4 +25,8 @@ extension UIApplication {
             return UIApplication.shared.keyWindow
         }
     }
+
+    var rootViewController: UIViewController? {
+        keyWindowCompact?.rootViewController
+    }
 }
