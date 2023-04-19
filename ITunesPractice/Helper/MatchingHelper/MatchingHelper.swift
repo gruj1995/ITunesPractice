@@ -46,7 +46,7 @@ class MatchingHelper: NSObject {
     private let audioOutputSampleRate: Double = 44100.0
 
     // 音頻數據緩衝區大小，較小的緩衝區將具有更低的延遲，但可能會導致更多的 CPU 使用
-    private let bufferSize: AVAudioFrameCount = 1024
+    private let bufferSize: AVAudioFrameCount = 2048
 }
 
 extension MatchingHelper {
@@ -169,11 +169,10 @@ extension MatchingHelper: SHSessionDelegate {
     func session(_ session: SHSession, didFind match: SHMatch) {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
-            match.mediaItems.forEach { item in
-                print("__++++ matchItem:\n\(item.title ?? "")\n\(item.artist ?? "")\n\(item.artworkURL)\n")
-            }
-            let matchItem = match.mediaItems.first
-            self.trackSubject.value = matchItem?.convertToTrack()
+            // mediaItem 內其實包含專輯名稱、發行日期等資訊，但不知道為什麼沒開放外部取用
+            let mediaItem = match.mediaItems.first
+            let track = mediaItem?.convertToTrack()
+            self.trackSubject.value = track
             self.stopListening()
         }
     }
@@ -186,23 +185,5 @@ extension MatchingHelper: SHSessionDelegate {
             self.stopListening()
             Logger.log(message: error?.localizedDescription)
         }
-    }
-}
-
-// MARK: SHMatchedMediaItem
-
-extension SHMatchedMediaItem {
-    func convertToTrack() -> Track {
-        return Track(
-            artworkUrl100: artworkURL?.absoluteString ?? "",
-            collectionName: "",
-            artistName: artist ?? "",
-            trackId: appleMusicID?.toInt() ?? 0,
-            trackName: "",
-            releaseDate: "",
-            artistViewUrl: "",
-            collectionViewUrl: "",
-            previewUrl: "",
-            trackViewUrl: appleMusicURL?.absoluteString ?? "")
     }
 }
