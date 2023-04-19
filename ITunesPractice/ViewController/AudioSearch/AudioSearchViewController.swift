@@ -36,7 +36,6 @@ class AudioSearchViewController: UIViewController {
 
     private let viewModel: AudioSearchViewModel = .init()
     private var cancellables: Set<AnyCancellable> = []
-    private var timer: Timer?
 
     private lazy var hintLabel: UILabel = {
         let label = UILabel()
@@ -46,11 +45,10 @@ class AudioSearchViewController: UIViewController {
         return label
     }()
 
-    private lazy var trackInfoLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .white
-        label.font = .systemFont(ofSize: 16, weight: .medium)
-        return label
+    private lazy var emptyStateView: EmptyStateView = {
+        let view = EmptyStateView()
+        view.isHidden = true
+        return view
     }()
 
     private lazy var micImageView: UIImageView = {
@@ -112,10 +110,11 @@ class AudioSearchViewController: UIViewController {
             make.centerX.equalToSuperview()
         }
 
-        view.addSubview(trackInfoLabel)
-        trackInfoLabel.snp.makeConstraints { make in
+        view.addSubview(emptyStateView)
+        emptyStateView.snp.makeConstraints { make in
             make.top.equalTo(shazamImageView.snp.bottom).offset(40)
             make.centerX.equalToSuperview()
+            make.width.equalToSuperview().multipliedBy(0.8)
         }
     }
 
@@ -125,7 +124,7 @@ class AudioSearchViewController: UIViewController {
             .dropFirst()
             .removeDuplicates()
             .sink { [weak self] isRecording in
-                guard let self = self else { return }
+                guard let self else { return }
                 self.updateRecordState(isRecording)
             }.store(in: &cancellables)
 
@@ -134,18 +133,52 @@ class AudioSearchViewController: UIViewController {
             .dropFirst()
             .removeDuplicates()
             .sink { [weak self] track in
-                guard let self = self else { return }
+                guard let self else { return }
                 self.updateTrackInfo(track)
             }.store(in: &cancellables)
+
+        viewModel.$searchStage
+            .receive(on: DispatchQueue.main)
+            .removeDuplicates()
+            .sink { [weak self] _ in
+                guard let self else { return }
+                self.updateState()
+            }.store(in: &cancellables)
+
+    }
+
+    private func updateState() {
+        let searchStage = viewModel.searchStage
+        let animated = searchStage != .listening
+        emptyStateView.updateLabelsWithAnimation(title: searchStage.title, message: searchStage.subtitle, animated: animated)
     }
 
     private func updateRecordState(_ isRecording: Bool) {
-        trackInfoLabel.text = isRecording ? "辨識中" : ""
         sparkleView.velocity = isRecording ? 1 : 0
+        emptyStateView.isHidden = !isRecording
     }
 
     private func updateTrackInfo(_ track: Track?) {
-        trackInfoLabel.text = track?.description ?? "辨識失敗"
+        viewModel.stopTimer()
+        viewModel.searchStage = .none
+
+        if let track {
+            presentAudioSearchResultVC(track: track)
+        } else {
+            presentFailedVC()
+        }
+    }
+
+    private func presentAudioSearchResultVC(track: Track) {
+        let vc = AudioSearchResultViewController(track: track)
+        vc.modalTransitionStyle = .crossDissolve
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true)
+    }
+
+    // TODO: 改成彈窗
+    private func presentFailedVC() {
+        Utils.toast("辨識失敗")
     }
 
     @objc
