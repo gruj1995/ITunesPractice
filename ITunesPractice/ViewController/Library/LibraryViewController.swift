@@ -57,7 +57,7 @@ class LibraryViewController: UIViewController {
     }
 
     private func bindViewModel() {
-        // 使用 $ 屬性獲取 @Published 屬性的 Publisher，監聽數據模型的變化
+        // 使用 $ 屬性獲取 @Published 屬性的 Publisher，監聽資料模型的變化
         viewModel.$tracks
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in

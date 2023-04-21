@@ -27,9 +27,4 @@ class AudioSearchResultViewModel {
     var trackPublisher: AnyPublisher<Track?, Never> {
         matchingHelper.trackPublisher
     }
-
-    /// 開始錄音進行辨識
-    func listenMusic() {
-        matchingHelper.listenMusic()
-    }
 }

@@ -203,7 +203,7 @@ class PlaylistViewController: UIViewController {
     }
 
     private func updateTableView() {
-        // 在 viewDidLoad 時使用 Combine 綁定數據，可能會導致 UITableView 在還未加入視圖階層的情況下被 layoutIfNeeded 呼叫，從而觸發出現警告的問題，所以這邊加上判斷避免此狀況發生。
+        // 在 viewDidLoad 時使用 Combine 綁定資料，可能會導致 UITableView 在還未加入視圖階層的情況下被 layoutIfNeeded 呼叫，從而觸發出現警告的問題，所以這邊加上判斷避免此狀況發生。
         guard tableView.isVisible else { return }
         // 要放在 tableView.reloadData() 前
         tableView.tableFooterView = nil

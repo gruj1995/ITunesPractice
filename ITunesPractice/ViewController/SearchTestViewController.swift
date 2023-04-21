@@ -175,7 +175,7 @@ extension SearchTestViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
 //    // 當用戶滾動時，將在main thread上調用此方法，為可能顯示的單元格提供索引路徑
-//    // 使用此方法的實現來啟動任何昂貴的數據加載操作
+//    // 使用此方法的實現來啟動任何昂貴的資料加載操作
 //    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
 //        guard let lastIndexPath = indexPaths.last, lastIndexPath.row >= viewModel.items.count - 1 else {
 //            return

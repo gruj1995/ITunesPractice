@@ -75,7 +75,6 @@ class AudioSearchResultViewController: UIViewController {
         let stackView = UIStackView(arrangedSubviews: [trackNameLabel, artistNameLabel])
         stackView.axis = .vertical
         stackView.spacing = 5
-//        stackView.alignment = .leading
         return stackView
     }()
 
