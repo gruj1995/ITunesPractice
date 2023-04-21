@@ -117,12 +117,12 @@ class RippleEffectButton: UIButton {
          */
 
         // 調整路徑，實現波紋動畫
-        let pathAnimation = CABasicAnimation(keyPath: AnimationKeyPath.path.rawValue)
+        let pathAnimation = CABasicAnimation(keyPath: AnimationKeyPath.path)
         pathAnimation.fromValue = startPath.cgPath
         pathAnimation.toValue = endPath.cgPath
 
         // 調整透明度，實現淡出動畫
-        let opacityAnimation = CABasicAnimation(keyPath: AnimationKeyPath.opacity.rawValue)
+        let opacityAnimation = CABasicAnimation(keyPath: AnimationKeyPath.opacity)
         opacityAnimation.duration = rippleAnimationDuration
         opacityAnimation.fromValue = 1
         opacityAnimation.toValue = 0
@@ -136,7 +136,7 @@ class RippleEffectButton: UIButton {
         groupAnimation.isRemovedOnCompletion = false
         // 參考文章說明 https://juejin.cn/post/6991371790245183496
         groupAnimation.fillMode = .forwards
-        circleLayer.add(groupAnimation, forKey: "RippleGroupAnimation")
+        circleLayer.add(groupAnimation, forKey: AnimationKeyPath.rippleGroupAnimation)
 
         // 等動畫結束隱藏 circleLayer
         DispatchQueue.main.asyncAfter(deadline: .now() + rippleAnimationDuration) {
