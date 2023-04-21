@@ -78,6 +78,8 @@ class SearchResultsViewController: UIViewController {
         return view
     }()
 
+    // MARK: Setup
+
     private func setupUI() {
         view.backgroundColor = .black
         setupLayout()
@@ -98,10 +100,19 @@ class SearchResultsViewController: UIViewController {
     }
 
     private func bindViewModel() {
+        viewModel.currentTrackIndexPublisher
+            .receive(on: RunLoop.main)
+            .removeDuplicates()
+            .combineLatest(viewModel.isPlayingPublisher)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                self.updateUI()
+            }.store(in: &cancellables)
+
         viewModel.statePublisher
             .receive(on: RunLoop.main)
             .sink { [weak self] state in
-                guard let self = self else { return }
+                guard let self else { return }
                 switch state {
                 case .success:
                     self.updateUI()
@@ -115,7 +126,7 @@ class SearchResultsViewController: UIViewController {
         NetworkMonitor.shared.$isConnected
             .receive(on: DispatchQueue.main)
             .removeDuplicates()
-            .sink {  [weak self] _ in
+            .sink { [weak self] _ in
                 self?.updateUI()
             }.store(in: &cancellables)
     }
@@ -144,7 +155,7 @@ class SearchResultsViewController: UIViewController {
         emptyStateView.isHidden = false
         tableView.isHidden = true
     }
-    
+
     private func handleError(_ error: Error) {
         refreshControl.endRefreshing()
         tableView.tableFooterView = nil
@@ -176,6 +187,10 @@ extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegat
             return cell
         }
         cell.configure(artworkUrl: track.artworkUrl100, collectionName: track.collectionName, artistName: track.artistName, trackName: track.trackName, showsHighlight: true)
+
+        let showAnimation = (track == viewModel.currentTrack)
+        let isPlaying = viewModel.isPlaying
+        cell.updateAnimationState(showAnimation: showAnimation, isPlaying: isPlaying)
 
         // 原生的右邊箭頭
         cell.accessoryType = .disclosureIndicator

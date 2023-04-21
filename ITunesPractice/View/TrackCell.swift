@@ -5,6 +5,7 @@
 //  Created by 李品毅 on 2023/2/20.
 //
 
+import Lottie
 import SnapKit
 import UIKit
 
@@ -40,9 +41,14 @@ class TrackCell: UITableViewCell {
         highlightIfNeeded(showsHighlight)
     }
 
+    func updateAnimationState(showAnimation: Bool, isPlaying: Bool) {
+        animationContainerView.isHidden = !showAnimation
+        isPlaying ? animationView.play() : animationView.pause()
+    }
+
     // MARK: Private
 
-    private lazy var coverImageView: UIImageView = UIImageView.coverImageView()
+    private lazy var coverImageView: UIImageView = .coverImageView()
 
     private lazy var trackNameLabel: UILabel = {
         let label = UILabel()
@@ -66,6 +72,21 @@ class TrackCell: UITableViewCell {
         stackView.spacing = 3
         stackView.distribution = .equalSpacing
         return stackView
+    }()
+
+    private lazy var animationView: LottieAnimationView = {
+        let animationView = LottieAnimationView(name: "musiclist")
+        animationView.loopMode = .loop // 設定動畫循環模式 (.playOnce 播放一次, .loop 重複)
+        animationView.backgroundBehavior = .pauseAndRestore // app跳到背景狀態時，暫停並保留動畫，回來繼續播
+        animationView.contentMode = .scaleAspectFit
+        return animationView
+    }()
+
+    private lazy var animationContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .black.withAlphaComponent(0.3)
+        view.isHidden = true
+        return view
     }()
 
     private func highlightIfNeeded(_ showsHighlight: Bool) {
@@ -96,6 +117,16 @@ class TrackCell: UITableViewCell {
             make.leading.equalTo(coverImageView.snp.trailing).offset(15)
             make.trailing.equalTo(contentView.snp.trailingMargin)
             make.centerY.equalToSuperview()
+        }
+
+        contentView.addSubview(animationContainerView)
+        animationContainerView.snp.makeConstraints { make in
+            make.edges.equalTo(coverImageView)
+        }
+
+        animationContainerView.addSubview(animationView)
+        animationView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
 }

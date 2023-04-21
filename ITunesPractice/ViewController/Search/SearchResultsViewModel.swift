@@ -26,6 +26,25 @@ class SearchResultsViewModel {
 
     private(set) var selectedTrack: Track?
 
+    private let musicPlayer: MusicPlayer = .shared
+    
+    // 正在播放的音樂
+    var currentTrack: Track? {
+        musicPlayer.currentTrack
+    }
+
+    var currentTrackIndexPublisher: AnyPublisher<Int, Never> {
+        musicPlayer.currentTrackIndexPublisher
+    }
+
+    var isPlayingPublisher: AnyPublisher<Bool, Never> {
+        musicPlayer.isPlayingPublisher
+    }
+
+    var isPlaying: Bool {
+        musicPlayer.isPlaying
+    }
+
     var searchTerm: String {
         get { searchTermSubject.value }
         set { searchTermSubject.value = newValue }
@@ -70,7 +89,7 @@ class SearchResultsViewModel {
                 self.currentPage += 1
                 self.totalPages = response.resultCount / self.pageSize + 1
                 self.tracks.append(contentsOf: response.results)
-                // 如果數據的數量小於每頁的大小，表示已經下載完所有數據
+                // 如果資料的數量小於每頁的大小，表示已經下載完所有資料
                 self.hasMoreData = response.resultCount == self.pageSize
                 self.state = .success
             case .failure(let error):
