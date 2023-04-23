@@ -46,6 +46,8 @@ extension MatchingHelper {
         let channelDataArray = Array(UnsafeBufferPointer(start: channelData, count: bufferSize))
 
         // 計算信號包絡線（Envelope）
+        // 包絡線是用來描述信號振幅變化的曲線，通常是將原始信號中的快速變化去除，得到一個更平滑的曲線
+        // 以提取振幅、頻率等重要特徵
         var outEnvelope = [Float]()
         var envelopeState: Float = 0
         let envConstantAtk: Float = 0.16 // 攻擊時間常數
@@ -69,20 +71,33 @@ extension MatchingHelper {
          這樣可以有效地減少來自麥克風的環境噪聲和電磁干擾的影響，提高音訊信號的品質和準確度。
          */
 
-//        // 在濾波之後，如果音量的最大值大於0.015，則返回該最大值；否則，返回0.0
-//        // 0.015 是一個經驗值，可以根據具體情況進行調整
-//        if let maxVolume = outEnvelope.max(),
-//           maxVolume > Float(0.015) {
+        // 在濾波之後，如果音量的最大值大於0.015，則返回該最大值；否則，返回0.0
+        // 0.015 是一個經驗值，可以根據具體情況進行調整
+        if let maxVolume = outEnvelope.max(),
+           maxVolume > Float(0.015) {
+            let decibels = amplitudeToDecibel(maxVolume)
+            return decibels
 //            return maxVolume
-//        } else {
-//            return 0.0
-//        }
+        } else {
+            return 0.0
+        }
+    }
 
-        // 將緩衝區內的音量平均值轉換成分貝數字
-        outEnvelope.forEach { print("_+_+_+_+ \($0)") }
-        let rootMeanSquare = sqrt(envelopeState)
-        let soundLevel = 20 * log10(rootMeanSquare / 0.007)
+    /**
+     - 將訊號振幅轉換為分貝
 
-        return soundLevel
+     將聲音轉換為分貝 (dB) 值的過程，是通過先計算聲音強度的平方均值 (RMS)，再用它去算分貝值。
+     RMS簡單來說就是聲音的大小，分貝則是將聲音的大小轉換為一個常見的單位，這個單位是以人耳可以聽到的最小聲音強度為參考，透過對數運算把聲音大小轉換為分貝值。
+
+     - 分貝的計算公式是 20 * log10(RMS)
+
+     - 其中20是一個固定的值，表示人耳聽到的兩倍音量之間的數值差，這個值被稱為聲音的動態範圍，以分貝為單位表示。
+     由於分貝值是以對數的形式表示的，這樣可以更好地展示大範圍內的聲音強度變化。當聲音增加10分貝時，相當於聲音能量增加了兩倍。
+     */
+    func amplitudeToDecibel(_ amplitude: Float) -> Float {
+        // 將聲音的最大值設定為參考值
+        let reference: Float = 1.0
+        let decibels = 20.0 * log10(amplitude / reference)
+        return decibels
     }
 }

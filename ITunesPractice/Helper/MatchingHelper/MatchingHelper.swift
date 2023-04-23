@@ -24,7 +24,7 @@ class MatchingHelper: NSObject {
     static let shared = MatchingHelper()
 
     // 音量閥值
-    private(set) var thresholdVolume: Float = 63.0
+    private(set) var thresholdVolume: Float = 50.0
     // 是否更新過音量閥值(透過取樣並濾除環境噪音取得)
     private var isThresholdVolumeUpdated: Bool = false
 
@@ -59,7 +59,7 @@ class MatchingHelper: NSObject {
     private let audioOutputSampleRate: Double = 44100.0
 
     // 音訊資料緩衝區大小，較小的緩衝區將具有更低的延遲，但可能會導致更多的 CPU 使用
-    private let bufferSize: Int = 2048
+    private let bufferSize: Int = 1024
 
     private let trackSubject = CurrentValueSubject<Track?, Never>(nil)
     private let isRecordingSubject = CurrentValueSubject<Bool, Never>(false)
@@ -139,11 +139,11 @@ extension MatchingHelper {
             Logger.log(message: "recording......\(audioTime)")
 
             // 確認是否需更新閥值音量
-            if !self.isThresholdVolumeUpdated {
-                self.thresholdVolume = self.getThresholdVolume(from: buffer, bufferSize: self.bufferSize)
-                print("___+++ 音量閥值 \(self.thresholdVolume)")
-                self.isThresholdVolumeUpdated.toggle()
-            }
+//            if !self.isThresholdVolumeUpdated {
+//                self.thresholdVolume = self.getThresholdVolume(from: buffer, bufferSize: self.bufferSize)
+//                print("___+++ 音量閥值 \(self.thresholdVolume)")
+//                self.isThresholdVolumeUpdated.toggle()
+//            }
 
             // 將緩衝區中的音訊轉換為 Shazam 簽名，並與所選目錄中的參考簽名相匹配。
             self.session?.matchStreamingBuffer(buffer, at: audioTime)
@@ -161,7 +161,8 @@ extension MatchingHelper {
         let sampleCount = Int(buffer.frameLength)
         let bufferPointer = UnsafeBufferPointer(start: rawDataPointer, count: sampleCount)
 
-        // 取得緩衝區中所有樣本資料的 RMS (音量大小)
+        // 取得緩衝區中所有樣本資料的 RMS (用來判斷音訊的強度和音量大小)
+        // RMS（Root Mean Square）是透過在一段時間內，將所有音訊樣本平方後取平均值再取根號所得到的值
         let rms = sqrt(bufferPointer.map { pow($0, 2) }.reduce(0, +) / Float(bufferPointer.count))
         // 將 RMS 值轉換為分貝 (dB) 值
         let decibels = 20 * log10(rms)
@@ -198,8 +199,7 @@ extension MatchingHelper {
 extension MatchingHelper: SHSessionDelegate {
     // 匹配成功
     func session(_ session: SHSession, didFind match: SHMatch) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
+        DispatchQueue.main.async {
             // mediaItem 內其實包含專輯名稱、發行日期等資訊，但不知道為什麼沒開放外部取用
             let mediaItem = match.mediaItems.first
             let track = mediaItem?.convertToTrack()
@@ -210,8 +210,7 @@ extension MatchingHelper: SHSessionDelegate {
 
     // 匹配失敗（沒有與查詢簽名匹配的歌曲，或發生阻止匹配的錯誤時觸發）
     func session(_ session: SHSession, didNotFindMatchFor signature: SHSignature, error: Error?) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
+        DispatchQueue.main.async {
             self.trackSubject.send(nil)
             self.stopListening()
             Logger.log(message: error?.localizedDescription)
