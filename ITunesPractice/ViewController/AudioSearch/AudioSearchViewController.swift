@@ -37,7 +37,6 @@ class AudioSearchViewController: UIViewController {
 
     private let viewModel: AudioSearchViewModel = .init()
     private var cancellables: Set<AnyCancellable> = []
-    private var isRecording = false
 
     private lazy var hintLabel: UILabel = {
         let label = UILabel()
@@ -152,11 +151,17 @@ class AudioSearchViewController: UIViewController {
         viewModel.trackPublisher
             .receive(on: DispatchQueue.main)
             .dropFirst()
-            .removeDuplicates()
-            .combineLatest(viewModel.isRecordingPublisher)
-            .sink { [weak self] track, isRecording in
+            .sink { [weak self] track in
                 guard let self else { return }
-                self.updateTrackInfo(track, isRecording: isRecording)
+                self.updateTrackInfo(track)
+            }.store(in: &cancellables)
+
+        viewModel.isRecordingPublisher
+            .receive(on: DispatchQueue.main)
+            .removeDuplicates()
+            .sink { [weak self] isRecording in
+                guard let self else { return }
+                self.updateRecordingState(isRecording: isRecording)
             }.store(in: &cancellables)
 
         viewModel.volumePublisher
@@ -186,12 +191,13 @@ class AudioSearchViewController: UIViewController {
         hintView.updateUI(title: searchStage.title, message: searchStage.subtitle, animated: animated)
     }
 
-    private func updateTrackInfo(_ track: Track?, isRecording: Bool) {
-        if self.isRecording == isRecording { return }
+    private func updateRecordingState(isRecording: Bool) {
         sparkleView.velocity = isRecording ? 1 : 0
         hintView.isHidden = !isRecording
+    }
 
-        if !isRecording {
+    private func updateTrackInfo(_ track: Track?) {
+        if !viewModel.isRecording {
             stopRecognition()
             if let track {
                 presentAudioSearchResultVC(track: track)
@@ -235,7 +241,6 @@ class AudioSearchViewController: UIViewController {
     }
 
     private func startRecognition() {
-        isRecording = true
         sparkleView.velocity = 1
         closeButton.isHidden = false
         playHeartbeatAnimation()
@@ -243,7 +248,6 @@ class AudioSearchViewController: UIViewController {
     }
 
     private func stopRecognition() {
-        isRecording = false
         sparkleView.velocity = 0
         closeButton.isHidden = true
         playHeartbeatAnimation()
@@ -252,7 +256,7 @@ class AudioSearchViewController: UIViewController {
 
     @objc
     private func playHeartbeatAnimation() {
-        isRecording ? fast() : normal()
+        viewModel.isRecording ? fast() : normal()
     }
 
     private func stopHeartbeatAnimation() {

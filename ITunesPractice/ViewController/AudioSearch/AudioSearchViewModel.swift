@@ -20,7 +20,7 @@ class AudioSearchViewModel {
     var isRecording: Bool {
         matchingHelper.isRecording
     }
-
+    
     var thresholdVolume: Float {
         matchingHelper.thresholdVolume
     }
