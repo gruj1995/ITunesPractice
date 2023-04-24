@@ -42,6 +42,9 @@ struct Track: Codable, Equatable, CustomStringConvertible {
     /// 單曲網址
     var trackViewUrl: String
 
+    /// 影片網址(搜尋結果)
+    var videoUrl: URL?
+
     /// 發行日期(外部操作使用)
     var releaseDateString: String {
         let iso8601DateFormatter = DateUtility.iso8601DateFormatter
@@ -66,7 +69,8 @@ struct Track: Codable, Equatable, CustomStringConvertible {
             "artistViewUrl: \(artistViewUrl)\n" +
             "collectionViewUrl: \(collectionViewUrl)\n" +
             "previewUrl: \(previewUrl)\n" +
-            "trackViewUrl: \(trackViewUrl)\n"
+            "trackViewUrl: \(trackViewUrl)\n" +
+            "videoUrl: \(String(describing: videoUrl))\n"
     }
 
     static func == (lhs: Self, rhs: Self) -> Bool {
