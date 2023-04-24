@@ -194,6 +194,8 @@ class AudioSearchViewController: UIViewController {
     private func updateRecordingState(isRecording: Bool) {
         sparkleView.velocity = isRecording ? 1 : 0
         hintView.isHidden = !isRecording
+        closeButton.isHidden = !isRecording
+        playHeartbeatAnimation()
     }
 
     private func updateTrackInfo(_ track: Track?) {
@@ -241,16 +243,10 @@ class AudioSearchViewController: UIViewController {
     }
 
     private func startRecognition() {
-        sparkleView.velocity = 1
-        closeButton.isHidden = false
-        playHeartbeatAnimation()
         viewModel.startRecognition()
     }
 
     private func stopRecognition() {
-        sparkleView.velocity = 0
-        closeButton.isHidden = true
-        playHeartbeatAnimation()
         viewModel.stopRecognition()
     }
 
@@ -277,6 +273,13 @@ class AudioSearchViewController: UIViewController {
         shazamImageView.layer.add(scaleAnimation, forKey: AnimationKeyPath.shazamImageScaleAnimation)
     }
 
+    // 觸覺反饋(震動)
+    private func vibrate() {
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.prepare()
+        generator.impactOccurred()
+    }
+
     @objc
     private func clossButtonTapped() {
         stopRecognition()
@@ -285,6 +288,10 @@ class AudioSearchViewController: UIViewController {
     @objc
     private func shazamImageViewTapped(_ sender: UITapGestureRecognizer) {
         if viewModel.isRecording { return }
-        startRecognition()
+        vibrate()
+        // 因為錄音時會禁止觸覺反饋和系統聲音，這邊等反饋結束再開始錄音
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.startRecognition()
+        }
     }
 }
