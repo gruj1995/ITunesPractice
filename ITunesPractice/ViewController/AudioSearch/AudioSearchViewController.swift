@@ -47,7 +47,7 @@ class AudioSearchViewController: UIViewController {
     }()
 
     private lazy var closeButton: CircleButton = {
-        let button = CircleButton(backgroundAlpha: 0.3)
+        let button = CircleButton(bgColor: .lightGray.withAlphaComponent(0.8))
         button.setImage(AppImages.xmark, for: .normal)
         button.tintColor = .white
         button.addTarget(self, action: #selector(clossButtonTapped), for: .touchUpInside)
