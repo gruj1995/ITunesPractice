@@ -29,8 +29,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // 設置所有 UIBarButtonItem 的 tinitColor
         UIBarButtonItem.appearance().tintColor = .appColor(.red1)
 
-        // 初始化 MusicPlayer
+        // 生成單例類
         MusicPlayer.shared.configure()
+        MatchingHelper.shared.configure()
 
         // 指定音訊會話類型為 .playback，讓 App 在背景、螢幕鎖定、silent mode 都能繼續播放音樂
         try? AVAudioSession.sharedInstance().setCategory(.playback)

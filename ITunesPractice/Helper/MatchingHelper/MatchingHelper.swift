@@ -25,8 +25,6 @@ class MatchingHelper: NSObject {
 
     // 音量閥值
     private(set) var thresholdVolume: Float = 50.0
-    // 是否更新過音量閥值(透過取樣並濾除環境噪音取得)
-    private var isThresholdVolumeUpdated: Bool = false
 
     var trackPublisher: AnyPublisher<Track?, Never> {
         trackSubject.eraseToAnyPublisher()
@@ -45,7 +43,13 @@ class MatchingHelper: NSObject {
         set { isRecordingSubject.value = newValue }
     }
 
+    /// 在 AppDelegate 呼叫，讓 MusicPlayer 在開啟app時就建立
+    func configure() {}
+
     // MARK: Private
+
+    // 是否更新過音量閥值(透過取樣並濾除環境噪音取得)
+    private var isThresholdVolumeUpdated: Bool = false
 
     // The ShazamKit session you’ll use to communicate with the Shazam service.
     private var session: SHSession?
