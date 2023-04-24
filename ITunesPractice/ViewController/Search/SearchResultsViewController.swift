@@ -109,7 +109,7 @@ class SearchResultsViewController: UIViewController {
                 self.updateUI()
             }.store(in: &cancellables)
 
-        viewModel.statePublisher
+        viewModel.$state
             .receive(on: RunLoop.main)
             .sink { [weak self] state in
                 guard let self else { return }

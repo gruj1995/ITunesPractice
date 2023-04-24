@@ -14,7 +14,7 @@ class SearchResultsViewModel {
     // MARK: Lifecycle
 
     init() {
-        searchTermSubject
+        $searchTerm
             .debounce(for: 0.5, scheduler: RunLoop.main) // 延遲觸發搜索操作(0.5s)
             .removeDuplicates() // 避免在使用者輸入相同的搜索文字時重複執行搜索操作
             .sink { [weak self] term in
@@ -45,19 +45,8 @@ class SearchResultsViewModel {
         musicPlayer.isPlaying
     }
 
-    var searchTerm: String {
-        get { searchTermSubject.value }
-        set { searchTermSubject.value = newValue }
-    }
-
-    var state: ViewState {
-        get { stateSubject.value }
-        set { stateSubject.value = newValue }
-    }
-
-    var statePublisher: AnyPublisher<ViewState, Never> {
-        stateSubject.eraseToAnyPublisher()
-    }
+    @Published var searchTerm: String = ""
+    @Published var state: ViewState = .none
 
     var totalCount: Int {
         tracks.count
@@ -91,10 +80,14 @@ class SearchResultsViewModel {
                 self.tracks.append(contentsOf: response.results)
                 // 如果資料的數量小於每頁的大小，表示已經下載完所有資料
                 self.hasMoreData = response.resultCount == self.pageSize
-                self.state = .success
+                DispatchQueue.main.async {
+                    self.state = .success
+                }
             case .failure(let error):
                 Logger.log(error.localizedDescription)
-                self.state = .failed(error: error)
+                DispatchQueue.main.async {
+                    self.state = .failed(error: error)
+                }
             }
         }
     }
@@ -121,8 +114,6 @@ class SearchResultsViewModel {
 
     // MARK: Private
 
-    private let searchTermSubject = CurrentValueSubject<String, Never>("")
-    private let stateSubject = CurrentValueSubject<ViewState, Never>(.none)
     private var cancellables: Set<AnyCancellable> = .init()
 
     private var tracks: [Track] = []
