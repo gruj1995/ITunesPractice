@@ -12,18 +12,17 @@ class LibraryViewModel {
     // MARK: Lifecycle
 
     init() {
-        // 觀察待播清單更新
-        UserDefaults.$toBePlayedTracks
+        UserDefaults.$libraryTracks
             .receive(on: DispatchQueue.main)
             .removeDuplicates()
-            .sink { [weak self] _ in
-                self?.tracks = UserDefaults.toBePlayedTracks
+            .sink { [weak self] tracks in
+                self?.tracks = tracks
             }.store(in: &cancellables)
     }
 
     // MARK: Internal
 
-    @Published var tracks: [Track] = UserDefaults.toBePlayedTracks
+    @Published var tracks: [Track] = UserDefaults.libraryTracks
     private(set) var selectedTrack: Track?
 
     func track(forCellAt index: Int) -> Track? {

@@ -33,7 +33,7 @@ class MiniPlayerViewModel {
     }
 
     var tracks: [Track] {
-        musicPlayer.tracks
+        musicPlayer.toBePlayedTracks
     }
 
     var isPlaying: Bool {

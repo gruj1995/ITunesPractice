@@ -31,7 +31,7 @@ class PlaylistViewModel {
     }
 
     var tracks: [Track] {
-        musicPlayer.tracks
+        musicPlayer.toBePlayedTracks
     }
 
     var colors: [UIColor] {

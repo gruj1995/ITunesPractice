@@ -46,8 +46,13 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
     // 播放速率上限
     let maxPlaybackRate: Float = 3.0
 
+    // 播放紀錄
+    var playedTracks: [Track] {
+        UserDefaults.playedTracks
+    }
+
     // 播放清單
-    var tracks: [Track] {
+    var toBePlayedTracks: [Track] {
         get { UserDefaults.toBePlayedTracks }
         set { UserDefaults.toBePlayedTracks = newValue }
     }
@@ -76,10 +81,8 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
     }
 
     var currentTrack: Track? {
-        guard tracks.indices.contains(currentTrackIndex) else {
-            return nil
-        }
-        return tracks[currentTrackIndex]
+        guard toBePlayedTracks.indices.contains(currentTrackIndex) else { return nil }
+        return toBePlayedTracks[currentTrackIndex]
     }
 
     // 當前播放進度（單位：秒）
@@ -157,7 +160,11 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
     func configure() {}
 
     func insertToFirst(track: Track) {
+        toBePlayedTracks.insert(track, at: 0)
+    }
 
+    func addToLast(track: Track) {
+        toBePlayedTracks.append(track)
     }
 
     // MARK: Private
@@ -216,7 +223,7 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
         removeTimeObserver()
 
         // 建立 AVQueuePlayer 並設定播放清單
-        toBePlayedItems = tracks.convertToPlayerItems()
+        toBePlayedItems = toBePlayedTracks.convertToPlayerItems()
         player = AVQueuePlayer(items: toBePlayedItems)
 
         // 新增時間觀察
@@ -242,15 +249,15 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
     /// 播放指定索引的歌曲
     @discardableResult
     private func play(at index: Int) -> Bool {
-        guard !tracks.isEmpty else {
+        guard !toBePlayedTracks.isEmpty else {
             Utils.toast(MusicPlayerError.emptyPlaylist.unwrapDescription)
             return false
         }
-        guard tracks.isValidIndex(index) else {
+        guard toBePlayedTracks.isValidIndex(index) else {
             Utils.toast(MusicPlayerError.invalidIndex.unwrapDescription)
             return false
         }
-        guard let audioURL = URL(string: tracks[index].previewUrl) else {
+        guard let audioURL = URL(string: toBePlayedTracks[index].previewUrl) else {
             Utils.toast(MusicPlayerError.invalidTrack.unwrapDescription)
             return false
         }
@@ -347,7 +354,7 @@ extension MusicPlayer {
 extension MusicPlayer {
     /// 播放指定曲目
     func play(track: Track) {
-        guard let index = tracks.firstIndex(of: track) else {
+        guard let index = toBePlayedTracks.firstIndex(of: track) else {
             Utils.toast(MusicPlayerError.invalidTrack.unwrapDescription)
             return
         }
@@ -369,11 +376,11 @@ extension MusicPlayer {
         case .all, .none:
             if isShuffleMode {
                 // TODO: 隨機播放時原本的播放清單要怎麼處理？
-                nextIndex = tracks.randomIndexExcluding(index)
+                nextIndex = toBePlayedTracks.randomIndexExcluding(index)
             } else {
                 nextIndex = currentTrackIndex + 1
                 // 播放到最後一首時
-                if nextIndex >= tracks.count {
+                if nextIndex >= toBePlayedTracks.count {
                     playlistDidFinishPlaying()
                     return true
                 }
@@ -388,7 +395,7 @@ extension MusicPlayer {
     @discardableResult
     func previousTrack() -> Bool {
         let index = currentTrackIndex
-        let previousIndex = isShuffleMode ? tracks.randomIndexExcluding(index) : index - 1
+        let previousIndex = isShuffleMode ? toBePlayedTracks.randomIndexExcluding(index) : index - 1
         let isSuccess = play(at: previousIndex)
         return isSuccess
     }
