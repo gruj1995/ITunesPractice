@@ -18,26 +18,47 @@ class ContextMenuManager {
 }
 
 extension ContextMenuManager {
+    private var rootVC: UIViewController? {
+        UIApplication.shared.rootViewController
+    }
+
     /// 創建音樂菜單
-    func createTrackMenu(track: Track) -> UIMenu {
-        let rootVC = UIApplication.shared.rootViewController
-        let isAdded = UserDefaults.toBePlayedTracks.contains(track)
+    func createTrackMenu(_ track: Track?, canEditPlayList: Bool) -> UIMenu? {
+        guard let track else { return nil }
+        let isInLibrary = UserDefaults.libraryTracks.contains(track)
+        let addMenu = addMenu(track: track)
+        let deleteMenu = deleteMenu(track: track)
+        let shareAction = shareAction(track: track)
+        let editPlayListMenu = editPlayListMenu(track: track)
 
-        // 加入資料庫
-        let addAction = createAction(title: "加入資料庫".localizedString(), image: AppImages.plus) { _ in
-            TrackDataManager.shared.addToLibrary(track)
-            Utils.toast("已加入資料庫".localizedString())
+        var children: [UIMenuElement] = []
+
+        if isInLibrary {
+            children.append(deleteMenu)
+        } else {
+            children.append(addMenu)
         }
-        let addMenu = UIMenu(title: "", options: .displayInline, children: [addAction])
 
-        // 從資料庫刪除
-        let deleteAction = createAction(title: "從資料庫中刪除".localizedString(), image: AppImages.trash, attributes: .destructive) { _ in
+        if canEditPlayList {
+            children.append(editPlayListMenu)
+        }
+
+        children.append(shareAction)
+
+        return UIMenu(title: "", children: children)
+    }
+}
+
+extension ContextMenuManager {
+    /// 從資料庫刪除
+    private func deleteMenu(track: Track) -> UIMenu {
+        let deleteAction = createAction(title: "從資料庫中刪除".localizedString(), image: AppImages.trash, attributes: .destructive) { [weak self] _ in
             let alertController = ActionButtonAlertController(title: "確定要從您的資料庫刪除這首歌嗎？這也會從播放列表中移除".localizedString(), message: nil, preferredStyle: .actionSheet)
             // .default 和 .cancel 樣式的按鈕的顏色
             alertController.view.tintColor = UIColor.systemRed
 
             let deleteAction = UIAlertAction(title: "刪除歌曲".localizedString(), style: .destructive) { _ in
-                TrackDataManager.shared.removeFromLibrary(track)
+                UserDefaults.libraryTracks.removeAll { $0 == track }
                 Utils.toast("已從資料庫中刪除".localizedString())
             }
             alertController.addAction(deleteAction)
@@ -45,12 +66,25 @@ extension ContextMenuManager {
             let cancelAction = UIAlertAction(title: "取消".localizedString(), style: .cancel, handler: nil)
             alertController.addAction(cancelAction)
 
-            rootVC?.present(alertController, animated: true, completion: nil)
+            self?.rootVC?.present(alertController, animated: true, completion: nil)
         }
         let deleteMenu = UIMenu(title: "", options: .displayInline, children: [deleteAction])
+        return deleteMenu
+    }
 
-        // 分享歌曲
-        let shareAction = createAction(title: "分享歌曲".localizedString(), image: AppImages.squareAndArrowUp) { _ in
+    /// 加入資料庫
+    private func addMenu(track: Track) -> UIMenu {
+        let addAction = createAction(title: "加入資料庫".localizedString(), image: AppImages.plus) { _ in
+            UserDefaults.libraryTracks.appendIfNotContains(track)
+            Utils.toast("已加入資料庫".localizedString())
+        }
+        let addMenu = UIMenu(title: "", options: .displayInline, children: [addAction])
+        return addMenu
+    }
+
+    /// 分享歌曲
+    private func shareAction(track: Track) -> UIAction {
+        let shareAction = createAction(title: "分享歌曲".localizedString(), image: AppImages.squareAndArrowUp) { [weak self] _ in
             guard let sharedUrl = URL(string: track.trackViewUrl) else {
                 Logger.log("Shared url is nil")
                 Utils.toast("分享失敗".localizedString())
@@ -68,13 +102,22 @@ extension ContextMenuManager {
                     Utils.toast("分享失敗".localizedString())
                 }
             }
-            rootVC?.present(activityVC, animated: true)
+            self?.rootVC?.present(activityVC, animated: true)
         }
+        return shareAction
+    }
 
-        if isAdded {
-            return UIMenu(title: "", children: [deleteMenu, shareAction])
-        } else {
-            return UIMenu(title: "", children: [addMenu, shareAction])
+    /// 修改待播清單
+    private func editPlayListMenu(track: Track) -> UIMenu {
+        let insertToFirstAction = createAction(title: "插播".localizedString(), image: AppImages.insertToFirst) { _ in
+            UserDefaults.toBePlayedTracks.insert(track, at: 0)
+            Utils.toast("已插播".localizedString())
         }
+        let addToLastAction = createAction(title: "最後播放".localizedString(), image: AppImages.addToLast) { _ in
+            UserDefaults.toBePlayedTracks.append(track)
+            Utils.toast("將於最後播放".localizedString())
+        }
+        let addMenu = UIMenu(title: "", options: .displayInline, children: [insertToFirstAction, addToLastAction])
+        return addMenu
     }
 }

@@ -40,6 +40,8 @@ enum AppImages {
     static let speakerSmall = UIImage(systemName: "speaker.fill", withConfiguration: speakerConfiguration)
     static let speakerWaveSmall = UIImage(systemName: "speaker.wave.3.fill", withConfiguration: speakerConfiguration)
     static let ellipsis = UIImage(systemName: "ellipsis")
+    static let insertToFirst = UIImage(systemName: "text.line.first.and.arrowtriangle.forward")
+    static let addToLast = UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
 
     static let quoteBubble = UIImage(systemName: "quote.bubble", withConfiguration: roundConfiguration2)
     static let quoteBubbleFill = UIImage(systemName: "quote.bubble.fill", withConfiguration: roundConfiguration2)

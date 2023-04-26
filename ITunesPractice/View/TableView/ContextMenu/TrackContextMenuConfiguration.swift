@@ -38,7 +38,7 @@ struct TrackContextMenuConfiguration {
     private var actionMenuProvider: UIContextMenuActionProvider {
         let provider: UIContextMenuActionProvider = { _ -> UIMenu? in
             guard let track = self.track else { return nil }
-            return ContextMenuManager.shared.createTrackMenu(track: track)
+            return ContextMenuManager.shared.createTrackMenu(track, canEditPlayList: true)
         }
         return provider
     }

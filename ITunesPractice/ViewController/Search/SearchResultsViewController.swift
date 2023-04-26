@@ -197,7 +197,7 @@ extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegat
         // 右邊選單按鈕
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
         button.setImage(AppImages.ellipsis?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
-        button.menu = ContextMenuManager.shared.createTrackMenu(track: track)
+        button.menu = ContextMenuManager.shared.createTrackMenu(track, canEditPlayList: true)
         button.showsMenuAsPrimaryAction = true // 預設選單是長按出現，將這個值設為 true 可以讓選單在點擊時也出現
         cell.accessoryView = button
         return cell
