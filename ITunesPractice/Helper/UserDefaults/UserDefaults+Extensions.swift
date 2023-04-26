@@ -6,22 +6,13 @@
 //
 
 import Foundation
-import Combine
 
 extension UserDefaults {
     /// 待播清單
     @UserDefaultValue(key: "toBePlayedTracks", defaultValue: [])
-    static var toBePlayedTracks: [Track] {
-        didSet {
-            NotificationCenter.default.post(name: .toBePlayedTracksDidChanged, object: self)
-        }
-    }
+    static var toBePlayedTracks: [Track]
 
     /// 播放器顯示模式
     @UserDefaultValue(key: "playerDisplayMode", defaultValue: .trackInfo)
-    static var playerDisplayMode: PlayerDisplayMode {
-        didSet {
-            NotificationCenter.default.post(name: .playerDisplayModeDidChanged, object: self)
-        }
-    }
+    static var playerDisplayMode: PlayerDisplayMode
 }

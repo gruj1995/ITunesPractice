@@ -13,12 +13,18 @@ class LibraryViewModel {
 
     init() {
         // 觀察待播清單更新
-        NotificationCenter.default.addObserver(self, selector: #selector(userDefaultsDidChange), name: .toBePlayedTracksDidChanged, object: nil)
+        UserDefaults.$toBePlayedTracks
+            .receive(on: DispatchQueue.main)
+            .removeDuplicates()
+            .sink { [weak self] _ in
+                self?.tracks = UserDefaults.toBePlayedTracks
+            }.store(in: &cancellables)
     }
 
     // MARK: Internal
 
     @Published var tracks: [Track] = UserDefaults.toBePlayedTracks
+    private(set) var selectedTrack: Track?
 
     func track(forCellAt index: Int) -> Track? {
         guard tracks.indices.contains(index) else { return nil }
@@ -32,10 +38,5 @@ class LibraryViewModel {
 
     // MARK: Private
 
-    private(set) var selectedTrack: Track?
-
-    @objc
-    private func userDefaultsDidChange() {
-        tracks = UserDefaults.toBePlayedTracks
-    }
+    private var cancellables: Set<AnyCancellable> = .init()
 }

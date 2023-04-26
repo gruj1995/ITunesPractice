@@ -21,7 +21,7 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
         setAVQueuePlayer()
         setupRemoteControl()
         currentTrackIndex = 0
-        setupNotificationObservers()
+        setupObservers()
     }
 
     // MARK: Internal
@@ -156,9 +156,8 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
     /// 在 AppDelegate 呼叫，讓 MusicPlayer 在開啟app時就建立
     func configure() {}
 
-    @objc
-    func userDefaultsDidChange() {
-        setAVQueuePlayer()
+    func insertToFirst(track: Track) {
+
     }
 
     // MARK: Private
@@ -187,9 +186,13 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
         setupRemoteTransportControls()
     }
 
-    private func setupNotificationObservers() {
+    private func setupObservers() {
         // 觀察待播清單更新
-        NotificationCenter.default.addObserver(self, selector: #selector(userDefaultsDidChange), name: .toBePlayedTracksDidChanged, object: nil)
+        UserDefaults.$toBePlayedTracks
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.setAVQueuePlayer()
+            }.store(in: &cancellables)
 
         // 每首歌曲播放完畢時更新索引
         NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: nil, queue: .main) { [weak self] _ in

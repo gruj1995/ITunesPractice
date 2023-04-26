@@ -6,13 +6,17 @@
 //
 
 import Foundation
+import Combine
+
+// 參考文章： https://www.avanderlee.com/swift/property-wrappers/
 
 @propertyWrapper
 struct UserDefaultValue<Value: Codable> {
     let key: String
     let defaultValue: Value
-    // 外部有需要的話可以使用其他的容器，比如透過 UserDefaults(suiteName: "group.com.swiftlee.app") 生成
+    // 外部可以替換預設的 UserDefaults 容器，比如透過 UserDefaults(suiteName: "group.com.squareMusic.app") 生成
     let container: UserDefaults = .standard
+    private let publisher = PassthroughSubject<Value, Never>()
 
     var wrappedValue: Value {
         get {
@@ -20,7 +24,13 @@ struct UserDefaultValue<Value: Codable> {
         }
         set {
             set(newValue, forKey: key)
+            publisher.send(newValue)
         }
+    }
+
+    // 使用投影值觀察值的變化
+    var projectedValue: AnyPublisher<Value, Never> {
+        return publisher.eraseToAnyPublisher()
     }
 
     private func get<T: Decodable>(forKey key: String, as type: T.Type) -> T? {
