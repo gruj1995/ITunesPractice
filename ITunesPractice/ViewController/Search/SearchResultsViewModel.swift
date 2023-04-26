@@ -105,6 +105,16 @@ class SearchResultsViewModel {
         selectedTrack = tracks[index]
     }
 
+   func insertTrack(forCellAt index: Int) {
+        if let track = track(forCellAt: index) {
+            musicPlayer.insertToFirst(track: track)
+        }
+    }
+
+    func play() {
+        musicPlayer.play()
+    }
+
     func reloadTracks() {
         currentPage = 0
         totalPages = 0

@@ -206,12 +206,9 @@ extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegat
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // 解除cell被選中的狀態
         tableView.deselectRow(at: indexPath, animated: true)
-        viewModel.setSelectedTrack(forCellAt: indexPath.row)
-
-        let vc = TrackDetailViewController()
-        vc.dataSource = self
-        // 由 SearchViewController push
-        presentingViewController?.navigationController?.pushViewController(vc, animated: true)
+        // 插播並播放
+        viewModel.insertTrack(forCellAt: indexPath.row)
+        viewModel.play()
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
