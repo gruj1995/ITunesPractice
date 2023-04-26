@@ -11,14 +11,32 @@ import Foundation
 struct UserDefaultValue<Value: Codable> {
     let key: String
     let defaultValue: Value
-    let standard: UserDefaults = .standard
+    // 外部有需要的話可以使用其他的容器，比如透過 UserDefaults(suiteName: "group.com.swiftlee.app") 生成
+    let container: UserDefaults = .standard
 
     var wrappedValue: Value {
         get {
-            UserDefaultsHelper.shared.get(forKey: key, as: Value.self) ?? defaultValue
+            get(forKey: key, as: Value.self) ?? defaultValue
         }
         set {
-            UserDefaultsHelper.shared.set(newValue, forKey: key)
+            set(newValue, forKey: key)
+        }
+    }
+
+    private func get<T: Decodable>(forKey key: String, as type: T.Type) -> T? {
+        guard let data = container.data(forKey: key) else { return nil }
+        return try? JSONDecoder().decode(type, from: data)
+    }
+
+    private func set<T: Encodable>(_ value: T?, forKey key: String) {
+        if let value = value {
+            if let data = try? JSONEncoder().encode(value) {
+                container.set(data, forKey: key)
+            } else {
+                container.set(nil, forKey: key)
+            }
+        } else {
+            container.set(nil, forKey: key)
         }
     }
 }
