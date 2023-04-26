@@ -8,13 +8,6 @@
 import SnapKit
 import UIKit
 
-// MARK: - PlayListHeaderTitle
-
-enum PlayListHeaderTitle {
-    static let toBePlayed = "待播清單".localizedString()
-    static let playRecord = "播放記錄".localizedString()
-}
-
 // MARK: - PlayListHeaderView
 
 final class PlayListHeaderView: UITableViewHeaderFooterView {
@@ -40,6 +33,7 @@ final class PlayListHeaderView: UITableViewHeaderFooterView {
     var onShuffleButtonTapped: ((UIButton) -> Void)?
     var onInfinityButtonTapped: ((UIButton) -> Void)?
     var onRepeatButtonTapped: ((UIButton) -> Void)?
+    var onClearButtonTapped: ((UIButton) -> Void)?
 
     lazy var shuffleButton: UIButton = UIButton.createRoundCornerButton(image: AppImages.shuffle, target: self, action: #selector(shuffleButtonTapped))
 
@@ -85,6 +79,7 @@ final class PlayListHeaderView: UITableViewHeaderFooterView {
         button.setTitle("清除".localizedString(), for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         button.backgroundColor = .clear
+        button.addTarget(self, action: #selector(clearButtonTapped), for: .touchUpInside)
         return button
     }()
 
@@ -144,5 +139,10 @@ final class PlayListHeaderView: UITableViewHeaderFooterView {
     @objc
     private func repeatButtonTapped(_ sender: UIButton) {
         onRepeatButtonTapped?(sender)
+    }
+
+    @objc
+    private func clearButtonTapped(_ sender: UIButton) {
+        onClearButtonTapped?(sender)
     }
 }

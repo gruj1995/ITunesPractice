@@ -368,15 +368,21 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        guard !viewModel.bookKeepDayGroups.isEmpty, let bookKeepDayGroup = viewModel.bookKeepDayGroup(forHeaderAt: section) else {
-//            return nil
-//        }
         guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: PlayListHeaderView.reuseIdentifier) as? PlayListHeaderView else {
             return nil
         }
 
-        if section == 0 {
-            header.configure(title: PlayListHeaderTitle.toBePlayed, subTitle: nil)
+        if viewModel.isPlayedTracksSection(section) {
+            let title = "播放記錄".localizedString()
+            header.configure(title: title, subTitle: nil)
+
+            header.onClearButtonTapped = { [weak self] _ in
+                guard let self else { return }
+                self.viewModel.resetPlayRecord()
+            }
+        } else {
+            let title = "待播清單".localizedString()
+            header.configure(title: title, subTitle: nil)
 
             header.onShuffleButtonTapped = { [weak self] _ in
                 guard let self else { return }
@@ -393,7 +399,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
                 let tintColor = self.viewModel.headerButtonBgColor
                 let subTitle = isSelected ? "自動播放類似音樂".localizedString() : nil
                 header.infinityButton.setRoundCornerButtonAppearance(isSelected: isSelected, tintColor: tintColor)
-                header.configure(title: PlayListHeaderTitle.toBePlayed, subTitle: subTitle)
+                header.configure(title: title, subTitle: subTitle)
             }
 
             header.onRepeatButtonTapped = { [weak self] _ in
