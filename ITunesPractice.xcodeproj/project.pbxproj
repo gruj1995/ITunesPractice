@@ -87,6 +87,8 @@
 		8B8F50F129F0D21100BCE350 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 8B8F50F029F0D21100BCE350 /* Lottie */; };
 		8B8F50F429F0D39600BCE350 /* musiclist.json in Resources */ = {isa = PBXBuildFile; fileRef = 8B8F50F329F0D39600BCE350 /* musiclist.json */; };
 		8B8F510029F218D700BCE350 /* MatchingHelper+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8F50FF29F218D700BCE350 /* MatchingHelper+Extensions.swift */; };
+		8B8F510429F618B100BCE350 /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8F510329F618B100BCE350 /* VideoView.swift */; };
+		8B8F510F29F6C38A00BCE350 /* SimpleResourceLoaderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8F510E29F6C38A00BCE350 /* SimpleResourceLoaderDelegate.swift */; };
 		8BB69BB829BC5E2A00F09793 /* TrackDetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BB729BC5E2A00F09793 /* TrackDetailViewModelTests.swift */; };
 		8BB69BBF29BC93C800F09793 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BBE29BC93C800F09793 /* APIRequest.swift */; };
 		8BB69BC129BC94BB00F09793 /* SearchAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB69BC029BC94BB00F09793 /* SearchAPIRequest.swift */; };
@@ -263,6 +265,8 @@
 		8B8F50ED29F0C71600BCE350 /* PulsingLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulsingLayer.swift; sourceTree = "<group>"; };
 		8B8F50F329F0D39600BCE350 /* musiclist.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = musiclist.json; sourceTree = "<group>"; };
 		8B8F50FF29F218D700BCE350 /* MatchingHelper+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MatchingHelper+Extensions.swift"; sourceTree = "<group>"; };
+		8B8F510329F618B100BCE350 /* VideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
+		8B8F510E29F6C38A00BCE350 /* SimpleResourceLoaderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleResourceLoaderDelegate.swift; sourceTree = "<group>"; };
 		8BB69BB729BC5E2A00F09793 /* TrackDetailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailViewModelTests.swift; sourceTree = "<group>"; };
 		8BB69BBE29BC93C800F09793 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
 		8BB69BC029BC94BB00F09793 /* SearchAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchAPIRequest.swift; sourceTree = "<group>"; };
@@ -676,6 +680,14 @@
 			path = LottieJSON;
 			sourceTree = "<group>";
 		};
+		8B8F510D29F6C37400BCE350 /* Video */ = {
+			isa = PBXGroup;
+			children = (
+				8B8F510E29F6C38A00BCE350 /* SimpleResourceLoaderDelegate.swift */,
+			);
+			path = Video;
+			sourceTree = "<group>";
+		};
 		8BB69BB929BC924000F09793 /* NetworkService */ = {
 			isa = PBXGroup;
 			children = (
@@ -717,6 +729,7 @@
 				8B8B3E0B29EC2A6C00308778 /* SparkleView.swift */,
 				8B8F50E829EFC38000BCE350 /* CircleButton.swift */,
 				8B8F50ED29F0C71600BCE350 /* PulsingLayer.swift */,
+				8B8F510329F618B100BCE350 /* VideoView.swift */,
 			);
 			path = CustomView;
 			sourceTree = "<group>";
@@ -755,6 +768,7 @@
 		8BB74C7129A150F2000B9D59 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				8B8F510D29F6C37400BCE350 /* Video */,
 				8B8B3DFC29EB7E7500308778 /* MatchingHelper */,
 				8BF7183629CDF7E1002CEFD6 /* MusicPlayer */,
 				8B3F9BD429C5FFAC0050CFC9 /* FloatingPanel */,
@@ -1220,6 +1234,7 @@
 				8BFDF18329A32B68008E2C23 /* NilDataResponse.swift in Sources */,
 				8BBC8F4129B6522400ACB0EA /* TrackCellView.swift in Sources */,
 				8B5FCD3129D1624D00C763DB /* MPVolumeView+Extensions.swift in Sources */,
+				8B8F510429F618B100BCE350 /* VideoView.swift in Sources */,
 				8BB69BBF29BC93C800F09793 /* APIRequest.swift in Sources */,
 				8B6B56B329B2D6FB00F099DD /* UserDefaults+Extensions.swift in Sources */,
 				8B882E9A29DAA092000AA1DE /* TrackDataManager.swift in Sources */,
@@ -1230,6 +1245,7 @@
 				8BB69BD629BDB4A500F09793 /* SearchResultsViewModel.swift in Sources */,
 				8BB74C9129A1DD7F000B9D59 /* ApiComponentSendable.swift in Sources */,
 				8B4D36C6299FBD7E00059381 /* SceneDelegate.swift in Sources */,
+				8B8F510F29F6C38A00BCE350 /* SimpleResourceLoaderDelegate.swift in Sources */,
 				8B3F9BE129C6EA270050CFC9 /* UIColor+Extension.swift in Sources */,
 				8BF66E2529E397BC00C8811E /* NotificationName+Extensions.swift in Sources */,
 				8BB69BDA29BE1B3100F09793 /* PlaylistViewModel.swift in Sources */,

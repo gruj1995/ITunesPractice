@@ -9,22 +9,20 @@ import Combine
 import Foundation
 
 class AudioSearchResultViewModel {
-
     // MARK: Lifecycle
 
-    init() {}
+    init(track: Track) {
+        self.track = track
+        self.hasVideo = track.videoUrl != nil
+    }
 
     // MARK: Internal
 
-    var track: Track?
+    private(set) var track: Track
 
-    let matchingHelper = MatchingHelper.shared
+    let hasVideo: Bool
 
     // MARK: Private
 
-    private var cancellables = Set<AnyCancellable>()
-
-    var trackPublisher: AnyPublisher<Track?, Never> {
-        matchingHelper.trackPublisher
-    }
+    private let matchingHelper = MatchingHelper.shared
 }

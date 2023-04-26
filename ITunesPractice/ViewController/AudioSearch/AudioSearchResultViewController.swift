@@ -5,6 +5,7 @@
 //  Created by 李品毅 on 2023/4/19.
 //
 
+import AVKit
 import Combine
 import SnapKit
 import UIKit
@@ -12,16 +13,18 @@ import UIKit
 // MARK: - AudioSearchViewController
 
 class AudioSearchResultViewController: UIViewController {
+    // MARK: Lifecycle
 
     init(track: Track) {
-        self.track = track
+        self.viewModel = AudioSearchResultViewModel(track: track)
         super.init(nibName: nil, bundle: nil)
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: Internal
 
     override func viewDidLoad() {
@@ -30,12 +33,12 @@ class AudioSearchResultViewController: UIViewController {
         bindViewModel()
     }
 
-    var track: Track
-
     // MARK: Private
 
-    private let viewModel: AudioSearchResultViewModel = .init()
+    private let viewModel: AudioSearchResultViewModel
     private var cancellables: Set<AnyCancellable> = []
+
+//    private var player: AVPlayer?
 
     // TODO: 改成放影片
     private lazy var coverImageView: UIImageView = {
@@ -46,8 +49,14 @@ class AudioSearchResultViewController: UIViewController {
         return imageView
     }()
 
+    private lazy var videoView: VideoView = {
+        let videoView = VideoView(frame: .zero)
+        videoView.backgroundColor = .darkGray
+        return videoView
+    }()
+
     private lazy var closeButton: CircleButton = {
-        let button = CircleButton(backgroundAlpha: 0.5)
+        let button = CircleButton(bgColor: .white.withAlphaComponent(0.4))
         button.setImage(AppImages.xmark, for: .normal)
         button.tintColor = .white
         button.addTarget(self, action: #selector(clossButtonTapped), for: .touchUpInside)
@@ -82,14 +91,27 @@ class AudioSearchResultViewController: UIViewController {
         view.backgroundColor = .black
         setupLayout()
 
-        trackNameLabel.text = track.trackName
-        artistNameLabel.text = track.artistName
-        coverImageView.loadCoverImage(with: track.getArtworkImageWithSize(size: .square800))
+        trackNameLabel.text = viewModel.track.trackName
+        artistNameLabel.text = viewModel.track.artistName
+
+        print("__++ url \(viewModel.track.videoUrl)")
+        if viewModel.hasVideo {
+            playVideo()
+        } else {
+            coverImageView.loadCoverImage(with: viewModel.track.getArtworkImageWithSize(size: .square800))
+        }
+    }
+
+    private func playVideo() {
+        guard let url = viewModel.track.videoUrl else { return }
+        videoView.play(with: url)
     }
 
     private func setupLayout() {
-        view.addSubview(coverImageView)
-        coverImageView.snp.makeConstraints { make in
+        let backgroundView = viewModel.hasVideo ? videoView : coverImageView
+
+        view.addSubview(backgroundView)
+        backgroundView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
             make.height.equalToSuperview().multipliedBy(0.6)
         }
@@ -103,7 +125,7 @@ class AudioSearchResultViewController: UIViewController {
 
         view.addSubview(stackView)
         stackView.snp.makeConstraints { make in
-            make.top.equalTo(coverImageView.snp.bottom).offset(10)
+            make.top.equalTo(backgroundView.snp.bottom).offset(10)
             make.leading.trailing.equalToSuperview().inset(20)
         }
     }
