@@ -24,7 +24,7 @@ class MatchingHelper: NSObject {
     static let shared = MatchingHelper()
 
     // 音量閥值
-    private(set) var thresholdVolume: Float = 50.0
+    private(set) var thresholdVolume: Float = 63.0
 
     var trackPublisher: AnyPublisher<Track?, Never> {
         trackSubject.eraseToAnyPublisher()
