@@ -32,19 +32,4 @@ struct Utils {
         }
         return image
     }
-
-    // TODO: 移位置
-    // 測試用
-    static func addTracksToUserDefaults(_ tracks: [Track]) {
-        var storedTracks = UserDefaults.toBePlayedTracks
-        storedTracks.appendIfNotContains(tracks)
-        UserDefaults.toBePlayedTracks = storedTracks
-    }
-
-    // 測試用
-    static func addTrackToUserDefaults(_ track: Track) {
-        var storedTracks = UserDefaults.toBePlayedTracks
-        storedTracks.appendIfNotContains(track)
-        UserDefaults.toBePlayedTracks = storedTracks
-    }
 }
