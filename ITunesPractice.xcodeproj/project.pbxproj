@@ -10,6 +10,7 @@
 		24B1F81F56F20E14AB804089 /* Pods_ITunesPractice.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C007FA42F6407B20D99A2DE /* Pods_ITunesPractice.framework */; };
 		8B0265DB29E856FF00BB732D /* MusicPlayer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0265DA29E856FF00BB732D /* MusicPlayer+Extensions.swift */; };
 		8B0265DD29E85E6100BB732D /* Track+Kingfisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0265DC29E85E6100BB732D /* Track+Kingfisher.swift */; };
+		8B0E69FE29F8C1C9004743A7 /* ContextMenuManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0E69FD29F8C1C9004743A7 /* ContextMenuManager.swift */; };
 		8B3B6CCB29AC788400A6352A /* ITunesService+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B6CCA29AC788400A6352A /* ITunesService+Lookup.swift */; };
 		8B3B6CCD29AD8C0E00A6352A /* TrackDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B6CCC29AD8C0E00A6352A /* TrackDetailViewController.swift */; };
 		8B3B6CCF29AD8C2500A6352A /* TrackDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B6CCE29AD8C2500A6352A /* TrackDetailViewModel.swift */; };
@@ -192,6 +193,7 @@
 		870E6A0E3200511CE28E5D52 /* Pods-ITunesPracticeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ITunesPracticeTests.debug.xcconfig"; path = "Target Support Files/Pods-ITunesPracticeTests/Pods-ITunesPracticeTests.debug.xcconfig"; sourceTree = "<group>"; };
 		8B0265DA29E856FF00BB732D /* MusicPlayer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MusicPlayer+Extensions.swift"; sourceTree = "<group>"; };
 		8B0265DC29E85E6100BB732D /* Track+Kingfisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Track+Kingfisher.swift"; sourceTree = "<group>"; };
+		8B0E69FD29F8C1C9004743A7 /* ContextMenuManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenuManager.swift; sourceTree = "<group>"; };
 		8B3B6CCA29AC788400A6352A /* ITunesService+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ITunesService+Lookup.swift"; sourceTree = "<group>"; };
 		8B3B6CCC29AD8C0E00A6352A /* TrackDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailViewController.swift; sourceTree = "<group>"; };
 		8B3B6CCE29AD8C2500A6352A /* TrackDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailViewModel.swift; sourceTree = "<group>"; };
@@ -562,6 +564,7 @@
 		8B6B56A129B1118D00F099DD /* ContextMenu */ = {
 			isa = PBXGroup;
 			children = (
+				8B0E69FD29F8C1C9004743A7 /* ContextMenuManager.swift */,
 				8B6B56A229B111B700F099DD /* TrackContextMenuConfiguration.swift */,
 			);
 			path = ContextMenu;
@@ -1186,6 +1189,7 @@
 				8BB74C7529A15425000B9D59 /* Constants.swift in Sources */,
 				8BF7183E29CE2863002CEFD6 /* RepeatMode.swift in Sources */,
 				8B3F9BE329C6EA820050CFC9 /* GradientColorManager.swift in Sources */,
+				8B0E69FE29F8C1C9004743A7 /* ContextMenuManager.swift in Sources */,
 				8BB74C8529A1CBD3000B9D59 /* Defs.swift in Sources */,
 				8BB74C8929A1CCEB000B9D59 /* CustomJsonBodyParamsAdapter.swift in Sources */,
 				8B677CCA29BF922400F73FE5 /* GesturePublisher.swift in Sources */,
