@@ -70,7 +70,6 @@
 		8B882E9129D93D45000AA1DE /* DefaultTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B882E9029D93D45000AA1DE /* DefaultTrack.swift */; };
 		8B882E9429D940C3000AA1DE /* FormattedTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B882E9329D940C3000AA1DE /* FormattedTime.swift */; };
 		8B882E9829DA71A9000AA1DE /* CaseIterable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B882E9729DA71A9000AA1DE /* CaseIterable+Extensions.swift */; };
-		8B882E9A29DAA092000AA1DE /* TrackDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B882E9929DAA092000AA1DE /* TrackDataManager.swift */; };
 		8B882E9C29DB2A99000AA1DE /* ActionButtonAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B882E9B29DB2A99000AA1DE /* ActionButtonAlertController.swift */; };
 		8B8B3DF929EA50E400308778 /* PlayerDisplayMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8B3DF829EA50E400308778 /* PlayerDisplayMode.swift */; };
 		8B8B3DFB29EB082800308778 /* AnimationKeyPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8B3DFA29EB082800308778 /* AnimationKeyPath.swift */; };
@@ -250,7 +249,6 @@
 		8B882E9029D93D45000AA1DE /* DefaultTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTrack.swift; sourceTree = "<group>"; };
 		8B882E9329D940C3000AA1DE /* FormattedTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattedTime.swift; sourceTree = "<group>"; };
 		8B882E9729DA71A9000AA1DE /* CaseIterable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CaseIterable+Extensions.swift"; sourceTree = "<group>"; };
-		8B882E9929DAA092000AA1DE /* TrackDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDataManager.swift; sourceTree = "<group>"; };
 		8B882E9B29DB2A99000AA1DE /* ActionButtonAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonAlertController.swift; sourceTree = "<group>"; };
 		8B8B3DF829EA50E400308778 /* PlayerDisplayMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerDisplayMode.swift; sourceTree = "<group>"; };
 		8B8B3DFA29EB082800308778 /* AnimationKeyPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationKeyPath.swift; sourceTree = "<group>"; };
@@ -788,7 +786,6 @@
 				8BB74C6029A13DF4000B9D59 /* Logger.swift */,
 				8B6B56B629B4821600F099DD /* ToastHelper.swift */,
 				8BF7183F29CE818C002CEFD6 /* LocaleManager.swift */,
-				8B882E9929DAA092000AA1DE /* TrackDataManager.swift */,
 				8BB69BCC29BD694B00F09793 /* NetworkMonitor.swift */,
 			);
 			path = Helper;
@@ -1249,7 +1246,6 @@
 				8B8F510429F618B100BCE350 /* VideoView.swift in Sources */,
 				8BB69BBF29BC93C800F09793 /* APIRequest.swift in Sources */,
 				8B6B56B329B2D6FB00F099DD /* UserDefaults+Extensions.swift in Sources */,
-				8B882E9A29DAA092000AA1DE /* TrackDataManager.swift in Sources */,
 				8B3B6CCF29AD8C2500A6352A /* TrackDetailViewModel.swift in Sources */,
 				8BB69BD229BDAFF500F09793 /* ViewState.swift in Sources */,
 				8BB69BD029BD766400F09793 /* EmptyStateView.swift in Sources */,
