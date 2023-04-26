@@ -48,8 +48,8 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
 
     // 播放清單
     var tracks: [Track] {
-        get { UserDefaults.standard.tracks }
-        set { UserDefaults.standard.tracks = newValue }
+        get { UserDefaults.toBePlayedTracks }
+        set { UserDefaults.toBePlayedTracks = newValue }
     }
 
     var currentTrackIndex: Int {

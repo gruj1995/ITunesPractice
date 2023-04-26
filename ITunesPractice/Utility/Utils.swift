@@ -36,15 +36,15 @@ struct Utils {
     // TODO: 移位置
     // 測試用
     static func addTracksToUserDefaults(_ tracks: [Track]) {
-        var storedTracks = UserDefaults.standard.tracks
+        var storedTracks = UserDefaults.toBePlayedTracks
         storedTracks.appendIfNotContains(tracks)
-        UserDefaults.standard.tracks = storedTracks
+        UserDefaults.toBePlayedTracks = storedTracks
     }
 
     // 測試用
     static func addTrackToUserDefaults(_ track: Track) {
-        var storedTracks = UserDefaults.standard.tracks
+        var storedTracks = UserDefaults.toBePlayedTracks
         storedTracks.appendIfNotContains(track)
-        UserDefaults.standard.tracks = storedTracks
+        UserDefaults.toBePlayedTracks = storedTracks
     }
 }

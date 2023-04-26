@@ -11,14 +11,14 @@ class TrackDataManager {
     static let shared = TrackDataManager()
 
     func addToLibrary(_ track: Track) {
-        var currentTracks = UserDefaults.standard.tracks
+        var currentTracks = UserDefaults.toBePlayedTracks
         currentTracks.appendIfNotContains(track)
-        UserDefaults.standard.tracks = currentTracks
+        UserDefaults.toBePlayedTracks = currentTracks
     }
 
     func removeFromLibrary(_ track: Track) {
-        var currentTracks = UserDefaults.standard.tracks
+        var currentTracks = UserDefaults.toBePlayedTracks
         currentTracks.removeAll { $0 == track }
-        UserDefaults.standard.tracks = currentTracks
+        UserDefaults.toBePlayedTracks = currentTracks
     }
 }

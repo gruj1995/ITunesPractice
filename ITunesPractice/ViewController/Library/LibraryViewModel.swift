@@ -18,7 +18,7 @@ class LibraryViewModel {
 
     // MARK: Internal
 
-    @Published var tracks: [Track] = UserDefaults.standard.tracks
+    @Published var tracks: [Track] = UserDefaults.toBePlayedTracks
 
     func track(forCellAt index: Int) -> Track? {
         guard tracks.indices.contains(index) else { return nil }
@@ -36,6 +36,6 @@ class LibraryViewModel {
 
     @objc
     private func userDefaultsDidChange() {
-        tracks = UserDefaults.standard.tracks
+        tracks = UserDefaults.toBePlayedTracks
     }
 }

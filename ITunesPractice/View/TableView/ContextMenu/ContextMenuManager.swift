@@ -21,7 +21,7 @@ extension ContextMenuManager {
     /// 創建音樂菜單
     func createTrackMenu(track: Track) -> UIMenu {
         let rootVC = UIApplication.shared.rootViewController
-        let isAdded = UserDefaults.standard.tracks.contains(track)
+        let isAdded = UserDefaults.toBePlayedTracks.contains(track)
 
         // 加入資料庫
         let addAction = createAction(title: "加入資料庫".localizedString(), image: AppImages.plus) { _ in

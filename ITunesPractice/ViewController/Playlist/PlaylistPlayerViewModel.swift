@@ -41,8 +41,8 @@ class PlaylistPlayerViewModel {
     }
 
     var displayMode: PlayerDisplayMode {
-        get { UserDefaults.standard.playerDisplayMode }
-        set { UserDefaults.standard.playerDisplayMode = newValue }
+        get { UserDefaults.playerDisplayMode }
+        set { UserDefaults.playerDisplayMode = newValue }
     }
 
     var playbackTimePublisher: AnyPublisher<Double?, Never> {

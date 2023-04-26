@@ -24,8 +24,6 @@ class UserDefaultsHelper {
         } else {
             defaults.set(nil, forKey: key)
         }
-        // TODO: 似乎可以刪除
-        defaults.synchronize()
     }
 
     func get<T: Decodable>(forKey key: String, as type: T.Type) -> T? {
