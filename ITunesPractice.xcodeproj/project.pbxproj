@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		24B1F81F56F20E14AB804089 /* Pods_ITunesPractice.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C007FA42F6407B20D99A2DE /* Pods_ITunesPractice.framework */; };
-		8B0265DB29E856FF00BB732D /* MusicPlayer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0265DA29E856FF00BB732D /* MusicPlayer+Extensions.swift */; };
+		8B0265DB29E856FF00BB732D /* MusicPlayer+Remote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0265DA29E856FF00BB732D /* MusicPlayer+Remote.swift */; };
 		8B0265DD29E85E6100BB732D /* Track+Kingfisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0265DC29E85E6100BB732D /* Track+Kingfisher.swift */; };
 		8B0E69FE29F8C1C9004743A7 /* ContextMenuManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0E69FD29F8C1C9004743A7 /* ContextMenuManager.swift */; };
 		8B3B6CCB29AC788400A6352A /* ITunesService+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B6CCA29AC788400A6352A /* ITunesService+Lookup.swift */; };
@@ -191,7 +191,7 @@
 		71300AB6BE241C3E8AE7C134 /* Pods_ITunesPracticeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ITunesPracticeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C007FA42F6407B20D99A2DE /* Pods_ITunesPractice.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ITunesPractice.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		870E6A0E3200511CE28E5D52 /* Pods-ITunesPracticeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ITunesPracticeTests.debug.xcconfig"; path = "Target Support Files/Pods-ITunesPracticeTests/Pods-ITunesPracticeTests.debug.xcconfig"; sourceTree = "<group>"; };
-		8B0265DA29E856FF00BB732D /* MusicPlayer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MusicPlayer+Extensions.swift"; sourceTree = "<group>"; };
+		8B0265DA29E856FF00BB732D /* MusicPlayer+Remote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MusicPlayer+Remote.swift"; sourceTree = "<group>"; };
 		8B0265DC29E85E6100BB732D /* Track+Kingfisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Track+Kingfisher.swift"; sourceTree = "<group>"; };
 		8B0E69FD29F8C1C9004743A7 /* ContextMenuManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenuManager.swift; sourceTree = "<group>"; };
 		8B3B6CCA29AC788400A6352A /* ITunesService+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ITunesService+Lookup.swift"; sourceTree = "<group>"; };
@@ -837,7 +837,7 @@
 			isa = PBXGroup;
 			children = (
 				8BF7183229CDEEFB002CEFD6 /* MusicPlayer.swift */,
-				8B0265DA29E856FF00BB732D /* MusicPlayer+Extensions.swift */,
+				8B0265DA29E856FF00BB732D /* MusicPlayer+Remote.swift */,
 				8BF7183929CDFA50002CEFD6 /* MusicPlayer+Protocols.swift */,
 				8BF7183729CDF7FE002CEFD6 /* MusicPlayerError.swift */,
 				8BF7183D29CE2863002CEFD6 /* RepeatMode.swift */,
@@ -1139,7 +1139,7 @@
 				8B8F50E929EFC38000BCE350 /* CircleButton.swift in Sources */,
 				8B5FCD3529D2C50500C763DB /* CAGradientLayer+Extensions.swift in Sources */,
 				8BF7183329CDEEFB002CEFD6 /* MusicPlayer.swift in Sources */,
-				8B0265DB29E856FF00BB732D /* MusicPlayer+Extensions.swift in Sources */,
+				8B0265DB29E856FF00BB732D /* MusicPlayer+Remote.swift in Sources */,
 				8B677CC729BEF7F400F73FE5 /* RippleEffectButton.swift in Sources */,
 				8B8F50E329EF07BA00BCE350 /* AudioSearchResultViewController.swift in Sources */,
 				8BBCE35429C0D67B0084BF44 /* HighlightBlurView.swift in Sources */,
