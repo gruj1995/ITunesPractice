@@ -316,10 +316,6 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
         // 更新選中歌曲
         viewModel.setSelectedTrack(forCellAt: indexPath.row)
         viewModel.play()
-
-        let vc = TrackDetailViewController()
-        vc.dataSource = self
-        navigationController?.pushViewController(vc, animated: true)
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -327,14 +323,13 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
-        if let identifier = configuration.identifier as? String, let index = Int(identifier) {
-            animator.addCompletion { [weak self] in
-                guard let self = self else { return }
-                self.viewModel.setSelectedTrack(forCellAt: index)
-                let vc = TrackDetailViewController()
-                vc.dataSource = self
-                //                self.presentingViewController?.navigationController?.pushViewController(vc, animated: true)
-                self.show(vc, sender: self)
+        animator.addCompletion { [weak self] in
+            let vc = TrackDetailViewController()
+            vc.dataSource = self
+            self?.dismiss(animated: false) {
+                // 由 SearchViewController push
+                let topVC = UIApplication.shared.getTopViewController()
+                topVC?.navigationController?.pushViewController(vc, animated: true)
             }
         }
     }

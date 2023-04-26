@@ -224,16 +224,13 @@ extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegat
      - animator  跳轉動畫執行者，可以添加要跳轉到的頁面和跳轉動畫
      */
     func tableView(_ tableView: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
-        if let identifier = configuration.identifier as? String,
-           let index = Int(identifier) {
             animator.addCompletion { [weak self] in
-                guard let self = self else { return }
-                self.viewModel.setSelectedTrack(forCellAt: index)
+                guard let self else { return }
                 let vc = TrackDetailViewController()
                 vc.dataSource = self
-                self.show(vc, sender: self)
+                // 由 SearchViewController push
+                self.presentingViewController?.navigationController?.pushViewController(vc, animated: true)
             }
-        }
     }
 
     // context menu 的清單

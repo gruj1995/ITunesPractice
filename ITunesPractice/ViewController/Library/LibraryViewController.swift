@@ -95,10 +95,11 @@ extension LibraryViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // 解除cell被選中的狀態
         tableView.deselectRow(at: indexPath, animated: true)
-//        viewModel.setSelectedTrack(forCellAt: indexPath.row)
-//        let vc = TrackDetailViewController()
-//        vc.dataSource = self
-//        navigationController?.pushViewController(vc, animated: true)
+        viewModel.setSelectedTrack(forCellAt: indexPath.row)
+
+        let vc = TrackDetailViewController()
+        vc.dataSource = self
+        navigationController?.pushViewController(vc, animated: true)
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -118,16 +119,10 @@ extension LibraryViewController: UITableViewDataSource, UITableViewDelegate {
      - animator  跳轉動畫執行者，可以添加要跳轉到的頁面和跳轉動畫
      */
     func tableView(_ tableView: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
-        if let identifier = configuration.identifier as? String,
-           let index = Int(identifier) {
-            animator.addCompletion { [weak self] in
-                guard let self else { return }
-                self.viewModel.setSelectedTrack(forCellAt: index)
-
-                let vc = TrackDetailViewController()
-                vc.dataSource = self
-                self.show(vc, sender: self)
-            }
+        animator.addCompletion { [weak self] in
+            let vc = TrackDetailViewController()
+            vc.dataSource = self
+            self?.navigationController?.pushViewController(vc, animated: true)
         }
     }
 
