@@ -33,14 +33,11 @@ class TrackDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        // 讓大標題消失
+        navigationItem.largeTitleDisplayMode = .never
         viewModel = TrackDetailViewModel(trackId: dataSource?.trackId(self))
         observe()
         setupUI()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.navigationBar.prefersLargeTitles = false
     }
 
     // MARK: Private
