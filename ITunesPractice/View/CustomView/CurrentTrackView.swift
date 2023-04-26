@@ -5,9 +5,9 @@
 //  Created by 李品毅 on 2023/3/27.
 //
 
+import MarqueeLabel
 import SnapKit
 import UIKit
-import MarqueeLabel
 
 // MARK: - CurrentTrackView
 
@@ -26,7 +26,7 @@ class CurrentTrackView: UIView {
 
     // MARK: Internal
 
-    func configure(trackName: String, artistName: String?) {
+    func configure(trackName: String, artistName: String?, menu: UIMenu?) {
         // 讓左邊多出一塊空間滿足UI效果所以加上 \t
         trackLabel.text = "\t\(trackName)"
         if let artistName = artistName {
@@ -35,14 +35,17 @@ class CurrentTrackView: UIView {
         } else {
             artistLabel.isHidden = true
         }
+
+        menuButton.menu = menu
     }
 
     // MARK: Private
 
     private lazy var menuButton: CircleButton = {
         let button = CircleButton()
-        button.setImage(AppImages.ellipsis, for: .normal)
         button.tintColor = .white
+        button.setImage(AppImages.ellipsis, for: .normal)
+        button.showsMenuAsPrimaryAction = true // 預設選單是長按出現，將這個值設為 true 可以讓選單在點擊時也出現
         return button
     }()
 

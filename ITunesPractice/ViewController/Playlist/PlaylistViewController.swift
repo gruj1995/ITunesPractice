@@ -71,7 +71,7 @@ class PlaylistViewController: UIViewController {
     private var animator: UIViewPropertyAnimator!
 
     private lazy var playerContainerView: UIView = .init()
-    private lazy var currentTrackView: CurrentTrackView = .init()
+
     private lazy var coverImageView: UIImageView = .coverImageView()
     private lazy var coverImageContainerView: UIView = {
         let view = UIView.emptyView()
@@ -81,6 +81,8 @@ class PlaylistViewController: UIViewController {
         view.layer.shadowRadius = 7
         return view
     }()
+
+    private var currentTrackView: CurrentTrackView = CurrentTrackView()
 
     // 音樂播放器頁
     private lazy var playerVC: PlaylistPlayerViewController = {
@@ -164,7 +166,7 @@ class PlaylistViewController: UIViewController {
             .receive(on: RunLoop.main)
             .removeDuplicates() // 為什麼會觸發多次？
             .sink { [weak self] _ in
-                guard let self = self else { return }
+                guard let self else { return }
                 self.viewModel.changeImage()
                 self.updateCurrentTrackView()
                 self.updateTableView()
@@ -175,14 +177,20 @@ class PlaylistViewController: UIViewController {
             .dropFirst()
             .removeDuplicates() // 為什麼會觸發多次？
             .sink { [weak self] _ in
-                guard let self = self else { return }
-                self.updateGradientLayers()
+                self?.updateGradientLayers()
+            }.store(in: &cancellables)
+
+        UserDefaults.$libraryTracks
+            .receive(on: DispatchQueue.main)
+            .removeDuplicates()
+            .sink { [weak self] _ in
+                self?.updateCurrentTrackView()
             }.store(in: &cancellables)
 
         NetworkMonitor.shared.$isConnected
             .receive(on: DispatchQueue.main)
             .removeDuplicates()
-            .sink {  [weak self] _ in
+            .sink { [weak self] _ in
                 self?.updateTableView()
             }.store(in: &cancellables)
     }
@@ -191,15 +199,18 @@ class PlaylistViewController: UIViewController {
 
     private func updateCurrentTrackView() {
         let track = viewModel.currentTrack
+
+        // 更新左側圖片
         let url = track?.getArtworkImageWithSize(size: .square800)
         coverImageView.loadCoverImage(with: url)
-
         let showDefaultImage = coverImageView.image == DefaultTrack.coverImage
         coverImageView.backgroundColor = showDefaultImage ? UIColor.appColor(.gray3) : .clear
         coverImageContainerView.layer.shadowColor = showDefaultImage ? UIColor.clear.cgColor : UIColor.black.cgColor
 
+        // 更新歌曲資訊
         let trackName = track?.trackName ?? DefaultTrack.trackName
-        currentTrackView.configure(trackName: trackName, artistName: track?.artistName)
+        let menu = ContextMenuManager.shared.createTrackMenu(track, canEditPlayList: false)
+        currentTrackView.configure(trackName: trackName, artistName: track?.artistName, menu: menu)
     }
 
     private func updateTableView() {
@@ -318,9 +329,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
         viewModel.play()
     }
 
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        return
-    }
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {}
 
     func tableView(_ tableView: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
         animator.addCompletion { [weak self] in
@@ -370,7 +379,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
             header.configure(title: PlayListHeaderTitle.toBePlayed, subTitle: nil)
 
             header.onShuffleButtonTapped = { [weak self] _ in
-                guard let self = self else { return }
+                guard let self else { return }
                 self.viewModel.isShuffleMode.toggle()
                 let isSelected = self.viewModel.isShuffleMode
                 let tintColor = self.viewModel.headerButtonBgColor
@@ -378,7 +387,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
             }
 
             header.onInfinityButtonTapped = { [weak self] _ in
-                guard let self = self else { return }
+                guard let self else { return }
                 self.viewModel.isInfinityMode.toggle()
                 let isSelected = self.viewModel.isInfinityMode
                 let tintColor = self.viewModel.headerButtonBgColor
@@ -388,7 +397,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
             }
 
             header.onRepeatButtonTapped = { [weak self] _ in
-                guard let self = self else { return }
+                guard let self else { return }
                 self.viewModel.repeatMode = self.viewModel.repeatMode.next()
                 let isSelected = self.viewModel.repeatMode != .none
                 let tintColor = self.viewModel.headerButtonBgColor
