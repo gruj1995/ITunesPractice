@@ -40,7 +40,7 @@ extension UIButton {
         if let image = image {
             setImage(image, for: .normal)
         }
-        self.tintColor = isSelected ? tintColor : .white
+        self.tintColor = isSelected ? tintColor : .lightGray
         backgroundColor = isSelected ? .white : .clear
     }
 
@@ -48,7 +48,7 @@ extension UIButton {
     static func createRoundCornerButton(image: UIImage?, target: Any?, action: Selector) -> UIButton {
         let button = UIButton()
         button.addTarget(target, action: action, for: .touchUpInside)
-        button.tintColor = .white
+        button.tintColor = .lightGray
         button.backgroundColor = .clear
         button.layer.cornerRadius = 5
         button.clipsToBounds = true

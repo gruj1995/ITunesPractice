@@ -41,19 +41,22 @@ final class PlayListHeaderView: UITableViewHeaderFooterView {
 
     lazy var infinityButton: UIButton = UIButton.createRoundCornerButton(image: AppImages.infinity, target: self, action: #selector(infinityButtonTapped))
 
-    func configure(title: String, subTitle: String?) {
+    func configure(title: String, subTitle: String?, type: TracksType) {
         titleLabel.text = title
-        if let subTitle = subTitle {
-            subTitleLabel.text = subTitle
-        }
 
-        let shouldHideSubTitle = subTitle == nil
-        if !shouldHideSubTitle {
+        if let subTitle {
+            subTitleLabel.text = subTitle
             UIView.animate(withDuration: 0.3) {
-                self.subTitleLabel.isHidden = shouldHideSubTitle
+                self.subTitleLabel.isHidden = false
             }
         } else {
-            subTitleLabel.isHidden = shouldHideSubTitle
+            subTitleLabel.isHidden = true
+        }
+
+        if type == .history {
+            buttonsStackView.arrangedSubviews.forEach { $0.isHidden = ($0 != clearButton)}
+        } else if type == .playlist {
+            buttonsStackView.arrangedSubviews.forEach { $0.isHidden = ($0 == clearButton)}
         }
     }
 
@@ -77,14 +80,14 @@ final class PlayListHeaderView: UITableViewHeaderFooterView {
         let button = UIButton()
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .regular)
         button.setTitle("清除".localizedString(), for: .normal)
-        button.setTitleColor(UIColor.white, for: .normal)
+        button.setTitleColor(.lightGray, for: .normal)
         button.backgroundColor = .clear
         button.addTarget(self, action: #selector(clearButtonTapped), for: .touchUpInside)
         return button
     }()
 
     private lazy var buttonsStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [shuffleButton, repeatButton, infinityButton])
+        let stackView = UIStackView(arrangedSubviews: [shuffleButton, repeatButton, infinityButton, clearButton])
         stackView.axis = .horizontal
         stackView.spacing = 15
         stackView.alignment = .fill
@@ -123,6 +126,10 @@ final class PlayListHeaderView: UITableViewHeaderFooterView {
 
         shuffleButton.snp.makeConstraints { make in
             make.width.equalTo(shuffleButton.snp.height)
+        }
+
+        clearButton.snp.makeConstraints { make in
+            make.width.equalTo(50)
         }
     }
 

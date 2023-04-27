@@ -254,6 +254,21 @@ class PlaylistViewController: UIViewController {
             cell.sectionHeaderMask(delegate: self)
         }
     }
+
+    private func presentClearAlert() {
+        let alertController = ActionButtonAlertController(title: "確定要清除此 iPhone 上的播放記錄嗎？".localizedString(), message: nil, preferredStyle: .alert)
+        let deleteAction = UIAlertAction(title: "清除".localizedString(), style: .destructive) { [weak self] _ in
+            self?.viewModel.clearPlayRecords()
+            self?.updateTableView()
+            Utils.toast("清除成功".localizedString())
+        }
+        let cancelAction = UIAlertAction(title: "取消".localizedString(), style: .cancel, handler: nil)
+        // .default 和 .cancel 樣式的按鈕的顏色
+        alertController.view.tintColor = .systemRed
+        alertController.addAction(deleteAction)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
+    }
 }
 
 // MARK: UITableViewDataSource, UITableViewDelegate
@@ -397,13 +412,13 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
 
         if viewModel.isPlayedTracksSection(section) {
             let title = "播放記錄".localizedString()
-            header.configure(title: title, subTitle: nil)
+            header.configure(title: title, subTitle: nil, type: .history)
             header.onClearButtonTapped = { [weak self] _ in
-                self?.viewModel.clearPlayRecords()
+                self?.presentClearAlert()
             }
         } else {
             let title = "待播清單".localizedString()
-            header.configure(title: title, subTitle: nil)
+            header.configure(title: title, subTitle: nil, type: .playlist)
 
             header.onShuffleButtonTapped = { [weak self] _ in
                 guard let self else { return }
@@ -420,7 +435,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
                 let tintColor = self.viewModel.headerButtonBgColor
                 let subTitle = isSelected ? "自動播放類似音樂".localizedString() : nil
                 header.infinityButton.setRoundCornerButtonAppearance(isSelected: isSelected, tintColor: tintColor)
-                header.configure(title: title, subTitle: subTitle)
+                header.configure(title: title, subTitle: subTitle, type: .playlist)
             }
 
             header.onRepeatButtonTapped = { [weak self] _ in
@@ -444,7 +459,11 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        playerContainerViewHeight
+        if viewModel.isPlayedTracksSection(section) {
+            return CGFloat.leastNormalMagnitude
+        } else {
+            return playerContainerViewHeight
+        }
     }
 }
 
