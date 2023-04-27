@@ -10,11 +10,17 @@ import UIKit
 // MARK: - ContextMenuManager
 
 class ContextMenuManager {
+    // MARK: Internal
+
     static let shared = ContextMenuManager()
 
     func createAction(title: String, image: UIImage?, attributes: UIMenuElement.Attributes = [], handler: @escaping UIActionHandler) -> UIAction {
         return UIAction(title: title, image: image, attributes: attributes, state: .off, handler: handler)
     }
+
+    // MARK: Private
+
+    private let musicPlayer = MusicPlayer.shared
 }
 
 extension ContextMenuManager {
@@ -53,19 +59,20 @@ extension ContextMenuManager {
     /// 從資料庫刪除
     private func deleteMenu(track: Track) -> UIMenu {
         let deleteAction = createAction(title: "從資料庫中刪除".localizedString(), image: AppImages.trash, attributes: .destructive) { [weak self] _ in
+
             let alertController = ActionButtonAlertController(title: "確定要從您的資料庫刪除這首歌嗎？這也會從播放列表中移除".localizedString(), message: nil, preferredStyle: .actionSheet)
-            // .default 和 .cancel 樣式的按鈕的顏色
-            alertController.view.tintColor = UIColor.systemRed
 
             let deleteAction = UIAlertAction(title: "刪除歌曲".localizedString(), style: .destructive) { _ in
                 UserDefaults.libraryTracks.removeAll { $0 == track }
                 Utils.toast("已從資料庫中刪除".localizedString())
             }
-            alertController.addAction(deleteAction)
 
             let cancelAction = UIAlertAction(title: "取消".localizedString(), style: .cancel, handler: nil)
-            alertController.addAction(cancelAction)
 
+            // .default 和 .cancel 樣式的按鈕的顏色
+            alertController.view.tintColor = .systemRed
+            alertController.addAction(deleteAction)
+            alertController.addAction(cancelAction)
             self?.rootVC?.present(alertController, animated: true, completion: nil)
         }
         let deleteMenu = UIMenu(title: "", options: .displayInline, children: [deleteAction])
@@ -109,12 +116,12 @@ extension ContextMenuManager {
 
     /// 修改待播清單
     private func editPlayListMenu(track: Track) -> UIMenu {
-        let insertToFirstAction = createAction(title: "插播".localizedString(), image: AppImages.insertToFirst) { _ in
-            UserDefaults.toBePlayedTracks.insert(track, at: 0)
+        let insertToFirstAction = createAction(title: "插播".localizedString(), image: AppImages.insertToFirst) { [weak self] _ in
+            self?.musicPlayer.insertToFirst(track: track)
             Utils.toast("已插播".localizedString())
         }
-        let addToLastAction = createAction(title: "最後播放".localizedString(), image: AppImages.addToLast) { _ in
-            UserDefaults.toBePlayedTracks.append(track)
+        let addToLastAction = createAction(title: "最後播放".localizedString(), image: AppImages.addToLast) { [weak self] _ in
+            self?.musicPlayer.addToLast(track: track)
             Utils.toast("將於最後播放".localizedString())
         }
         let addMenu = UIMenu(title: "", options: .displayInline, children: [insertToFirstAction, addToLastAction])

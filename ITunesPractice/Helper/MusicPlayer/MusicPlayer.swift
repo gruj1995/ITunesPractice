@@ -28,9 +28,6 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
 
     static let shared = MusicPlayer()
 
-    // 用來來逐漸增加播放速度的計時器(快轉/倒帶)
-    private var speedIncreasingTimer: Timer?
-
     var player: AVQueuePlayer = .init()
     var cancellables: Set<AnyCancellable> = .init()
 
@@ -48,7 +45,8 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
 
     // 播放紀錄
     var playedTracks: [Track] {
-        UserDefaults.playedTracks
+        get { UserDefaults.playedTracks }
+        set { UserDefaults.playedTracks = newValue }
     }
 
     // 播放清單
@@ -154,20 +152,37 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
         return isPlayingSubject.eraseToAnyPublisher()
     }
 
-    // MARK: Init
-
     /// 在 AppDelegate 呼叫，讓 MusicPlayer 在開啟app時就建立
     func configure() {}
 
+    /// 插播到待播清單第一項
     func insertToFirst(track: Track) {
-        toBePlayedTracks.insert(track, at: 0)
+        if toBePlayedTracks.isEmpty {
+            toBePlayedTracks.insert(track, at: 0)
+        } else {
+            toBePlayedTracks.insert(track, at: 1)
+        }
     }
 
+    /// 加入到待播清單最後一項
     func addToLast(track: Track) {
         toBePlayedTracks.append(track)
     }
 
+    func removeFromPlaylist(_ index: Int) {
+        guard toBePlayedTracks.indices.contains(index) else { return }
+        toBePlayedTracks.remove(at: index)
+    }
+
+    func removeFromPlayRecords(_ index: Int) {
+        guard playedTracks.indices.contains(index) else { return }
+        playedTracks.remove(at: index)
+    }
+
     // MARK: Private
+
+    // 用來來逐漸增加播放速度的計時器(快轉/倒帶)
+    private var speedIncreasingTimer: Timer?
 
     // 用來控制系統音量（只使用它裡面的 slider ）
     private let mpVolumeView: MPVolumeView = .init()
@@ -203,7 +218,7 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
 
         // 每首歌曲播放完畢時更新索引
         NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: nil, queue: .main) { [weak self] _ in
-            guard let self = self else { return }
+            guard let self else { return }
             self.nextTrack()
         }
 
@@ -409,13 +424,10 @@ extension MusicPlayer {
     private func playlistDidFinishPlaying() {
         // 重整播放清單
         setAVQueuePlayer()
-        // 切回第一首歌開頭
-        seek(to: 0)
-        currentTrackIndex = 0
+        // 切回第一首歌
+        play(at: 0)
 
-        if repeatMode == .all {
-            isPlaying = true
-        } else if repeatMode == .none {
+        if repeatMode == .none {
             isPlaying = false
         }
     }
