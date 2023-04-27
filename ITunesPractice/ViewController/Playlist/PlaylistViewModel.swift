@@ -24,14 +24,14 @@ class PlaylistViewModel {
     private(set) var currentTrack: Track? {
         get { musicPlayer.currentTrack }
         set {
-            if let index = toBePlayedTracks.firstIndex(where: { $0 == newValue }) {
+            if let index = playlist.firstIndex(where: { $0 == newValue }) {
                 musicPlayer.currentTrackIndex = index
             }
         }
     }
 
     var totalCount: Int {
-        toBePlayedTracks.count + playedTracks.count
+        playlist.count + playedTracks.count
     }
 
     var numberOfSections: Int {
@@ -74,17 +74,17 @@ class PlaylistViewModel {
     }
 
     func numberOfRows(in section: Int) -> Int {
-        isPlayedTracksSection(section) ? playedTracks.count : toBePlayedTracks.count
+        isPlayedTracksSection(section) ? playedTracks.count : playlist.count
     }
 
     func track(forCellAt indexPath: IndexPath) -> Track? {
-        let tracks = isPlayedTracksSection(indexPath.section) ? playedTracks : toBePlayedTracks
+        let tracks = isPlayedTracksSection(indexPath.section) ? playedTracks : playlist
         guard tracks.indices.contains(indexPath.row) else { return nil }
         return tracks[indexPath.row]
     }
 
     func setCurrentTrack(forCellAt indexPath: IndexPath) {
-        let tracks = isPlayedTracksSection(indexPath.section) ? playedTracks : toBePlayedTracks
+        let tracks = isPlayedTracksSection(indexPath.section) ? playedTracks : playlist
         guard tracks.indices.contains(indexPath.row) else { return }
         currentTrack = tracks[indexPath.row]
     }
@@ -95,7 +95,7 @@ class PlaylistViewModel {
     }
 
     // 是否為待播清單第一項
-    func isFirstItemInToBePlaylist(_ indexPath: IndexPath) -> Bool {
+    func isFirstItemInPlaylist(_ indexPath: IndexPath) -> Bool {
         !isPlayedTracksSection(indexPath.section) && indexPath.row == 0
     }
 
@@ -129,9 +129,9 @@ class PlaylistViewModel {
     private let musicPlayer: MusicPlayer = .shared
 
     // 待播清單
-    private var toBePlayedTracks: [Track] {
-        musicPlayer.toBePlayedTracks
-//        var allTracks = musicPlayer.toBePlayedTracks
+    private var playlist: [Track] {
+        musicPlayer.playlist
+//        var allTracks = musicPlayer.playlist
 //        // 不顯示正在播放的
 //        return Array(allTracks.dropFirst())
     }

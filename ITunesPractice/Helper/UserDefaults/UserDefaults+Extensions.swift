@@ -9,8 +9,8 @@ import Foundation
 
 extension UserDefaults {
     /// 待播清單
-    @UserDefaultValue(key: "toBePlayedTracks", defaultValue: [])
-    static var toBePlayedTracks: [Track]
+    @UserDefaultValue(key: "playlist", defaultValue: [])
+    static var playlist: [Track]
 
     /// 播放紀錄
     @UserDefaultValue(key: "playedTracks", defaultValue: [])

@@ -29,7 +29,7 @@ protocol MusicPlayerControl {
 // MARK: - MusicPlayerPlaylistControl
 
 protocol MusicPlayerPlaylistControl {
-    var toBePlayedTracks: [Track] { get } // 播放清單
+    var playlist: [Track] { get } // 播放清單
     var currentTrack: Track? { get } // 當前播放曲目（透過currentTrackIndex取得）
     var currentTrackIndex: Int { get } // 目前選中的曲目的索引
     var isShuffleMode: Bool { get set } // 是否隨機播放

@@ -179,7 +179,7 @@ class PlaylistViewController: UIViewController {
                 self?.updateGradientLayers()
             }.store(in: &cancellables)
 
-        UserDefaults.$toBePlayedTracks
+        UserDefaults.$playlist
             .receive(on: DispatchQueue.main)
             .removeDuplicates()
             .combineLatest(UserDefaults.$playedTracks)
@@ -371,7 +371,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         // 如果是待播清單，隱藏正在播放的項目(也就是清單內第一項)
-        if viewModel.isFirstItemInToBePlaylist(indexPath) {
+        if viewModel.isFirstItemInPlaylist(indexPath) {
              cell.contentView.isHidden = true
              cell.accessoryType = .none
              cell.contentView.frame.size.height = 0
@@ -380,7 +380,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if viewModel.isFirstItemInToBePlaylist(indexPath) {
+        if viewModel.isFirstItemInPlaylist(indexPath) {
             return CGFloat.leastNormalMagnitude
         }
         return cellHeight
