@@ -78,16 +78,17 @@ class MiniPlayerViewController: BottomFloatingPanelViewController {
 
     private func bindViewModel() {
         viewModel.currentTrackIndexPublisher
-            .receive(on: DispatchQueue.main)
+            .receive(on: RunLoop.main)
+            .removeDuplicates()
             .sink { [weak self] _ in
-                guard let self = self else { return }
+                guard let self else { return }
                 self.updateCurrentTrackUI()
             }.store(in: &cancellables)
 
         viewModel.isPlayingPublisher
-            .receive(on: DispatchQueue.main)
+            .receive(on: RunLoop.main)
             .sink { [weak self] _ in
-                guard let self = self else { return }
+                guard let self else { return }
                 self.updatePlayOrPauseButtonUI()
             }.store(in: &cancellables)
     }
@@ -155,8 +156,7 @@ class MiniPlayerViewController: BottomFloatingPanelViewController {
     }
 
     private func updatePlayOrPauseButtonUI() {
-        let isPlaying = viewModel.isPlaying
-        let image = isPlaying ? AppImages.pause : AppImages.play
+        let image = viewModel.isPlaying ? AppImages.pause : AppImages.play
         playPauseButton.setImage(image, for: .normal)
     }
 
