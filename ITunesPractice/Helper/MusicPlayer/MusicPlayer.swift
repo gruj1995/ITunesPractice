@@ -155,17 +155,21 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
     /// 在 AppDelegate 呼叫，讓 MusicPlayer 在開啟app時就建立
     func configure() {}
 
-    /// 插播到待播清單第一項
-    func insertToFirst(track: Track) {
-        if toBePlayedTracks.isEmpty {
+    /// 插播到待播清單
+    ///  - Parameters:
+    ///   - shouldIncludeCurrentTrack: 是否包含正在播放的項目，如果為 false，則插入到待播清單首項
+    func insertToPlaylist(track: Track, shouldIncludeCurrentTrack: Bool) {
+        if shouldIncludeCurrentTrack {
             toBePlayedTracks.insert(track, at: 0)
+        } else if toBePlayedTracks.isEmpty {
+            toBePlayedTracks.append(track)
         } else {
             toBePlayedTracks.insert(track, at: 1)
         }
     }
 
     /// 加入到待播清單最後一項
-    func addToLast(track: Track) {
+    func appendToPlaylist(track: Track) {
         toBePlayedTracks.append(track)
     }
 
