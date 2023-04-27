@@ -44,7 +44,7 @@ class MainTabBarController: UITabBarController {
         let audioSearchVC = AudioSearchViewController()
         let audioSearchNavVC = createNavigationController(rootViewController: audioSearchVC, image: AppImages.waveformAndMic, title: "聲音搜尋".localizedString())
 
-        viewControllers = [searchNavVC, libraryNavVC, audioSearchNavVC]
+        viewControllers = [searchNavVC, audioSearchNavVC, libraryNavVC]
     }
 
     private func createNavigationController(rootViewController: UIViewController, image: UIImage?, title: String) -> UINavigationController {
