@@ -38,7 +38,6 @@ class PlaylistViewController: UIViewController {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.register(TrackCell.self, forCellReuseIdentifier: TrackCell.reuseIdentifier)
         tableView.register(PlayListHeaderView.self, forHeaderFooterViewReuseIdentifier: PlayListHeaderView.reuseIdentifier)
-        tableView.rowHeight = 60
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = .clear
@@ -180,11 +179,13 @@ class PlaylistViewController: UIViewController {
                 self?.updateGradientLayers()
             }.store(in: &cancellables)
 
-        UserDefaults.$libraryTracks
+        UserDefaults.$toBePlayedTracks
             .receive(on: DispatchQueue.main)
             .removeDuplicates()
+            .combineLatest(UserDefaults.$playedTracks)
             .sink { [weak self] _ in
                 self?.updateCurrentTrackView()
+                self?.updateTableView()
             }.store(in: &cancellables)
 
         NetworkMonitor.shared.$isConnected
@@ -264,7 +265,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
         let contentHeight = scrollView.contentSize.height
         let frameHeight = scrollView.frame.size.height
 
-        if viewModel.tracks.isEmpty {
+        if viewModel.totalCount == 0 {
             // 沒有資料時顯示播放器
             isPlayerHidden = false
         } else if contentOffset >= contentHeight - frameHeight {
@@ -313,7 +314,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
         else {
             return UITableViewCell()
         }
-        guard let track = viewModel.track(forCellAt: indexPath.row) else {
+        guard let track = viewModel.track(forCellAt: indexPath) else {
             return cell
         }
         cell.configure(artworkUrl: track.artworkUrl100, collectionName: track.collectionName, artistName: track.artistName, trackName: track.trackName)
@@ -325,11 +326,9 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
         // 解除cell被選中的狀態
         tableView.deselectRow(at: indexPath, animated: true)
         // 更新選中歌曲
-        viewModel.setSelectedTrack(forCellAt: indexPath.row)
+        viewModel.setCurrentTrack(forCellAt: indexPath)
         viewModel.play()
     }
-
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {}
 
     func tableView(_ tableView: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
         animator.addCompletion { [weak self] in
@@ -346,7 +345,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
     // context menu 的清單
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         viewModel.selectedIndexPath = indexPath
-        let track = viewModel.tracks[indexPath.row]
+        let track = viewModel.track(forCellAt: indexPath)
         return tableView.createTrackContextMenuConfiguration(indexPath: indexPath, track: track)
     }
 
@@ -363,6 +362,30 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
         return targetedPreview
     }
 
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        return tableView.deleteConfiguration { [weak self] in
+            self?.viewModel.removeTrack(forCellAt: indexPath)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+    }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        // 如果是待播清單，隱藏正在播放的項目(也就是清單內第一項)
+        if viewModel.isFirstItemInToBePlaylist(indexPath) {
+             cell.contentView.isHidden = true
+             cell.accessoryType = .none
+             cell.contentView.frame.size.height = 0
+             cell.frame.size.height = 0
+         }
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if viewModel.isFirstItemInToBePlaylist(indexPath) {
+            return CGFloat.leastNormalMagnitude
+        }
+        return cellHeight
+    }
+
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return cellHeight
     }
@@ -375,10 +398,8 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
         if viewModel.isPlayedTracksSection(section) {
             let title = "播放記錄".localizedString()
             header.configure(title: title, subTitle: nil)
-
             header.onClearButtonTapped = { [weak self] _ in
-                guard let self else { return }
-                self.viewModel.resetPlayRecord()
+                self?.viewModel.clearPlayRecords()
             }
         } else {
             let title = "待播清單".localizedString()

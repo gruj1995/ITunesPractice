@@ -82,4 +82,17 @@ extension UITableView {
 
         return visibleSects
     }
+
+    /// 左滑刪除按鈕
+    func deleteConfiguration(_ completion: @escaping (() -> Void)) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "移除") { _, _, _ in
+            completion()
+        }
+        deleteAction.backgroundColor = .appColor(.red1)
+
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+        // 防止滑到底觸發第一個 button 的 action
+        configuration.performsFirstActionWithFullSwipe = false
+        return configuration
+    }
 }
