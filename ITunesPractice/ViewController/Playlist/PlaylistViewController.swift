@@ -416,11 +416,14 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        UIView.emptyView()
+        let view = UIView.emptyView()
+        // 避免點擊事件被 footer 攔截，因為使用 .plain 樣式的 footer 會擋到 cell
+        view.isUserInteractionEnabled = false
+        return view
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return playerContainerViewHeight
+        playerContainerViewHeight
     }
 }
 
