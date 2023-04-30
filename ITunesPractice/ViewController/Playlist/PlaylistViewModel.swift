@@ -21,17 +21,12 @@ class PlaylistViewModel {
 
     var selectedIndexPath: IndexPath?
 
-    private(set) var currentTrack: Track? {
-        get { musicPlayer.currentTrack }
-        set {
-            if let index = playlist.firstIndex(where: { $0 == newValue }) {
-                musicPlayer.currentTrackIndex = index
-            }
-        }
+    var currentTrack: Track? {
+        musicPlayer.currentTrack
     }
 
     var totalCount: Int {
-        playlist.count + playedTracks.count
+        displayPlaylist.count + playedTracks.count
     }
 
     var numberOfSections: Int {
@@ -69,24 +64,28 @@ class PlaylistViewModel {
         musicPlayer.currentTrackIndexPublisher
     }
 
+    var isShuffleModePublisher: AnyPublisher<Bool, Never> {
+        musicPlayer.isShuffleModePublisher
+    }
+
     var colorsPublisher: AnyPublisher<[UIColor], Never> {
         colorsSubject.eraseToAnyPublisher()
     }
 
     func numberOfRows(in section: Int) -> Int {
-        isPlayedTracksSection(section) ? playedTracks.count : playlist.count
+        isPlayedTracksSection(section) ? playedTracks.count : displayPlaylist.count
     }
 
     func track(forCellAt indexPath: IndexPath) -> Track? {
-        let tracks = isPlayedTracksSection(indexPath.section) ? playedTracks : playlist
+        let tracks = isPlayedTracksSection(indexPath.section) ? playedTracks : displayPlaylist
         guard tracks.indices.contains(indexPath.row) else { return nil }
         return tracks[indexPath.row]
     }
 
     func setCurrentTrack(forCellAt indexPath: IndexPath) {
-        let tracks = isPlayedTracksSection(indexPath.section) ? playedTracks : playlist
+        let tracks = isPlayedTracksSection(indexPath.section) ? playedTracks : displayPlaylist
         guard tracks.indices.contains(indexPath.row) else { return }
-        currentTrack = tracks[indexPath.row]
+        musicPlayer.setCurrentTrackIndex(to: indexPath.row)
     }
 
     // 是否為播放紀錄 section
@@ -94,21 +93,16 @@ class PlaylistViewModel {
         !playedTracks.isEmpty && (section == 0)
     }
 
-    // 是否為待播清單第一項
-    func isFirstItemInPlaylist(_ indexPath: IndexPath) -> Bool {
-        !isPlayedTracksSection(indexPath.section) && indexPath.row == 0
-    }
-
     // 清除播放紀錄
     func clearPlayRecords() {
-        UserDefaults.playedTracks.removeAll()
+        musicPlayer.clearPlayRecords()
     }
 
     func removeTrack(forCellAt indexPath: IndexPath) {
         if isPlayedTracksSection(indexPath.section) {
             musicPlayer.removeFromPlayRecords(indexPath.row)
         } else {
-            musicPlayer.removeFromPlaylist(indexPath.row)
+            musicPlayer.removeTrackFromDisplayPlaylist(at: indexPath.row)
         }
     }
 
@@ -129,11 +123,8 @@ class PlaylistViewModel {
     private let musicPlayer: MusicPlayer = .shared
 
     // 待播清單
-    private var playlist: [Track] {
-        musicPlayer.playlist
-//        var allTracks = musicPlayer.playlist
-//        // 不顯示正在播放的
-//        return Array(allTracks.dropFirst())
+    private var displayPlaylist: [Track] {
+        musicPlayer.displayPlaylist
     }
 
     // 播放紀錄

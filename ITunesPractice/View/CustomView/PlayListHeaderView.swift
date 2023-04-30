@@ -60,6 +60,18 @@ final class PlayListHeaderView: UITableViewHeaderFooterView {
         }
     }
 
+    func updateButtonAppearance(tintColor: UIColor?, isShuffleMode: Bool? = nil, repeatMode: RepeatMode? = nil, isInfinityMode: Bool? = nil) {
+        if let isShuffleMode {
+            shuffleButton.setRoundCornerButtonAppearance(isSelected: isShuffleMode, tintColor: tintColor)
+        }
+        if let repeatMode {
+            repeatButton.setRoundCornerButtonAppearance(isSelected: repeatMode != .none, tintColor: tintColor, image: repeatMode.image)
+        }
+        if let isInfinityMode {
+            infinityButton.setRoundCornerButtonAppearance(isSelected: isInfinityMode, tintColor: tintColor)
+        }
+    }
+
     // MARK: Private
 
     private lazy var titleLabel: UILabel = {

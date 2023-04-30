@@ -234,8 +234,7 @@ class PlaylistPlayerViewController: UIViewController {
     }
 
     private func updateTogglePlayPauseButton() {
-        let isPlaying = viewModel.isPlaying
-        let image = isPlaying ? AppImages.pause : AppImages.play
+        let image = viewModel.isPlaying ? AppImages.pause : AppImages.play
         playButtons[1].setImage(image, for: .normal)
     }
 

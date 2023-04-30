@@ -19,6 +19,8 @@ import UIKit
         上滑顯示播放器; 下滑隱藏播放器
   - tableView header 切換時有小震動
   - cell 拖曳排序功能
+  - 隨機播放:
+    - 啟用隨機排序時，生成打亂的待播清單並顯示 ; 取消隨機排序時，顯示原本的待播清單
  */
 
 class PlaylistViewController: UIViewController {
@@ -38,6 +40,7 @@ class PlaylistViewController: UIViewController {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.register(TrackCell.self, forCellReuseIdentifier: TrackCell.reuseIdentifier)
         tableView.register(PlayListHeaderView.self, forHeaderFooterViewReuseIdentifier: PlayListHeaderView.reuseIdentifier)
+        tableView.rowHeight = cellHeight
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = .clear
@@ -81,7 +84,7 @@ class PlaylistViewController: UIViewController {
         return view
     }()
 
-    private var currentTrackView: CurrentTrackView = CurrentTrackView()
+    private var currentTrackView: CurrentTrackView = .init()
 
     // 音樂播放器頁
     private lazy var playerVC: PlaylistPlayerViewController = {
@@ -163,12 +166,18 @@ class PlaylistViewController: UIViewController {
     private func bindViewModel() {
         viewModel.currentTrackIndexPublisher
             .receive(on: RunLoop.main)
-            .removeDuplicates() // 為什麼會觸發多次？
+//            .removeDuplicates() // 為什麼會觸發多次？
             .sink { [weak self] _ in
                 guard let self else { return }
                 self.viewModel.changeImage()
                 self.updateCurrentTrackView()
                 self.updateTableView()
+            }.store(in: &cancellables)
+
+        viewModel.isShuffleModePublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.updateTableView()
             }.store(in: &cancellables)
 
         viewModel.colorsPublisher
@@ -177,15 +186,6 @@ class PlaylistViewController: UIViewController {
             .removeDuplicates() // 為什麼會觸發多次？
             .sink { [weak self] _ in
                 self?.updateGradientLayers()
-            }.store(in: &cancellables)
-
-        UserDefaults.$playlist
-            .receive(on: DispatchQueue.main)
-            .removeDuplicates()
-            .combineLatest(UserDefaults.$playedTracks)
-            .sink { [weak self] _ in
-                self?.updateCurrentTrackView()
-                self?.updateTableView()
             }.store(in: &cancellables)
 
         NetworkMonitor.shared.$isConnected
@@ -333,7 +333,6 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
             return cell
         }
         cell.configure(artworkUrl: track.artworkUrl100, collectionName: track.collectionName, artistName: track.artistName, trackName: track.trackName)
-
         return cell
     }
 
@@ -412,32 +411,32 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
         } else {
             let title = "待播清單".localizedString()
             header.configure(title: title, subTitle: nil, type: .playlist)
+            header.updateButtonAppearance(
+                tintColor: viewModel.headerButtonBgColor,
+                isShuffleMode: viewModel.isShuffleMode,
+                repeatMode: viewModel.repeatMode,
+                isInfinityMode: viewModel.isInfinityMode)
 
             header.onShuffleButtonTapped = { [weak self] _ in
                 guard let self else { return }
                 self.viewModel.isShuffleMode.toggle()
-                let isSelected = self.viewModel.isShuffleMode
-                let tintColor = self.viewModel.headerButtonBgColor
-                header.shuffleButton.setRoundCornerButtonAppearance(isSelected: isSelected, tintColor: tintColor)
-            }
-
-            header.onInfinityButtonTapped = { [weak self] _ in
-                guard let self else { return }
-                self.viewModel.isInfinityMode.toggle()
-                let isSelected = self.viewModel.isInfinityMode
-                let tintColor = self.viewModel.headerButtonBgColor
-                let subTitle = isSelected ? "自動播放類似音樂".localizedString() : nil
-                header.infinityButton.setRoundCornerButtonAppearance(isSelected: isSelected, tintColor: tintColor)
-                header.configure(title: title, subTitle: subTitle, type: .playlist)
+                header.updateButtonAppearance(tintColor: self.viewModel.headerButtonBgColor, isShuffleMode: self.viewModel.isShuffleMode)
             }
 
             header.onRepeatButtonTapped = { [weak self] _ in
                 guard let self else { return }
                 self.viewModel.repeatMode = self.viewModel.repeatMode.next()
-                let isSelected = self.viewModel.repeatMode != .none
-                let tintColor = self.viewModel.headerButtonBgColor
-                let image = self.viewModel.repeatMode.image
-                header.repeatButton.setRoundCornerButtonAppearance(isSelected: isSelected, tintColor: tintColor, image: image)
+                let repeatMode = self.viewModel.repeatMode
+                header.updateButtonAppearance(tintColor: self.viewModel.headerButtonBgColor, repeatMode: repeatMode)
+            }
+
+            header.onInfinityButtonTapped = { [weak self] _ in
+                guard let self else { return }
+                self.viewModel.isInfinityMode.toggle()
+                let isInfinityMode = self.viewModel.isInfinityMode
+                let subTitle = isInfinityMode ? "自動播放類似音樂".localizedString() : nil
+                header.updateButtonAppearance(tintColor: self.viewModel.headerButtonBgColor, isInfinityMode: isInfinityMode)
+                header.configure(title: title, subTitle: subTitle, type: .playlist)
             }
         }
 

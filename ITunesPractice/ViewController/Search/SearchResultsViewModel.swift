@@ -107,7 +107,7 @@ class SearchResultsViewModel {
 
    func insertTrack(forCellAt index: Int) {
         if let track = track(forCellAt: index) {
-            musicPlayer.insertToPlaylist(track: track, shouldIncludeCurrentTrack: true)
+            musicPlayer.replaceCurrentTrack(track)
         }
     }
 

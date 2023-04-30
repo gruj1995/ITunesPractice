@@ -105,8 +105,7 @@ class SearchResultsViewController: UIViewController {
             .removeDuplicates()
             .combineLatest(viewModel.isPlayingPublisher)
             .sink { [weak self] _ in
-                guard let self else { return }
-                self.updateUI()
+                self?.updateUI()
             }.store(in: &cancellables)
 
         viewModel.$state
