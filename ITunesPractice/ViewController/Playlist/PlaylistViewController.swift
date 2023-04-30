@@ -377,32 +377,25 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
         return targetedPreview
     }
 
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        return tableView.deleteConfiguration { [weak self] in
-            self?.viewModel.removeTrack(forCellAt: indexPath)
-            tableView.deleteRows(at: [indexPath], with: .automatic)
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            viewModel.removeTrack(forCellAt: indexPath)
+            // 當 section 只剩一個 row 時，使用 deleteRows 會 crash，要改用 deleteSections
+            let rows = viewModel.numberOfRows(in: indexPath.section)
+            if rows == 0 {
+                tableView.reloadData()
+            } else {
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            }
         }
     }
 
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        // 如果是待播清單，隱藏正在播放的項目(也就是清單內第一項)
-        if viewModel.isFirstItemInPlaylist(indexPath) {
-             cell.contentView.isHidden = true
-             cell.accessoryType = .none
-             cell.contentView.frame.size.height = 0
-             cell.frame.size.height = 0
-         }
-    }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if viewModel.isFirstItemInPlaylist(indexPath) {
-            return CGFloat.leastNormalMagnitude
-        }
-        return cellHeight
+    func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        "移除"
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return cellHeight
+        cellHeight
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
