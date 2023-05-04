@@ -221,15 +221,13 @@ class PlaylistPlayerViewController: UIViewController {
         viewModel.isPlayingPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                guard let self = self else { return }
-                self.updateTogglePlayPauseButton()
+                self?.updateTogglePlayPauseButton()
             }.store(in: &cancellables)
 
         viewModel.volumePublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                guard let self else { return }
-                self.updateVolumeSlider()
+                self?.updateVolumeSlider()
             }.store(in: &cancellables)
     }
 

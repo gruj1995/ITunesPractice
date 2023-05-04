@@ -35,26 +35,25 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
     // MARK: Internal
 
     static let shared = MusicPlayer()
+
     var player: AVPlayer = .init()
     var cancellables: Set<AnyCancellable> = .init()
 
+    // MARK: Shuffle
+
+    // 播放清單
+    var mainPlaylist: [Track] {
+        get { UserDefaults.mainPlaylist }
+        set { UserDefaults.mainPlaylist = newValue }
+    }
+
     // 展示用的播放清單
-    var displayPlaylist: [Track] {
-        displayIndices.map { playlist[$0] }
-    }
-
-    var currentTrack: Track? {
-        guard playlist.indices.contains(currentTrackIndex) else { return nil }
-        return playlist[currentTrackIndex]
-    }
-
-    var currentTrackIndex: Int {
-        get { UserDefaults.currentTrackIndex }
-        set {
-            currentTrackIndexSubject.value = newValue
-            UserDefaults.currentTrackIndex = newValue
-            // 設定背景當前播放資訊
-            setupNowPlaying()
+    var pendingPlaylist: [Track] {
+        // 從主播放列表中選擇所有需要播放的歌曲，並排除已經播放的第一首歌曲
+        if displayIndices.count <= 1 {
+            return []
+        } else {
+            return Array(displayIndices.dropFirst().map { mainPlaylist[$0] })
         }
     }
 
@@ -62,6 +61,31 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
     var playedTracks: [Track] {
         get { UserDefaults.playedTracks }
         set { UserDefaults.playedTracks = newValue }
+    }
+
+    var currentTrack: Track? {
+        let shuffledIndex = entireShuffledIndices.isEmpty ? 0 : entireShuffledIndices[currentShuffleTrackIndex]
+        let index = isShuffleMode ? shuffledIndex : currentTrackIndex
+        guard mainPlaylist.indices.contains(index) else { return nil }
+        return mainPlaylist[index]
+    }
+
+    var currentTrackIndex: Int {
+        get { UserDefaults.currentTrackIndex }
+        set { UserDefaults.currentTrackIndex = newValue
+            currentTrackIndexSubject.value = newValue
+            // 設定背景當前播放資訊
+            setupNowPlaying()
+        }
+    }
+
+    var currentShuffleTrackIndex: Int {
+        get { UserDefaults.currentShuffleTrackIndex }
+        set { UserDefaults.currentShuffleTrackIndex = newValue
+            currentTrackIndexSubject.value = newValue
+            // 設定背景當前播放資訊
+            setupNowPlaying()
+        }
     }
 
     // 是否隨機播放
@@ -164,12 +188,6 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
         isShuffleModeSubject.eraseToAnyPublisher()
     }
 
-    // 播放清單
-    var playlist: [Track] {
-        get { UserDefaults.mainPlaylist }
-        set { UserDefaults.mainPlaylist = newValue }
-    }
-
     // MARK: Player
 
     /// 在 AppDelegate 呼叫，讓 MusicPlayer 在開啟app時就建立
@@ -177,46 +195,37 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
 
     /// 選中的待播清單項目
     func setCurrentTrackIndex(to index: Int) {
-        let trackIndex = displayIndices[index]
-        guard playlist.indices.contains(trackIndex) else { return }
-        currentTrackIndex = trackIndex
-    }
-
-    /// 取代正播放的音樂
-    func replaceCurrentTrack(_ track: Track) {
-        if playlist.isEmpty {
-            playlist.append(track)
-        } else {
-            addPlayRecordIfNeeded()
-            let newIndex = currentTrackIndex + 1
-            playlist.insert(track, at: newIndex)
-            currentTrackIndex = newIndex
-            updateDisplayIndices()
+        guard displayIndices.count > 1 else { return }
+        let pendingListIndex = index + 1 // 因為第一項是正在播放的，所以這邊要加1
+        let targetIndex = displayIndices[pendingListIndex]
+        guard mainPlaylist.indices.contains(targetIndex) else { return }
+        currentTrackIndex = targetIndex
+        if isShuffleMode {
+            currentShuffleTrackIndex += pendingListIndex
+            // 更新顯示的隨機待播清單索引
+            shuffledIndices = Array(entireShuffledIndices.dropFirst(currentShuffleTrackIndex))
         }
     }
 
-    /// 加到待播清單首項
-    func insertTrackToPlaylist(_ track: Track) {
-        if playlist.isEmpty {
-            playlist.append(track)
-        } else {
-            let newIndex = currentTrackIndex + 1
-            playlist.insert(track, at: newIndex)
-            updateDisplayIndices()
-        }
-    }
-
-    /// 加到待播清單末項
-    func addTrackToPlaylist(_ track: Track) {
-        playlist.append(track)
-    }
-
-    /// 刪除指定的待播清單歌曲
+    /// 刪除指定的待播清單項目
     func removeTrackFromDisplayPlaylist(at index: Int) {
-        let trackIndex = displayIndices[index]
-        guard playlist.indices.contains(trackIndex) else { return }
-        playlist.remove(at: trackIndex)
-        updateDisplayIndices()
+        guard displayIndices.count > 1 else { return }
+        let pendingListIndex = index + 1 // 因為第一項是正在播放的，所以這邊要加1
+        let targetIndex = displayIndices[pendingListIndex]
+        guard mainPlaylist.indices.contains(targetIndex) else { return }
+        mainPlaylist.remove(at: targetIndex)
+
+        if isShuffleMode {
+            // 更新完整的隨機待播清單索引(因為主音樂清單索引有變動)
+            entireShuffledIndices.removeAll { $0 == targetIndex }
+            entireShuffledIndices = entireShuffledIndices.map {
+                $0 > targetIndex ? ($0 - 1) : $0
+            }
+            // 更新顯示的隨機待播清單索引
+            shuffledIndices = Array(entireShuffledIndices.dropFirst(currentShuffleTrackIndex))
+        } else {
+            updateOrderedIndices()
+        }
     }
 
     /// 刪除指定的播放紀錄
@@ -230,19 +239,139 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
         UserDefaults.playedTracks.removeAll()
     }
 
-    // MARK: Private
+    func nextTrack() {
+        if isShuffleMode {
+            nextTrackInShuffledPendingList()
+        } else {
+            nextTrackInPendingList()
+        }
+    }
 
-    // 用來來逐漸增加播放速度的計時器(快轉/倒帶)
-    private var speedIncreasingTimer: Timer?
+    func previousTrack() {
+        // 點擊上一曲時，音樂播放大於4秒回到歌曲開頭
+        if let currentPlaybackTime, currentPlaybackTime >= 4 {
+            seek(to: 0)
+            return
+        }
+
+        if isShuffleMode {
+            previousTrackInShuffledPendingList()
+        } else {
+            previousTrackInPendingList()
+        }
+    }
+
+    /// 取代正播放的音樂
+    func replaceCurrentTrack(_ track: Track) {
+        addPlayRecordIfNeeded()
+
+        if isShuffleMode {
+            if shuffledIndices.isEmpty {
+                mainPlaylist.append(track)
+                entireShuffledIndices.append(0)
+                updateShuffledIndices()
+            } else {
+                // 加到正在播放的音樂之後
+                // 主音樂清單索引往後一格並插入新歌
+                currentTrackIndex += 1
+                mainPlaylist.insert(track, at: currentTrackIndex)
+                // 更新隨機待播清單的索引(因為主音樂清單索引有變動)
+                entireShuffledIndices = entireShuffledIndices.map {
+                    $0 >= currentTrackIndex ? ($0 + 1) : $0
+                }
+                currentShuffleTrackIndex += 1
+                entireShuffledIndices.insert(currentTrackIndex, at: currentShuffleTrackIndex)
+                // 更新顯示的隨機待播清單索引
+                shuffledIndices = Array(entireShuffledIndices.dropFirst(currentShuffleTrackIndex))
+            }
+        } else {
+            if orderedIndices.isEmpty {
+                mainPlaylist.append(track)
+                orderedIndices.append(0)
+            } else {
+                currentTrackIndex += 1
+                mainPlaylist.insert(track, at: currentTrackIndex)
+                updateOrderedIndices()
+            }
+        }
+    }
+
+    /// 加到待播清單首項
+    func insertTrackToPlaylist(_ track: Track) {
+        if isShuffleMode {
+            if shuffledIndices.isEmpty {
+                mainPlaylist.append(track)
+                entireShuffledIndices.append(0)
+                updateShuffledIndices()
+            } else {
+                let pendingListFirstIndex = currentTrackIndex + 1
+                mainPlaylist.insert(track, at: pendingListFirstIndex)
+                // 更新隨機待播清單的索引(因為主音樂清單索引有變動)
+                entireShuffledIndices = entireShuffledIndices.map {
+                    $0 >= pendingListFirstIndex ? ($0 + 1) : $0
+                }
+                entireShuffledIndices.insert(pendingListFirstIndex, at: currentShuffleTrackIndex + 1)
+                // 更新顯示的隨機待播清單索引
+                shuffledIndices = Array(entireShuffledIndices.dropFirst(currentShuffleTrackIndex))
+            }
+        } else {
+            if orderedIndices.isEmpty {
+                mainPlaylist.append(track)
+                orderedIndices.append(0)
+            } else {
+                let pendingListFirstIndex = currentTrackIndex + 1
+                mainPlaylist.insert(track, at: pendingListFirstIndex)
+                updateOrderedIndices()
+            }
+        }
+    }
+
+    /// 加到待播清單末項
+    func addTrackToPlaylist(_ track: Track) {
+        if isShuffleMode {
+            mainPlaylist.append(track)
+            entireShuffledIndices.append(entireShuffledIndices.count)
+            // 更新顯示的隨機待播清單索引
+            shuffledIndices = Array(entireShuffledIndices.dropFirst(currentShuffleTrackIndex))
+        } else {
+            mainPlaylist.append(track)
+            orderedIndices.append(mainPlaylist.count - 1)
+        }
+    }
+
+    func toggleShuffleMode() {
+        if isShuffleMode {
+            // 把正在播放的放到最前面
+            if !mainPlaylist.isEmpty {
+                entireShuffledIndices = mainPlaylist.indices.filter { $0 != currentTrackIndex }.shuffled()
+                entireShuffledIndices.insert(currentTrackIndex, at: 0)
+            }
+            shuffledIndices = entireShuffledIndices
+            currentShuffleTrackIndex = 0
+        } else {
+            entireShuffledIndices = []
+            shuffledIndices = []
+            currentShuffleTrackIndex = 0
+            updateOrderedIndices()
+        }
+        isShuffleModeSubject.send(isShuffleMode)
+    }
+
+    // MARK: Private
 
     // 用來控制系統音量（只使用它裡面的 slider ）
     private let mpVolumeView: MPVolumeView = .init()
     private let audioSession = AVAudioSession.sharedInstance()
     private var volumeObserver: NSKeyValueObservation?
+
     // 控制循環播放
     private var looper: AVPlayerLooper?
+
     // 觀察播放進度
     private var timeObserverToken: Any?
+
+    // 用來來逐漸增加播放速度的計時器(快轉/倒帶)
+    private var speedIncreasingTimer: Timer?
 
     private let currentTrackIndexSubject = CurrentValueSubject<Int, Never>(0)
     private let timeSubject = CurrentValueSubject<Double?, Never>(nil)
@@ -252,64 +381,31 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
 
     // 待播清單索引陣列
     private var displayIndices: [Int] {
-        get { isShuffleMode ? shuffledIndices : serialIndices }
-        set {
-            if isShuffleMode {
-                shuffledIndices = newValue
-            } else {
-                serialIndices = newValue
-            }
-        }
+        return isShuffleMode ? shuffledIndices : orderedIndices
     }
 
     // 待播清單索引陣列
-    private var serialIndices: [Int] {
-        get { UserDefaults.displayIndices }
-        set { UserDefaults.displayIndices = newValue }
+    private var orderedIndices: [Int] {
+        get { UserDefaults.orderedIndices }
+        set { UserDefaults.orderedIndices = newValue }
     }
 
     // 亂序的待播清單索引陣列
     private var shuffledIndices: [Int] {
-        get { UserDefaults.shuffledDisplayIndices }
-        set { UserDefaults.shuffledDisplayIndices = newValue }
+        get { UserDefaults.shuffledIndices }
+        set { UserDefaults.shuffledIndices = newValue }
     }
 
-    private func updateDisplayIndices() {
-        let nextIndex = currentTrackIndex + 1
-        if !playlist.isValidIndex(nextIndex) {
-            // 如果沒有待播放的顯示空陣列
-            displayIndices = []
-        } else {
-            // 取得當前音樂之後待播放的所有項目
-            displayIndices = Array(nextIndex ..< playlist.count)
-        }
-    }
-
-    /// 更新播放時使用的 AVPlayerItem
-    private func resetPlayerItem(track: Track?) {
-        guard let track, let audioURL = URL(string: track.previewUrl) else {
-            Utils.toast(MusicPlayerError.invalidTrack.unwrapDescription)
-            return
-        }
-        // 移除時間觀察
-        removeTimeObserver()
-
-        // 回到歌曲開頭
-        seek(to: 0)
-        let playerItem = AVPlayerItem(url: audioURL)
-        player.replaceCurrentItem(with: playerItem)
-
-        // 因為切換過 playerItem，要重設 isPlaying 狀態
-        isPlaying = isPlaying
-        // 新增時間觀察
-        addTimeObserver()
+    private var entireShuffledIndices: [Int] {
+        get { UserDefaults.entireShuffledIndices }
+        set { UserDefaults.entireShuffledIndices = newValue }
     }
 
     // MARK: Setup
 
     private func setupRemoteControl() {
         UIApplication.shared.beginReceivingRemoteControlEvents()
-        //  設定背景&鎖定播放
+        // 設定背景&鎖定播放
         setupRemoteTransportControls()
     }
 
@@ -346,18 +442,18 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
 
     @discardableResult
     private func prepareToPlay(at index: Int) -> Bool {
-        guard !playlist.isEmpty else {
+        guard !mainPlaylist.isEmpty else {
             Utils.toast(MusicPlayerError.emptyPlaylist.unwrapDescription)
             return false
         }
-        guard playlist.isValidIndex(index) else {
+        guard mainPlaylist.isValidIndex(index) else {
             Utils.toast(MusicPlayerError.invalidIndex.unwrapDescription)
             return false
         }
 
-        resetPlayerItem(track: playlist[index])
+        resetPlayerItem(track: mainPlaylist[index])
         currentTrackIndex = index
-        updateDisplayIndices()
+        updateOrderedIndices()
         return true
     }
 
@@ -371,6 +467,90 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
             playedTracks.append(currentTrack)
         }
     }
+
+    private func nextTrackInPendingList() {
+        addPlayRecordIfNeeded()
+        var nextIndex = 0
+        if !mainPlaylist.isEmpty {
+            // 超過索引就從第一首歌重新播放
+            nextIndex = (currentTrackIndex + 1) % mainPlaylist.count
+        }
+        prepareToPlay(at: nextIndex)
+    }
+
+    private func nextTrackInShuffledPendingList() {
+        guard !entireShuffledIndices.isEmpty else {
+            Utils.toast(MusicPlayerError.emptyPlaylist.unwrapDescription)
+            return
+        }
+        addPlayRecordIfNeeded()
+
+        let nextIndex = currentShuffleTrackIndex + 1
+        // 超過索引就從第一首歌重新播放
+        if nextIndex >= entireShuffledIndices.count {
+            currentShuffleTrackIndex = 0
+            updateShuffledIndices()
+        } else {
+            shuffledIndices.removeFirst()
+            currentShuffleTrackIndex = nextIndex
+        }
+
+        let nextIndexInMain = entireShuffledIndices[currentShuffleTrackIndex]
+        prepareToPlay(at: nextIndexInMain)
+    }
+
+    private func previousTrackInShuffledPendingList() {
+        guard !entireShuffledIndices.isEmpty else {
+            Utils.toast(MusicPlayerError.emptyPlaylist.unwrapDescription)
+            return
+        }
+
+        let previousIndex = currentShuffleTrackIndex - 1
+        // 到第一首不能再往前
+        currentShuffleTrackIndex = max(0, previousIndex)
+        let previousIndexInMain = entireShuffledIndices[currentShuffleTrackIndex]
+        if previousIndex >= 0 {
+            shuffledIndices.insert(previousIndexInMain, at: 0)
+        }
+        prepareToPlay(at: previousIndexInMain)
+    }
+
+    private func previousTrackInPendingList() {
+        // 到第一首不能再往前
+        let previousIndexInMain = max(0, currentTrackIndex - 1)
+        prepareToPlay(at: previousIndexInMain)
+    }
+
+    private func updateShuffledIndices() {
+        shuffledIndices = entireShuffledIndices
+    }
+
+    private func updateOrderedIndices() {
+        if !mainPlaylist.isValidIndex(currentTrackIndex) {
+            orderedIndices = []
+        } else {
+            // 重設待播清單
+            orderedIndices = Array(currentTrackIndex ..< mainPlaylist.count)
+        }
+    }
+
+    /// 更新播放時使用的 AVPlayerItem
+    private func resetPlayerItem(track: Track?) {
+        guard let track, let audioURL = URL(string: track.previewUrl) else {
+            Utils.toast(MusicPlayerError.invalidTrack.unwrapDescription)
+            return
+        }
+        // 移除時間觀察
+        removeTimeObserver()
+        // 回到歌曲開頭
+        seek(to: 0)
+        let playerItem = AVPlayerItem(url: audioURL)
+        player.replaceCurrentItem(with: playerItem)
+        // 因為切換過 playerItem，要重設 isPlaying 狀態
+        isPlaying = isPlaying
+        // 新增時間觀察
+        addTimeObserver()
+    }
 }
 
 // MARK: MusicPlayerControl
@@ -378,7 +558,7 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
 extension MusicPlayer {
     ///  播放當前曲目(從頭開始播放)
     func play() {
-        prepareToPlay(at: currentTrackIndex)
+        prepareToPlay(at: isShuffleMode ? currentShuffleTrackIndex : currentTrackIndex)
         isPlaying = true
     }
 
@@ -394,9 +574,9 @@ extension MusicPlayer {
 
     /// 停止播放(暫停並將時間設到歌曲開始)
     func stop() {
-        prepareToPlay(at: 0)
-        isPlaying = false
-        player.seek(to: CMTime.zero)
+//        prepareToPlay(at: 0)
+//        isPlaying = false
+//        player.seek(to: CMTime.zero)
     }
 
     /**
@@ -423,59 +603,28 @@ extension MusicPlayer {
 extension MusicPlayer {
     /// 歌曲播放完畢準備進入下一首(自動接續)
     private func playerItemDidPlayToEndTime() {
-        var nextIndex: Int
         switch repeatMode {
         // 循環播放單曲
         case .one:
-            nextIndex = currentTrackIndex
-        // 循環播放全部/不循環播放
-        case .all, .none:
-            nextIndex = currentTrackIndex + 1
-        }
-        if nextIndex >= playlist.count {
-            // 超過索引就從第一首歌重新播放
-            nextIndex = 0
-            // 如果播放到最後一首歌，且選擇不循環播放，就停止播放
-            if repeatMode == .none {
+            addPlayRecordIfNeeded()
+            play()
+
+        // 循環播放全部
+        case .all:
+            nextTrack()
+
+        // 不循環播放
+        case .none:
+            nextTrack()
+            // 播放到最後一首歌就停止播放
+            if isLastInPendingList {
                 pause()
             }
         }
-        addPlayRecordIfNeeded()
-        prepareToPlay(at: nextIndex)
     }
 
-    /// 播放下一首(手動觸發)
-    @discardableResult
-    func nextTrack() -> Bool {
-        var nextIndex = currentTrackIndex + 1
-        // 超過索引就從第一首歌重新播放
-        if !displayIndices.contains(nextIndex) {
-            nextIndex = 0
-        }
-//        if !playlist.isValidIndex(nextIndex) {
-//            nextIndex = 0
-//        }
-        addPlayRecordIfNeeded()
-        return prepareToPlay(at: nextIndex)
-    }
-
-    /// 播放上一首
-    @discardableResult
-    func previousTrack() -> Bool {
-        var previousIndex = currentTrackIndex - 1
-        // 避免超出索引
-        previousIndex = max(0, previousIndex)
-        return prepareToPlay(at: previousIndex)
-    }
-
-    /// 隨機排序待播清單
-    func toggleShuffleMode() {
-        if isShuffleMode {
-            displayIndices = playlist.indices.shuffled()
-        } else {
-            displayIndices = serialIndices
-        }
-        isShuffleModeSubject.send(isShuffleMode)
+    private var isLastInPendingList: Bool {
+        isShuffleMode ? (currentShuffleTrackIndex == entireShuffledIndices.count - 1) : (currentTrackIndex == mainPlaylist.count - 1)
     }
 }
 
@@ -522,5 +671,3 @@ extension MPVolumeView {
         subviews.first { $0 is UISlider } as? UISlider
     }
 }
-
-// player.addBoundaryTimeObserver  傳入指定時間(陣列)要進行的行為

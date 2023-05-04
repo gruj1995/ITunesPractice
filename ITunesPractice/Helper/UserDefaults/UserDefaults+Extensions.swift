@@ -18,13 +18,21 @@ extension UserDefaults {
     @UserDefaultValue(key: "currentTrackIndex", defaultValue: 0)
     static var currentTrackIndex: Int
 
-    /// 顯示用的待播清單索引陣列
-    @UserDefaultValue(key: "displayIndices", defaultValue: [])
-    static var displayIndices: [Int]
+    /// 選中的隨機待播清單索引
+    @UserDefaultValue(key: "currentShuffleTrackIndex", defaultValue: 0)
+    static var currentShuffleTrackIndex: Int
 
-    /// 亂序的待播清單索引陣列
-    @UserDefaultValue(key: "shuffledDisplayIndices", defaultValue: [])
-    static var shuffledDisplayIndices: [Int]
+    /// 顯示的待播清單索引陣列
+    @UserDefaultValue(key: "orderedIndices", defaultValue: [])
+    static var orderedIndices: [Int]
+
+    /// 顯示的隨機待播清單索引陣列
+    @UserDefaultValue(key: "shuffledIndices", defaultValue: [])
+    static var shuffledIndices: [Int]
+
+    /// 完整的隨機待播清單索引陣列
+    @UserDefaultValue(key: "entireShuffledIndices", defaultValue: [])
+    static var entireShuffledIndices: [Int]
 
     /// 播放紀錄
     @UserDefaultValue(key: "playedTracks", defaultValue: [])

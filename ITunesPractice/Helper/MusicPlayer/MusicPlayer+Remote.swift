@@ -31,18 +31,14 @@ extension MusicPlayer {
 
         // 上一曲
         commandCenter.previousTrackCommand.addTarget { [unowned self] _ in
-            if previousTrack() {
-                return .success
-            }
-            return .commandFailed
+            previousTrack()
+            return .success
         }
 
         // 下一曲
         commandCenter.nextTrackCommand.addTarget { [unowned self] _ in
-            if nextTrack() {
-                return .success
-            }
-            return .commandFailed
+            nextTrack()
+            return .success
         }
 
         // 控制播放進度(調整遠程控制中心的進度條更新app內的進度條)

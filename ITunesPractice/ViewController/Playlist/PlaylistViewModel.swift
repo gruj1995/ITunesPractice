@@ -124,7 +124,7 @@ class PlaylistViewModel {
 
     // 待播清單
     private var displayPlaylist: [Track] {
-        musicPlayer.displayPlaylist
+        musicPlayer.pendingPlaylist
     }
 
     // 播放紀錄

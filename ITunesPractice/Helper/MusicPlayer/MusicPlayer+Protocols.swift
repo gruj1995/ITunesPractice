@@ -29,15 +29,15 @@ protocol MusicPlayerControl {
 // MARK: - MusicPlayerPlaylistControl
 
 protocol MusicPlayerPlaylistControl {
-    var playlist: [Track] { get } // 播放清單
+    var mainPlaylist: [Track] { get set } // 播放清單
     var currentTrack: Track? { get } // 當前播放曲目（透過currentTrackIndex取得）
     var currentTrackIndex: Int { get set } // 目前選中的曲目的索引
     var isShuffleMode: Bool { get set } // 是否隨機播放
     var repeatMode: RepeatMode { get set } // 重複的模式
     var playbackRate: Float { get set } // 播放速率
 
-    func nextTrack() -> Bool //  播放清單內的下一首
-    func previousTrack() -> Bool //  播放清單內的前一首
+    func nextTrack() //  播放清單內的下一首
+    func previousTrack()  //  播放清單內的前一首
 }
 
 // MARK: - MusicPlayerSpeedControl
