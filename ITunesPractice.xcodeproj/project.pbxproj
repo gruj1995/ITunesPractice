@@ -13,6 +13,7 @@
 		8B0E69FE29F8C1C9004743A7 /* ContextMenuManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0E69FD29F8C1C9004743A7 /* ContextMenuManager.swift */; };
 		8B0E6A0029F8D8F3004743A7 /* UserDefaultValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0E69FF29F8D8F3004743A7 /* UserDefaultValue.swift */; };
 		8B0E6A0929FA2F46004743A7 /* TracksType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0E6A0829FA2F46004743A7 /* TracksType.swift */; };
+		8B0E6A1E29FF8583004743A7 /* Playlist2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0E6A1D29FF8583004743A7 /* Playlist2.swift */; };
 		8B3B6CCB29AC788400A6352A /* ITunesService+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B6CCA29AC788400A6352A /* ITunesService+Lookup.swift */; };
 		8B3B6CCD29AD8C0E00A6352A /* TrackDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B6CCC29AD8C0E00A6352A /* TrackDetailViewController.swift */; };
 		8B3B6CCF29AD8C2500A6352A /* TrackDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B6CCE29AD8C2500A6352A /* TrackDetailViewModel.swift */; };
@@ -196,6 +197,7 @@
 		8B0E69FD29F8C1C9004743A7 /* ContextMenuManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenuManager.swift; sourceTree = "<group>"; };
 		8B0E69FF29F8D8F3004743A7 /* UserDefaultValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultValue.swift; sourceTree = "<group>"; };
 		8B0E6A0829FA2F46004743A7 /* TracksType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksType.swift; sourceTree = "<group>"; };
+		8B0E6A1D29FF8583004743A7 /* Playlist2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playlist2.swift; sourceTree = "<group>"; };
 		8B3B6CCA29AC788400A6352A /* ITunesService+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ITunesService+Lookup.swift"; sourceTree = "<group>"; };
 		8B3B6CCC29AD8C0E00A6352A /* TrackDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailViewController.swift; sourceTree = "<group>"; };
 		8B3B6CCE29AD8C2500A6352A /* TrackDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailViewModel.swift; sourceTree = "<group>"; };
@@ -421,6 +423,7 @@
 			isa = PBXGroup;
 			children = (
 				8BBCE34A29C0B6B90084BF44 /* Presenter */,
+				8B0E6A1D29FF8583004743A7 /* Playlist2.swift */,
 				8B3F9BC729C3791C0050CFC9 /* KingFisherAdaper.swift */,
 			);
 			path = Helper;
@@ -1261,6 +1264,7 @@
 				8B3F9BE129C6EA270050CFC9 /* UIColor+Extension.swift in Sources */,
 				8BF66E2529E397BC00C8811E /* NotificationName+Extensions.swift in Sources */,
 				8BB69BDA29BE1B3100F09793 /* PlaylistViewModel.swift in Sources */,
+				8B0E6A1E29FF8583004743A7 /* Playlist2.swift in Sources */,
 				8BB69BC929BCB71C00F09793 /* ApiEngine+Extensions.swift in Sources */,
 				8B3B6CCB29AC788400A6352A /* ITunesService+Lookup.swift in Sources */,
 				8BF2026029A99DF7005FF2E4 /* SearchResponse.swift in Sources */,
