@@ -14,6 +14,8 @@
 		8B0E6A0029F8D8F3004743A7 /* UserDefaultValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0E69FF29F8D8F3004743A7 /* UserDefaultValue.swift */; };
 		8B0E6A0929FA2F46004743A7 /* TracksType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0E6A0829FA2F46004743A7 /* TracksType.swift */; };
 		8B0E6A1E29FF8583004743A7 /* Playlist2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0E6A1D29FF8583004743A7 /* Playlist2.swift */; };
+		8B0E6A2D2A04330C004743A7 /* Kanna in Frameworks */ = {isa = PBXBuildFile; productRef = 8B0E6A2C2A04330C004743A7 /* Kanna */; };
+		8B0E6A2F2A043343004743A7 /* KannaAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0E6A2E2A043343004743A7 /* KannaAdapter.swift */; };
 		8B3B6CCB29AC788400A6352A /* ITunesService+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B6CCA29AC788400A6352A /* ITunesService+Lookup.swift */; };
 		8B3B6CCD29AD8C0E00A6352A /* TrackDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B6CCC29AD8C0E00A6352A /* TrackDetailViewController.swift */; };
 		8B3B6CCF29AD8C2500A6352A /* TrackDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B6CCE29AD8C2500A6352A /* TrackDetailViewModel.swift */; };
@@ -198,6 +200,7 @@
 		8B0E69FF29F8D8F3004743A7 /* UserDefaultValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultValue.swift; sourceTree = "<group>"; };
 		8B0E6A0829FA2F46004743A7 /* TracksType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksType.swift; sourceTree = "<group>"; };
 		8B0E6A1D29FF8583004743A7 /* Playlist2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playlist2.swift; sourceTree = "<group>"; };
+		8B0E6A2E2A043343004743A7 /* KannaAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KannaAdapter.swift; sourceTree = "<group>"; };
 		8B3B6CCA29AC788400A6352A /* ITunesService+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ITunesService+Lookup.swift"; sourceTree = "<group>"; };
 		8B3B6CCC29AD8C0E00A6352A /* TrackDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailViewController.swift; sourceTree = "<group>"; };
 		8B3B6CCE29AD8C2500A6352A /* TrackDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailViewModel.swift; sourceTree = "<group>"; };
@@ -354,6 +357,7 @@
 				8B4D3700299FC4A300059381 /* Kingfisher in Frameworks */,
 				8B4D36FD299FC48E00059381 /* SwiftyJSON in Frameworks */,
 				8B3F9BE629C6F0660050CFC9 /* ColorKit in Frameworks */,
+				8B0E6A2D2A04330C004743A7 /* Kanna in Frameworks */,
 				8BFDF16A29A1EB39008E2C23 /* SnapKit in Frameworks */,
 				24B1F81F56F20E14AB804089 /* Pods_ITunesPractice.framework in Frameworks */,
 				8B4D36FA299FC47D00059381 /* Alamofire in Frameworks */,
@@ -792,6 +796,7 @@
 				8B6B56B629B4821600F099DD /* ToastHelper.swift */,
 				8BF7183F29CE818C002CEFD6 /* LocaleManager.swift */,
 				8BB69BCC29BD694B00F09793 /* NetworkMonitor.swift */,
+				8B0E6A2E2A043343004743A7 /* KannaAdapter.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -925,6 +930,7 @@
 				8B3F9BE529C6F0660050CFC9 /* ColorKit */,
 				8B5FCD3B29D3281A00C763DB /* MarqueeLabel */,
 				8B8F50F029F0D21100BCE350 /* Lottie */,
+				8B0E6A2C2A04330C004743A7 /* Kanna */,
 			);
 			productName = ITunesPractice;
 			productReference = 8B4D36C0299FBD7E00059381 /* ITunesPractice.app */;
@@ -1011,6 +1017,7 @@
 				8B3F9BE429C6F0660050CFC9 /* XCRemoteSwiftPackageReference "ColorKit" */,
 				8B5FCD3A29D3281A00C763DB /* XCRemoteSwiftPackageReference "MarqueeLabel" */,
 				8B8F50EF29F0D21100BCE350 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				8B0E6A2B2A04330C004743A7 /* XCRemoteSwiftPackageReference "Kanna" */,
 			);
 			productRefGroup = 8B4D36C1299FBD7E00059381 /* Products */;
 			projectDirPath = "";
@@ -1154,6 +1161,7 @@
 				8B677CC729BEF7F400F73FE5 /* RippleEffectButton.swift in Sources */,
 				8B0E6A0029F8D8F3004743A7 /* UserDefaultValue.swift in Sources */,
 				8B8F50E329EF07BA00BCE350 /* AudioSearchResultViewController.swift in Sources */,
+				8B0E6A2F2A043343004743A7 /* KannaAdapter.swift in Sources */,
 				8BBCE35429C0D67B0084BF44 /* HighlightBlurView.swift in Sources */,
 				8B3B6CCD29AD8C0E00A6352A /* TrackDetailViewController.swift in Sources */,
 				8B58CFC029D0562000B36C71 /* Double+Extensions.swift in Sources */,
@@ -1627,6 +1635,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		8B0E6A2B2A04330C004743A7 /* XCRemoteSwiftPackageReference "Kanna" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tid-kijyun/Kanna";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		8B3F9BCF29C5EDB10050CFC9 /* XCRemoteSwiftPackageReference "FloatingPanel" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SCENEE/FloatingPanel";
@@ -1710,6 +1726,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		8B0E6A2C2A04330C004743A7 /* Kanna */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B0E6A2B2A04330C004743A7 /* XCRemoteSwiftPackageReference "Kanna" */;
+			productName = Kanna;
+		};
 		8B3F9BD029C5EDB10050CFC9 /* FloatingPanel */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8B3F9BCF29C5EDB10050CFC9 /* XCRemoteSwiftPackageReference "FloatingPanel" */;
