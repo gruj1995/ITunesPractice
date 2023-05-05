@@ -15,13 +15,16 @@ import UIKit
 class VideoView: UIView {
     // MARK: Lifecycle
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-
-//        player?.currentItem?.observe(\.status, options: [.new]) { [weak self] _, change in
-//            guard let newVolume = change.newValue else { return }
-////            self?.volumeChanged(newVolume)
-//        }
+        // 註冊播放完畢的觸發器
+        NotificationCenter.default.addObserver(self, selector: #selector(playerDidFinishPlaying), name: .AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
+        // 讓影片填滿畫面
+        playerLayer.videoGravity = .resizeAspectFill
     }
 
     @available(*, unavailable)
@@ -39,127 +42,81 @@ class VideoView: UIView {
         return layer as! AVPlayerLayer
     }
 
-    private var loaderDelegat: SimpleResourceLoaderDelegate?
-
-    deinit {
-        loaderDelegat?.invalidate()
-    }
-
-    private func setDelegate(with url: URL) {
-        loaderDelegat = SimpleResourceLoaderDelegate(withURL: url)
-        let videoAsset = AVURLAsset(url: loaderDelegat!.streamingAssetURL)
-        videoAsset.resourceLoader.setDelegate(loaderDelegat, queue: DispatchQueue.main)
-
-        loaderDelegat?.completion = { localFileURL in
-            if let localFileURL = localFileURL {
-                print("Media file saved to: \(localFileURL)")
-            } else {
-                print("Failed to download media file.")
-            }
-        }
-
-        let item = AVPlayerItem(asset: videoAsset)
-        item.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), options: [.old, .new], context: &playerItemContext)
-        player = AVPlayer(playerItem: item)
-    }
-
-    func play(with url: URL) {
-//        let url = URL(string: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")!
-//        let url = URL(string: "https://video-ssl.itunes.apple.com/itunes-assets/Video126/v4/9f/8d/c7/9f8dc7e7-6373-4e9b-9873-c2dc818ea07d/mzvf_12376652547626120255.720w.h264lc.U.p.m4v")!
-        setDelegate(with: url)
-
-//        initPlayerAsset(with: url) { (asset: AVAsset) in
-//            let item = AVPlayerItem(asset: asset)
-//            item.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), options: [.old, .new], context: &self.playerItemContext)
-//
-//            DispatchQueue.main.async {
-//                self.player = AVPlayer(playerItem: item)
-////                self.player?.allowsExternalPlayback = false
-//
-////                let videoURL = URL(string: "https://music.apple.com/tw/music-video/burn/1452877653")!
-////                let asset = AVURLAsset(url: videoURL)
-////                asset.resourceLoader.setDelegate(ByteRangeLoaderDelegate(), queue: DispatchQueue.main)
-////                let playerItem = AVPlayerItem(asset: asset)
-//            }
-//        }
-    }
-
-    // 透過 KVO 觀察播放狀態
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        // Only handle observations for the playerItemContext
-        guard context == &playerItemContext else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-            return
-        }
-
-        if keyPath == #keyPath(AVPlayerItem.status) {
-            let status: AVPlayerItem.Status
-            if let statusNumber = change?[.newKey] as? NSNumber {
-                status = AVPlayerItem.Status(rawValue: statusNumber.intValue)!
-            } else {
-                status = .unknown
+    func playMusicVideo(with url: URL) async {
+        do {
+            let html = try await fetchHTMLFromMVUrl(url)
+            guard let urlString = KannaAdapter.shared.parseAppleMusicVideoHTML(html),
+                  let url = URL(string: urlString)
+            else {
+                return
             }
 
-            // Switch over status value
-            switch status {
+            let asset = try await initPlayerAsset(with: url)
+            let item = AVPlayerItem(asset: asset)
+            // 必須在 main thread 執行
+            DispatchQueue.main.async {
+                self.player = AVPlayer(playerItem: item)
+                // 讓 MV 禁音
+                self.player?.isMuted = true
+                self.observePlayerStatus()
+            }
+        } catch {
+            Logger.log(error.unwrapDescription)
+        }
+    }
+
+    /// 監聽播放狀態
+    func observePlayerStatus() {
+        guard let playerItem = player?.currentItem else { return }
+        observer = playerItem.observe(\.status, options: [.new]) { [weak self] playerItem, _ in
+            guard let self else { return }
+            switch playerItem.status {
             case .readyToPlay:
-                print(".readyToPlay")
+                Logger.log(".readyToPlay")
                 self.player?.play()
             case .failed:
-                print(".failed \(player?.currentItem?.error)")
+                Logger.log(".failed \(String(describing: self.player?.currentItem?.error))")
             case .unknown:
-                print(".unknown")
-            @unknown default:
-                print("@unknown default")
+                Logger.log(".unknown")
+            default:
+                Logger.log("default")
             }
         }
     }
 
     // MARK: Private
 
-    private var playerItemContext = 0
+    private var observer: NSKeyValueObservation?
 
     private var player: AVPlayer? {
         get { playerLayer.player }
         set { playerLayer.player = newValue }
     }
 
-    private func initPlayerAsset(with url: URL, completion: ((_ asset: AVAsset) -> Void)?) {
+    private func initPlayerAsset(with url: URL) async throws -> AVAsset {
         let asset = AVAsset(url: url)
-        asset.loadValuesAsynchronously(forKeys: ["playable"]) {
-            completion?(asset)
+        // Load an asset's suitability for playback and export.
+        let isPlayable = try await asset.load(.isPlayable)
+        if isPlayable {
+            return asset
+        } else {
+            throw NSError(domain: "Asset is unplayable", code: -1, userInfo: nil)
         }
     }
-}
 
-//class ByteRangeLoaderDelegate: NSObject, AVAssetResourceLoaderDelegate {
-//
-//    func resourceLoader(_ resourceLoader: AVAssetResourceLoader, shouldWaitForLoadingOfRequestedResource loadingRequest: AVAssetResourceLoadingRequest) -> Bool {
-//        guard let url = loadingRequest.request.url else { return false }
-//        let newRequest = NSMutableURLRequest(url: url)
-//        newRequest.addValue("bytes=0-\(Int.max)", forHTTPHeaderField: "Range")
-//
-//        let session = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue.main)
-//        let task = session.dataTask(with: newRequest as URLRequest)
-//        task.resume()
-//        return true
-//    }
-//}
-//
-//extension ByteRangeLoaderDelegate: URLSessionDataDelegate {
-//
-//    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
-//        guard let response = dataTask.response as? HTTPURLResponse else { return }
-//        if let contentRangeHeader = response.allHeaderFields["Content-Range"] as? String,
-//           let totalLength = contentRangeHeader.components(separatedBy: "/").last,
-//           let rangeEnd = Int(totalLength) {
-//            let rangeLength = data.count
-//            let rangeStart = rangeEnd - rangeLength
-//            let dataRange = NSRange(location: rangeStart, length: rangeLength)
-////            loadingRequest.dataRequest?.respond(with: data.subdata(in: dataRange))
-////            loadingRequest.finishLoading()
-//        } else {
-////            loadingRequest.finishLoading(with: NSError(domain: "ByteRangeLoaderDelegate", code: -1, userInfo: nil))
-//        }
-//    }
-//}
+    /// 從音樂 MV 的 url 取得 Apple music 網站的 HTML 資訊
+    private func fetchHTMLFromMVUrl(_ url: URL) async throws -> String {
+        let (data, _) = try await URLSession.shared.data(from: url)
+        guard let htmlString = String(data: data, encoding: .utf8) else {
+            throw NSError(domain: "Fetch HTML From MV Url Failed", code: -1, userInfo: nil)
+        }
+        return htmlString
+    }
+
+    /// 播放完畢後重複播放
+    @objc
+    private func playerDidFinishPlaying(note: NSNotification) {
+        player?.seek(to: .zero)
+        player?.play()
+    }
+}

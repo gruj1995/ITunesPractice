@@ -6,7 +6,7 @@
 //
 
 import Combine
-import Foundation
+import UIKit
 
 class AudioSearchResultViewModel {
     // MARK: Lifecycle
@@ -22,7 +22,22 @@ class AudioSearchResultViewModel {
 
     let hasVideo: Bool
 
+    var randomBgColor: UIColor? {
+        colors.randomElement()
+    }
+
     // MARK: Private
 
     private let matchingHelper = MatchingHelper.shared
+
+    private let colors: [UIColor] = [
+        UIColor(hex: "#F97B22"), // 橘
+        UIColor(hex: "#FEE8B0"), // 淡黃
+        UIColor(hex: "#9CA777"), // 橄欖綠
+        UIColor(hex: "#7C9070"), // 深橄欖綠
+        UIColor(hex: "#E76161"), // 洋紅
+        UIColor(hex: "#B04759"), // 紅紫
+        UIColor(hex: "#19A7CE"), // 藍
+        UIColor(hex: "#146C94") // 深藍
+    ]
 }

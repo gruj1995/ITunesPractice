@@ -11,7 +11,7 @@ import UIKit
 
 // MARK: - AudioSearchViewController
 
-class AudioSearchViewController: UIViewController {
+class AudioSearchViewController: BottomFloatingPanelViewController {
     // MARK: Internal
 
     override func viewDidLoad() {
@@ -231,11 +231,15 @@ class AudioSearchViewController: UIViewController {
 
     private func presentAudioSearchResultVC(track: Track) {
         let vc = AudioSearchResultViewController(track: track)
-        vc.modalTransitionStyle = .crossDissolve
-        vc.modalPresentationStyle = .fullScreen
+        vc.modalPresentationStyle = .pageSheet
+        vc.modalTransitionStyle = .coverVertical
+        if let sheet = vc.sheetPresentationController {
+            sheet.detents = [.large()]
+            sheet.prefersGrabberVisible = true // 顯示頂部 grabber
+        }
         present(vc, animated: true)
     }
-
+    
     // TODO: 改成彈窗
     private func presentFailedVC() {
         stopRecognition()

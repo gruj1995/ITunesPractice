@@ -33,6 +33,12 @@ class AudioSearchResultViewController: UIViewController {
         bindViewModel()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        gradient.frame = topView.bounds
+        coverImageView.frame = CGRect(x: 0, y: 0, width: Constants.screenWidth, height: Constants.screenHeight * 0.6)
+    }
+
     // MARK: Private
 
     private let viewModel: AudioSearchResultViewModel
@@ -40,10 +46,39 @@ class AudioSearchResultViewController: UIViewController {
 
 //    private var player: AVPlayer?
 
-    // TODO: 改成放影片
+    lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.delegate = self
+        scrollView.backgroundColor = .clear
+        scrollView.showsVerticalScrollIndicator = false
+        // 避免自動加上 content inset
+        scrollView.contentInsetAdjustmentBehavior = .never
+        return scrollView
+    }()
+
+    private lazy var contentView: UIView = .init()
+
+    private lazy var topView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        view.layer.addSublayer(gradient)
+        return view
+    }()
+
+    private lazy var gradient: CAGradientLayer = {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
+        return gradientLayer
+    }()
+
+    private lazy var bottomView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .black
+        return view
+    }()
+
     private lazy var coverImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = .clear
         imageView.contentMode = .scaleAspectFill
         imageView.layer.opacity = 0.8
         return imageView
@@ -51,23 +86,37 @@ class AudioSearchResultViewController: UIViewController {
 
     private lazy var videoView: VideoView = {
         let videoView = VideoView(frame: .zero)
-        videoView.backgroundColor = .darkGray
         return videoView
     }()
 
-    private lazy var closeButton: CircleButton = {
-        let button = CircleButton(bgColor: .white.withAlphaComponent(0.4))
-        button.setImage(AppImages.xmark, for: .normal)
-        button.tintColor = .white
-        button.addTarget(self, action: #selector(clossButtonTapped), for: .touchUpInside)
+    private lazy var sharedButton: UIButton = {
+        let button = UIButton()
+        var config = UIButton.Configuration.filled()
+        config.imagePadding = 10
+        config.contentInsets = .init(top: 10, leading: 0, bottom: 10, trailing: 0)
+        config.attributedTitle = AttributedString(
+            "分享歌曲".localizedString(),
+            attributes: AttributeContainer(
+                [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15, weight: .medium)]
+            )
+        )
+        config.titleAlignment = .center
+        config.image = AppImages.squareAndArrowUp?.withConfiguration(roundConfiguration)
+        config.imagePlacement = .leading // 圖片位置
+        config.baseBackgroundColor = .orange
+        config.baseForegroundColor = .white // 圖片及文字顏色
+        config.cornerStyle = .capsule // 圓角
+        button.configuration = config
+        button.addTarget(self, action: #selector(shareTrack), for: .touchUpInside)
         return button
     }()
 
     private lazy var trackNameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.font = .systemFont(ofSize: 20, weight: .heavy)
+        label.font = .systemFont(ofSize: 21, weight: .heavy)
         label.textAlignment = .left
+        label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
         return label
     }()
@@ -75,7 +124,7 @@ class AudioSearchResultViewController: UIViewController {
     private lazy var artistNameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.font = .systemFont(ofSize: 17, weight: .medium)
+        label.font = .systemFont(ofSize: 18, weight: .medium)
         label.textAlignment = .left
         return label
     }()
@@ -84,6 +133,7 @@ class AudioSearchResultViewController: UIViewController {
         let stackView = UIStackView(arrangedSubviews: [trackNameLabel, artistNameLabel])
         stackView.axis = .vertical
         stackView.spacing = 5
+        stackView.setContentHuggingPriority(.required, for: .vertical)
         return stackView
     }()
 
@@ -94,21 +144,18 @@ class AudioSearchResultViewController: UIViewController {
         trackNameLabel.text = viewModel.track.trackName
         artistNameLabel.text = viewModel.track.artistName
 
-        print("__++ url \(viewModel.track.videoUrl)")
-        if viewModel.hasVideo {
-            playVideo()
+        if let url = viewModel.track.videoUrl {
+            Task {
+                await videoView.playMusicVideo(with: url)
+            }
         } else {
             coverImageView.loadCoverImage(with: viewModel.track.getArtworkImageWithSize(size: .square800))
         }
     }
 
-    private func playVideo() {
-        guard let url = viewModel.track.videoUrl else { return }
-        videoView.play(with: url)
-    }
-
     private func setupLayout() {
         let backgroundView = viewModel.hasVideo ? videoView : coverImageView
+        backgroundView.backgroundColor = viewModel.randomBgColor
 
         view.addSubview(backgroundView)
         backgroundView.snp.makeConstraints { make in
@@ -116,17 +163,44 @@ class AudioSearchResultViewController: UIViewController {
             make.height.equalToSuperview().multipliedBy(0.6)
         }
 
-        view.addSubview(closeButton)
-        closeButton.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.leading.equalToSuperview().inset(20)
-            make.width.height.equalTo(30)
+        view.addSubview(scrollView)
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
 
-        view.addSubview(stackView)
+        scrollView.addSubview(contentView)
+        contentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.width.equalTo(view) // scrollView 寬度
+        }
+
+        contentView.addSubview(topView)
+        topView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(150)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(view).dividedBy(2)
+        }
+
+        topView.addSubview(stackView)
         stackView.snp.makeConstraints { make in
-            make.top.equalTo(backgroundView.snp.bottom).offset(10)
-            make.leading.trailing.equalToSuperview().inset(20)
+            make.bottom.equalToSuperview().offset(-80)
+            make.leading.trailing.equalToSuperview().inset(16)
+        }
+
+        contentView.addSubview(bottomView)
+        bottomView.snp.makeConstraints { make in
+            make.top.equalTo(topView.snp.bottom)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(600)
+            make.bottom.equalToSuperview().offset(0) // scrollView 底部
+        }
+
+        bottomView.addSubview(sharedButton)
+        sharedButton.snp.makeConstraints { make in
+            make.top.equalTo(topView.snp.bottom).offset(100)
+            make.centerX.equalToSuperview()
+            make.width.equalToSuperview().multipliedBy(0.8)
+            make.height.equalTo(40)
         }
     }
 
@@ -142,7 +216,20 @@ class AudioSearchResultViewController: UIViewController {
     }
 
     @objc
-    private func clossButtonTapped() {
-        dismiss(animated: true)
+    private func shareTrack() {
+        Utils.shareTrack(viewModel.track)
+    }
+}
+
+// MARK: UIScrollViewDelegate
+
+extension AudioSearchResultViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_: UIScrollView) {
+//        let spaceBetweenViewToOrigin = -scrollView.convert(.zero, to: topTaskView).y
+//        showNavigationBar = scrollView.contentOffset.y > spaceBetweenViewToOrigin - navigationBarHeight
+//        updateNavigationBarAppearance(willDisappear: false)
+//
+//        // 依據向上捲動的比例調整圖片透明度
+//        taskImageView.alpha = 1 - (scrollView.contentOffset.y / taskImageViewHeight)
     }
 }
