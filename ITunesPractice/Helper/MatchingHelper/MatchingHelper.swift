@@ -206,8 +206,10 @@ extension MatchingHelper: SHSessionDelegate {
         DispatchQueue.main.async {
             // mediaItem 內其實包含專輯名稱、發行日期等資訊，但不知道為什麼沒開放外部取用
             let mediaItem = match.mediaItems.first
-            let track = mediaItem?.convertToTrack()
-            self.trackSubject.value = track
+            if let track = mediaItem?.convertToTrack() {
+                UserDefaults.shazamSearchRecords.append(track)
+                self.trackSubject.value = track
+            }
             self.stopListening()
         }
     }

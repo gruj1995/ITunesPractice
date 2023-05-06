@@ -63,4 +63,10 @@ extension UserDefaults {
     /// 是否無限循環
     @UserDefaultValue(key: "isInfinityMode", defaultValue: false)
     static var isInfinityMode: Bool
+
+    // MARK: Shazam
+
+    /// 搜尋到的音樂
+    @UserDefaultValue(key: "shazamSearchRecords", defaultValue: [])
+    static var shazamSearchRecords: [Track]
 }
