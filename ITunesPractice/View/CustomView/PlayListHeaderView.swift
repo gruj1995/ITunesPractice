@@ -8,13 +8,6 @@
 import SnapKit
 import UIKit
 
-// MARK: - PlayListHeaderTitle
-
-enum PlayListHeaderTitle {
-    static let toBePlayed = "待播清單".localizedString()
-    static let playRecord = "播放記錄".localizedString()
-}
-
 // MARK: - PlayListHeaderView
 
 final class PlayListHeaderView: UITableViewHeaderFooterView {
@@ -40,6 +33,7 @@ final class PlayListHeaderView: UITableViewHeaderFooterView {
     var onShuffleButtonTapped: ((UIButton) -> Void)?
     var onInfinityButtonTapped: ((UIButton) -> Void)?
     var onRepeatButtonTapped: ((UIButton) -> Void)?
+    var onClearButtonTapped: ((UIButton) -> Void)?
 
     lazy var shuffleButton: UIButton = UIButton.createRoundCornerButton(image: AppImages.shuffle, target: self, action: #selector(shuffleButtonTapped))
 
@@ -47,19 +41,34 @@ final class PlayListHeaderView: UITableViewHeaderFooterView {
 
     lazy var infinityButton: UIButton = UIButton.createRoundCornerButton(image: AppImages.infinity, target: self, action: #selector(infinityButtonTapped))
 
-    func configure(title: String, subTitle: String?) {
+    func configure(title: String, subTitle: String?, type: TracksType) {
         titleLabel.text = title
-        if let subTitle = subTitle {
-            subTitleLabel.text = subTitle
-        }
 
-        let shouldHideSubTitle = subTitle == nil
-        if !shouldHideSubTitle {
+        if let subTitle {
+            subTitleLabel.text = subTitle
             UIView.animate(withDuration: 0.3) {
-                self.subTitleLabel.isHidden = shouldHideSubTitle
+                self.subTitleLabel.isHidden = false
             }
         } else {
-            subTitleLabel.isHidden = shouldHideSubTitle
+            subTitleLabel.isHidden = true
+        }
+
+        if type == .history {
+            buttonsStackView.arrangedSubviews.forEach { $0.isHidden = ($0 != clearButton)}
+        } else if type == .playlist {
+            buttonsStackView.arrangedSubviews.forEach { $0.isHidden = ($0 == clearButton)}
+        }
+    }
+
+    func updateButtonAppearance(tintColor: UIColor?, isShuffleMode: Bool? = nil, repeatMode: RepeatMode? = nil, isInfinityMode: Bool? = nil) {
+        if let isShuffleMode {
+            shuffleButton.setRoundCornerButtonAppearance(isSelected: isShuffleMode, tintColor: tintColor)
+        }
+        if let repeatMode {
+            repeatButton.setRoundCornerButtonAppearance(isSelected: repeatMode != .none, tintColor: tintColor, image: repeatMode.image)
+        }
+        if let isInfinityMode {
+            infinityButton.setRoundCornerButtonAppearance(isSelected: isInfinityMode, tintColor: tintColor)
         }
     }
 
@@ -83,13 +92,14 @@ final class PlayListHeaderView: UITableViewHeaderFooterView {
         let button = UIButton()
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .regular)
         button.setTitle("清除".localizedString(), for: .normal)
-        button.setTitleColor(UIColor.white, for: .normal)
+        button.setTitleColor(UIColor(white: 0.8, alpha: 1), for: .normal)
         button.backgroundColor = .clear
+        button.addTarget(self, action: #selector(clearButtonTapped), for: .touchUpInside)
         return button
     }()
 
     private lazy var buttonsStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [shuffleButton, repeatButton, infinityButton])
+        let stackView = UIStackView(arrangedSubviews: [shuffleButton, repeatButton, infinityButton, clearButton])
         stackView.axis = .horizontal
         stackView.spacing = 15
         stackView.alignment = .fill
@@ -129,6 +139,10 @@ final class PlayListHeaderView: UITableViewHeaderFooterView {
         shuffleButton.snp.makeConstraints { make in
             make.width.equalTo(shuffleButton.snp.height)
         }
+
+        clearButton.snp.makeConstraints { make in
+            make.width.equalTo(50)
+        }
     }
 
     @objc
@@ -144,5 +158,10 @@ final class PlayListHeaderView: UITableViewHeaderFooterView {
     @objc
     private func repeatButtonTapped(_ sender: UIButton) {
         onRepeatButtonTapped?(sender)
+    }
+
+    @objc
+    private func clearButtonTapped(_ sender: UIButton) {
+        onClearButtonTapped?(sender)
     }
 }

@@ -1,20 +1,20 @@
 PODS:
+  - SwiftFormat/CLI (0.51.6)
   - SwiftLint (0.50.3)
-  - UIImageColors (2.1.0)
 
 DEPENDENCIES:
+  - SwiftFormat/CLI (= 0.51.6)
   - SwiftLint
-  - UIImageColors
 
 SPEC REPOS:
   trunk:
+    - SwiftFormat
     - SwiftLint
-    - UIImageColors
 
 SPEC CHECKSUMS:
+  SwiftFormat: b2062ab08a5c83c075e32355175c58b99e52187f
   SwiftLint: 77f7cb2b9bb81ab4a12fcc86448ba3f11afa50c6
-  UIImageColors: d2ef3b0877d203cbb06489eeb78ea8b7788caabe
 
-PODFILE CHECKSUM: 6552347dc72890ba08e310517abb11c712e33d55
+PODFILE CHECKSUM: 2f6354b1d714af38cf2c4f4973d7aaf754f1a90b
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.0

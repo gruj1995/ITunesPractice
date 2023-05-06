@@ -22,18 +22,36 @@ struct Utils {
         ToastHelper.shared.showToast(text: msg, position: position, alignment: alignment)
     }
 
-    // TODO: 移位置
-    // 測試用
-    static func addTracksToUserDefaults(_ tracks: [Track]) {
-        var storedTracks = UserDefaults.standard.tracks
-        storedTracks.appendIfNotContains(tracks)
-        UserDefaults.standard.tracks = storedTracks
+    /// 生成做為火花的小圓點圖片，注意顏色如果設太深會導致變化不多且可能看不見
+    static func createSparkleImage(width: Double, color: UIColor?) -> UIImage {
+        let size = CGSize(width: width, height: width)
+        let renderer = UIGraphicsImageRenderer(size: size)
+        let image = renderer.image { context in
+            color?.setFill()
+            context.cgContext.fillEllipse(in: CGRect(origin: .zero, size: size))
+        }
+        return image
     }
 
-    // 測試用
-    static func addTrackToUserDefaults(_ track: Track) {
-        var storedTracks = UserDefaults.standard.tracks
-        storedTracks.appendIfNotContains(track)
-        UserDefaults.standard.tracks = storedTracks
+    static func shareTrack(_ track: Track) {
+        guard let sharedUrl = URL(string: track.trackViewUrl) else {
+            Logger.log("Shared url is nil")
+            Utils.toast("分享失敗".localizedString())
+            return
+        }
+
+        let activityVC = UIActivityViewController(activityItems: [sharedUrl], applicationActivities: nil)
+        // 分享完成後的事件
+        activityVC.completionWithItemsHandler = { _, completed, _, error in
+            if completed {
+                Utils.toast("分享成功".localizedString())
+            } else {
+                // 關閉分享彈窗也算分享失敗
+                Logger.log(error?.localizedDescription ?? "")
+                Utils.toast("分享失敗".localizedString())
+            }
+        }
+        let topVC = UIApplication.shared.getTopViewController()
+        topVC?.present(activityVC, animated: true)
     }
 }

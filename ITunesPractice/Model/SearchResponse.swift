@@ -12,7 +12,7 @@ import Foundation
 struct SearchResponse: Codable {
     // MARK: Internal
 
-    let results: [Track]
+    let results: [TrackData]
 
     let resultCount: Int
 

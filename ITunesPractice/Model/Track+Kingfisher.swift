@@ -18,7 +18,7 @@ extension Track {
         KingfisherManager.shared.retrieveImage(with: url) { result in
             switch result {
             case .success(let value):
-                Logger.log("Image: \(value.image). Got from: \(value.cacheType)")
+//                Logger.log("Image: \(value.image). Got from: \(value.cacheType)")
                 completion(.success(value.image))
             case .failure(let error):
                 Logger.log(error.localizedDescription)

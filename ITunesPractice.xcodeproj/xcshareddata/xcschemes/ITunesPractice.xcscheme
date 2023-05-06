@@ -20,6 +20,34 @@
                ReferencedContainer = "container:ITunesPractice.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "NO"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8B4D36D5299FBD8000059381"
+               BuildableName = "ITunesPracticeTests.xctest"
+               BlueprintName = "ITunesPracticeTests"
+               ReferencedContainer = "container:ITunesPractice.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "NO"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8B4D36DF299FBD8000059381"
+               BuildableName = "ITunesPracticeUITests.xctest"
+               BlueprintName = "ITunesPracticeUITests"
+               ReferencedContainer = "container:ITunesPractice.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -28,28 +56,6 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8B4D36D5299FBD8000059381"
-               BuildableName = "ITunesPracticeTests.xctest"
-               BlueprintName = "ITunesPracticeTests"
-               ReferencedContainer = "container:ITunesPractice.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8B4D36DF299FBD8000059381"
-               BuildableName = "ITunesPracticeUITests.xctest"
-               BlueprintName = "ITunesPracticeUITests"
-               ReferencedContainer = "container:ITunesPractice.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

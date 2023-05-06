@@ -2,7 +2,7 @@
 //  BottomFloatingPanelViewController.swift
 //  ITunesPractice
 //
-//  Created by 李品毅 on 2023/3/23.
+//  Created by 李品毅 on 2023/5/6.
 //
 
 import FloatingPanel
@@ -24,11 +24,11 @@ class BottomFloatingPanelViewController: UIViewController {
         fpc.surfaceView.backgroundColor = .clear
 
         // 是否允許下滑時關閉頁面
-        fpc.isRemovalInteractionEnabled = true
+        fpc.isRemovalInteractionEnabled = false
 
         fpc.behavior = DisableBouncePanelBehavior()
 
-        fpc.layout = FPLayoutType.modalFullScreen.layout
+        fpc.layout = FPLayoutType.miniBar.layout
         fpc.invalidateLayout()
 
         // 容器內容頁填充容器的模式
@@ -44,7 +44,8 @@ extension BottomFloatingPanelViewController: FloatingPanelControllerDelegate {
     /// 頁面關閉條件
     func floatingPanel(_ fpc: FloatingPanelController, shouldRemoveAt location: CGPoint, with velocity: CGVector) -> Bool {
         // 低於頁面一半或下滑超過一定速度時
-        return location.y > Constants.screenHeight / 2 || velocity.dy > 1.5
+//        return location.y > Constants.screenHeight / 2 || velocity.dy > 1.5
+        return false
     }
 
     func floatingPanel(_ fpc: FloatingPanelController, animatorForPresentingTo state: FloatingPanelState) -> UIViewPropertyAnimator {

@@ -58,7 +58,7 @@ extension CAGradientLayer {
             animation.toValue = cgColors
             animation.duration = CFTimeInterval(duration)
             colors = cgColors
-            add(animation, forKey: "colors transition")
+            add(animation, forKey: AnimationKeyPath.colorsTransition)
         } else {
             // 立即更新漸層色
             self.colors = cgColors
