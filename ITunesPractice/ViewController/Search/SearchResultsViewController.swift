@@ -185,20 +185,14 @@ extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegat
         guard let track = viewModel.track(forCellAt: indexPath.row) else {
             return cell
         }
-
+        // 右邊選單按鈕
+        cell.addRightMenuButton(track)
         cell.configure(artworkUrl: track.artworkUrl100, collectionName: track.collectionName, artistName: track.artistName, trackName: track.trackName, showsHighlight: true)
 
         // 被選中的歌曲顯示播放動畫
         let showAnimation = (track == viewModel.currentTrack)
         let isPlaying = viewModel.isPlaying
         cell.updateAnimationState(showAnimation: showAnimation, isPlaying: isPlaying)
-
-        // 右邊選單按鈕
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
-        button.setImage(AppImages.ellipsis?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
-        button.menu = ContextMenuManager.shared.createTrackMenu(track, canEditPlayList: true)
-        button.showsMenuAsPrimaryAction = true // 預設選單是長按出現，將這個值設為 true 可以讓選單在點擊時也出現
-        cell.accessoryView = button
         return cell
     }
 

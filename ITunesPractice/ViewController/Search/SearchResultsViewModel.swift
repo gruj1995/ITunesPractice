@@ -26,8 +26,9 @@ class SearchResultsViewModel {
 
     private(set) var selectedTrack: Track?
 
-    private let musicPlayer: MusicPlayer = .shared
-    
+    @Published var searchTerm: String = ""
+    @Published var state: ViewState = .none
+
     // 正在播放的音樂
     var currentTrack: Track? {
         musicPlayer.currentTrack
@@ -44,9 +45,6 @@ class SearchResultsViewModel {
     var isPlaying: Bool {
         musicPlayer.isPlaying
     }
-
-    @Published var searchTerm: String = ""
-    @Published var state: ViewState = .none
 
     var totalCount: Int {
         tracks.count
@@ -77,7 +75,7 @@ class SearchResultsViewModel {
             case .success(let response):
                 self.currentPage += 1
                 self.totalPages = response.resultCount / self.pageSize + 1
-                self.tracks.append(contentsOf: response.results)
+                self.tracks.append(contentsOf: response.results.map { $0.convertToTrack() })
                 // 如果資料的數量小於每頁的大小，表示已經下載完所有資料
                 self.hasMoreData = response.resultCount == self.pageSize
                 DispatchQueue.main.async {
@@ -105,7 +103,7 @@ class SearchResultsViewModel {
         selectedTrack = tracks[index]
     }
 
-   func insertTrack(forCellAt index: Int) {
+    func insertTrack(forCellAt index: Int) {
         if let track = track(forCellAt: index) {
             musicPlayer.replaceCurrentTrack(track)
         }
@@ -124,6 +122,7 @@ class SearchResultsViewModel {
 
     // MARK: Private
 
+    private let musicPlayer: MusicPlayer = .shared
     private var cancellables: Set<AnyCancellable> = .init()
 
     private var tracks: [Track] = []
