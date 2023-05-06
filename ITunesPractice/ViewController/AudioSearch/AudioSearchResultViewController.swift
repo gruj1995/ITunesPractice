@@ -103,7 +103,7 @@ class AudioSearchResultViewController: UIViewController {
         config.titleAlignment = .center
         config.image = AppImages.squareAndArrowUp?.withConfiguration(roundConfiguration)
         config.imagePlacement = .leading // 圖片位置
-        config.baseBackgroundColor = .orange
+        config.baseBackgroundColor = UIColor(hex: "#F97B22")
         config.baseForegroundColor = .white // 圖片及文字顏色
         config.cornerStyle = .capsule // 圓角
         button.configuration = config
@@ -178,7 +178,7 @@ class AudioSearchResultViewController: UIViewController {
         topView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(150)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(view).dividedBy(2)
+            make.height.equalTo(view).multipliedBy(0.45)
         }
 
         topView.addSubview(stackView)
@@ -191,7 +191,7 @@ class AudioSearchResultViewController: UIViewController {
         bottomView.snp.makeConstraints { make in
             make.top.equalTo(topView.snp.bottom)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(600)
+            make.height.equalTo(700)
             make.bottom.equalToSuperview().offset(0) // scrollView 底部
         }
 
