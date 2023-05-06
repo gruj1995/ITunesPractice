@@ -23,6 +23,7 @@ class LibraryViewModel {
     // MARK: Internal
 
     @Published var tracks: [Track] = UserDefaults.libraryTracks
+
     private(set) var selectedTrack: Track?
 
     func track(forCellAt index: Int) -> Track? {
@@ -33,6 +34,11 @@ class LibraryViewModel {
     func setSelectedTrack(forCellAt index: Int) {
         guard tracks.indices.contains(index) else { return }
         selectedTrack = tracks[index]
+    }
+
+    func removeTrack(forCellAt index: Int) {
+        guard tracks.indices.contains(index) else { return }
+        UserDefaults.libraryTracks.remove(at: index)
     }
 
     // MARK: Private

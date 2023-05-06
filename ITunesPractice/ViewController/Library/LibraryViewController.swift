@@ -61,8 +61,7 @@ class LibraryViewController: UIViewController {
         viewModel.$tracks
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
-                guard let self else { return }
-                self.tableView.reloadData()
+                self?.tableView.reloadData()
             }.store(in: &cancellables)
     }
 
@@ -100,6 +99,22 @@ extension LibraryViewController: UITableViewDataSource, UITableViewDelegate {
         let vc = TrackDetailViewController()
         vc.dataSource = self
         navigationController?.pushViewController(vc, animated: true)
+    }
+
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let rows = viewModel.tracks.count
+            viewModel.removeTrack(forCellAt: indexPath.row)
+            if rows == 1 {
+                tableView.reloadData()
+            } else {
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            }
+        }
+    }
+
+    func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        "移除"
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
