@@ -42,6 +42,7 @@ extension SHMatchedMediaItem {
         track.releaseDate = song.releaseDate?.ISO8601Format() ?? ""
         track.artistViewUrl = song.artistURL?.absoluteString ?? ""
         track.videoUrl = videoURL
+        track.trackViewUrl = song.url?.absoluteString ?? ""
         return track
     }
 }

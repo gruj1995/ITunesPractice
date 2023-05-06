@@ -91,25 +91,8 @@ extension ContextMenuManager {
 
     /// 分享歌曲
     private func shareAction(track: Track) -> UIAction {
-        let shareAction = createAction(title: "分享歌曲".localizedString(), image: AppImages.squareAndArrowUp) { [weak self] _ in
-            guard let sharedUrl = URL(string: track.trackViewUrl) else {
-                Logger.log("Shared url is nil")
-                Utils.toast("分享失敗".localizedString())
-                return
-            }
-            let activityVC = UIActivityViewController(activityItems: [sharedUrl], applicationActivities: nil)
-
-            // 分享完成後的事件
-            activityVC.completionWithItemsHandler = { _, completed, _, error in
-                if completed {
-                    Utils.toast("分享成功".localizedString())
-                } else {
-                    // 關閉分享彈窗也算分享失敗
-                    Logger.log(error?.localizedDescription ?? "")
-                    Utils.toast("分享失敗".localizedString())
-                }
-            }
-            self?.rootVC?.present(activityVC, animated: true)
+        let shareAction = createAction(title: "分享歌曲".localizedString(), image: AppImages.squareAndArrowUp) { _ in
+            Utils.shareTrack(track)
         }
         return shareAction
     }

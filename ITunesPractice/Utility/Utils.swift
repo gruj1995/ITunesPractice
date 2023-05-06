@@ -32,4 +32,26 @@ struct Utils {
         }
         return image
     }
+
+    static func shareTrack(_ track: Track) {
+        guard let sharedUrl = URL(string: track.trackViewUrl) else {
+            Logger.log("Shared url is nil")
+            Utils.toast("分享失敗".localizedString())
+            return
+        }
+
+        let activityVC = UIActivityViewController(activityItems: [sharedUrl], applicationActivities: nil)
+        // 分享完成後的事件
+        activityVC.completionWithItemsHandler = { _, completed, _, error in
+            if completed {
+                Utils.toast("分享成功".localizedString())
+            } else {
+                // 關閉分享彈窗也算分享失敗
+                Logger.log(error?.localizedDescription ?? "")
+                Utils.toast("分享失敗".localizedString())
+            }
+        }
+        let topVC = UIApplication.shared.getTopViewController()
+        topVC?.present(activityVC, animated: true)
+    }
 }
