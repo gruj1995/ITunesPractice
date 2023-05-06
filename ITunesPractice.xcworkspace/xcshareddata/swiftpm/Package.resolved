@@ -46,12 +46,12 @@
       }
     },
     {
-      "identity" : "iqkeyboardmanager",
+      "identity" : "kanna",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/hackiftekhar/IQKeyboardManager.git",
+      "location" : "https://github.com/tid-kijyun/Kanna",
       "state" : {
-        "branch" : "master",
-        "revision" : "0ea3febb36cfcec2afb5841fd8809a9c0fa545b3"
+        "revision" : "f9e4922223dd0d3dfbf02ca70812cf5531fc0593",
+        "version" : "5.2.7"
       }
     },
     {
@@ -61,6 +61,15 @@
       "state" : {
         "revision" : "af4be924ad984cf4d16f4ae4df424e79a443d435",
         "version" : "7.6.2"
+      }
+    },
+    {
+      "identity" : "lottie-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/airbnb/lottie-ios.git",
+      "state" : {
+        "revision" : "4e51b71c6ef1b645c9a83de112d627c919143137",
+        "version" : "4.1.3"
       }
     },
     {

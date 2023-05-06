@@ -19,12 +19,10 @@ extension SHMatchedMediaItem {
             return createDefaultTrack()
         }
         return convertToTrackWithSong(song, songID: songID)
-        //        Logger.log(message: "__+++ item \(self.debugDescription)")
-        //        Logger.log(message: "__+++ song \(song.debugDescription)")
     }
 
     private func createDefaultTrack() -> Track {
-        return Track(
+        let track = Track(
             artworkUrl100: artworkURL?.absoluteString ?? "",
             collectionName: "",
             artistName: artist ?? "",
@@ -35,28 +33,18 @@ extension SHMatchedMediaItem {
             collectionViewUrl: "",
             previewUrl: "",
             trackViewUrl: "")
+        return track.autoIncrementID()
     }
 
     private func convertToTrackWithSong(_ song: Song, songID: Int) -> Track {
         var track = createDefaultTrack()
-        let urlString = getTrackViewUrlString(url: appleMusicURL, id: songID) ?? ""
         track.trackId = songID
         track.collectionName = song.albumTitle ?? ""
         track.releaseDate = song.releaseDate?.ISO8601Format() ?? ""
         track.artistViewUrl = song.artistURL?.absoluteString ?? ""
-        track.collectionViewUrl = urlString
-        track.trackViewUrl = urlString
+        track.videoUrl = videoURL
+        track.trackViewUrl = song.url?.absoluteString ?? ""
+        track.previewUrl = song.previewAssets?.first?.url?.absoluteString ?? ""
         return track
-    }
-
-    private func getTrackViewUrlString(url: URL?, id: Int) -> String? {
-        guard let url  else { return nil }
-        var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
-        components?.query = nil
-        if let newUrl = components?.url {
-            // TODO: 這邊要調整寫法
-            return newUrl.absoluteString + "?i=\(id)"
-        }
-        return nil
     }
 }

@@ -55,7 +55,8 @@ extension ITunesService {
             ApiEngine.shared.requestDecodableWithResult(request) { (result: Result<SearchResponse, ApiEngineError>) in
                 switch result {
                 case .success(let response):
-                    completion(.success(response.results.first))
+                    let tracks = response.results.map { $0.convertToTrack() }
+                    completion(.success(tracks.first))
                 case .failure(let error):
                     completion(.failure(error))
                 }

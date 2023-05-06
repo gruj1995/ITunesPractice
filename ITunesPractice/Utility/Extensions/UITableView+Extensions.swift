@@ -10,59 +10,10 @@ import UIKit
 extension UITableView {
     /// 為 cell 創建 context menu configuration
     func createTrackContextMenuConfiguration(indexPath: IndexPath, track: Track?) -> UIContextMenuConfiguration {
-        let configuration = TrackContextMenuConfiguration(indexPath: indexPath, track: track) { menuAction in
-
-            let rootVC = UIApplication.shared.rootViewController
-
-            switch menuAction {
-            // 加入資料庫
-            case .addToLibrary(let track):
-                TrackDataManager.shared.addToLibrary(track)
-                Utils.toast("已加入資料庫".localizedString())
-
-            // 從資料庫刪除
-            case .deleteFromLibrary(let track):
-                let alertController = ActionButtonAlertController(title: "確定要從您的資料庫刪除此專輯嗎？這也會從播放列表中移除此專輯的歌曲".localizedString(), message: nil, preferredStyle: .actionSheet)
-                // .default 和 .cancel 樣式的按鈕的顏色
-                alertController.view.tintColor = UIColor.systemRed
-
-                let deleteAction = UIAlertAction(title: "刪除專輯".localizedString(), style: .destructive) { _ in
-                    TrackDataManager.shared.removeFromLibrary(track)
-                    Utils.toast("已從資料庫中刪除".localizedString())
-                }
-                alertController.addAction(deleteAction)
-
-                let cancelAction = UIAlertAction(title: "取消".localizedString(), style: .cancel, handler: nil)
-                alertController.addAction(cancelAction)
-
-                rootVC?.present(alertController, animated: true, completion: nil)
-
-            // 分享歌曲
-            case .share(let track):
-                guard let sharedUrl = URL(string: track.trackViewUrl) else {
-                    Logger.log("Shared url is nil")
-                    Utils.toast("分享失敗".localizedString())
-                    return
-                }
-                let activityVC = UIActivityViewController(activityItems: [sharedUrl], applicationActivities: nil)
-
-                // 分享完成後的事件
-                activityVC.completionWithItemsHandler = { _, completed, _, error in
-                    if completed {
-                        Utils.toast("分享成功".localizedString())
-                    } else {
-                        // 關閉分享彈窗也算分享失敗
-                        Logger.log(error?.localizedDescription ?? "")
-                        Utils.toast("分享失敗".localizedString())
-                    }
-                }
-                rootVC?.present(activityVC, animated: true)
-                return
-            }
-        }
-        return configuration.createContextMenuConfiguration()
+        return TrackContextMenuConfiguration(indexPath: indexPath, track: track).createContextMenuConfiguration()
     }
 
+    /// 捲動到上方
     func scrollToTop(animated: Bool) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
@@ -130,5 +81,18 @@ extension UITableView {
         }
 
         return visibleSects
+    }
+
+    /// 左滑刪除按鈕
+    func deleteConfiguration(_ completion: @escaping (() -> Void)) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "移除") { _, _, _ in
+            completion()
+        }
+        deleteAction.backgroundColor = .appColor(.red1)
+
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+        // 防止滑到底觸發第一個 button 的 action
+        configuration.performsFirstActionWithFullSwipe = false
+        return configuration
     }
 }

@@ -14,7 +14,7 @@ class SearchResultsViewModel {
     // MARK: Lifecycle
 
     init() {
-        searchTermSubject
+        $searchTerm
             .debounce(for: 0.5, scheduler: RunLoop.main) // 延遲觸發搜索操作(0.5s)
             .removeDuplicates() // 避免在使用者輸入相同的搜索文字時重複執行搜索操作
             .sink { [weak self] term in
@@ -26,18 +26,24 @@ class SearchResultsViewModel {
 
     private(set) var selectedTrack: Track?
 
-    var searchTerm: String {
-        get { searchTermSubject.value }
-        set { searchTermSubject.value = newValue }
+    @Published var searchTerm: String = ""
+    @Published var state: ViewState = .none
+
+    // 正在播放的音樂
+    var currentTrack: Track? {
+        musicPlayer.currentTrack
     }
 
-    var state: ViewState {
-        get { stateSubject.value }
-        set { stateSubject.value = newValue }
+    var currentTrackIndexPublisher: AnyPublisher<Int, Never> {
+        musicPlayer.currentTrackIndexPublisher
     }
 
-    var statePublisher: AnyPublisher<ViewState, Never> {
-        stateSubject.eraseToAnyPublisher()
+    var isPlayingPublisher: AnyPublisher<Bool, Never> {
+        musicPlayer.isPlayingPublisher
+    }
+
+    var isPlaying: Bool {
+        musicPlayer.isPlaying
     }
 
     var totalCount: Int {
@@ -69,13 +75,17 @@ class SearchResultsViewModel {
             case .success(let response):
                 self.currentPage += 1
                 self.totalPages = response.resultCount / self.pageSize + 1
-                self.tracks.append(contentsOf: response.results)
-                // 如果數據的數量小於每頁的大小，表示已經下載完所有數據
+                self.tracks.append(contentsOf: response.results.map { $0.convertToTrack() })
+                // 如果資料的數量小於每頁的大小，表示已經下載完所有資料
                 self.hasMoreData = response.resultCount == self.pageSize
-                self.state = .success
+                DispatchQueue.main.async {
+                    self.state = .success
+                }
             case .failure(let error):
                 Logger.log(error.localizedDescription)
-                self.state = .failed(error: error)
+                DispatchQueue.main.async {
+                    self.state = .failed(error: error)
+                }
             }
         }
     }
@@ -93,6 +103,16 @@ class SearchResultsViewModel {
         selectedTrack = tracks[index]
     }
 
+    func insertTrack(forCellAt index: Int) {
+        if let track = track(forCellAt: index) {
+            musicPlayer.replaceCurrentTrack(track)
+        }
+    }
+
+    func play() {
+        musicPlayer.play()
+    }
+
     func reloadTracks() {
         currentPage = 0
         totalPages = 0
@@ -102,8 +122,7 @@ class SearchResultsViewModel {
 
     // MARK: Private
 
-    private let searchTermSubject = CurrentValueSubject<String, Never>("")
-    private let stateSubject = CurrentValueSubject<ViewState, Never>(.none)
+    private let musicPlayer: MusicPlayer = .shared
     private var cancellables: Set<AnyCancellable> = .init()
 
     private var tracks: [Track] = []

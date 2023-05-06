@@ -8,7 +8,7 @@
 import UIKit
 
 enum AppInfo {
-    static let appleID = "1111111"
+    static let appleID = "6448342626"
     static let bundleID = Bundle.main.bundleIdentifier ?? "Unknown"
 
     // 當前 App 版號
@@ -25,7 +25,7 @@ enum AppInfo {
             // 再嘗試取得非本地化顯示名稱
             return appName
         } else {
-            return "iTunesPractice"
+            return "SquareMusic"
         }
     }
 }

@@ -8,9 +8,7 @@ target 'ITunesPractice' do
   # Pods for ITunesPractice
 
   pod 'SwiftLint'
-
-  # It fetches the most dominant and prominent colors
-  pod 'UIImageColors'
+  pod 'SwiftFormat/CLI', '0.51.6'
 
   target 'ITunesPracticeTests' do
     inherit! :search_paths

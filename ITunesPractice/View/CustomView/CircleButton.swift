@@ -10,17 +10,17 @@ import UIKit
 class CircleButton: UIButton {
     // MARK: Lifecycle
 
-    init(backgroundAlpha: CGFloat = 0.1) {
-        self.backgroundAlpha = backgroundAlpha
+    init(bgColor: UIColor = .white.withAlphaComponent(0.1)) {
+        self.bgColor = bgColor
         super.init(frame: .zero)
 
         backgroundColor = .clear
-        layer.addSublayer(backgroundLayer)
+        layer.insertSublayer(backgroundLayer, below: imageView?.layer)
 
         layoutSubviews()
     }
 
-    private let backgroundAlpha: CGFloat
+    private let bgColor: UIColor
 
     @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
@@ -34,7 +34,7 @@ class CircleButton: UIButton {
 
         backgroundLayer.frame = bounds
         backgroundLayer.cornerRadius = bounds.height * 0.5
-        backgroundLayer.backgroundColor = UIColor(white: 1, alpha: backgroundAlpha).cgColor
+        backgroundLayer.backgroundColor = bgColor.cgColor
 
         layer.cornerRadius = bounds.height * 0.5
         layer.masksToBounds = true

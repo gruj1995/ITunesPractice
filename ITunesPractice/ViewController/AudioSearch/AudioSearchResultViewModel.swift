@@ -6,30 +6,38 @@
 //
 
 import Combine
-import Foundation
+import UIKit
 
 class AudioSearchResultViewModel {
-
     // MARK: Lifecycle
 
-    init() {}
+    init(track: Track) {
+        self.track = track
+        self.hasVideo = track.videoUrl != nil
+    }
 
     // MARK: Internal
 
-    var track: Track?
+    private(set) var track: Track
 
-    let matchingHelper = MatchingHelper.shared
+    let hasVideo: Bool
+
+    var randomBgColor: UIColor? {
+        colors.randomElement()
+    }
 
     // MARK: Private
 
-    private var cancellables = Set<AnyCancellable>()
+    private let matchingHelper = MatchingHelper.shared
 
-    var trackPublisher: AnyPublisher<Track?, Never> {
-        matchingHelper.trackPublisher
-    }
-
-    /// 開始錄音進行辨識
-    func listenMusic() {
-        matchingHelper.listenMusic()
-    }
+    private let colors: [UIColor] = [
+        UIColor(hex: "#F97B22"), // 橘
+        UIColor(hex: "#FEE8B0"), // 淡黃
+        UIColor(hex: "#9CA777"), // 橄欖綠
+        UIColor(hex: "#7C9070"), // 深橄欖綠
+        UIColor(hex: "#E76161"), // 洋紅
+        UIColor(hex: "#B04759"), // 紅紫
+        UIColor(hex: "#19A7CE"), // 藍
+        UIColor(hex: "#146C94") // 深藍
+    ]
 }

@@ -1,17 +1,17 @@
 //
-//  SearchResultViewController.swift
+//  AudioSearchHistoryViewController.swift
 //  ITunesPractice
 //
-//  Created by 李品毅 on 2023/3/12.
+//  Created by 李品毅 on 2023/5/6.
 //
 
 import Combine
 import SnapKit
 import UIKit
 
-// MARK: - SearchResultsViewController
+// MARK: - AudioSearchHistoryViewController
 
-class SearchResultsViewController: UIViewController {
+class AudioSearchHistoryViewController: UIViewController {
     // MARK: Lifecycle
 
     init() {
@@ -32,43 +32,20 @@ class SearchResultsViewController: UIViewController {
 
     // MARK: Private
 
-    private let viewModel: SearchResultsViewModel = .init()
+    private let viewModel: AudioSearchHistoryViewModel = .init()
     private var cancellables: Set<AnyCancellable> = .init()
-
-    // 抓取資料時的旋轉讀條 (可以搜尋"egaf"，觀察在資料筆數小的情況下怎麼顯示)
-    private lazy var activityIndicator: UIActivityIndicatorView = {
-        let activityIndicator = UIActivityIndicatorView(style: .medium)
-        activityIndicator.startAnimating()
-        return activityIndicator
-    }()
-
-    // 下拉 tableView 更新資料
-    private lazy var refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        refreshControl.tintColor = .lightGray
-        let attributedString = NSAttributedString(string: "更新資料".localizedString(), attributes: [
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14),
-            NSAttributedString.Key.foregroundColor: UIColor.lightGray
-        ])
-        refreshControl.attributedTitle = attributedString
-        refreshControl.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
-        refreshControl.addTarget(self, action: #selector(reloadTracks), for: .valueChanged)
-        return refreshControl
-    }()
 
     private let cellHeight: CGFloat = 60
 
-    private lazy var tableView: UITableView = {
+    lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.register(TrackCell.self, forCellReuseIdentifier: TrackCell.reuseIdentifier)
         tableView.rowHeight = cellHeight
         tableView.delegate = self
         tableView.dataSource = self
-//        tableView.prefetchDataSource = self // 懶加載
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
         tableView.keyboardDismissMode = .onDrag // 捲動就隱藏鍵盤
-        tableView.addSubview(refreshControl)
         return tableView
     }()
 
@@ -76,6 +53,15 @@ class SearchResultsViewController: UIViewController {
         let view = EmptyStateView()
         view.isHidden = true
         return view
+    }()
+
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "近期 Shazam"
+        label.textAlignment = .left
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 20, weight: .semibold)
+        return label
     }()
 
     // MARK: Setup
@@ -86,28 +72,28 @@ class SearchResultsViewController: UIViewController {
     }
 
     private func setupLayout() {
+        view.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(30)
+            make.leading.equalToSuperview().inset(20)
+            make.height.equalTo(30)
+        }
+
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalTo(titleLabel.snp.bottom).offset(10)
+            make.bottom.trailing.leading.equalToSuperview()
         }
 
         view.addSubview(emptyStateView)
         emptyStateView.snp.makeConstraints { make in
-            make.centerX.equalTo(view.safeAreaLayoutGuide)
-            make.centerY.equalTo(view.safeAreaLayoutGuide).multipliedBy(0.9)
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().multipliedBy(0.9)
             make.width.equalToSuperview().multipliedBy(0.8)
         }
     }
 
     private func bindViewModel() {
-        viewModel.currentTrackIndexPublisher
-            .receive(on: RunLoop.main)
-            .removeDuplicates()
-            .combineLatest(viewModel.isPlayingPublisher)
-            .sink { [weak self] _ in
-                self?.updateUI()
-            }.store(in: &cancellables)
-
         viewModel.$state
             .receive(on: RunLoop.main)
             .sink { [weak self] state in
@@ -121,24 +107,13 @@ class SearchResultsViewController: UIViewController {
                     return
                 }
             }.store(in: &cancellables)
-
-        NetworkMonitor.shared.$isConnected
-            .receive(on: DispatchQueue.main)
-            .removeDuplicates()
-            .sink { [weak self] _ in
-                self?.updateUI()
-            }.store(in: &cancellables)
     }
 
     @objc
     private func updateUI() {
-        refreshControl.endRefreshing()
-
-        if viewModel.totalCount == 0, !viewModel.searchTerm.isEmpty {
+        if viewModel.totalCount == 0 {
             showNoResultView()
         } else {
-            // 要放在 tableView.reloadData() 前
-            tableView.tableFooterView = nil
             tableView.reloadData()
             showTableView()
         }
@@ -150,31 +125,28 @@ class SearchResultsViewController: UIViewController {
     }
 
     private func showNoResultView() {
-        emptyStateView.configure(title: "沒有結果".localizedString(), message: "嘗試新的搜尋項目。".localizedString())
+        emptyStateView.configure(title: "尚無搜尋記錄".localizedString(), message: "快去 Shazam 一些音樂吧！".localizedString())
         emptyStateView.isHidden = false
         tableView.isHidden = true
     }
 
     private func handleError(_ error: Error) {
-        refreshControl.endRefreshing()
-        tableView.tableFooterView = nil
         showNoResultView()
         if NetworkMonitor.shared.isConnected {
             Utils.toast(error.localizedDescription, at: .center)
         }
     }
-
-    @objc
-    private func reloadTracks() {
-        viewModel.reloadTracks()
-    }
 }
 
 // MARK: UITableViewDataSource, UITableViewDelegate
 
-extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegate {
+extension AudioSearchHistoryViewController: UITableViewDataSource, UITableViewDelegate {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return viewModel.trackDayGroups.count
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.totalCount
+        return viewModel.trackDayGroup(forHeaderAt: section)?.value.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -182,31 +154,18 @@ extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegat
         else {
             return UITableViewCell()
         }
-        guard let track = viewModel.track(forCellAt: indexPath.row) else {
+        guard let track = viewModel.track(forCellAt: indexPath) else {
             return cell
         }
         // 右邊選單按鈕
         cell.addRightMenuButton(track)
         cell.configure(artworkUrl: track.artworkUrl100, collectionName: track.collectionName, artistName: track.artistName, trackName: track.trackName, showsHighlight: true)
-
-        // 被選中的歌曲顯示播放動畫
-        let showAnimation = (track == viewModel.currentTrack)
-        let isPlaying = viewModel.isPlaying
-        cell.updateAnimationState(showAnimation: showAnimation, isPlaying: isPlaying)
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // 解除cell被選中的狀態
         tableView.deselectRow(at: indexPath, animated: true)
-        // 插播並播放
-        viewModel.insertTrack(forCellAt: indexPath.row)
-        viewModel.play()
-    }
-
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let lastRowIndex = tableView.numberOfRows(inSection: 0) - 1
-        viewModel.loadMoreIfNeeded(currentRowIndex: indexPath.row, lastRowIndex: lastRowIndex)
     }
 
     /*
@@ -218,27 +177,48 @@ extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegat
                 guard let self else { return }
                 let vc = TrackDetailViewController()
                 vc.dataSource = self
-                // 由 SearchViewController push
+                // 由父VC push
                 self.presentingViewController?.navigationController?.pushViewController(vc, animated: true)
             }
     }
 
     // context menu 的清單
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        viewModel.setSelectedTrack(forCellAt: indexPath.row)
+        viewModel.setSelectedTrack(forCellAt: indexPath)
         return tableView.createTrackContextMenuConfiguration(indexPath: indexPath, track: viewModel.selectedTrack)
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 10
+        40
     }
 
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        UIView.emptyView()
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        guard let trackDayGroup = viewModel.trackDayGroup(forHeaderAt: section) else {
+            return nil
+        }
+        return trackDayGroup.key.toString(dateFormat: "yyyy/M/d")
+    }
+
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let rows = viewModel.trackDayGroup(forHeaderAt: indexPath.section)?.value.count ?? 0
+            viewModel.removeTrack(forCellAt: indexPath)
+
+            // 當 section 只剩一個 row 時，使用 deleteRows 會 crash，要改用 deleteSections
+            if rows == 1 {
+                tableView.deleteSections(IndexSet(integer: indexPath.section), with: .fade)
+            } else {
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            }
+        }
+    }
+
+    func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        "移除"
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        cellHeight
+        CGFloat.leastNormalMagnitude
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -248,17 +228,35 @@ extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegat
 
 // MARK: TrackDetailViewControllerDatasource
 
-extension SearchResultsViewController: TrackDetailViewControllerDatasource {
+extension AudioSearchHistoryViewController: TrackDetailViewControllerDatasource {
     func trackId(_ trackDetailViewController: TrackDetailViewController) -> Int? {
         return viewModel.selectedTrack?.trackId
     }
 }
 
-// MARK: UISearchResultsUpdating
+extension Date {
+    func getDisplayLastestTime() -> String {
+        let currentTime = Int(Date().timeIntervalSince1970)
+        let diffTime = currentTime - Int(timeIntervalSince1970)
 
-extension SearchResultsViewController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        viewModel.searchTerm = searchController.searchBar.text ?? ""
-        tableView.scrollToTop(animated: false)
+        if diffTime >= 172800 {
+            // 超過2天
+
+            DateUtility.dateFormatter.dateFormat = "MM月dd日"
+            return DateUtility.dateFormatter.string(from: self)
+        } else if diffTime > 86400, diffTime < 172800 {
+            // 大於等於1天
+            return NSLocalizedString("昨天", comment: "")
+        } else if diffTime >= 3600 {
+            // 大於等於1小
+            return NSLocalizedString("\(diffTime / 3600)小時前", comment: "")
+        } else if diffTime > 60 {
+            // 最少顯示一分鐘
+            return NSLocalizedString("\(diffTime / 60)分鐘前", comment: "")
+        } else if diffTime > 0 {
+            return NSLocalizedString("剛剛", comment: "")
+        }
+
+        return "剛剛"
     }
 }

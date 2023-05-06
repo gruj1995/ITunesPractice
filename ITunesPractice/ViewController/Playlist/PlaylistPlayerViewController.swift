@@ -101,8 +101,8 @@ class PlaylistPlayerViewController: UIViewController {
     /// 顯示附近媒體接收器列表的 View (本身就有點擊事件和圖案，不用另外設定)
     private lazy var routePickerView: AVRoutePickerView = {
         let routePickerView = AVRoutePickerView(frame: .zero)
-        routePickerView.tintColor = .white
-        routePickerView.activeTintColor = .white // 選中時的顏色
+        routePickerView.tintColor = .lightGray
+        routePickerView.activeTintColor = .lightGray // 選中時的顏色
         return routePickerView
     }()
 
@@ -221,21 +221,18 @@ class PlaylistPlayerViewController: UIViewController {
         viewModel.isPlayingPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                guard let self = self else { return }
-                self.updateTogglePlayPauseButton()
+                self?.updateTogglePlayPauseButton()
             }.store(in: &cancellables)
 
         viewModel.volumePublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                guard let self else { return }
-                self.updateVolumeSlider()
+                self?.updateVolumeSlider()
             }.store(in: &cancellables)
     }
 
     private func updateTogglePlayPauseButton() {
-        let isPlaying = viewModel.isPlaying
-        let image = isPlaying ? AppImages.pause : AppImages.play
+        let image = viewModel.isPlaying ? AppImages.pause : AppImages.play
         playButtons[1].setImage(image, for: .normal)
     }
 

@@ -131,7 +131,7 @@ extension ITunesService {
             return URLSession.shared.dataTaskPublisher(for: url)
                        .map { $0.data }
                        .decode(type: SearchResponse.self, decoder: JSONDecoder())
-                       .map { $0.results }
+                       .map { $0.results.map { $0.convertToTrack() } }
                        .mapError { error -> Error in
                            switch error {
                            case is URLError:

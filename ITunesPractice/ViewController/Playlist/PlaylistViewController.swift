@@ -19,6 +19,8 @@ import UIKit
         上滑顯示播放器; 下滑隱藏播放器
   - tableView header 切換時有小震動
   - cell 拖曳排序功能
+  - 隨機播放:
+    - 啟用隨機排序時，生成打亂的待播清單並顯示 ; 取消隨機排序時，顯示原本的待播清單
  */
 
 class PlaylistViewController: UIViewController {
@@ -38,7 +40,7 @@ class PlaylistViewController: UIViewController {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.register(TrackCell.self, forCellReuseIdentifier: TrackCell.reuseIdentifier)
         tableView.register(PlayListHeaderView.self, forHeaderFooterViewReuseIdentifier: PlayListHeaderView.reuseIdentifier)
-        tableView.rowHeight = 60
+        tableView.rowHeight = cellHeight
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = .clear
@@ -71,7 +73,7 @@ class PlaylistViewController: UIViewController {
     private var animator: UIViewPropertyAnimator!
 
     private lazy var playerContainerView: UIView = .init()
-    private lazy var currentTrackView: CurrentTrackView = .init()
+
     private lazy var coverImageView: UIImageView = .coverImageView()
     private lazy var coverImageContainerView: UIView = {
         let view = UIView.emptyView()
@@ -81,6 +83,8 @@ class PlaylistViewController: UIViewController {
         view.layer.shadowRadius = 7
         return view
     }()
+
+    private var currentTrackView: CurrentTrackView = .init()
 
     // 音樂播放器頁
     private lazy var playerVC: PlaylistPlayerViewController = {
@@ -162,12 +166,18 @@ class PlaylistViewController: UIViewController {
     private func bindViewModel() {
         viewModel.currentTrackIndexPublisher
             .receive(on: RunLoop.main)
-            .removeDuplicates() // 為什麼會觸發多次？
+//            .removeDuplicates() // 為什麼會觸發多次？
             .sink { [weak self] _ in
-                guard let self = self else { return }
+                guard let self else { return }
                 self.viewModel.changeImage()
                 self.updateCurrentTrackView()
                 self.updateTableView()
+            }.store(in: &cancellables)
+
+        viewModel.isShuffleModePublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.updateTableView()
             }.store(in: &cancellables)
 
         viewModel.colorsPublisher
@@ -175,14 +185,13 @@ class PlaylistViewController: UIViewController {
             .dropFirst()
             .removeDuplicates() // 為什麼會觸發多次？
             .sink { [weak self] _ in
-                guard let self = self else { return }
-                self.updateGradientLayers()
+                self?.updateGradientLayers()
             }.store(in: &cancellables)
 
         NetworkMonitor.shared.$isConnected
             .receive(on: DispatchQueue.main)
             .removeDuplicates()
-            .sink {  [weak self] _ in
+            .sink { [weak self] _ in
                 self?.updateTableView()
             }.store(in: &cancellables)
     }
@@ -191,19 +200,22 @@ class PlaylistViewController: UIViewController {
 
     private func updateCurrentTrackView() {
         let track = viewModel.currentTrack
+
+        // 更新左側圖片
         let url = track?.getArtworkImageWithSize(size: .square800)
         coverImageView.loadCoverImage(with: url)
-
         let showDefaultImage = coverImageView.image == DefaultTrack.coverImage
         coverImageView.backgroundColor = showDefaultImage ? UIColor.appColor(.gray3) : .clear
         coverImageContainerView.layer.shadowColor = showDefaultImage ? UIColor.clear.cgColor : UIColor.black.cgColor
 
+        // 更新歌曲資訊
         let trackName = track?.trackName ?? DefaultTrack.trackName
-        currentTrackView.configure(trackName: trackName, artistName: track?.artistName)
+        let menu = ContextMenuManager.shared.createTrackMenu(track, canEditPlayList: false)
+        currentTrackView.configure(trackName: trackName, artistName: track?.artistName, menu: menu)
     }
 
     private func updateTableView() {
-        // 在 viewDidLoad 時使用 Combine 綁定數據，可能會導致 UITableView 在還未加入視圖階層的情況下被 layoutIfNeeded 呼叫，從而觸發出現警告的問題，所以這邊加上判斷避免此狀況發生。
+        // 在 viewDidLoad 時使用 Combine 綁定資料，可能會導致 UITableView 在還未加入視圖階層的情況下被 layoutIfNeeded 呼叫，從而觸發出現警告的問題，所以這邊加上判斷避免此狀況發生。
         guard tableView.isVisible else { return }
         // 要放在 tableView.reloadData() 前
         tableView.tableFooterView = nil
@@ -242,6 +254,21 @@ class PlaylistViewController: UIViewController {
             cell.sectionHeaderMask(delegate: self)
         }
     }
+
+    private func presentClearAlert() {
+        let alertController = ActionButtonAlertController(title: "確定要清除此 iPhone 上的播放記錄嗎？".localizedString(), message: nil, preferredStyle: .alert)
+        let deleteAction = UIAlertAction(title: "清除".localizedString(), style: .destructive) { [weak self] _ in
+            self?.viewModel.clearPlayRecords()
+            self?.updateTableView()
+            Utils.toast("清除成功".localizedString())
+        }
+        let cancelAction = UIAlertAction(title: "取消".localizedString(), style: .cancel, handler: nil)
+        // .default 和 .cancel 樣式的按鈕的顏色
+        alertController.view.tintColor = .systemRed
+        alertController.addAction(deleteAction)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
+    }
 }
 
 // MARK: UITableViewDataSource, UITableViewDelegate
@@ -253,7 +280,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
         let contentHeight = scrollView.contentSize.height
         let frameHeight = scrollView.frame.size.height
 
-        if viewModel.tracks.isEmpty {
+        if viewModel.totalCount == 0 {
             // 沒有資料時顯示播放器
             isPlayerHidden = false
         } else if contentOffset >= contentHeight - frameHeight {
@@ -302,11 +329,10 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
         else {
             return UITableViewCell()
         }
-        guard let track = viewModel.track(forCellAt: indexPath.row) else {
+        guard let track = viewModel.track(forCellAt: indexPath) else {
             return cell
         }
         cell.configure(artworkUrl: track.artworkUrl100, collectionName: track.collectionName, artistName: track.artistName, trackName: track.trackName)
-
         return cell
     }
 
@@ -314,27 +340,18 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
         // 解除cell被選中的狀態
         tableView.deselectRow(at: indexPath, animated: true)
         // 更新選中歌曲
-        viewModel.setSelectedTrack(forCellAt: indexPath.row)
+        viewModel.setCurrentTrack(forCellAt: indexPath)
         viewModel.play()
-
-        let vc = TrackDetailViewController()
-        vc.dataSource = self
-        navigationController?.pushViewController(vc, animated: true)
-    }
-
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        return
     }
 
     func tableView(_ tableView: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
-        if let identifier = configuration.identifier as? String, let index = Int(identifier) {
-            animator.addCompletion { [weak self] in
-                guard let self = self else { return }
-                self.viewModel.setSelectedTrack(forCellAt: index)
-                let vc = TrackDetailViewController()
-                vc.dataSource = self
-                //                self.presentingViewController?.navigationController?.pushViewController(vc, animated: true)
-                self.show(vc, sender: self)
+        animator.addCompletion { [weak self] in
+            let vc = TrackDetailViewController()
+            vc.dataSource = self
+            self?.dismiss(animated: false) {
+                // 由 SearchViewController push
+                let topVC = UIApplication.shared.getTopViewController()
+                topVC?.navigationController?.pushViewController(vc, animated: true)
             }
         }
     }
@@ -342,7 +359,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
     // context menu 的清單
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         viewModel.selectedIndexPath = indexPath
-        let track = viewModel.tracks[indexPath.row]
+        let track = viewModel.track(forCellAt: indexPath)
         return tableView.createTrackContextMenuConfiguration(indexPath: indexPath, track: track)
     }
 
@@ -359,46 +376,67 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
         return targetedPreview
     }
 
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            // 當 section 只剩一個 row 時，使用 deleteRows 會 crash，要改用 deleteSections
+            let rows = viewModel.numberOfRows(in: indexPath.section)
+            viewModel.removeTrack(forCellAt: indexPath)
+            if rows == 1 {
+                tableView.reloadData()
+            } else {
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            }
+        }
+    }
+
+    func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        "移除"
+    }
+
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return cellHeight
+        cellHeight
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        guard !viewModel.bookKeepDayGroups.isEmpty, let bookKeepDayGroup = viewModel.bookKeepDayGroup(forHeaderAt: section) else {
-//            return nil
-//        }
         guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: PlayListHeaderView.reuseIdentifier) as? PlayListHeaderView else {
             return nil
         }
 
-        if section == 0 {
-            header.configure(title: PlayListHeaderTitle.toBePlayed, subTitle: nil)
+        if viewModel.isPlayedTracksSection(section) {
+            let title = "播放記錄".localizedString()
+            header.configure(title: title, subTitle: nil, type: .history)
+            header.onClearButtonTapped = { [weak self] _ in
+                self?.presentClearAlert()
+            }
+        } else {
+            let title = "待播清單".localizedString()
+            header.configure(title: title, subTitle: nil, type: .playlist)
+            header.updateButtonAppearance(
+                tintColor: viewModel.headerButtonBgColor,
+                isShuffleMode: viewModel.isShuffleMode,
+                repeatMode: viewModel.repeatMode,
+                isInfinityMode: viewModel.isInfinityMode)
 
             header.onShuffleButtonTapped = { [weak self] _ in
-                guard let self = self else { return }
+                guard let self else { return }
                 self.viewModel.isShuffleMode.toggle()
-                let isSelected = self.viewModel.isShuffleMode
-                let tintColor = self.viewModel.headerButtonBgColor
-                header.shuffleButton.setRoundCornerButtonAppearance(isSelected: isSelected, tintColor: tintColor)
-            }
-
-            header.onInfinityButtonTapped = { [weak self] _ in
-                guard let self = self else { return }
-                self.viewModel.isInfinityMode.toggle()
-                let isSelected = self.viewModel.isInfinityMode
-                let tintColor = self.viewModel.headerButtonBgColor
-                let subTitle = isSelected ? "自動播放類似音樂".localizedString() : nil
-                header.infinityButton.setRoundCornerButtonAppearance(isSelected: isSelected, tintColor: tintColor)
-                header.configure(title: PlayListHeaderTitle.toBePlayed, subTitle: subTitle)
+                header.updateButtonAppearance(tintColor: self.viewModel.headerButtonBgColor, isShuffleMode: self.viewModel.isShuffleMode)
             }
 
             header.onRepeatButtonTapped = { [weak self] _ in
-                guard let self = self else { return }
+                guard let self else { return }
                 self.viewModel.repeatMode = self.viewModel.repeatMode.next()
-                let isSelected = self.viewModel.repeatMode != .none
-                let tintColor = self.viewModel.headerButtonBgColor
-                let image = self.viewModel.repeatMode.image
-                header.repeatButton.setRoundCornerButtonAppearance(isSelected: isSelected, tintColor: tintColor, image: image)
+                let repeatMode = self.viewModel.repeatMode
+                header.updateButtonAppearance(tintColor: self.viewModel.headerButtonBgColor, repeatMode: repeatMode)
+            }
+
+            header.onInfinityButtonTapped = { [weak self] _ in
+                guard let self else { return }
+                self.viewModel.isInfinityMode.toggle()
+                let isInfinityMode = self.viewModel.isInfinityMode
+                let subTitle = isInfinityMode ? "自動播放類似音樂".localizedString() : nil
+                header.updateButtonAppearance(tintColor: self.viewModel.headerButtonBgColor, isInfinityMode: isInfinityMode)
+                header.configure(title: title, subTitle: subTitle, type: .playlist)
             }
         }
 
@@ -406,11 +444,18 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        UIView.emptyView()
+        let view = UIView.emptyView()
+        // 避免點擊事件被 footer 攔截，因為使用 .plain 樣式的 footer 會擋到 cell
+        view.isUserInteractionEnabled = false
+        return view
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return playerContainerViewHeight
+        if viewModel.isPlayedTracksSection(section) {
+            return CGFloat.leastNormalMagnitude
+        } else {
+            return playerContainerViewHeight
+        }
     }
 }
 

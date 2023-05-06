@@ -33,18 +33,25 @@ struct Utils {
         return image
     }
 
-    // TODO: 移位置
-    // 測試用
-    static func addTracksToUserDefaults(_ tracks: [Track]) {
-        var storedTracks = UserDefaults.standard.tracks
-        storedTracks.appendIfNotContains(tracks)
-        UserDefaults.standard.tracks = storedTracks
-    }
+    static func shareTrack(_ track: Track) {
+        guard let sharedUrl = URL(string: track.trackViewUrl) else {
+            Logger.log("Shared url is nil")
+            Utils.toast("分享失敗".localizedString())
+            return
+        }
 
-    // 測試用
-    static func addTrackToUserDefaults(_ track: Track) {
-        var storedTracks = UserDefaults.standard.tracks
-        storedTracks.appendIfNotContains(track)
-        UserDefaults.standard.tracks = storedTracks
+        let activityVC = UIActivityViewController(activityItems: [sharedUrl], applicationActivities: nil)
+        // 分享完成後的事件
+        activityVC.completionWithItemsHandler = { _, completed, _, error in
+            if completed {
+                Utils.toast("分享成功".localizedString())
+            } else {
+                // 關閉分享彈窗也算分享失敗
+                Logger.log(error?.localizedDescription ?? "")
+                Utils.toast("分享失敗".localizedString())
+            }
+        }
+        let topVC = UIApplication.shared.getTopViewController()
+        topVC?.present(activityVC, animated: true)
     }
 }

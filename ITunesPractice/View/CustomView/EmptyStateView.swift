@@ -71,7 +71,7 @@ class EmptyStateView: UIView {
 }
 
 extension EmptyStateView {
-    func updateLabelsWithAnimation(title: String, message: String, animated: Bool, duration: TimeInterval = 0.5) {
+    func updateUI(title: String, message: String, animated: Bool, duration: TimeInterval = 0.5) {
         updateText(titleLabel, text: title, animated: animated, duration: duration)
         updateText(messageLabel, text: message, animated: animated, duration: duration)
     }

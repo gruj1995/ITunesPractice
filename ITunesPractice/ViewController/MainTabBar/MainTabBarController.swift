@@ -44,7 +44,7 @@ class MainTabBarController: UITabBarController {
         let audioSearchVC = AudioSearchViewController()
         let audioSearchNavVC = createNavigationController(rootViewController: audioSearchVC, image: AppImages.waveformAndMic, title: "聲音搜尋".localizedString())
 
-        viewControllers = [searchNavVC, libraryNavVC, audioSearchNavVC]
+        viewControllers = [searchNavVC, audioSearchNavVC, libraryNavVC]
     }
 
     private func createNavigationController(rootViewController: UIViewController, image: UIImage?, title: String) -> UINavigationController {
@@ -98,6 +98,8 @@ class MainTabBarController: UITabBarController {
 extension MainTabBarController: UITabBarControllerDelegate {
     // 切換tabbar觸發
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-//        miniPlayerVC.view.isHidden = viewController == viewControllers?.last
+//        if let viewControllers, viewControllers.count == 3 {
+//            miniPlayerVC.view.isHidden = viewController == viewControllers[1]
+//        }
     }
 }

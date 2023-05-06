@@ -21,23 +21,22 @@ import UIKit
  */
 
 // 參考 https://github.com/LeoNatan/LNPopupController
-class MiniPlayerViewController: BottomFloatingPanelViewController {
+class MiniPlayerViewController: FullScreenFloatingPanelViewController {
     // MARK: Internal
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        setupGestures()
         bindViewModel()
+        setupGestures()
     }
 
     // MARK: Private
 
-    private var viewModel: MiniPlayerViewModel = .init()
+    private let viewModel: MiniPlayerViewModel = .init()
     private var cancellables: Set<AnyCancellable> = .init()
 
     private lazy var highlightBlurView: HighlightBlurView = .init()
-
     private lazy var coverImageView: UIImageView = .coverImageView()
 
     private lazy var songTitleLabel: UILabel = {
@@ -78,17 +77,11 @@ class MiniPlayerViewController: BottomFloatingPanelViewController {
 
     private func bindViewModel() {
         viewModel.currentTrackIndexPublisher
-            .receive(on: DispatchQueue.main)
+            .receive(on: RunLoop.main)
+            .removeDuplicates()
+            .combineLatest(viewModel.isPlayingPublisher)
             .sink { [weak self] _ in
-                guard let self = self else { return }
-                self.updateCurrentTrackUI()
-            }.store(in: &cancellables)
-
-        viewModel.isPlayingPublisher
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                guard let self = self else { return }
-                self.updatePlayOrPauseButtonUI()
+                self?.updateUI()
             }.store(in: &cancellables)
     }
 
@@ -96,18 +89,6 @@ class MiniPlayerViewController: BottomFloatingPanelViewController {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(highlightBlurViewTapped))
         highlightBlurView.isUserInteractionEnabled = true
         highlightBlurView.addGestureRecognizer(tapGesture)
-    }
-
-    private func updateCurrentTrackUI() {
-        guard let currentTrack = viewModel.currentTrack,
-              let url = currentTrack.getArtworkImageWithSize(size: .square800)
-        else {
-            coverImageView.image = DefaultTrack.coverImage
-            songTitleLabel.text = DefaultTrack.trackName
-            return
-        }
-        coverImageView.loadCoverImage(with: url)
-        songTitleLabel.text = currentTrack.trackName
     }
 
     private func setupUI() {
@@ -154,15 +135,25 @@ class MiniPlayerViewController: BottomFloatingPanelViewController {
         }
     }
 
-    private func updatePlayOrPauseButtonUI() {
-        let isPlaying = viewModel.isPlaying
-        let image = isPlaying ? AppImages.pause : AppImages.play
+    private func updateUI() {
+        // 歌曲資訊
+        guard let currentTrack = viewModel.currentTrack,
+              let url = currentTrack.getArtworkImageWithSize(size: .square800)
+        else {
+            coverImageView.image = DefaultTrack.coverImage
+            songTitleLabel.text = DefaultTrack.trackName
+            return
+        }
+        coverImageView.loadCoverImage(with: url)
+        songTitleLabel.text = currentTrack.trackName
+
+        // 更新播放/停止按鈕
+        let image = viewModel.isPlaying ? AppImages.pause : AppImages.play
         playPauseButton.setImage(image, for: .normal)
     }
 
     private func presentPlaylistVC() {
         let vc = PlaylistViewController()
-        // fullScreen 背景遮罩會是黑色的，所以設 overFullScreen
         vc.modalPresentationStyle = .pageSheet
 
         let fpc = getFpc()

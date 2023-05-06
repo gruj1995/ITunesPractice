@@ -22,16 +22,15 @@ class PlaylistViewModel {
     var selectedIndexPath: IndexPath?
 
     var currentTrack: Track? {
-        get { musicPlayer.currentTrack }
-        set {
-            if let index = tracks.firstIndex(where: { $0 == newValue }) {
-                musicPlayer.currentTrackIndex = index
-            }
-        }
+        musicPlayer.currentTrack
     }
 
-    var tracks: [Track] {
-        musicPlayer.tracks
+    var totalCount: Int {
+        displayPlaylist.count + playedTracks.count
+    }
+
+    var numberOfSections: Int {
+        playedTracks.isEmpty ? 1 : 2
     }
 
     var colors: [UIColor] {
@@ -44,14 +43,6 @@ class PlaylistViewModel {
             return colors[1]
         }
         return nil
-    }
-
-    var totalCount: Int {
-        tracks.count
-    }
-
-    var numberOfSections: Int {
-        1
     }
 
     var isShuffleMode: Bool {
@@ -73,26 +64,51 @@ class PlaylistViewModel {
         musicPlayer.currentTrackIndexPublisher
     }
 
+    var isShuffleModePublisher: AnyPublisher<Bool, Never> {
+        musicPlayer.isShuffleModePublisher
+    }
+
     var colorsPublisher: AnyPublisher<[UIColor], Never> {
         colorsSubject.eraseToAnyPublisher()
     }
 
     func numberOfRows(in section: Int) -> Int {
-        totalCount
+        isPlayedTracksSection(section) ? playedTracks.count : displayPlaylist.count
     }
 
-    func track(forCellAt index: Int) -> Track? {
-        guard tracks.indices.contains(index) else { return nil }
-        return tracks[index]
+    func track(forCellAt indexPath: IndexPath) -> Track? {
+        let tracks = isPlayedTracksSection(indexPath.section) ? playedTracks : displayPlaylist
+        guard tracks.indices.contains(indexPath.row) else { return nil }
+        return tracks[indexPath.row]
+    }
+
+    func setCurrentTrack(forCellAt indexPath: IndexPath) {
+        let tracks = isPlayedTracksSection(indexPath.section) ? playedTracks : displayPlaylist
+        guard tracks.indices.contains(indexPath.row) else { return }
+        musicPlayer.setCurrentTrackIndex(to: indexPath.row)
+    }
+
+    // 是否為播放紀錄 section
+    func isPlayedTracksSection(_ section: Int) -> Bool {
+        !playedTracks.isEmpty && (section == 0)
+    }
+
+    // 清除播放紀錄
+    func clearPlayRecords() {
+        musicPlayer.clearPlayRecords()
+    }
+
+    func removeTrack(forCellAt indexPath: IndexPath) {
+        if isPlayedTracksSection(indexPath.section) {
+            musicPlayer.removeFromPlayRecords(indexPath.row)
+        } else {
+            let pendingListIndex = indexPath.row + 1 // 因為第一項是正在播放的，所以這邊要加1
+            musicPlayer.removeTrackFromDisplayPlaylist(at: pendingListIndex)
+        }
     }
 
     func play() {
         musicPlayer.play()
-    }
-
-    func setSelectedTrack(forCellAt index: Int) {
-        guard tracks.indices.contains(index) else { return }
-        currentTrack = tracks[index]
     }
 
     func changeImage() {
@@ -106,6 +122,16 @@ class PlaylistViewModel {
     private let colorsSubject = CurrentValueSubject<[UIColor], Never>(DefaultTrack.gradientColors)
     private var cancellables: Set<AnyCancellable> = .init()
     private let musicPlayer: MusicPlayer = .shared
+
+    // 待播清單
+    private var displayPlaylist: [Track] {
+        musicPlayer.pendingPlaylist
+    }
+
+    // 播放紀錄
+    private var playedTracks: [Track] {
+        musicPlayer.playedTracks
+    }
 
     /// 異步下載圖檔
     private func downloadImage(with urlString: String?) {

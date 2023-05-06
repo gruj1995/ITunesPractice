@@ -41,20 +41,20 @@ class PlaylistPlayerViewModel {
     }
 
     var displayMode: PlayerDisplayMode {
-        get { UserDefaults.standard.playerDisplayMode }
-        set { UserDefaults.standard.playerDisplayMode = newValue }
+        get { UserDefaults.playerDisplayMode }
+        set { UserDefaults.playerDisplayMode = newValue }
     }
 
     var playbackTimePublisher: AnyPublisher<Double?, Never> {
         musicPlayer.playbackTimePublisher
     }
+    
+    var isPlayingPublisher: AnyPublisher<Bool, Never> {
+        musicPlayer.isPlayingPublisher
+    }
 
     var volumePublisher: AnyPublisher<Float, Never> {
         musicPlayer.volumePublisher
-    }
-
-    var isPlayingPublisher: AnyPublisher<Bool, Never> {
-        musicPlayer.isPlayingPublisher
     }
 
     var isPlaying: Bool {
