@@ -54,6 +54,15 @@ class AudioSearchViewController: UIViewController {
         return button
     }()
 
+    private lazy var historyButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setTitle("搜尋記錄", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 15, weight: .medium)
+        button.tintColor = .white
+        button.addTarget(self, action: #selector(historyButtonTapped), for: .touchUpInside)
+        return button
+    }()
+
     private lazy var hintView: EmptyStateView = {
         let view = EmptyStateView()
         view.isHidden = true
@@ -144,6 +153,12 @@ class AudioSearchViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.width.equalToSuperview().multipliedBy(0.8)
         }
+
+        view.addSubview(historyButton)
+        historyButton.snp.makeConstraints { make in
+            make.centerY.equalToSuperview().multipliedBy(1.4)
+            make.centerX.equalToSuperview()
+        }
     }
 
     private func bindViewModel() {
@@ -194,6 +209,7 @@ class AudioSearchViewController: UIViewController {
         sparkleView.velocity = isRecording ? 1 : 0
         hintView.isHidden = !isRecording
         closeButton.isHidden = !isRecording
+        historyButton.isHidden = isRecording
         playHeartbeatAnimation()
     }
 
@@ -216,7 +232,7 @@ class AudioSearchViewController: UIViewController {
         let duration = TimeInterval(ratio)
         let targetScale = ratio * 1.5
 
-        Logger.log("___ 觸發心跳  volume: \(volume),  radius:\(radius), scale: \(ratio)")
+//        Logger.log("___ 觸發心跳  volume: \(volume),  radius:\(radius), scale: \(ratio)")
 
         let pulseLayer = Pulsing(
             radius: radius,
@@ -238,8 +254,18 @@ class AudioSearchViewController: UIViewController {
         }
         present(vc, animated: true)
     }
-    
-    // TODO: 改成彈窗
+
+    private func presentAudioSearchHistoryVC() {
+        let vc = AudioSearchHistoryViewController()
+        vc.modalPresentationStyle = .pageSheet
+        vc.modalTransitionStyle = .coverVertical
+        if let sheet = vc.sheetPresentationController {
+            sheet.detents = [.medium(), .large()]
+            sheet.prefersGrabberVisible = true // 顯示頂部 grabber
+        }
+        present(vc, animated: true)
+    }
+
     private func presentFailedVC() {
         stopRecognition()
         Utils.toast("辨識失敗")
@@ -289,9 +315,15 @@ class AudioSearchViewController: UIViewController {
     }
 
     @objc
+    private func historyButtonTapped() {
+        presentAudioSearchHistoryVC()
+    }
+
+    @objc
     private func shazamImageViewTapped(_ sender: UITapGestureRecognizer) {
         if viewModel.isRecording { return }
         vibrate()
+
         // 因為錄音時會禁止觸覺反饋和系統聲音，這邊等反饋結束再開始錄音
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.startRecognition()
