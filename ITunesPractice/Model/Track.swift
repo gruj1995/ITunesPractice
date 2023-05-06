@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - Track
 
-struct Track: Codable, Equatable, CustomStringConvertible {
+struct Track: Codable, Equatable, Comparable, CustomStringConvertible {
     // MARK: Lifecycle
 
     init(id: Int = 0, artworkUrl100: String, collectionName: String, artistName: String, trackId: Int, trackName: String, releaseDate: String, artistViewUrl: String, collectionViewUrl: String, previewUrl: String, trackViewUrl: String, videoUrl: URL? = nil, searchDate: Date? = nil) {
@@ -25,7 +25,7 @@ struct Track: Codable, Equatable, CustomStringConvertible {
         self.previewUrl = previewUrl
         self.trackViewUrl = trackViewUrl
         self.videoUrl = videoUrl
-        self.searchDate = searchDate
+        self.searchDate = searchDate ?? Date()
     }
 
     // MARK: Internal
@@ -38,7 +38,7 @@ struct Track: Codable, Equatable, CustomStringConvertible {
     var videoUrl: URL?
 
     /// 搜尋日期
-    var searchDate: Date?
+    var searchDate: Date
 
     // MARK: Track 的參數
 
@@ -102,6 +102,10 @@ struct Track: Codable, Equatable, CustomStringConvertible {
 
     static func == (lhs: Self, rhs: Self) -> Bool {
         return lhs.trackId == rhs.trackId
+    }
+
+    static func < (lhs: Track, rhs: Track) -> Bool {
+        return lhs.searchDate < rhs.searchDate
     }
 
     /// 回傳自動增加 id 後的 Track
