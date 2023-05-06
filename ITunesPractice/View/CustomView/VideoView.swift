@@ -21,8 +21,7 @@ class VideoView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        // 註冊播放完畢的觸發器
-        NotificationCenter.default.addObserver(self, selector: #selector(playerDidFinishPlaying), name: .AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
+        observePlayerDidFinishPlaying()
         // 讓影片填滿畫面
         playerLayer.videoGravity = .resizeAspectFill
     }
@@ -57,7 +56,7 @@ class VideoView: UIView {
             DispatchQueue.main.async {
                 self.player = AVPlayer(playerItem: item)
                 // 讓 MV 禁音
-                self.player?.isMuted = true
+                self.player.isMuted = true
                 self.observePlayerStatus()
             }
         } catch {
@@ -67,15 +66,15 @@ class VideoView: UIView {
 
     /// 監聽播放狀態
     func observePlayerStatus() {
-        guard let playerItem = player?.currentItem else { return }
+        guard let playerItem = player.currentItem else { return }
         observer = playerItem.observe(\.status, options: [.new]) { [weak self] playerItem, _ in
             guard let self else { return }
             switch playerItem.status {
             case .readyToPlay:
                 Logger.log(".readyToPlay")
-                self.player?.play()
+                self.player.play()
             case .failed:
-                Logger.log(".failed \(String(describing: self.player?.currentItem?.error))")
+                Logger.log(".failed \(String(describing: self.player.currentItem?.error))")
             case .unknown:
                 Logger.log(".unknown")
             default:
@@ -88,14 +87,19 @@ class VideoView: UIView {
 
     private var observer: NSKeyValueObservation?
 
-    private var player: AVPlayer? {
-        get { playerLayer.player }
+    private var player: AVPlayer {
+        get { playerLayer.player ?? AVPlayer() }
         set { playerLayer.player = newValue }
+    }
+
+    private func observePlayerDidFinishPlaying() {
+        // 註冊播放完畢的觸發器
+        NotificationCenter.default.addObserver(self, selector: #selector(playerDidFinishPlaying), name: .AVPlayerItemDidPlayToEndTime, object: player.currentItem)
     }
 
     private func initPlayerAsset(with url: URL) async throws -> AVAsset {
         let asset = AVAsset(url: url)
-        // Load an asset's suitability for playback and export.
+        // Load an asset's suitability for playback.
         let isPlayable = try await asset.load(.isPlayable)
         if isPlayable {
             return asset
@@ -115,8 +119,13 @@ class VideoView: UIView {
 
     /// 播放完畢後重複播放
     @objc
-    private func playerDidFinishPlaying(note: NSNotification) {
-        player?.seek(to: .zero)
-        player?.play()
+    private func playerDidFinishPlaying(_ notification: Notification) {
+        guard let playerItem = notification.object as? AVPlayerItem,
+              playerItem == player.currentItem
+        else {
+            return
+        }
+        player.seek(to: .zero)
+        player.play()
     }
 }

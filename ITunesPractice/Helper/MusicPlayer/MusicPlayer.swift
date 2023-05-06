@@ -411,9 +411,7 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
 
     private func setupObservers() {
         // 每首歌曲播放完畢時更新索引
-        NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: nil, queue: .main) { [weak self] _ in
-            self?.playerItemDidPlayToEndTime()
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(playerItemDidPlayToEndTime), name: .AVPlayerItemDidPlayToEndTime, object: player.currentItem)
 
         // 監聽系統音量變化
         // 參考 https://stackoverflow.com/questions/68249775/system-volume-change-observer-not-working-on-ios-15
@@ -602,7 +600,14 @@ extension MusicPlayer {
 
 extension MusicPlayer {
     /// 歌曲播放完畢準備進入下一首(自動接續)
-    private func playerItemDidPlayToEndTime() {
+    @objc
+    private func playerItemDidPlayToEndTime(_ notification: Notification) {
+        // 避免誤收到其他 player 的通知
+        guard let playerItem = notification.object as? AVPlayerItem,
+              playerItem == player.currentItem else {
+            return
+        }
+        
         switch repeatMode {
         // 循環播放單曲
         case .one:
