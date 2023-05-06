@@ -102,7 +102,8 @@ class PlaylistViewModel {
         if isPlayedTracksSection(indexPath.section) {
             musicPlayer.removeFromPlayRecords(indexPath.row)
         } else {
-            musicPlayer.removeTrackFromDisplayPlaylist(at: indexPath.row)
+            let pendingListIndex = indexPath.row + 1 // 因為第一項是正在播放的，所以這邊要加1
+            musicPlayer.removeTrackFromDisplayPlaylist(at: pendingListIndex)
         }
     }
 

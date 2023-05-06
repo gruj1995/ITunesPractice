@@ -210,8 +210,7 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
     /// 刪除指定的待播清單項目
     func removeTrackFromDisplayPlaylist(at index: Int) {
         guard displayIndices.count > 1 else { return }
-        let pendingListIndex = index + 1 // 因為第一項是正在播放的，所以這邊要加1
-        let targetIndex = displayIndices[pendingListIndex]
+        let targetIndex = displayIndices[index]
         guard mainPlaylist.indices.contains(targetIndex) else { return }
         mainPlaylist.remove(at: targetIndex)
 
