@@ -12,6 +12,7 @@ import UIKit
 
 enum FPLayoutType {
     case modalFullScreen
+    case miniBar
 
     // MARK: Internal
 
@@ -19,6 +20,8 @@ enum FPLayoutType {
         switch self {
         case .modalFullScreen:
             return ModalFullScreenPanelLayout()
+        case .miniBar:
+            return MiniBarPanelLayout()
         }
     }
 }
@@ -40,6 +43,26 @@ class ModalFullScreenPanelLayout: FloatingPanelLayout {
         return [
             .full: FloatingPanelLayoutAnchor(absoluteInset: 0, edge: .top, referenceGuide: .superview)
 //            .hidden: FloatingPanelLayoutAnchor(absoluteInset: 10, edge: .bottom, referenceGuide: .safeArea)
+        ]
+    }
+
+    // 預設 state == .full ? 0.3 : 0.0
+    // 如果alpha為0則背景遮罩會消失
+    func backdropAlpha(for state: FloatingPanelState) -> CGFloat {
+        return 0.3
+    }
+}
+
+/// 2023/5/6 自己添加的底部樣式
+class MiniBarPanelLayout: FloatingPanelLayout {
+    let position: FloatingPanelPosition = .bottom
+    let initialState: FloatingPanelState = .tip
+
+    // 各個錨點在螢幕上的位置
+    var anchors: [FloatingPanelState: FloatingPanelLayoutAnchoring] {
+        return [
+            .full: FloatingPanelLayoutAnchor(absoluteInset: 0, edge: .top, referenceGuide: .superview),
+            .tip: FloatingPanelLayoutAnchor(absoluteInset: 44.0, edge: .bottom, referenceGuide: .safeArea)
         ]
     }
 

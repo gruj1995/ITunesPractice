@@ -21,7 +21,7 @@ import UIKit
  */
 
 // 參考 https://github.com/LeoNatan/LNPopupController
-class MiniPlayerViewController: BottomFloatingPanelViewController {
+class MiniPlayerViewController: FullScreenFloatingPanelViewController {
     // MARK: Internal
 
     override func viewDidLoad() {

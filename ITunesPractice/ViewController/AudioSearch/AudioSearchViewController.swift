@@ -11,14 +11,13 @@ import UIKit
 
 // MARK: - AudioSearchViewController
 
-class AudioSearchViewController: BottomFloatingPanelViewController {
+class AudioSearchViewController: UIViewController {
     // MARK: Internal
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         bindViewModel()
-
         // App 從背景進入前景時啟動動畫
         NotificationCenter.default.addObserver(self, selector: #selector(playHeartbeatAnimation), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
