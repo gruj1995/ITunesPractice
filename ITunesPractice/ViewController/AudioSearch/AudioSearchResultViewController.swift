@@ -94,7 +94,7 @@ class AudioSearchResultViewController: UIViewController {
         config.attributedTitle = AttributedString(
             "分享歌曲".localizedString(),
             attributes: AttributeContainer(
-                [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15, weight: .medium)]
+                [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15, weight: .semibold)]
             )
         )
         config.titleAlignment = .center
@@ -196,7 +196,7 @@ class AudioSearchResultViewController: UIViewController {
 
         bottomView.addSubview(sharedButton)
         sharedButton.snp.makeConstraints { make in
-            make.top.equalTo(topView.snp.bottom).offset(100)
+            make.top.equalTo(topView.snp.bottom).offset(120)
             make.centerX.equalToSuperview()
             make.width.equalToSuperview().multipliedBy(0.8)
             make.height.equalTo(50)
