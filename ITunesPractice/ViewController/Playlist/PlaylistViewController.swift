@@ -199,19 +199,22 @@ class PlaylistViewController: UIViewController {
     // MARK: Update
 
     private func updateCurrentTrackView() {
-        let track = viewModel.currentTrack
+        guard let track = viewModel.currentTrack else {
+            coverImageView.backgroundColor = .appColor(.gray3)
+            coverImageContainerView.layer.shadowColor = UIColor.clear.cgColor
+            currentTrackView.configure(trackName: DefaultTrack.trackName, artistName: nil, menu: nil)
+            return
+        }
 
         // 更新左側圖片
-        let url = track?.getArtworkImageWithSize(size: .square800)
+        let url = track.getArtworkImageWithSize(size: .square800)
         coverImageView.loadCoverImage(with: url)
-        let showDefaultImage = coverImageView.image == DefaultTrack.coverImage
-        coverImageView.backgroundColor = showDefaultImage ? UIColor.appColor(.gray3) : .clear
-        coverImageContainerView.layer.shadowColor = showDefaultImage ? UIColor.clear.cgColor : UIColor.black.cgColor
+        coverImageView.backgroundColor = .clear
+        coverImageContainerView.layer.shadowColor = UIColor.black.cgColor
 
         // 更新歌曲資訊
-        let trackName = track?.trackName ?? DefaultTrack.trackName
-        let menu = ContextMenuManager.shared.createTrackMenu(track, canEditPlayList: false)
-        currentTrackView.configure(trackName: trackName, artistName: track?.artistName, menu: menu)
+        let menu = ContextMenuManager.shared.createTrackMenu(track, menuTypes: [.addOrRemoveFromLibrary, .share])
+        currentTrackView.configure(trackName: track.trackName, artistName: track.artistName, menu: menu)
     }
 
     private func updateTableView() {
@@ -357,7 +360,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     // context menu 的清單
-    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+    func tableView(_ tableView: UITa bleView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         viewModel.selectedIndexPath = indexPath
         let track = viewModel.track(forCellAt: indexPath)
         return tableView.createTrackContextMenuConfiguration(indexPath: indexPath, track: track)

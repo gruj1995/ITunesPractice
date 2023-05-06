@@ -37,8 +37,8 @@ struct TrackContextMenuConfiguration {
     // 上下文菜單
     private var actionMenuProvider: UIContextMenuActionProvider {
         let provider: UIContextMenuActionProvider = { _ -> UIMenu? in
-            guard let track = self.track else { return nil }
-            return ContextMenuManager.shared.createTrackMenu(track, canEditPlayList: true)
+            guard let track else { return nil }
+            return ContextMenuManager.shared.createTrackMenu(track, menuTypes: [.addOrRemoveFromLibrary, .editPlaylist, .share])
         }
         return provider
     }

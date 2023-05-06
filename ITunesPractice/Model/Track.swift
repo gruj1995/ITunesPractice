@@ -119,3 +119,9 @@ struct Track: Codable, Equatable, Comparable, CustomStringConvertible {
         URL(string: artworkUrl100.replace(target: "100x100", withString: "\(size.rawValue)x\(size.rawValue)"))
     }
 }
+
+extension Track {
+    var isInLibrary: Bool {
+        UserDefaults.libraryTracks.contains(self)
+    }
+}

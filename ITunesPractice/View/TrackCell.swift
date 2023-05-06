@@ -45,7 +45,7 @@ class TrackCell: UITableViewCell {
     func addRightMenuButton(_ track: Track) {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
         button.setImage(AppImages.ellipsis?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
-        button.menu = ContextMenuManager.shared.createTrackMenu(track, canEditPlayList: true)
+        button.menu = ContextMenuManager.shared.createTrackMenu(track, menuTypes: [.addOrRemoveFromLibrary, .editPlaylist, .share])
         button.showsMenuAsPrimaryAction = true // 預設選單是長按出現，將這個值設為 true 可以讓選單在點擊時也出現
         accessoryView = button
     }
