@@ -44,11 +44,8 @@ class AudioSearchResultViewController: UIViewController {
     private let viewModel: AudioSearchResultViewModel
     private var cancellables: Set<AnyCancellable> = []
 
-//    private var player: AVPlayer?
-
-    lazy var scrollView: UIScrollView = {
+    private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
-        scrollView.delegate = self
         scrollView.backgroundColor = .clear
         scrollView.showsVerticalScrollIndicator = false
         // 避免自動加上 content inset
@@ -200,7 +197,7 @@ class AudioSearchResultViewController: UIViewController {
             make.top.equalTo(topView.snp.bottom).offset(100)
             make.centerX.equalToSuperview()
             make.width.equalToSuperview().multipliedBy(0.8)
-            make.height.equalTo(40)
+            make.height.equalTo(50)
         }
     }
 
@@ -218,18 +215,5 @@ class AudioSearchResultViewController: UIViewController {
     @objc
     private func shareTrack() {
         Utils.shareTrack(viewModel.track)
-    }
-}
-
-// MARK: UIScrollViewDelegate
-
-extension AudioSearchResultViewController: UIScrollViewDelegate {
-    func scrollViewDidScroll(_: UIScrollView) {
-//        let spaceBetweenViewToOrigin = -scrollView.convert(.zero, to: topTaskView).y
-//        showNavigationBar = scrollView.contentOffset.y > spaceBetweenViewToOrigin - navigationBarHeight
-//        updateNavigationBarAppearance(willDisappear: false)
-//
-//        // 依據向上捲動的比例調整圖片透明度
-//        taskImageView.alpha = 1 - (scrollView.contentOffset.y / taskImageViewHeight)
     }
 }
