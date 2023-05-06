@@ -100,10 +100,18 @@ extension ContextMenuManager {
     /// 修改待播清單
     private func editPlayListMenu(track: Track) -> UIMenu {
         let insertToFirstAction = createAction(title: "插播".localizedString(), image: AppImages.insertToFirst) { [weak self] _ in
+            guard let _ = URL(string: track.previewUrl) else {
+                Utils.toast(MusicPlayerError.invalidTrack.unwrapDescription)
+                return
+            }
             self?.musicPlayer.insertTrackToPlaylist(track)
             Utils.toast("已插播".localizedString())
         }
         let addToLastAction = createAction(title: "最後播放".localizedString(), image: AppImages.addToLast) { [weak self] _ in
+            guard let _ = URL(string: track.previewUrl) else {
+                Utils.toast(MusicPlayerError.invalidTrack.unwrapDescription)
+                return
+            }
             self?.musicPlayer.addTrackToPlaylist(track)
             Utils.toast("將於最後播放".localizedString())
         }
