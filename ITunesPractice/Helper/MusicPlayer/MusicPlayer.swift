@@ -266,14 +266,14 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
 
         if isShuffleMode {
             if shuffledIndices.isEmpty {
-                mainPlaylist.append(track)
+                addTrack(track)
                 entireShuffledIndices.append(0)
                 updateShuffledIndices()
             } else {
                 // 加到正在播放的音樂之後
                 // 主音樂清單索引往後一格並插入新歌
                 currentTrackIndex += 1
-                mainPlaylist.insert(track, at: currentTrackIndex)
+                addTrack(track, at: currentTrackIndex)
                 // 更新隨機待播清單的索引(因為主音樂清單索引有變動)
                 entireShuffledIndices = entireShuffledIndices.map {
                     $0 >= currentTrackIndex ? ($0 + 1) : $0
@@ -285,11 +285,11 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
             }
         } else {
             if orderedIndices.isEmpty {
-                mainPlaylist.append(track)
+                addTrack(track)
                 orderedIndices.append(0)
             } else {
                 currentTrackIndex += 1
-                mainPlaylist.insert(track, at: currentTrackIndex)
+                addTrack(track, at: currentTrackIndex)
                 updateOrderedIndices()
             }
         }
@@ -299,12 +299,12 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
     func insertTrackToPlaylist(_ track: Track) {
         if isShuffleMode {
             if shuffledIndices.isEmpty {
-                mainPlaylist.append(track)
+                addTrack(track)
                 entireShuffledIndices.append(0)
                 updateShuffledIndices()
             } else {
                 let pendingListFirstIndex = currentTrackIndex + 1
-                mainPlaylist.insert(track, at: pendingListFirstIndex)
+                addTrack(track, at: pendingListFirstIndex)
                 // 更新隨機待播清單的索引(因為主音樂清單索引有變動)
                 entireShuffledIndices = entireShuffledIndices.map {
                     $0 >= pendingListFirstIndex ? ($0 + 1) : $0
@@ -315,11 +315,11 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
             }
         } else {
             if orderedIndices.isEmpty {
-                mainPlaylist.append(track)
+                addTrack(track)
                 orderedIndices.append(0)
             } else {
                 let pendingListFirstIndex = currentTrackIndex + 1
-                mainPlaylist.insert(track, at: pendingListFirstIndex)
+                addTrack(track, at: pendingListFirstIndex)
                 updateOrderedIndices()
             }
         }
@@ -328,12 +328,12 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
     /// 加到待播清單末項
     func addTrackToPlaylist(_ track: Track) {
         if isShuffleMode {
-            mainPlaylist.append(track)
+            addTrack(track)
             entireShuffledIndices.append(entireShuffledIndices.count)
             // 更新顯示的隨機待播清單索引
             shuffledIndices = Array(entireShuffledIndices.dropFirst(currentShuffleTrackIndex))
         } else {
-            mainPlaylist.append(track)
+            addTrack(track)
             orderedIndices.append(mainPlaylist.count - 1)
         }
     }
@@ -398,6 +398,14 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
     private var entireShuffledIndices: [Int] {
         get { UserDefaults.entireShuffledIndices }
         set { UserDefaults.entireShuffledIndices = newValue }
+    }
+
+    private func addTrack(_ track: Track, at index: Int? = nil) {
+        if let index {
+            mainPlaylist.insert(track.autoIncrementID(), at: index)
+        } else {
+            mainPlaylist.append(track.autoIncrementID())
+        }
     }
 
     // MARK: Setup
@@ -603,10 +611,11 @@ extension MusicPlayer {
     private func playerItemDidPlayToEndTime(_ notification: Notification) {
         // 避免誤收到其他 player 的通知
         guard let playerItem = notification.object as? AVPlayerItem,
-              playerItem == player.currentItem else {
+              playerItem == player.currentItem
+        else {
             return
         }
-        
+
         switch repeatMode {
         // 循環播放單曲
         case .one:
