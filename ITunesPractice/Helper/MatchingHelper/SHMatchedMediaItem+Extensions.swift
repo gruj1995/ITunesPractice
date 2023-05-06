@@ -44,6 +44,7 @@ extension SHMatchedMediaItem {
         track.artistViewUrl = song.artistURL?.absoluteString ?? ""
         track.videoUrl = videoURL
         track.trackViewUrl = song.url?.absoluteString ?? ""
+        track.previewUrl = song.previewAssets?.first?.url?.absoluteString ?? ""
         return track
     }
 }
