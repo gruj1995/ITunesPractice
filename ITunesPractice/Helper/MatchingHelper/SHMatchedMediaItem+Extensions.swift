@@ -22,7 +22,7 @@ extension SHMatchedMediaItem {
     }
 
     private func createDefaultTrack() -> Track {
-        return Track(
+        let track = Track(
             artworkUrl100: artworkURL?.absoluteString ?? "",
             collectionName: "",
             artistName: artist ?? "",
@@ -33,6 +33,7 @@ extension SHMatchedMediaItem {
             collectionViewUrl: "",
             previewUrl: "",
             trackViewUrl: "")
+        return track.autoIncrementID()
     }
 
     private func convertToTrackWithSong(_ song: Song, songID: Int) -> Track {
