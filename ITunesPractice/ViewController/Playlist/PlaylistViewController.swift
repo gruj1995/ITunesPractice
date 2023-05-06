@@ -381,9 +381,8 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
             // 當 section 只剩一個 row 時，使用 deleteRows 會 crash，要改用 deleteSections
             let rows = viewModel.numberOfRows(in: indexPath.section)
             viewModel.removeTrack(forCellAt: indexPath)
-
             if rows == 1 {
-                tableView.deleteSections(IndexSet(integer: indexPath.section), with: .fade)
+                tableView.reloadData()
             } else {
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }
