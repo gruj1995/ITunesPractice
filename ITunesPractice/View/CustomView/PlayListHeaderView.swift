@@ -92,7 +92,7 @@ final class PlayListHeaderView: UITableViewHeaderFooterView {
         let button = UIButton()
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .regular)
         button.setTitle("清除".localizedString(), for: .normal)
-        button.setTitleColor(.lightGray, for: .normal)
+        button.setTitleColor(UIColor(white: 0.8, alpha: 1), for: .normal)
         button.backgroundColor = .clear
         button.addTarget(self, action: #selector(clearButtonTapped), for: .touchUpInside)
         return button

@@ -24,8 +24,8 @@ enum AppImages {
     static let waveformAndMic = UIImage(systemName: "waveform.and.mic")
 
     // shazam
-    static let micFill = UIImage(systemName: "mic.fill", withConfiguration: roundConfiguration)
     static let shazamLarge = UIImage(named: "shazam_large")
+    static let micFill = UIImage(systemName: "mic.fill", withConfiguration: roundConfiguration)
     static let xmark = UIImage(systemName: "xmark", withConfiguration: roundConfiguration)
 
     // 播放器

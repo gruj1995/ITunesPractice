@@ -123,6 +123,8 @@ class AudioSearchResultViewController: UIViewController {
         label.textColor = .white
         label.font = .systemFont(ofSize: 18, weight: .medium)
         label.textAlignment = .left
+        label.lineBreakMode = .byWordWrapping
+        label.numberOfLines = 0
         return label
     }()
 

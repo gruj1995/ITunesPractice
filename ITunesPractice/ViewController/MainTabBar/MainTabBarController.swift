@@ -98,6 +98,8 @@ class MainTabBarController: UITabBarController {
 extension MainTabBarController: UITabBarControllerDelegate {
     // 切換tabbar觸發
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-//        miniPlayerVC.view.isHidden = viewController == viewControllers?.last
+//        if let viewControllers, viewControllers.count == 3 {
+//            miniPlayerVC.view.isHidden = viewController == viewControllers[1]
+//        }
     }
 }
