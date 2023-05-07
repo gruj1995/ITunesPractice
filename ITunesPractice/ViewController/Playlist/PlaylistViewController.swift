@@ -201,6 +201,7 @@ class PlaylistViewController: UIViewController {
     private func updateCurrentTrackView() {
         guard let track = viewModel.currentTrack else {
             coverImageView.backgroundColor = .appColor(.gray3)
+            coverImageView.image = DefaultTrack.coverImage
             coverImageContainerView.layer.shadowColor = UIColor.clear.cgColor
             currentTrackView.configure(trackName: DefaultTrack.trackName, artistName: nil, menu: nil)
             return
