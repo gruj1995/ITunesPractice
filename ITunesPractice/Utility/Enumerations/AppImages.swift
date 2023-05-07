@@ -65,4 +65,9 @@ enum AppImages {
     static let circleFill = UIImage(named: "circle.fill.normal") // 正常尺寸
     static let circleFillSmall = UIImage(named: "circle.fill.small")
     static let circleFillTiny = UIImage(named: "circle.fill.tiny") // 最小
+
+    // 雲端資源
+    static let iCloud = UIImage(named: "iCloud")
+    static let googleDrive = UIImage(named: "googleDrive")
+    static let personICloudFill = UIImage(systemName: "person.icloud.fill")
 }
