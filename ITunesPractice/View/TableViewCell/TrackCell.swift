@@ -38,6 +38,7 @@ class TrackCell: UITableViewCell {
         coverImageView.loadCoverImage(with: url)
         trackNameLabel.text = trackName
         albumInfoLabel.text = "\(artistName) · \(collectionName)"
+        albumInfoLabel.isHidden = artistName.isEmpty && collectionName.isEmpty
         highlightIfNeeded(showsHighlight)
     }
 
