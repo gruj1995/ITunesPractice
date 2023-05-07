@@ -11,7 +11,7 @@ import UIKit
 // MARK: - TrackDetailViewControllerDatasource
 
 protocol TrackDetailViewControllerDatasource: AnyObject {
-    func trackId(_ trackDetailViewController: TrackDetailViewController) -> Int?
+    func track(_ trackDetailViewController: TrackDetailViewController) -> Track?
 }
 
 // MARK: - TrackDetailViewController
@@ -35,8 +35,8 @@ class TrackDetailViewController: UIViewController {
         super.viewDidLoad()
         // 讓大標題消失
         navigationItem.largeTitleDisplayMode = .never
-        viewModel = TrackDetailViewModel(trackId: dataSource?.trackId(self))
-        observe()
+        viewModel = TrackDetailViewModel(track: dataSource?.track(self))
+        bindViewModel()
         setupUI()
     }
 
@@ -64,7 +64,6 @@ class TrackDetailViewController: UIViewController {
         return boxView
     }()
 
-    /// 專輯封面圖示
     private lazy var coverImageView: UIImageView = UIImageView.coverImageView()
 
     private lazy var trackNameLabel: UILabel = {
@@ -114,11 +113,11 @@ class TrackDetailViewController: UIViewController {
         return stackView
     }()
 
-    private func observe() {
+    private func bindViewModel() {
         viewModel.$track
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] track in
-                guard let self = self, let track = track else { return }
+                guard let self, let track else { return }
                 self.coverImageView.loadCoverImage(with: track.getArtworkImageWithSize(size: .square800))
                 self.trackNameLabel.text = track.trackName
                 self.artistNameLabel.text = track.artistName
@@ -128,7 +127,6 @@ class TrackDetailViewController: UIViewController {
 
     private func setupUI() {
         view.backgroundColor = .black
-
         setupLayout()
     }
 

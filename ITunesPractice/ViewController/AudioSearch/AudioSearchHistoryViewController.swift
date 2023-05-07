@@ -244,8 +244,8 @@ extension AudioSearchHistoryViewController: UITableViewDataSource, UITableViewDe
 // MARK: TrackDetailViewControllerDatasource
 
 extension AudioSearchHistoryViewController: TrackDetailViewControllerDatasource {
-    func trackId(_ trackDetailViewController: TrackDetailViewController) -> Int? {
-        return viewModel.selectedTrack?.trackId
+    func track(_ trackDetailViewController: TrackDetailViewController) -> Track? {
+        return viewModel.selectedTrack
     }
 }
 

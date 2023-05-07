@@ -360,7 +360,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     // context menu 的清單
-    func tableView(_ tableView: UITa bleView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         viewModel.selectedIndexPath = indexPath
         let track = viewModel.track(forCellAt: indexPath)
         return tableView.createTrackContextMenuConfiguration(indexPath: indexPath, track: track)
@@ -465,8 +465,8 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
 // MARK: TrackDetailViewControllerDatasource
 
 extension PlaylistViewController: TrackDetailViewControllerDatasource {
-    func trackId(_ trackDetailViewController: TrackDetailViewController) -> Int? {
-        return viewModel.currentTrack?.trackId
+    func track(_ trackDetailViewController: TrackDetailViewController) -> Track? {
+        return viewModel.currentTrack
     }
 }
 
