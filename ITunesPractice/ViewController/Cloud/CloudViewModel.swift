@@ -25,14 +25,13 @@ class CloudViewModel {
     func convertToTracks(urls: [URL]) -> [Track] {
         // 判斷檔案是否為可播放的音檔
         let playableUrls = urls.compactMap { AVAsset(url: $0).isPlayable ? $0 : nil }
-
         if playableUrls.isEmpty {
             return []
         } else {
             return playableUrls.map { url in
-                // 取得檔案名稱(不含副檔名)
+                // 取得檔案名稱(去除副檔名)
                 let fileName = url.deletingPathExtension().lastPathComponent
-                return Track(trackName: fileName, trackViewUrl: url.absoluteString)
+                return Track(trackName: fileName, previewUrl: url.absoluteString)
             }
         }
     }

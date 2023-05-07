@@ -129,8 +129,8 @@ extension Track {
         UserDefaults.libraryTracks.contains(self)
     }
 
-    init(trackName: String, trackViewUrl: String) {
+    init(trackName: String, previewUrl: String) {
         UserDefaults.autoIncrementTrackID += 1
-        self.init(id: UserDefaults.autoIncrementTrackID, artworkUrl100: "", collectionName: "", artistName: "", trackId: 0, trackName: trackName, releaseDate: "", artistViewUrl: "", collectionViewUrl: "", previewUrl: "", trackViewUrl: trackViewUrl)
+        self.init(id: UserDefaults.autoIncrementTrackID, artworkUrl100: "", collectionName: "", artistName: "", trackId: 0, trackName: trackName, releaseDate: "", artistViewUrl: "", collectionViewUrl: "", previewUrl: previewUrl, trackViewUrl: "")
     }
 }
