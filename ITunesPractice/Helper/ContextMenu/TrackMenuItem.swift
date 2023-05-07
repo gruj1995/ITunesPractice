@@ -19,7 +19,8 @@ protocol TrackMenuItem {
 struct AddMenuItem: TrackMenuItem {
     func getMenuElement(for track: Track) -> UIMenuElement {
         let addAction = UIAction(title: "加入資料庫".localizedString(), image: AppImages.plus) { _ in
-            UserDefaults.libraryTracks.appendIfNotContains(track)
+            // 新的插入到最前面
+            UserDefaults.libraryTracks.insertIfNotContains(track, at: 0)
             Utils.toast("已加入資料庫".localizedString())
         }
         return UIMenu(title: "", options: .displayInline, children: [addAction])
