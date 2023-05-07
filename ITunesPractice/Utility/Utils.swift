@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import UniformTypeIdentifiers // 文件類型id
 
 struct Utils {
     /// 獲取App的根目錄路徑
@@ -53,5 +54,153 @@ struct Utils {
         }
         let topVC = UIApplication.shared.getTopViewController()
         topVC?.present(activityVC, animated: true)
+    }
+}
+
+extension Utils {
+    /// 取得所有檔案類型
+    /// https://stackoverflow.com/questions/70102279/how-to-get-all-extensions-for-uttype-image-audio-and-video
+    ///
+    static func allUTITypes() -> [UTType] {
+        let types: [UTType] =
+            [.item,
+             .content,
+             .compositeContent,
+             .diskImage,
+             .data,
+             .directory,
+             .resolvable,
+             .symbolicLink,
+             .executable,
+             .mountPoint,
+             .aliasFile,
+             .urlBookmarkData,
+             .url,
+             .fileURL,
+             .text,
+             .plainText,
+             .utf8PlainText,
+             .utf16ExternalPlainText,
+             .utf16PlainText,
+             .delimitedText,
+             .commaSeparatedText,
+             .tabSeparatedText,
+             .utf8TabSeparatedText,
+             .rtf,
+             .html,
+             .xml,
+             .yaml,
+             .sourceCode,
+             .assemblyLanguageSource,
+             .cSource,
+             .objectiveCSource,
+             .swiftSource,
+             .cPlusPlusSource,
+             .objectiveCPlusPlusSource,
+             .cHeader,
+             .cPlusPlusHeader]
+
+        let types1: [UTType] =
+            [.script,
+             .appleScript,
+             .osaScript,
+             .osaScriptBundle,
+             .javaScript,
+             .shellScript,
+             .perlScript,
+             .pythonScript,
+             .rubyScript,
+             .phpScript,
+             .makefile, // 'makefile' is only available in iOS 15.0 or newer
+             .json,
+             .propertyList,
+             .xmlPropertyList,
+             .binaryPropertyList,
+             .pdf,
+             .rtfd,
+             .flatRTFD,
+             .webArchive,
+             .image,
+             .jpeg,
+             .tiff,
+             .gif,
+             .png,
+             .icns,
+             .bmp,
+             .ico,
+             .rawImage,
+             .svg,
+             .livePhoto,
+             .heif,
+             .heic,
+             .webP,
+             .threeDContent,
+             .usd,
+             .usdz,
+             .realityFile,
+             .sceneKitScene,
+             .arReferenceObject,
+             .audiovisualContent]
+
+        let types2: [UTType] =
+            [.movie,
+             .video,
+             .audio,
+             .quickTimeMovie,
+             UTType("com.apple.quicktime-image"),
+             .mpeg,
+             .mpeg2Video,
+             .mpeg2TransportStream,
+             .mp3,
+             .mpeg4Movie,
+             .mpeg4Audio,
+             .appleProtectedMPEG4Audio,
+             .appleProtectedMPEG4Video,
+             .avi,
+             .aiff,
+             .wav,
+             .midi,
+             .playlist,
+             .m3uPlaylist,
+             .folder,
+             .volume,
+             .package,
+             .bundle,
+             .pluginBundle,
+             .spotlightImporter,
+             .quickLookGenerator,
+             .xpcService,
+             .framework,
+             .application,
+             .applicationBundle,
+             .applicationExtension,
+             .unixExecutable,
+             .exe,
+             .systemPreferencesPane,
+             .archive,
+             .gzip,
+             .bz2,
+             .zip,
+             .appleArchive,
+             .spreadsheet,
+             .presentation,
+             .database,
+             .message,
+             .contact,
+             .vCard,
+             .toDoItem,
+             .calendarEvent,
+             .emailMessage,
+             .internetLocation,
+             .internetShortcut,
+             .font,
+             .bookmark,
+             .pkcs12,
+             .x509Certificate,
+             .epub,
+             .log]
+            .compactMap { $0 }
+
+        return types + types1 + types2
     }
 }

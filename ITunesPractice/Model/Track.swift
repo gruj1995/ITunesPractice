@@ -124,4 +124,9 @@ extension Track {
     var isInLibrary: Bool {
         UserDefaults.libraryTracks.contains(self)
     }
+
+    init(trackName: String, trackViewUrl: String) {
+        UserDefaults.autoIncrementTrackID += 1
+        self.init(id: UserDefaults.autoIncrementTrackID, artworkUrl100: "", collectionName: "", artistName: "", trackId: 0, trackName: trackName, releaseDate: "", artistViewUrl: "", collectionViewUrl: "", previewUrl: "", trackViewUrl: trackViewUrl)
+    }
 }
