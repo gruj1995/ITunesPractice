@@ -42,7 +42,7 @@ class CloudOptionCell: UITableViewCell {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.font = .systemFont(ofSize: 15)
+        label.font = .systemFont(ofSize: 16, weight: .medium)
         label.textColor = .white
         return label
     }()
