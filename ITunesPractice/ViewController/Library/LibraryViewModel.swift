@@ -39,6 +39,7 @@ class LibraryViewModel {
     func removeTrack(forCellAt index: Int) {
         guard tracks.indices.contains(index) else { return }
         UserDefaults.libraryTracks.remove(at: index)
+        tracks = UserDefaults.libraryTracks
     }
 
     // MARK: Private
