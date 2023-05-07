@@ -101,6 +101,10 @@ struct Track: Codable, Equatable, Comparable, CustomStringConvertible {
     }
 
     static func == (lhs: Self, rhs: Self) -> Bool {
+        // 如果沒有 trackId，就比較自訂的 id (可能發生在非透過 iTunes API 加入的音擋)
+        if lhs.trackId == 0 || rhs.trackId == 0 {
+            return lhs.id == rhs.id
+        }
         return lhs.trackId == rhs.trackId
     }
 
