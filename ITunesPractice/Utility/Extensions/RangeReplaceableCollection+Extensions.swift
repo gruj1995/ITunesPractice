@@ -24,6 +24,16 @@ extension RangeReplaceableCollection where Element: Equatable {
             appendIfNotContains(element)
         }
     }
+
+    @discardableResult
+    mutating func insertIfNotContains(_ element: Element, at index: Index) -> (appended: Bool, memberAfterAppend: Element) {
+        if let index = firstIndex(of: element) {
+            return (false, self[index])
+        } else {
+            insert(element, at: index)
+            return (true, element)
+        }
+    }
 }
 
 extension Collection {
