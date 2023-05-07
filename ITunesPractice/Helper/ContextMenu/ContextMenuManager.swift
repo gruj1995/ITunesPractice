@@ -44,7 +44,8 @@ enum TrackMenuType: TrackMenuItem {
                 return AddMenuItem().getMenuElement(for: track)
             }
         case .editPlaylist:
-            return EditPlaylistMenuItem().getMenuElement(for: track)
+            let trackWithNewID = track.autoIncrementID()
+            return EditPlaylistMenuItem().getMenuElement(for: trackWithNewID)
         case .share:
             return ShareMenuItem().getMenuElement(for: track)
         }
