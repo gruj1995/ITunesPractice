@@ -10,6 +10,10 @@ import Foundation
 extension UserDefaults {
     // MARK: - 資料相關
 
+    /// 所有播放清單
+    @UserDefaultValue(key: "playlists", defaultValue: [])
+    static var playlists: [Playlist]
+
     /// 自動增加的 Track id
     @UserDefaultValue(key: "autoIncrementTrackID", defaultValue: 0)
     static var autoIncrementTrackID: Int

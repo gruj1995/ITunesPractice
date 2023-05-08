@@ -12,34 +12,44 @@ class LibraryViewModel {
     // MARK: Lifecycle
 
     init() {
-        UserDefaults.$libraryTracks
+        UserDefaults.$playlists
             .receive(on: DispatchQueue.main)
             .removeDuplicates()
-            .sink { [weak self] tracks in
-                self?.tracks = tracks
+            .sink { [weak self] playlists in
+                self?.playlists = playlists
             }.store(in: &cancellables)
+
+        UserDefaults.playlists = []
+        for i in 0..<9 {
+            UserDefaults.playlists.append(Playlist(name: "測試標題\(i)", description: "測試文案", tracks: []))
+        }
     }
 
     // MARK: Internal
 
-    @Published var tracks: [Track] = UserDefaults.libraryTracks
+    @Published var playlists: [Playlist] = UserDefaults.playlists
 
-    private(set) var selectedTrack: Track?
+    // 單選
+    private(set) var selectedPlaylist: Playlist?
 
-    func track(forCellAt index: Int) -> Track? {
-        guard tracks.indices.contains(index) else { return nil }
-        return tracks[index]
+    var totalCount: Int {
+        playlists.count
     }
 
-    func setSelectedTrack(forCellAt index: Int) {
-        guard tracks.indices.contains(index) else { return }
-        selectedTrack = tracks[index]
+    func item(forCellAt index: Int) -> Playlist? {
+        guard playlists.indices.contains(index) else { return nil }
+        return playlists[index]
     }
 
-    func removeTrack(forCellAt index: Int) {
-        guard tracks.indices.contains(index) else { return }
-        UserDefaults.libraryTracks.remove(at: index)
-        tracks = UserDefaults.libraryTracks
+    func setSelectedItem(forCellAt index: Int) {
+        guard playlists.indices.contains(index) else { return }
+        selectedPlaylist = playlists[index]
+    }
+
+    func removeItem(forCellAt index: Int) {
+        guard playlists.indices.contains(index) else { return }
+        UserDefaults.playlists.remove(at: index)
+        playlists = UserDefaults.playlists
     }
 
     // MARK: Private

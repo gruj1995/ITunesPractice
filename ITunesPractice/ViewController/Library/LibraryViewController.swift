@@ -29,129 +29,85 @@ class LibraryViewController: UIViewController {
     // MARK: Private
 
     private let viewModel: LibraryViewModel = .init()
-    private let cellHeight: CGFloat = 60
     private var cancellables: Set<AnyCancellable> = []
+    private var isEditingMode: Bool = false
+    private let cellSpacing: CGFloat = 15
+    private let columnCount: Double = 2
+    private let sectionPadding: Double = 20
 
-    private lazy var tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.register(TrackCell.self, forCellReuseIdentifier: TrackCell.reuseIdentifier)
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.rowHeight = cellHeight
-        tableView.backgroundColor = .black
-        tableView.separatorStyle = .none
-        /*
-         - StoryBoard 中，除了 Row Height 是預設 Automatic 自動計算的，Header Height 和 Footer Height 都不是預設 Automatic
-         - 如果純 code 拉 tableView，預設都是 Automatic，所以下面要將 estimatedSectionFooterHeight 設置為0才能讓 heightForFooterInSection 生效
-          */
-        tableView.estimatedSectionHeaderHeight = 0
-        tableView.estimatedSectionFooterHeight = 0
-        return tableView
+    private lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = cellSpacing
+        layout.minimumInteritemSpacing = cellSpacing
+        layout.sectionInset = UIEdgeInsets(top: 14, left: sectionPadding, bottom: 80, right: sectionPadding)
+
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(PlaylistCell.self, forCellWithReuseIdentifier: PlaylistCell.reuseIdentifier)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.backgroundColor = .clear
+        return collectionView
     }()
+
+    private lazy var addBarButtonItem: UIBarButtonItem = .init(image: AppImages.plus?.withConfiguration(roundConfiguration2), style: .plain, target: self, action: #selector(addPlaylist))
 
     // MARK: Setup
 
     private func setupUI() {
         view.backgroundColor = .black
+        navigationItem.rightBarButtonItem = addBarButtonItem
         setupLayout()
     }
 
     private func bindViewModel() {
         // 使用 $ 屬性獲取 @Published 屬性的 Publisher，監聽資料模型的變化
-        viewModel.$tracks
+        viewModel.$playlists
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
-                self?.tableView.reloadData()
+                self?.collectionView.reloadData()
             }.store(in: &cancellables)
     }
 
     private func setupLayout() {
-        view.addSubview(tableView)
-        tableView.snp.makeConstraints { make in
-            make.top.bottom.leading.trailing
-                .equalToSuperview()
+        view.addSubview(collectionView)
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(-20)
+            make.bottom.leading.trailing.equalToSuperview()
         }
+    }
+
+    @objc
+    private func addPlaylist() {
+        print("___++++++++ ")
     }
 }
 
-// MARK: UITableViewDataSource, UITableViewDelegate
+// MARK: UICollectionViewDelegate, UICollectionViewDataSource
 
-extension LibraryViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.tracks.count
+extension LibraryViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return viewModel.totalCount
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: TrackCell.reuseIdentifier) as? TrackCell else {
-            return UITableViewCell()
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PlaylistCell.reuseIdentifier, for: indexPath) as? PlaylistCell else {
+            return UICollectionViewCell()
         }
-        if let track = viewModel.track(forCellAt: indexPath.row) {
-            cell.configure(artworkUrl: track.artworkUrl100, collectionName: track.collectionName, artistName: track.artistName, trackName: track.trackName)
+        guard let playlist = viewModel.item(forCellAt: indexPath.item) else {
+            return cell
         }
+        cell.configure(playlist)
         return cell
     }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // 解除cell被選中的狀態
-        tableView.deselectRow(at: indexPath, animated: true)
-        viewModel.setSelectedTrack(forCellAt: indexPath.row)
-
-        let vc = TrackDetailViewController()
-        vc.dataSource = self
-        navigationController?.pushViewController(vc, animated: true)
-    }
-
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            let rows = viewModel.tracks.count
-            viewModel.removeTrack(forCellAt: indexPath.row)
-            if rows == 1 {
-                tableView.reloadData()
-            } else {
-                tableView.deleteRows(at: [indexPath], with: .fade)
-            }
-        }
-    }
-
-    func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
-        "移除"
-    }
-
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 10
-    }
-
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return UIView.emptyView()
-    }
-
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return cellHeight
-    }
-
-    /*
-     點擊 context menu 的預覽圖後觸發，如果沒實作此 funtion，則點擊預覽圖後直接關閉 context menu
-     - animator  跳轉動畫執行者，可以添加要跳轉到的頁面和跳轉動畫
-     */
-    func tableView(_ tableView: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
-        animator.addCompletion { [weak self] in
-            let vc = TrackDetailViewController()
-            vc.dataSource = self
-            self?.navigationController?.pushViewController(vc, animated: true)
-        }
-    }
-
-    // context menu 的清單
-    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        viewModel.setSelectedTrack(forCellAt: indexPath.row)
-        return tableView.createTrackContextMenuConfiguration(indexPath: indexPath, track: viewModel.selectedTrack)
-    }
 }
 
-// MARK: TrackDetailViewControllerDatasource
+// MARK: UICollectionViewDelegateFlowLayout
 
-extension LibraryViewController: TrackDetailViewControllerDatasource {
-    func track(_ trackDetailViewController: TrackDetailViewController) -> Track? {
-        return viewModel.selectedTrack
+extension LibraryViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = floor((collectionView.bounds.width - cellSpacing * (columnCount - 1) - (sectionPadding * 2)) / columnCount)
+        let height = width + 40
+        return CGSize(width: width, height: height)
     }
 }
