@@ -24,30 +24,13 @@ class ContextMenuManager {
         let children = menuTypes.map { $0.getMenuElement(for: track) }
         return UIMenu(title: "", children: children)
     }
-}
 
-// MARK: - TrackMenuType
-
-enum TrackMenuType: TrackMenuItem {
-    case addOrRemoveFromLibrary // 加入資料庫/從資料庫刪除
-    case editPlaylist // 修改待播清單
-    case share // 分享歌曲
-
-    // MARK: Internal
-
-    func getMenuElement(for track: Track) -> UIMenuElement {
-        switch self {
-        case .addOrRemoveFromLibrary:
-            if track.isInLibrary {
-                return DeleteMenuItem().getMenuElement(for: track)
-            } else {
-                return AddMenuItem().getMenuElement(for: track)
-            }
-        case .editPlaylist:
-            let trackWithNewID = track.autoIncrementID()
-            return EditPlaylistMenuItem().getMenuElement(for: trackWithNewID)
-        case .share:
-            return ShareMenuItem().getMenuElement(for: track)
-        }
+    /// 創建資料庫編輯菜單
+    func createLibraryMenu(_ tracks: [Track]) -> UIMenu {
+        let children = [
+            AddToPlaylistMenuItem().getMenuElement(for: tracks),
+            DeleteFromPlaylistMenuItem().getMenuElement(for: tracks)
+        ]
+        return UIMenu(title: "", children: children)
     }
 }
