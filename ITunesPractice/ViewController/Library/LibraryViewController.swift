@@ -26,6 +26,11 @@ class LibraryViewController: UIViewController {
         navigationItem.title = "資料庫".localizedString()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationItem.title = ""
+    }
+
     // MARK: Private
 
     private let viewModel: LibraryViewModel = .init()
@@ -52,6 +57,12 @@ class LibraryViewController: UIViewController {
 
     private lazy var addBarButtonItem: UIBarButtonItem = .init(image: AppImages.plus?.withConfiguration(roundConfiguration2), style: .plain, target: self, action: #selector(addPlaylist))
 
+    private lazy var emptyStateView: EmptyStateView = {
+        let view = EmptyStateView()
+        view.isHidden = true
+        return view
+    }()
+
     // MARK: Setup
 
     private func setupUI() {
@@ -64,9 +75,25 @@ class LibraryViewController: UIViewController {
         // 使用 $ 屬性獲取 @Published 屬性的 Publisher，監聽資料模型的變化
         viewModel.$playlists
             .receive(on: RunLoop.main)
-            .sink { [weak self] _ in
-                self?.collectionView.reloadData()
+            .sink { [weak self] playlists in
+                if playlists.isEmpty {
+                    self?.showNoResultView()
+                } else {
+                    self?.showCollectionView()
+                }
             }.store(in: &cancellables)
+    }
+
+    private func showCollectionView() {
+        emptyStateView.isHidden = true
+        collectionView.isHidden = false
+        collectionView.reloadData()
+    }
+
+    private func showNoResultView() {
+        emptyStateView.configure(title: "尚無資料".localizedString(), message: "趕快建立播放清單吧".localizedString())
+        emptyStateView.isHidden = false
+        collectionView.isHidden = true
     }
 
     private func setupLayout() {
@@ -75,11 +102,21 @@ class LibraryViewController: UIViewController {
             make.top.equalTo(view.safeAreaLayoutGuide).offset(-20)
             make.bottom.leading.trailing.equalToSuperview()
         }
+
+        view.addSubview(emptyStateView)
+        emptyStateView.snp.makeConstraints { make in
+            make.centerX.equalTo(view.safeAreaLayoutGuide)
+            make.centerY.equalTo(view.safeAreaLayoutGuide).multipliedBy(0.9)
+            make.width.equalToSuperview().multipliedBy(0.8)
+        }
     }
 
     @objc
     private func addPlaylist() {
-        print("___++++++++ ")
+        let vc = AddPlaylistViewController()
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.modalPresentationStyle = .pageSheet
+        present(navVC, animated: true)
     }
 }
 
@@ -100,6 +137,15 @@ extension LibraryViewController: UICollectionViewDelegate, UICollectionViewDataS
         cell.configure(playlist)
         return cell
     }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let playlist = viewModel.item(forCellAt: indexPath.item) else {
+            return
+        }
+
+        let vc = LibraryPlaylistViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
 
 // MARK: UICollectionViewDelegateFlowLayout
@@ -107,7 +153,15 @@ extension LibraryViewController: UICollectionViewDelegate, UICollectionViewDataS
 extension LibraryViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = floor((collectionView.bounds.width - cellSpacing * (columnCount - 1) - (sectionPadding * 2)) / columnCount)
-        let height = width + 40
+        let height = width + 50
         return CGSize(width: width, height: height)
+    }
+}
+
+// MARK: AddPlaylistViewControllerDataSource
+
+extension LibraryViewController: AddPlaylistViewControllerDataSource {
+    func playlist(_ vc: AddPlaylistViewController) -> Playlist? {
+        viewModel.selectedPlaylist
     }
 }

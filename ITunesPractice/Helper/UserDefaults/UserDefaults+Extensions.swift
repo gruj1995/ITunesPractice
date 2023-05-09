@@ -18,6 +18,10 @@ extension UserDefaults {
     @UserDefaultValue(key: "autoIncrementTrackID", defaultValue: 0)
     static var autoIncrementTrackID: Int
 
+    /// 自動增加的 Playlist id
+    @UserDefaultValue(key: "autoIncrementPlaylistID", defaultValue: 0)
+    static var autoIncrementPlaylistID: Int
+
     /// 主音樂清單(包含所有加入過的音樂)
     @UserDefaultValue(key: "mainPlaylist", defaultValue: [])
     static var mainPlaylist: [Track]

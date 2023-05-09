@@ -22,8 +22,7 @@ class LibraryPlaylistViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.title = "資料庫".localizedString()
+        navigationController?.navigationBar.prefersLargeTitles = false
     }
 
     // MARK: Private

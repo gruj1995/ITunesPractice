@@ -19,10 +19,9 @@ class LibraryViewModel {
                 self?.playlists = playlists
             }.store(in: &cancellables)
 
-        UserDefaults.playlists = []
-        for i in 0..<9 {
-            UserDefaults.playlists.append(Playlist(name: "測試標題\(i)", description: "測試文案", tracks: []))
-        }
+//        for i in 0..<9 {
+//            UserDefaults.playlists.append(Playlist(name: "測試標題\(i)", description: "測試文案", tracks: []))
+//        }
     }
 
     // MARK: Internal

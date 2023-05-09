@@ -32,41 +32,35 @@ class PlaylistCell: UICollectionViewCell {
     func configure(_ playlist: Playlist) {
         coverImageView.loadImage(
             with: playlist.imageUrl,
-            placeholder: AppImages.musicList?
-                .withConfiguration(largeConfiguration)
-                .withTintColor(.appColor(.red1) ?? .red, renderingMode: .alwaysOriginal)
+            placeholder: AppImages.catCircle
         )
         nameLabel.text = playlist.name
         descriptionLabel.text = playlist.description
     }
 
+    // MARK: Private
+
     private lazy var coverImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = .clear
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
+        imageView.backgroundColor = .appColor(.gray1)
+        imageView.layer.cornerRadius = 5
+        imageView.clipsToBounds = true
         return imageView
     }()
 
-    private lazy var bgView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .appColor(.gray1)
-        view.layer.cornerRadius = 5
-        view.clipsToBounds = true
-        view.setContentCompressionResistancePriority(.required, for: .vertical)
-        return view
-    }()
-
     private lazy var infoStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [bgView, nameLabel, descriptionLabel])
+        let stackView = UIStackView(arrangedSubviews: [nameLabel, descriptionLabel])
         stackView.axis = .vertical
         stackView.spacing = 3
+        stackView.distribution = .fillEqually
         return stackView
     }()
 
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.font = .systemFont(ofSize: 13, weight: .medium)
+        label.font = .systemFont(ofSize: 14, weight: .medium)
         label.textColor = .white
         return label
     }()
@@ -74,7 +68,7 @@ class PlaylistCell: UICollectionViewCell {
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.font = .systemFont(ofSize: 13, weight: .medium)
+        label.font = .systemFont(ofSize: 14, weight: .medium)
         label.textColor = .lightGray
         return label
     }()
@@ -85,14 +79,16 @@ class PlaylistCell: UICollectionViewCell {
     }
 
     private func setupLayout() {
-        bgView.addSubview(coverImageView)
+        contentView.addSubview(coverImageView)
         coverImageView.snp.makeConstraints { make in
-            make.centerX.centerY.equalToSuperview()
+            make.top.leading.trailing.equalToSuperview()
+            make.height.equalTo(coverImageView.snp.width)
         }
 
         contentView.addSubview(infoStackView)
         infoStackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalTo(coverImageView.snp.bottom).offset(3)
+            make.bottom.leading.trailing.equalToSuperview()
         }
     }
 }
