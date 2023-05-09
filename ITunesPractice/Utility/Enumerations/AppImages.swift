@@ -11,7 +11,6 @@ import UIKit
 let speakerConfiguration = UIImage.SymbolConfiguration(pointSize: 13, weight: .regular, scale: .small)
 let roundConfiguration = UIImage.SymbolConfiguration(pointSize: 15, weight: .heavy, scale: .default)
 let roundConfiguration2 = UIImage.SymbolConfiguration(pointSize: 20, weight: .semibold, scale: .medium)
-let largeConfiguration = UIImage.SymbolConfiguration(pointSize: 70)
 
 /// 使用 enum 搭配 static let 有兩個原因:
 /// 1. 因為無法初始化沒有case的enum，更能表達常數的概念
@@ -71,4 +70,10 @@ enum AppImages {
     static let iCloud = UIImage(named: "iCloud")
     static let googleDrive = UIImage(named: "googleDrive")
     static let personICloudFill = UIImage(systemName: "person.icloud.fill")
+
+    // 資料庫
+    static let cameraFill = UIImage(systemName: "camera.fill")
+    static let camera = UIImage(systemName: "camera")
+    static let photoOnRectangle = UIImage(systemName: "photo.on.rectangle")
+    static let catCircle = UIImage(named: "cat_circle")
 }
