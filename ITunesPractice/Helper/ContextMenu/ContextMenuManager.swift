@@ -33,4 +33,11 @@ class ContextMenuManager {
         ]
         return UIMenu(title: "", children: children)
     }
+
+    func createPhotoMenu(_ vc: Photographable) -> UIMenu {
+        let children = [
+            PhotoMenuItem().getMenuElement(vc)
+        ]
+        return UIMenu(title: "", children: children)
+    }
 }
