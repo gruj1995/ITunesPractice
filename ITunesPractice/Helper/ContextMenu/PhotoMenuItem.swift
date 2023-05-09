@@ -37,6 +37,8 @@ struct PhotoMenuItem {
             imagePicker.allowsEditing = true // 取得照片後是否可編輯
             imagePicker.cameraFlashMode = .off // 關閉閃光燈
             vc.present(imagePicker, animated: true, completion: nil)
+        } else {
+            Utils.toast("當前裝置不支援拍攝")
         }
     }
 
@@ -48,6 +50,8 @@ struct PhotoMenuItem {
             imagePicker.sourceType = .photoLibrary // 透過相簿取得照片
             imagePicker.allowsEditing = true
             vc.present(imagePicker, animated: true, completion: nil)
+        } else {
+            Utils.toast("相簿取得失敗")
         }
     }
 }

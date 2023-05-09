@@ -75,5 +75,9 @@ enum AppImages {
     static let cameraFill = UIImage(systemName: "camera.fill")
     static let camera = UIImage(systemName: "camera")
     static let photoOnRectangle = UIImage(systemName: "photo.on.rectangle")
+
+    // 貓
     static let catCircle = UIImage(named: "cat_circle")
+    static let catHalf = UIImage(named: "cat_half")
+    static let catHide = UIImage(named: "cat_hide")
 }
