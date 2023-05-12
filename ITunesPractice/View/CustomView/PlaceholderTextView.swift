@@ -24,7 +24,21 @@ class PlaceholderTextView: UITextView {
         NotificationCenter.default.removeObserver(self)
     }
 
+    // MARK: Open
+
+    override open var bounds: CGRect {
+        didSet {
+            resizePlaceholder()
+        }
+    }
+
     // MARK: Internal
+
+    enum PlaceholderAlignment {
+        case top
+        case center
+        case bottom
+    }
 
     lazy var placeholderLabel: UILabel = {
         let label = UILabel()
@@ -32,6 +46,8 @@ class PlaceholderTextView: UITextView {
         label.numberOfLines = 0
         return label
     }()
+
+    var placeholderAlignment: PlaceholderAlignment = .top
 
     override var textAlignment: NSTextAlignment {
         didSet {
@@ -52,12 +68,6 @@ class PlaceholderTextView: UITextView {
         }
     }
 
-    open override var bounds: CGRect {
-        didSet {
-            self.resizePlaceholder()
-        }
-    }
-
     // MARK: Private
 
     private func setPlaceholder() {
@@ -66,10 +76,18 @@ class PlaceholderTextView: UITextView {
     }
 
     private func resizePlaceholder() {
-        let labelX = self.textContainer.lineFragmentPadding
-        let labelY = self.textContainerInset.top
-        let labelWidth = self.frame.width - (labelX * 2)
+        let labelX = textContainer.lineFragmentPadding
+        let labelWidth = frame.width - (labelX * 2)
         let labelHeight = placeholderLabel.frame.height
+        var labelY: CGFloat = 0
+        switch placeholderAlignment {
+        case .top:
+            labelY = textContainerInset.top
+        case .center:
+            labelY = (frame.height - labelHeight) / 2
+        case .bottom:
+            labelY = textContainerInset.bottom
+        }
         placeholderLabel.frame = CGRect(x: labelX, y: labelY, width: labelWidth, height: labelHeight)
     }
 
