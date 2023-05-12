@@ -26,7 +26,7 @@ class PlaceholderTextView: UITextView {
 
     // MARK: Open
 
-    override open var bounds: CGRect {
+    open override var bounds: CGRect {
         didSet {
             resizePlaceholder()
         }
@@ -86,7 +86,7 @@ class PlaceholderTextView: UITextView {
         case .center:
             labelY = (frame.height - labelHeight) / 2
         case .bottom:
-            labelY = textContainerInset.bottom
+            labelY = frame.height - labelHeight
         }
         placeholderLabel.frame = CGRect(x: labelX, y: labelY, width: labelWidth, height: labelHeight)
     }
