@@ -36,7 +36,7 @@ struct DeleteFromPlaylistMenuItem: LibraryMenuItem {
         let deleteAction = UIAction(title: "從資料庫中刪除".localizedString(), image: AppImages.trash, attributes: .destructive) { _ in
             let alertController = ActionButtonAlertController(title: "確定要從您的資料庫刪除這些歌嗎？".localizedString(), message: nil, preferredStyle: .actionSheet)
             let deleteAction = UIAlertAction(title: "刪除歌曲".localizedString(), style: .destructive) { _ in
-                UserDefaults.libraryTracks.removeAll { tracks.contains($0) }
+                UserDefaults.defaultPlaylist.tracks.removeAll { tracks.contains($0) }
                 Utils.toast("已從資料庫中刪除".localizedString())
             }
             let cancelAction = UIAlertAction(title: "取消".localizedString(), style: .cancel, handler: nil)

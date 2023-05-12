@@ -46,7 +46,7 @@ struct AddMenuItem: TrackMenuItem {
     func getMenuElement(for track: Track) -> UIMenuElement {
         let addAction = UIAction(title: "加入資料庫".localizedString(), image: AppImages.plus) { _ in
             // 新的插入到最前面
-            UserDefaults.libraryTracks.insertIfNotContains(track, at: 0)
+            UserDefaults.defaultPlaylist.tracks.insert(track, at: 0)
             Utils.toast("已加入資料庫".localizedString())
         }
         return UIMenu(title: "", options: .displayInline, children: [addAction])
@@ -61,7 +61,7 @@ struct DeleteMenuItem: TrackMenuItem {
         let deleteAction = UIAction(title: "從資料庫中刪除".localizedString(), image: AppImages.trash, attributes: .destructive) { _ in
             let alertController = ActionButtonAlertController(title: "確定要從您的資料庫刪除這首歌嗎？這也會從播放列表中移除".localizedString(), message: nil, preferredStyle: .actionSheet)
             let deleteAction = UIAlertAction(title: "刪除歌曲".localizedString(), style: .destructive) { _ in
-                UserDefaults.libraryTracks.removeAll { $0 == track }
+                UserDefaults.defaultPlaylist.tracks.removeAll { $0 == track }
                 Utils.toast("已從資料庫中刪除".localizedString())
             }
             let cancelAction = UIAlertAction(title: "取消".localizedString(), style: .cancel, handler: nil)
