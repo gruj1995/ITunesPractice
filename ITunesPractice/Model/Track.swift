@@ -126,7 +126,7 @@ struct Track: Codable, Equatable, Comparable, CustomStringConvertible {
 
 extension Track {
     var isInLibrary: Bool {
-        UserDefaults.libraryTracks.contains(self)
+        UserDefaults.defaultPlaylist.tracks.contains(self)
     }
 
     init(trackName: String, previewUrl: String) {

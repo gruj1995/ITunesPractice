@@ -12,17 +12,17 @@ class LibraryPlaylistViewModel {
     // MARK: Lifecycle
 
     init() {
-        UserDefaults.$libraryTracks
+        UserDefaults.$defaultPlaylist
             .receive(on: DispatchQueue.main)
             .removeDuplicates()
-            .sink { [weak self] tracks in
-                self?.tracks = tracks
+            .sink { [weak self] playlist in
+                self?.tracks = playlist.tracks
             }.store(in: &cancellables)
     }
 
     // MARK: Internal
 
-    @Published var tracks: [Track] = UserDefaults.libraryTracks
+    @Published var tracks: [Track] = UserDefaults.defaultPlaylist.tracks
 
     // 單選
     private(set) var selectedTrack: Track?
@@ -46,8 +46,8 @@ class LibraryPlaylistViewModel {
 
     func removeTrack(forCellAt index: Int) {
         guard tracks.indices.contains(index) else { return }
-        UserDefaults.libraryTracks.remove(at: index)
-        tracks = UserDefaults.libraryTracks
+        UserDefaults.defaultPlaylist.tracks.remove(at: index)
+        tracks = UserDefaults.defaultPlaylist.tracks
     }
 
     // MARK: Private

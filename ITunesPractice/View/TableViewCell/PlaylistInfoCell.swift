@@ -23,61 +23,68 @@ class PlaylistInfoCell: UITableViewCell {
         setupUI()
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        cameraButton.layoutIfNeeded()
-        cameraButton.layer.cornerRadius = cameraButton.frame.height * 0.5
-    }
-
     // MARK: Internal
 
     class var reuseIdentifier: String {
         return String(describing: self)
     }
 
-    func configure(name: String, imageUrl: URL?, menu: UIMenu?) {
-        coverImageView.loadImage(
-            with: imageUrl,
-            placeholder: AppImages.catCircle
-        )
-        textView.text = name
-        cameraButton.menu = menu
-    }
-
-    // MARK: Private
-
-    var textChanged: ((String) -> Void)?
+    var onPlayButtonTapped: ((UIButton) -> Void)?
 
     lazy var coverImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
-        imageView.backgroundColor = .appColor(.gray1)
+        imageView.backgroundColor = .clear
         imageView.layer.cornerRadius = 5
         imageView.clipsToBounds = true
         return imageView
     }()
 
-    private lazy var cameraButton: UIButton = {
+    func configure(name: String, imageUrl: URL?) {
+        nameLabel.text = name
+        coverImageView.loadImage(
+            with: imageUrl,
+            placeholder: AppImages.catMushroom
+        )
+    }
+
+    // MARK: Private
+
+    private lazy var nameLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.numberOfLines = 2
+        label.font = .systemFont(ofSize: 17, weight: .semibold)
+        label.textColor = .white
+        return label
+    }()
+
+    private lazy var playButton: UIButton = {
         let button = UIButton()
-        let cameraConfiguration = UIImage.SymbolConfiguration(pointSize: 15, weight: .semibold, scale: .medium)
-        button.setImage(AppImages.cameraFill?.withConfiguration(cameraConfiguration), for: .normal)
-        button.showsMenuAsPrimaryAction = true
-        button.tintColor = .darkGray
-        button.backgroundColor = .lightGray
-        button.clipsToBounds = true
+        button.addTarget(self, action: #selector(didPlayButtonTapped), for: .touchUpInside)
+
+        var config = UIButton.Configuration.filled()
+        config.imagePadding = 10
+        config.buttonSize = .small
+        config.contentInsets = .init(top: 10, leading: 0, bottom: 10, trailing: 0)
+        config.attributedTitle = AttributedString("播放", attributes: AttributeContainer([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15, weight: .bold)]))
+        config.titleAlignment = .center
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 15, weight: .regular, scale: .small)
+        config.image = AppImages.play?.withConfiguration(imageConfig)
+        config.baseBackgroundColor = .appColor(.gray1)
+        config.baseForegroundColor = .appColor(.red1) // 圖片及文字顏色
+        config.cornerStyle = .medium
+        button.configuration = config
         return button
     }()
 
-    private lazy var textView: PlaceholderTextView = {
-        let textView = PlaceholderTextView()
-        textView.delegate = self
-        textView.font = .systemFont(ofSize: 20, weight: .semibold)
-        textView.textColor = .white
-        textView.tintColor = .appColor(.red1)
-        textView.backgroundColor = .clear
-        textView.textAlignment = .center
-        textView.placeholder = "播放列表名稱".localizedString()
-        return textView
+    private lazy var trackInfoStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [nameLabel, playButton])
+        stackView.axis = .vertical
+        stackView.spacing = 10
+        stackView.alignment = .center
+        stackView.distribution = .equalSpacing
+        return stackView
     }()
 
     private func setupUI() {
@@ -94,37 +101,25 @@ class PlaylistInfoCell: UITableViewCell {
             make.height.equalTo(coverImageView.snp.width)
         }
 
-        contentView.addSubview(cameraButton)
-        cameraButton.snp.makeConstraints { make in
-            make.center.equalTo(coverImageView)
-            make.width.height.equalTo(30)
-        }
-
-        contentView.addSubview(textView)
-        textView.snp.makeConstraints { make in
-            make.top.equalTo(coverImageView.snp.bottom).offset(20)
+        contentView.addSubview(trackInfoStackView)
+        trackInfoStackView.snp.makeConstraints { make in
+            make.top.equalTo(coverImageView.snp.bottom).offset(5)
             make.leading.trailing.equalToSuperview().inset(20)
-            make.bottom.equalToSuperview().inset(10)
+            make.bottom.equalToSuperview().inset(20)
+        }
+
+        nameLabel.snp.makeConstraints { make in
+            make.height.equalTo(20)
+        }
+        
+        playButton.snp.makeConstraints { make in
+            make.height.equalTo(40)
+            make.width.equalToSuperview().multipliedBy(0.6)
         }
     }
-}
 
-// MARK: UITextViewDelegate
-
-extension PlaylistInfoCell: UITextViewDelegate {
-    /// 開始編輯
-    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-        // 移動游標到文字末端
-        DispatchQueue.main.async {
-            let newPosition = textView.endOfDocument
-            textView.selectedTextRange = textView.textRange(from: newPosition, to: newPosition)
-        }
-        return true
-    }
-
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        let newString = (textView.text! as NSString).replacingCharacters(in: range, with: text)
-        textChanged?(newString)
-        return true
+    @objc
+    private func didPlayButtonTapped(_ sender: UIButton) {
+        onPlayButtonTapped?(sender)
     }
 }

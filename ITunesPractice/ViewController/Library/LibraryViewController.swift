@@ -55,7 +55,7 @@ class LibraryViewController: UIViewController {
         return collectionView
     }()
 
-    private lazy var addBarButtonItem: UIBarButtonItem = .init(image: AppImages.plus?.withConfiguration(roundConfiguration2), style: .plain, target: self, action: #selector(addPlaylist))
+    private lazy var addBarButtonItem: UIBarButtonItem = .init(image: AppImages.plus?.withConfiguration(roundConfiguration2), style: .plain, target: self, action: #selector(createPlaylist))
 
     private lazy var emptyStateView: EmptyStateView = {
         let view = EmptyStateView()
@@ -112,11 +112,17 @@ class LibraryViewController: UIViewController {
     }
 
     @objc
-    private func addPlaylist() {
-        let vc = AddPlaylistViewController()
+    private func createPlaylist() {
+        let vc = AddPlaylistViewController(displayMode: .add, playlist: nil)
         let navVC = UINavigationController(rootViewController: vc)
         navVC.modalPresentationStyle = .pageSheet
         present(navVC, animated: true)
+    }
+
+    @objc
+    private func showPlaylist() {
+        let vc = AddPlaylistViewController(displayMode: .normal, playlist: viewModel.selectedPlaylist)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
@@ -139,12 +145,19 @@ extension LibraryViewController: UICollectionViewDelegate, UICollectionViewDataS
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let playlist = viewModel.item(forCellAt: indexPath.item) else {
-            return
-        }
+        viewModel.setSelectedItem(forCellAt: indexPath.item)
+        showPlaylist()
+//        let vc = LibraryPlaylistViewController()
+//        navigationController?.pushViewController(vc, animated: true)
+    }
 
-        let vc = LibraryPlaylistViewController()
-        navigationController?.pushViewController(vc, animated: true)
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        viewModel.setSelectedItem(forCellAt: indexPath.item)
+
+        guard let playlist = viewModel.item(forCellAt: indexPath.item) else {
+            return nil
+        }
+        return PlaylistContextMenuConfiguration(indexPath: indexPath, playlist: playlist).createContextMenuConfiguration()
     }
 }
 
@@ -155,13 +168,5 @@ extension LibraryViewController: UICollectionViewDelegateFlowLayout {
         let width = floor((collectionView.bounds.width - cellSpacing * (columnCount - 1) - (sectionPadding * 2)) / columnCount)
         let height = width + 50
         return CGSize(width: width, height: height)
-    }
-}
-
-// MARK: AddPlaylistViewControllerDataSource
-
-extension LibraryViewController: AddPlaylistViewControllerDataSource {
-    func playlist(_ vc: AddPlaylistViewController) -> Playlist? {
-        viewModel.selectedPlaylist
     }
 }

@@ -238,6 +238,17 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
         UserDefaults.playedTracks.removeAll()
     }
 
+    /// 更新播放清單並播放指定歌曲
+    func refreshPlaylistAndPlaySong(_ playlist: Playlist, at index: Int) {
+        mainPlaylist = playlist.tracks
+        currentTrackIndex = index
+        updateOrderedIndices()
+        currentShuffleTrackIndex = 0
+        entireShuffledIndices = []
+        shuffledIndices = []
+        play()
+    }
+
     func nextTrack() {
         if isShuffleMode {
             nextTrackInShuffledPendingList()

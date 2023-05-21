@@ -143,7 +143,7 @@ extension CloudViewController: UIDocumentPickerDelegate {
         if tracks.isEmpty {
             Utils.toast("不支援的檔案格式")
         } else {
-            UserDefaults.libraryTracks.append(contentsOf: tracks)
+            UserDefaults.defaultPlaylist.tracks.append(contentsOf: tracks)
             Utils.toast("新增檔案成功！")
         }
     }

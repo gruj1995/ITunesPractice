@@ -8,10 +8,35 @@
 import UIKit
 import UniformTypeIdentifiers // 文件類型id
 
+// MARK: - Utils
+
 struct Utils {
     /// 獲取App的根目錄路徑
     static func applicationSupportDirectoryPath() -> String {
         NSHomeDirectory()
+    }
+
+    /// 檢查資料夾是否存在，不存在的話自動建立資料夾
+    static func createDirectoryIfNotExist(atPath filePath: String) {
+        var isDirectory: ObjCBool = false
+        let fileManager = FileManager.default
+
+        let isExist = fileManager.fileExists(atPath: filePath, isDirectory: &isDirectory)
+
+        if isExist {
+            if isDirectory.boolValue {
+                Logger.log("Directory exists")
+            } else {
+                Logger.log("File exists but it is not a directory")
+            }
+        } else {
+            do {
+                try fileManager.createDirectory(atPath: filePath, withIntermediateDirectories: true, attributes: nil)
+                Logger.log("Directory created")
+            } catch {
+                Logger.log("Failed to create directory")
+            }
+        }
     }
 
     /// 顯示 toast

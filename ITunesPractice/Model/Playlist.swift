@@ -22,7 +22,14 @@ struct Playlist: Codable, Equatable {
     var name: String
     var description: String
     var imageUrl: URL?
-    var tracks: [Track]
+    // TODO: 要改好點
+    var tracks: [Track] {
+        didSet {
+            if let index = UserDefaults.playlists.firstIndex(of: self) {
+                UserDefaults.playlists[index] = self
+            }
+        }
+    }
 
     static func == (lhs: Self, rhs: Self) -> Bool {
         return lhs.id == rhs.id
@@ -40,5 +47,9 @@ struct Playlist: Codable, Equatable {
 extension Playlist {
     init() {
         self.init(id: 0, name: "", description: "", tracks: [])
+    }
+
+    static func addPlaylist(_ playlist: Playlist) {
+        UserDefaults.playlists.append(playlist)
     }
 }

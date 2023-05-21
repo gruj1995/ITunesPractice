@@ -6,7 +6,7 @@
 //
 
 import Combine
-import Foundation
+import UIKit
 
 class LibraryViewModel {
     // MARK: Lifecycle
@@ -19,8 +19,9 @@ class LibraryViewModel {
                 self?.playlists = playlists
             }.store(in: &cancellables)
 
-//        for i in 0..<9 {
-//            UserDefaults.playlists.append(Playlist(name: "測試標題\(i)", description: "測試文案", tracks: []))
+//        let imageUrls = UserDefaults.placeholderUrls
+//        for i in 0..<5 {
+//            UserDefaults.playlists.append(Playlist(id: -1, name: "貓貓山\(i)", description: "測試文案", imageUrl: imageUrls[(i+1)%(imageUrls.count)], tracks: []))
 //        }
     }
 
@@ -30,6 +31,8 @@ class LibraryViewModel {
 
     // 單選
     private(set) var selectedPlaylist: Playlist?
+
+    var displayMode: DisplayMode = .normal
 
     var totalCount: Int {
         playlists.count

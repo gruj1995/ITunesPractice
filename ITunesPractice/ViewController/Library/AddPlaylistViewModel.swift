@@ -11,65 +11,103 @@ import Foundation
 class AddPlaylistViewModel {
     // MARK: Lifecycle
 
-    init(_ playlist: Playlist?) {
+    init(displayMode: DisplayMode, playlist: Playlist?) {
+        self.displayMode = displayMode
         self.playlist = playlist ?? Playlist()
+        imageUrl = self.playlist.imageUrl ?? UserDefaults.placeholderUrls.randomElement()
         tracks = self.playlist.tracks
-        imageUrl = self.playlist.imageUrl
         name = self.playlist.name
     }
 
     // MARK: Internal
 
-    var assetLocalIdentifier: String?
+    enum CellType {
+        case showPlaylistInfo
+        case editPlaylistInfo
+        case addTrack
+        case track
+    }
 
     private(set) var selectedTrack: Track?
+    private(set) var playlist: Playlist
+    var name: String = ""
 
-    var playlist: Playlist
-
+    @Published var displayMode: DisplayMode
     @Published var imageUrl: URL?
     @Published var tracks: [Track] = []
 
-    var name: String = ""
+    var currentTrackIndexPublisher: AnyPublisher<Int, Never> {
+        musicPlayer.currentTrackIndexPublisher
+    }
+
+    var isPlayingPublisher: AnyPublisher<Bool, Never> {
+        musicPlayer.isPlayingPublisher
+    }
 
     var isEdited: Bool {
         playlist.imageUrl != imageUrl
-        || playlist.name != name
-        || playlist.tracks != tracks
+            || playlist.name != name
+            || playlist.tracks != tracks
+    }
+
+    var prefixItemCount: Int {
+        displayMode == .normal ? 1 : 2
     }
 
     var totalCount: Int {
-        tracks.count + 2
+        tracks.count + prefixItemCount
+    }
+
+    var isPlaying: Bool {
+        musicPlayer.isPlaying
+    }
+
+    func cellType(forCellAt index: Int) -> CellType {
+        switch index {
+        case 0:
+            return displayMode == .normal ? .showPlaylistInfo : .editPlaylistInfo
+        case 1:
+            return displayMode == .normal ? .track : .addTrack
+        default:
+            return .track
+        }
     }
 
     func track(forCellAt index: Int) -> Track? {
-        guard tracks.indices.contains(index - 2) else { return nil }
-        return tracks[index - 2]
+        guard tracks.indices.contains(index - prefixItemCount) else { return nil }
+        return tracks[index - prefixItemCount]
     }
 
     func setSelectedTrack(forCellAt index: Int) {
-        guard tracks.indices.contains(index - 2) else { return }
-        selectedTrack = tracks[index - 2]
+        guard tracks.indices.contains(index - prefixItemCount) else { return }
+        selectedTrack = tracks[index - prefixItemCount]
     }
 
     func removeTrack(forCellAt index: Int) {
-        guard tracks.indices.contains(index - 2) else { return }
-        tracks.remove(at: index - 2)
+        guard tracks.indices.contains(index - prefixItemCount) else { return }
+        tracks.remove(at: index - prefixItemCount)
     }
 
     func savePlaylist() {
         playlist.tracks = tracks
         playlist.imageUrl = imageUrl
         playlist.name = name.isEmpty ? "未命名播放列表" : name
+        Playlist.addPlaylist(playlist)
+    }
 
-        if let row = UserDefaults.playlists.firstIndex(where: { $0.id == playlist.id }) {
-            UserDefaults.playlists[row] = playlist
-        } else {
-            let newPlaylist = playlist.autoIncrementID()
-            UserDefaults.playlists.append(newPlaylist)
-        }
+    func toggleDisplayMode() {
+        displayMode = displayMode == .normal ? .edit : .normal
+    }
+
+    /// 更換播放清單並播放指定音樂
+    func refreshPlaylistAndPlaySong(at index: Int) {
+        let trackIndex = max(0, index - prefixItemCount)
+        guard trackIndex < playlist.tracks.count else { return }
+        musicPlayer.refreshPlaylistAndPlaySong(playlist, at: trackIndex)
     }
 
     // MARK: Private
 
+    private let musicPlayer: MusicPlayer = .shared
     private var cancellables: Set<AnyCancellable> = .init()
 }
