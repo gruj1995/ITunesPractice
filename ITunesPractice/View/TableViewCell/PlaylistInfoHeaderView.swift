@@ -1,26 +1,26 @@
 //
-//  PlaylistInfoCell.swift
+//  PlaylistInfoHeaderView.swift
 //  ITunesPractice
 //
-//  Created by 李品毅 on 2023/5/8.
+//  Created by 李品毅 on 2023/5/21.
 //
 
 import SnapKit
 import UIKit
 
-// MARK: - PlaylistInfoCell
+// MARK: - PlaylistInfoHeaderView
 
-class PlaylistInfoCell: UITableViewCell {
+class PlaylistInfoHeaderView: UITableViewHeaderFooterView {
     // MARK: Lifecycle
 
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
         setupUI()
     }
 
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setupUI()
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: Internal
@@ -89,19 +89,18 @@ class PlaylistInfoCell: UITableViewCell {
 
     private func setupUI() {
         backgroundColor = .clear
-        selectionStyle = .none
         setupLayout()
     }
 
     private func setupLayout() {
-        contentView.addSubview(coverImageView)
+        addSubview(coverImageView)
         coverImageView.snp.makeConstraints { make in
             make.top.centerX.equalToSuperview()
             make.width.equalToSuperview().multipliedBy(0.6)
             make.height.equalTo(coverImageView.snp.width)
         }
 
-        contentView.addSubview(trackInfoStackView)
+        addSubview(trackInfoStackView)
         trackInfoStackView.snp.makeConstraints { make in
             make.top.equalTo(coverImageView.snp.bottom).offset(5)
             make.leading.trailing.equalToSuperview().inset(20)
@@ -111,7 +110,7 @@ class PlaylistInfoCell: UITableViewCell {
         nameLabel.snp.makeConstraints { make in
             make.height.equalTo(20)
         }
-        
+
         playButton.snp.makeConstraints { make in
             make.height.equalTo(40)
             make.width.equalToSuperview().multipliedBy(0.6)

@@ -48,17 +48,15 @@ class AddPlaylistViewController: UIViewController {
     private lazy var photoMenu: UIMenu = ContextMenuManager.shared.createPhotoMenu(self)
 
     private lazy var tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.register(EditPlaylistInfoCell.self, forCellReuseIdentifier: EditPlaylistInfoCell.reuseIdentifier)
-        tableView.register(PlaylistInfoCell.self, forCellReuseIdentifier: PlaylistInfoCell.reuseIdentifier)
+        let tableView = UITableView(frame: .zero, style: .grouped)
+        tableView.register(PlaylistInfoHeaderView.self, forHeaderFooterViewReuseIdentifier: PlaylistInfoHeaderView.reuseIdentifier)
+        tableView.register(EditPlaylistInfoHeaderView.self, forHeaderFooterViewReuseIdentifier: EditPlaylistInfoHeaderView.reuseIdentifier)
         tableView.register(AddTrackCell.self, forCellReuseIdentifier: AddTrackCell.reuseIdentifier)
         tableView.register(TrackCell.self, forCellReuseIdentifier: TrackCell.reuseIdentifier)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = .black
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
-        tableView.estimatedSectionHeaderHeight = 0
-        tableView.estimatedSectionFooterHeight = 0
         return tableView
     }()
 
@@ -148,6 +146,7 @@ class AddPlaylistViewController: UIViewController {
         present(navVC, animated: true)
     }
 
+    /// 資料有變動時的詢問彈窗
     private func confirmCancel() {
         let alert = UIAlertController(title: "新增播放列表", message: "確定要捨棄新的播放列表嗎？", preferredStyle: .actionSheet)
         let abandonAction = UIAlertAction(title: "捨棄所作更動".localizedString(), style: .destructive) { [weak self] _ in
@@ -160,10 +159,8 @@ class AddPlaylistViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
 
-    @objc
-    private func finish() {
+    private func updateDisplayMode() {
         if viewModel.displayMode == .add {
-            viewModel.savePlaylist()
             dismiss(animated: true)
         } else {
             viewModel.toggleDisplayMode()
@@ -171,12 +168,14 @@ class AddPlaylistViewController: UIViewController {
     }
 
     @objc
+    private func finish() {
+        viewModel.savePlaylist()
+        updateDisplayMode()
+    }
+
+    @objc
     private func cancel() {
-        if viewModel.displayMode == .add {
-            dismiss(animated: true)
-        } else {
-            viewModel.toggleDisplayMode()
-        }
+        updateDisplayMode()
     }
 }
 
@@ -190,37 +189,6 @@ extension AddPlaylistViewController: UITableViewDataSource, UITableViewDelegate 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellType = viewModel.cellType(forCellAt: indexPath.row)
         switch cellType {
-        // 顯示播放清單資訊
-        case .showPlaylistInfo:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: PlaylistInfoCell.reuseIdentifier) as? PlaylistInfoCell else {
-                return UITableViewCell()
-            }
-            cell.configure(
-                name: viewModel.name,
-                imageUrl: viewModel.imageUrl)
-            // 播放
-            cell.onPlayButtonTapped = { [weak self] _ in
-                guard let self else { return }
-                let firstTrackIndex = self.viewModel.prefixItemCount
-                self.viewModel.setSelectedTrack(forCellAt: firstTrackIndex)
-                self.viewModel.refreshPlaylistAndPlaySong(at: 0)
-            }
-            return cell
-
-        // 編輯播放清單資訊
-        case .editPlaylistInfo:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: EditPlaylistInfoCell.reuseIdentifier) as? EditPlaylistInfoCell else {
-                return UITableViewCell()
-            }
-            cell.configure(
-                name: viewModel.name,
-                imageUrl: viewModel.imageUrl,
-                menu: photoMenu)
-            cell.textChanged = { [weak self] name in
-                self?.viewModel.name = name
-            }
-            return cell
-
         // 新增音樂
         case .addTrack:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: AddTrackCell.reuseIdentifier) as? AddTrackCell else {
@@ -258,16 +226,10 @@ extension AddPlaylistViewController: UITableViewDataSource, UITableViewDelegate 
         }
     }
 
-    // 個別 cell 是否進入編輯狀態
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        indexPath.row != 0
-    }
-
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        switch indexPath.row {
-        case 0:
-            return .none
-        case 1:
+        let cellType = viewModel.cellType(forCellAt: indexPath.row)
+        switch cellType {
+        case .addTrack:
             return .insert
         default:
             return .delete
@@ -280,6 +242,7 @@ extension AddPlaylistViewController: UITableViewDataSource, UITableViewDelegate 
         } else if editingStyle == .delete {
             let rows = viewModel.totalCount
             viewModel.removeTrack(forCellAt: indexPath.row)
+            viewModel.savePlaylist()
             if rows == 1 {
                 tableView.reloadData()
             } else {
@@ -293,20 +256,44 @@ extension AddPlaylistViewController: UITableViewDataSource, UITableViewDelegate 
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        switch viewModel.cellType(forCellAt: indexPath.row) {
-        case .track:
-            return cellHeight
-        default:
-            return UITableView.automaticDimension
-        }
+        cellHeight
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        5
+        UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        UIView.emptyView()
+        if viewModel.displayMode == .normal {
+            // 顯示播放清單資訊
+            guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: PlaylistInfoHeaderView.reuseIdentifier) as? PlaylistInfoHeaderView else {
+                return nil
+            }
+            header.configure(
+                name: viewModel.name,
+                imageUrl: viewModel.imageUrl)
+            // 播放
+            header.onPlayButtonTapped = { [weak self] _ in
+                guard let self else { return }
+                let firstTrackIndex = self.viewModel.prefixItemCount
+                self.viewModel.setSelectedTrack(forCellAt: firstTrackIndex)
+                self.viewModel.refreshPlaylistAndPlaySong(at: 0)
+            }
+            return header
+        } else {
+            // 編輯播放清單資訊
+            guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: EditPlaylistInfoHeaderView.reuseIdentifier) as? EditPlaylistInfoHeaderView else {
+                return nil
+            }
+            header.configure(
+                name: viewModel.name,
+                imageUrl: viewModel.imageUrl,
+                menu: photoMenu)
+            header.textChanged = { [weak self] name in
+                self?.viewModel.name = name
+            }
+            return header
+        }
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -351,5 +338,6 @@ extension AddPlaylistViewController: Photographable {
 extension AddPlaylistViewController: AddTrackViewControllerDelegate {
     func didFinish(_ vc: AddTrackViewController, select tracks: [Track]) {
         viewModel.appendTracks(newTracks: tracks)
+        viewModel.savePlaylist()
     }
 }

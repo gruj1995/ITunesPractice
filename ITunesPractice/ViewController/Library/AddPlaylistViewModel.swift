@@ -13,7 +13,7 @@ class AddPlaylistViewModel {
 
     init(displayMode: DisplayMode, playlist: Playlist?) {
         self.displayMode = displayMode
-        self.playlist = playlist ?? Playlist()
+        self.playlist = UserDefaults.playlists.first { $0 == playlist } ?? Playlist()
         imageUrl = self.playlist.imageUrl ?? UserDefaults.placeholderUrls.randomElement()
         tracks = self.playlist.tracks
         name = self.playlist.name
@@ -22,8 +22,6 @@ class AddPlaylistViewModel {
     // MARK: Internal
 
     enum CellType {
-        case showPlaylistInfo
-        case editPlaylistInfo
         case addTrack
         case track
     }
@@ -51,7 +49,7 @@ class AddPlaylistViewModel {
     }
 
     var prefixItemCount: Int {
-        displayMode == .normal ? 1 : 2
+        displayMode == .normal ? 0 : 1
     }
 
     var totalCount: Int {
@@ -65,8 +63,6 @@ class AddPlaylistViewModel {
     func cellType(forCellAt index: Int) -> CellType {
         switch index {
         case 0:
-            return displayMode == .normal ? .showPlaylistInfo : .editPlaylistInfo
-        case 1:
             return displayMode == .normal ? .track : .addTrack
         default:
             return .track
@@ -92,7 +88,12 @@ class AddPlaylistViewModel {
         playlist.tracks = tracks
         playlist.imageUrl = imageUrl
         playlist.name = name.isEmpty ? "未命名播放列表" : name
-        Playlist.addPlaylist(playlist)
+
+        if displayMode == .add {
+            Playlist.addPlaylist(playlist)
+        } else if displayMode == .edit {
+            Playlist.updatePlaylist(playlist)
+        }
     }
 
     func toggleDisplayMode() {

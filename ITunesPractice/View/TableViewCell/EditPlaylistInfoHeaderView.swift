@@ -1,26 +1,26 @@
 //
-//  EditPlaylistInfoCell.swift.swift
+//  EditPlaylistInfoHeaderView.swift
 //  ITunesPractice
 //
-//  Created by 李品毅 on 2023/5/12.
+//  Created by 李品毅 on 2023/5/21.
 //
 
 import SnapKit
 import UIKit
 
-// MARK: - EditPlaylistInfoCell
+// MARK: - EditPlaylistInfoHeaderView
 
-class EditPlaylistInfoCell: UITableViewCell {
+class EditPlaylistInfoHeaderView: UITableViewHeaderFooterView {
     // MARK: Lifecycle
 
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
         setupUI()
     }
 
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setupUI()
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: Internal
@@ -83,25 +83,24 @@ class EditPlaylistInfoCell: UITableViewCell {
 
     private func setupUI() {
         backgroundColor = .clear
-        selectionStyle = .none
         setupLayout()
     }
 
     private func setupLayout() {
-        contentView.addSubview(coverImageView)
+        addSubview(coverImageView)
         coverImageView.snp.makeConstraints { make in
             make.top.centerX.equalToSuperview()
             make.width.equalToSuperview().multipliedBy(0.6)
             make.height.equalTo(coverImageView.snp.width)
         }
 
-        contentView.addSubview(cameraButton)
+        addSubview(cameraButton)
         cameraButton.snp.makeConstraints { make in
             make.center.equalTo(coverImageView)
             make.width.height.equalTo(30)
         }
 
-        contentView.addSubview(textView)
+        addSubview(textView)
         textView.snp.makeConstraints { make in
             make.top.equalTo(coverImageView.snp.bottom).offset(10)
             make.leading.trailing.equalToSuperview().inset(20)
@@ -113,7 +112,7 @@ class EditPlaylistInfoCell: UITableViewCell {
 
 // MARK: UITextViewDelegate
 
-extension EditPlaylistInfoCell: UITextViewDelegate {
+extension EditPlaylistInfoHeaderView: UITextViewDelegate {
     /// 開始編輯
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         // 移動游標到文字末端

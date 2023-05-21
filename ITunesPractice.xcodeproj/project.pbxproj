@@ -18,6 +18,8 @@
 		8B0E6A2F2A043343004743A7 /* KannaAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0E6A2E2A043343004743A7 /* KannaAdapter.swift */; };
 		8B19AA4C2A19D35400F7A642 /* AddTrackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B19AA4B2A19D35400F7A642 /* AddTrackViewController.swift */; };
 		8B19AA4E2A19D36000F7A642 /* AddTrackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B19AA4D2A19D36000F7A642 /* AddTrackViewModel.swift */; };
+		8B19AA502A1A3EED00F7A642 /* PlaylistInfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B19AA4F2A1A3EED00F7A642 /* PlaylistInfoHeaderView.swift */; };
+		8B19AA522A1A405100F7A642 /* EditPlaylistInfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B19AA512A1A405100F7A642 /* EditPlaylistInfoHeaderView.swift */; };
 		8B3B6CCB29AC788400A6352A /* ITunesService+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B6CCA29AC788400A6352A /* ITunesService+Lookup.swift */; };
 		8B3B6CCD29AD8C0E00A6352A /* TrackDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B6CCC29AD8C0E00A6352A /* TrackDetailViewController.swift */; };
 		8B3B6CCF29AD8C2500A6352A /* TrackDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B6CCE29AD8C2500A6352A /* TrackDetailViewModel.swift */; };
@@ -44,7 +46,6 @@
 		8B4D36FD299FC48E00059381 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 8B4D36FC299FC48E00059381 /* SwiftyJSON */; };
 		8B4D3700299FC4A300059381 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 8B4D36FF299FC4A300059381 /* Kingfisher */; };
 		8B4D3706299FC50D00059381 /* FLEX in Frameworks */ = {isa = PBXBuildFile; productRef = 8B4D3705299FC50D00059381 /* FLEX */; };
-		8B50F9AB2A0D5E4A0065A67B /* EditPlaylistInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B50F9AA2A0D5E4A0065A67B /* EditPlaylistInfoCell.swift */; };
 		8B58CFC029D0562000B36C71 /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B58CFBF29D0562000B36C71 /* Double+Extensions.swift */; };
 		8B58CFC229D0832E00B36C71 /* AnimatedThumbSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B58CFC129D0832E00B36C71 /* AnimatedThumbSlider.swift */; };
 		8B5FCD3129D1624D00C763DB /* MPVolumeView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5FCD3029D1624D00C763DB /* MPVolumeView+Extensions.swift */; };
@@ -160,7 +161,6 @@
 		8BDE4E602A08CD4D00617916 /* AddPlaylistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDE4E5F2A08CD4D00617916 /* AddPlaylistViewController.swift */; };
 		8BDE4E622A08CDFE00617916 /* AddPlaylistViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDE4E612A08CDFE00617916 /* AddPlaylistViewModel.swift */; };
 		8BDE4E642A092F6600617916 /* AddTrackCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDE4E632A092F6600617916 /* AddTrackCell.swift */; };
-		8BDE4E662A09310700617916 /* PlaylistInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDE4E652A09310700617916 /* PlaylistInfoCell.swift */; };
 		8BDE4E6C2A093EE500617916 /* PlaceholderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDE4E6B2A093EE500617916 /* PlaceholderTextView.swift */; };
 		8BDE4E6E2A095A2D00617916 /* PhotoMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDE4E6D2A095A2D00617916 /* PhotoMenuItem.swift */; };
 		8BDE4E712A0A78DF00617916 /* DisplayMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDE4E702A0A78DF00617916 /* DisplayMode.swift */; };
@@ -230,6 +230,8 @@
 		8B0E6A2E2A043343004743A7 /* KannaAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KannaAdapter.swift; sourceTree = "<group>"; };
 		8B19AA4B2A19D35400F7A642 /* AddTrackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTrackViewController.swift; sourceTree = "<group>"; };
 		8B19AA4D2A19D36000F7A642 /* AddTrackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTrackViewModel.swift; sourceTree = "<group>"; };
+		8B19AA4F2A1A3EED00F7A642 /* PlaylistInfoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistInfoHeaderView.swift; sourceTree = "<group>"; };
+		8B19AA512A1A405100F7A642 /* EditPlaylistInfoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlaylistInfoHeaderView.swift; sourceTree = "<group>"; };
 		8B3B6CCA29AC788400A6352A /* ITunesService+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ITunesService+Lookup.swift"; sourceTree = "<group>"; };
 		8B3B6CCC29AD8C0E00A6352A /* TrackDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailViewController.swift; sourceTree = "<group>"; };
 		8B3B6CCE29AD8C2500A6352A /* TrackDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailViewModel.swift; sourceTree = "<group>"; };
@@ -254,7 +256,6 @@
 		8B4D36E0299FBD8000059381 /* ITunesPracticeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ITunesPracticeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B4D36E4299FBD8000059381 /* ITunesPracticeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITunesPracticeUITests.swift; sourceTree = "<group>"; };
 		8B4D36E6299FBD8000059381 /* ITunesPracticeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITunesPracticeUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		8B50F9AA2A0D5E4A0065A67B /* EditPlaylistInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlaylistInfoCell.swift; sourceTree = "<group>"; };
 		8B58CFBF29D0562000B36C71 /* Double+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extensions.swift"; sourceTree = "<group>"; };
 		8B58CFC129D0832E00B36C71 /* AnimatedThumbSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedThumbSlider.swift; sourceTree = "<group>"; };
 		8B5FCD3029D1624D00C763DB /* MPVolumeView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MPVolumeView+Extensions.swift"; sourceTree = "<group>"; };
@@ -369,7 +370,6 @@
 		8BDE4E5F2A08CD4D00617916 /* AddPlaylistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlaylistViewController.swift; sourceTree = "<group>"; };
 		8BDE4E612A08CDFE00617916 /* AddPlaylistViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlaylistViewModel.swift; sourceTree = "<group>"; };
 		8BDE4E632A092F6600617916 /* AddTrackCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTrackCell.swift; sourceTree = "<group>"; };
-		8BDE4E652A09310700617916 /* PlaylistInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistInfoCell.swift; sourceTree = "<group>"; };
 		8BDE4E6B2A093EE500617916 /* PlaceholderTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderTextView.swift; sourceTree = "<group>"; };
 		8BDE4E6D2A095A2D00617916 /* PhotoMenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoMenuItem.swift; sourceTree = "<group>"; };
 		8BDE4E6F2A09E8F700617916 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
@@ -670,8 +670,8 @@
 				8BFDF18429A34818008E2C23 /* TrackCell.swift */,
 				8BDE4E4E2A0793CF00617916 /* CloudOptionCell.swift */,
 				8BDE4E632A092F6600617916 /* AddTrackCell.swift */,
-				8BDE4E652A09310700617916 /* PlaylistInfoCell.swift */,
-				8B50F9AA2A0D5E4A0065A67B /* EditPlaylistInfoCell.swift */,
+				8B19AA4F2A1A3EED00F7A642 /* PlaylistInfoHeaderView.swift */,
+				8B19AA512A1A405100F7A642 /* EditPlaylistInfoHeaderView.swift */,
 			);
 			path = TableViewCell;
 			sourceTree = "<group>";
@@ -1276,7 +1276,6 @@
 				8BDE4E412A05E9C700617916 /* AudioSearchHistoryViewController.swift in Sources */,
 				8B677CCC29BF934100F73FE5 /* GestureSubscription.swift in Sources */,
 				8BB69BC329BC9E9600F09793 /* HTTPMethod+Extensions.swift in Sources */,
-				8BDE4E662A09310700617916 /* PlaylistInfoCell.swift in Sources */,
 				8B3F9BE829C724330050CFC9 /* PlayListHeaderView.swift in Sources */,
 				8BFDF16C29A1F55F008E2C23 /* ITunesServiceProvider.swift in Sources */,
 				8BB74C6A29A14BA3000B9D59 /* CustomRequest.swift in Sources */,
@@ -1303,6 +1302,7 @@
 				8BDE4E492A067B1500617916 /* TrackMenuItem.swift in Sources */,
 				8B6B56C429B577C200F099DD /* SearchViewController.swift in Sources */,
 				8B882E9129D93D45000AA1DE /* DefaultTrack.swift in Sources */,
+				8B19AA502A1A3EED00F7A642 /* PlaylistInfoHeaderView.swift in Sources */,
 				8B6B56C229B4F2ED00F099DD /* PagingViewModel.swift in Sources */,
 				8B0265DD29E85E6100BB732D /* Track+Kingfisher.swift in Sources */,
 				8B6B569F29B0EA3000F099DD /* PreviewType.swift in Sources */,
@@ -1328,7 +1328,6 @@
 				8BB74C8529A1CBD3000B9D59 /* Defs.swift in Sources */,
 				8BB74C8929A1CCEB000B9D59 /* CustomJsonBodyParamsAdapter.swift in Sources */,
 				8BDE4E712A0A78DF00617916 /* DisplayMode.swift in Sources */,
-				8B50F9AB2A0D5E4A0065A67B /* EditPlaylistInfoCell.swift in Sources */,
 				8B677CCA29BF922400F73FE5 /* GesturePublisher.swift in Sources */,
 				8BF7184029CE818C002CEFD6 /* LocaleManager.swift in Sources */,
 				8B5FCD3729D2C59000C763DB /* UIImage+Extensions.swift in Sources */,
@@ -1375,6 +1374,7 @@
 				8BB74C8F29A1DC9F000B9D59 /* ApiEngineError.swift in Sources */,
 				8B6B56B529B4491500F099DD /* RangeReplaceableCollection+Extensions.swift in Sources */,
 				8BDE4E642A092F6600617916 /* AddTrackCell.swift in Sources */,
+				8B19AA522A1A405100F7A642 /* EditPlaylistInfoHeaderView.swift in Sources */,
 				8B4D36C4299FBD7E00059381 /* AppDelegate.swift in Sources */,
 				8B882E9429D940C3000AA1DE /* FormattedTime.swift in Sources */,
 				8BBC8F4529B6662F00ACB0EA /* TrackDetailViewControllerView.swift in Sources */,
