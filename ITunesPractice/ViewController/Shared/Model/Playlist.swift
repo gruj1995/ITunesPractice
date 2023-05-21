@@ -50,16 +50,18 @@ extension Playlist {
     }
 
     static func addPlaylist(_ playlist: Playlist) {
-        UserDefaults.playlists.append(playlist)
+        UserDefaults.playlists.append(playlist.autoIncrementID())
     }
 
     static func updatePlaylist(_ playlist: Playlist) {
         UserDefaults.playlists.removeAll { $0.id == playlist.id }
 
         if UserDefaults.playlists.isEmpty {
-            UserDefaults.playlists.append(playlist)
+            addPlaylist(playlist)
         } else {
-            UserDefaults.playlists.insert(playlist, at: 1)
+            // 首項為"所有音樂清單"
+            let newPlaylist = playlist.id == 0 ? playlist.autoIncrementID() : playlist
+            UserDefaults.playlists.insert(newPlaylist, at: 1)
         }
     }
 }
