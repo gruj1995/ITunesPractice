@@ -106,6 +106,13 @@ class AddPlaylistViewController: UIViewController {
             .sink { [weak self] _ in
                 self?.updateUI()
             }.store(in: &cancellables)
+
+        UserDefaults.$playlists
+            .receive(on: RunLoop.main)
+            .removeDuplicates()
+            .sink { [weak self] playlists in
+                self?.handleClose(playlists: playlists)
+            }.store(in: &cancellables)
     }
 
     private func setNormalNavigationBar() {
@@ -164,6 +171,16 @@ class AddPlaylistViewController: UIViewController {
             dismiss(animated: true)
         } else {
             viewModel.toggleDisplayMode()
+        }
+    }
+
+    private func handleClose(playlists: [Playlist]) {
+        if !playlists.contains(viewModel.playlist) {
+            if viewModel.displayMode == .add {
+                dismiss(animated: true)
+            } else {
+                navigationController?.popViewController(animated: true)
+            }
         }
     }
 
@@ -338,6 +355,8 @@ extension AddPlaylistViewController: Photographable {
 extension AddPlaylistViewController: AddTrackViewControllerDelegate {
     func didFinish(_ vc: AddTrackViewController, select tracks: [Track]) {
         viewModel.appendTracks(newTracks: tracks)
-        viewModel.savePlaylist()
+        if viewModel.displayMode == .normal {
+            viewModel.savePlaylist()
+        }
     }
 }
