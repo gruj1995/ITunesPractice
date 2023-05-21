@@ -52,4 +52,14 @@ extension Playlist {
     static func addPlaylist(_ playlist: Playlist) {
         UserDefaults.playlists.append(playlist)
     }
+
+    static func updatePlaylist(_ playlist: Playlist) {
+        UserDefaults.playlists.removeAll { $0.id == playlist.id }
+
+        if UserDefaults.playlists.isEmpty {
+            UserDefaults.playlists.append(playlist)
+        } else {
+            UserDefaults.playlists.insert(playlist, at: 1)
+        }
+    }
 }

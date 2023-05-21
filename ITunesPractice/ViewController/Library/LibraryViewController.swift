@@ -72,7 +72,6 @@ class LibraryViewController: UIViewController {
     }
 
     private func bindViewModel() {
-        // 使用 $ 屬性獲取 @Published 屬性的 Publisher，監聽資料模型的變化
         viewModel.$playlists
             .receive(on: RunLoop.main)
             .sink { [weak self] playlists in

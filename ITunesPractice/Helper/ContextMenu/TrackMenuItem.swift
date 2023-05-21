@@ -25,8 +25,9 @@ enum TrackMenuType: TrackMenuItem {
                 return AddMenuItem().getMenuElement(for: track)
             }
         case .editPlaylist:
-            let trackWithNewID = track.autoIncrementID()
-            return EditPlaylistMenuItem().getMenuElement(for: trackWithNewID)
+//            let trackWithNewID = track.autoIncrementID()
+//            return EditPlaylistMenuItem().getMenuElement(for: trackWithNewID)
+            return EditPlaylistMenuItem().getMenuElement(for: track)
         case .share:
             return ShareMenuItem().getMenuElement(for: track)
         }
@@ -46,7 +47,9 @@ struct AddMenuItem: TrackMenuItem {
     func getMenuElement(for track: Track) -> UIMenuElement {
         let addAction = UIAction(title: "加入資料庫".localizedString(), image: AppImages.plus) { _ in
             // 新的插入到最前面
-            UserDefaults.defaultPlaylist.tracks.insert(track, at: 0)
+            let newTrack = track.autoIncrementID()
+            print("__+ \(newTrack.id)")
+            UserDefaults.defaultPlaylist.tracks.insert(newTrack, at: 0)
             Utils.toast("已加入資料庫".localizedString())
         }
         return UIMenu(title: "", options: .displayInline, children: [addAction])

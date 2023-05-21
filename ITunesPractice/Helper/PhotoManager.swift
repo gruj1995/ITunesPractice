@@ -81,7 +81,7 @@ class PhotoManager {
     /// 寫入貓貓預設圖到 App 照片資料夾，並紀錄圖片路徑到 UserDefaults 中
     func writePlaceholders() {
         for (index, placeholder) in catPlaceholders.enumerated() {
-            if let url = writeImage(placeholder, with: "cat\(index)") {
+            if let url = writeImage(placeholder, with: "default_cat\(index)") {
                 UserDefaults.placeholderUrls.append(url)
             }
         }
