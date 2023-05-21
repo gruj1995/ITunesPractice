@@ -23,26 +23,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // 要先到 info.plist 新增 key(View controller-based status bar appearance) 以下設置才有效
-        UIApplication.shared.statusBarStyle = .lightContent
 
-        // 設置所有 UIBarButtonItem 的 tinitColor
-        UIBarButtonItem.appearance().tintColor = .appColor(.red1)
-
-        // 生成單例類
-        MusicPlayer.shared.configure()
-        MatchingHelper.shared.configure()
-
-        // 指定音訊會話類型為 .playback，讓 App 在背景、螢幕鎖定、silent mode 都能繼續播放音樂
-        try? AVAudioSession.sharedInstance().setCategory(.playback)
-
-        // 監控網路變化
-        NetworkMonitor.shared.startMonitoring()
-
-        // 修正ios 15 tableView section 上方多出的空白
-        if #available(iOS 15.0, *) {
-            UITableView.appearance().sectionHeaderTopPadding = 0.0
-        }
+        initializeGlobals()
+        initializeDefaultValue()
+        setupAppearance()
 
 #if DEBUG
         FLEXManager.shared.isNetworkDebuggingEnabled = true
@@ -65,7 +49,47 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 extension AppDelegate {
-    // TODO: 建立單獨的類管理,目前沒有使用
+    /// 設置全域變數
+    private func initializeGlobals() {
+        MusicPlayer.shared.configure()
+        MatchingHelper.shared.configure()
+        PermissionManager.shared.configure()
+        PhotoManager.shared.configure()
+
+        // 監控網路變化
+        NetworkMonitor.shared.startMonitoring()
+
+        // 指定音訊會話類型為 .playback，讓 App 在背景、螢幕鎖定、silent mode 都能繼續播放音樂
+        try? AVAudioSession.sharedInstance().setCategory(.playback)
+
+        // 修正ios 15 tableView section 上方多出的空白
+        UITableView.appearance().sectionHeaderTopPadding = 0.0
+    }
+
+    /// 設置預設值
+    private func initializeDefaultValue() {
+        if UserDefaults.placeholderUrls.isEmpty {
+            // 首次寫入貓貓預設圖
+            PhotoManager.shared.writePlaceholders()
+        }
+
+        if UserDefaults.playlists.isEmpty {
+            // 預設播放清單
+            UserDefaults.defaultPlaylist.imageUrl = UserDefaults.placeholderUrls.first
+            Playlist.addPlaylist(UserDefaults.defaultPlaylist)
+        }
+    }
+
+    /// 設置界面樣式，例如導航欄外觀、顏色等
+    private func setupAppearance() {
+        // 要先到 info.plist 新增 key(View controller-based status bar appearance) 以下設置才有效
+        UIApplication.shared.statusBarStyle = .lightContent
+
+        // 設置所有 UIBarButtonItem 的 tinitColor
+        UIBarButtonItem.appearance().tintColor = .appColor(.red1)
+    }
+
+    // TODO: 目前沒有使用
     private func setNavigationBarAppearance() {
         // 返回按鈕樣式
         let backButtonAppearance = UIBarButtonItemAppearance(style: .plain)
