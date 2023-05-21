@@ -159,7 +159,7 @@ extension AddTrackViewController: UITableViewDataSource, UITableViewDelegate {
 extension AddTrackViewController: UIAdaptivePresentationControllerDelegate {
     /// 是否允許下滑關閉頁面
     func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
-        if viewModel.hasChange {
+        if viewModel.isModified {
             confirmCancel()
             return false // 禁止關閉
         } else {

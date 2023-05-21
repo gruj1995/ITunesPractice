@@ -306,7 +306,7 @@ extension AddPlaylistViewController: UITableViewDataSource, UITableViewDelegate 
 extension AddPlaylistViewController: UIAdaptivePresentationControllerDelegate {
     /// 是否允許下滑關閉頁面
     func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
-        if viewModel.isEdited {
+        if viewModel.isModified {
             confirmCancel()
             return false // 禁止關閉
         } else {

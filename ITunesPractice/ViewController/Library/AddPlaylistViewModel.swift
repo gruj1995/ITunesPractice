@@ -42,7 +42,7 @@ class AddPlaylistViewModel {
         musicPlayer.isPlayingPublisher
     }
 
-    var isEdited: Bool {
+    var isModified: Bool {
         playlist.imageUrl != imageUrl
             || playlist.name != name
             || playlist.tracks != tracks

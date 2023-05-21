@@ -23,7 +23,7 @@ class AddTrackViewModel {
         tracks.count
     }
 
-    var hasChange: Bool {
+    var isModified: Bool {
         !selectedTracks.isEmpty
     }
 
