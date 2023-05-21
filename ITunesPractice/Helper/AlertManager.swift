@@ -17,22 +17,16 @@ class AlertManager {
 
     static let shared = AlertManager()
 
-    /// 顯示文字視窗
-    /// - Parameters:
-    ///    - title: 視窗標題
-    ///    - message: 視窗訊息
-    ///    - confirmTitle: 確認按鈕文字 預設為 Ok
-    ///    - handler: 按下確認後執行的動作 預設無
-    func showSingleMsgAlert(title: String?, message: String?, confirmTitle: String? = "Ok", handler: ((UIAlertAction) -> Void)? = nil) {
+    func showSystemAlert(title: String?, message: String?, actions: [UIAlertAction]) {
         let alertManager = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let yesButton = UIAlertAction(title: confirmTitle, style: .default, handler: handler)
-        alertManager.addAction(yesButton)
+        actions.forEach { alertManager.addAction($0) }
+
         if let visibleViewController = UIApplication.shared.getTopViewController() {
             visibleViewController.present(alertManager, animated: true, completion: nil)
         }
     }
 
-    func showMsgAlert(title: String?, message: String?, confirmTitle: String, cancelTitle: String, handler: ((UIAlertAction) -> Void)? = nil) {
+    func showSystemAlert(title: String?, message: String?, confirmTitle: String, cancelTitle: String, handler: ((UIAlertAction) -> Void)? = nil) {
         let alertManager = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let confirmButton = UIAlertAction(title: confirmTitle, style: .default, handler: handler)
         let cancelButton = UIAlertAction(title: cancelTitle, style: .cancel, handler: nil)
@@ -50,18 +44,10 @@ class AlertManager {
     ///   - title: 視窗標題
     ///   - message: 視窗訊息
     ///   - settingURL: 要前往的設定
-    func showSettingAlert(title: String?, message: String?, settingURL: String, cancellable: Bool = true) {
-        if cancellable {
-            showMsgAlert(title: title, message: message, confirmTitle: "前往設定".localizedString(), cancelTitle: "取消".localizedString()) { _ in
-                if let url = URL(string: settingURL) {
-                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                }
-            }
-        } else {
-            showSingleMsgAlert(title: title, message: message, confirmTitle: "前往設定".localizedString()) { _ in
-                if let url = URL(string: settingURL) {
-                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                }
+    func showSettingAlert(title: String?, message: String?, settingURL: String) {
+        showSystemAlert(title: title, message: message, confirmTitle: "前往設定".localizedString(), cancelTitle: "取消".localizedString()) { _ in
+            if let url = URL(string: settingURL) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
             }
         }
     }
