@@ -40,7 +40,7 @@ extension UIButton {
         if let image = image {
             setImage(image, for: .normal)
         }
-        self.tintColor = isSelected ? tintColor : UIColor(white: 0.8, alpha: 1)
+        self.tintColor = isSelected ? tintColor : .white
         backgroundColor = isSelected ? .white : .clear
     }
 

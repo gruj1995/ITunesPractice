@@ -85,7 +85,7 @@ class SearchViewController: UIViewController {
     }()
 
     private lazy var imageView: UIImageView = {
-        let imageView = UIImageView(image: AppImages.catHalf)
+        let imageView = UIImageView(image: AppImages.catHide)
         imageView.contentMode = .scaleAspectFit
         imageView.backgroundColor = .clear
         return imageView

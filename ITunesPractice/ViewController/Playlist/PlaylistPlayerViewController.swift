@@ -101,8 +101,8 @@ class PlaylistPlayerViewController: UIViewController {
     /// 顯示附近媒體接收器列表的 View (本身就有點擊事件和圖案，不用另外設定)
     private lazy var routePickerView: AVRoutePickerView = {
         let routePickerView = AVRoutePickerView(frame: .zero)
-        routePickerView.tintColor = .lightGray
-        routePickerView.activeTintColor = .lightGray // 選中時的顏色
+        routePickerView.tintColor = .white
+        routePickerView.activeTintColor = .white // 選中時的顏色
         return routePickerView
     }()
 

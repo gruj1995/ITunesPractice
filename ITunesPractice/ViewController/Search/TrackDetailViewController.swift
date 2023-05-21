@@ -175,7 +175,7 @@ class TrackDetailViewController: UIViewController {
 //        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 0, height: 40))
         let button = UIButton()
         button.tag = type.rawValue
-        button.addTarget(self, action: #selector(buttonAction(_:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
 
         var config = UIButton.Configuration.filled()
         config.imagePadding = 10

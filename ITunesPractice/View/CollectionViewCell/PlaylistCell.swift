@@ -32,7 +32,7 @@ class PlaylistCell: UICollectionViewCell {
     func configure(_ playlist: Playlist) {
         coverImageView.loadImage(
             with: playlist.imageUrl,
-            placeholder: AppImages.catCircle
+            placeholder: AppImages.catMushroom
         )
         nameLabel.text = playlist.name
         descriptionLabel.text = playlist.description
@@ -43,7 +43,7 @@ class PlaylistCell: UICollectionViewCell {
     private lazy var coverImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
-        imageView.backgroundColor = .appColor(.gray1)
+        imageView.backgroundColor = .clear
         imageView.layer.cornerRadius = 5
         imageView.clipsToBounds = true
         return imageView
@@ -74,7 +74,7 @@ class PlaylistCell: UICollectionViewCell {
     }()
 
     private func setupUI() {
-        backgroundColor = .clear
+        backgroundColor = .black
         setupLayout()
     }
 
