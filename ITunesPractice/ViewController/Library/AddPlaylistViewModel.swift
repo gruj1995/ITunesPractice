@@ -106,6 +106,10 @@ class AddPlaylistViewModel {
         musicPlayer.refreshPlaylistAndPlaySong(playlist, at: trackIndex)
     }
 
+    func appendTracks(newTracks: [Track]) {
+        tracks.append(contentsOf: newTracks)
+    }
+
     // MARK: Private
 
     private let musicPlayer: MusicPlayer = .shared

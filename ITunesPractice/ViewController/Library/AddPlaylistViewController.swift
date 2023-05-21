@@ -140,6 +140,14 @@ class AddPlaylistViewController: UIViewController {
         }
     }
 
+    private func presentAddTrackVC() {
+        let vc = AddTrackViewController()
+        vc.delegate = self
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.modalPresentationStyle = .pageSheet
+        present(navVC, animated: true)
+    }
+
     private func confirmCancel() {
         let alert = UIAlertController(title: "新增播放列表", message: "確定要捨棄新的播放列表嗎？", preferredStyle: .actionSheet)
         let abandonAction = UIAlertAction(title: "捨棄所作更動".localizedString(), style: .destructive) { [weak self] _ in
@@ -268,7 +276,7 @@ extension AddPlaylistViewController: UITableViewDataSource, UITableViewDelegate 
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .insert {
-            print("__+++++")
+            presentAddTrackVC()
         } else if editingStyle == .delete {
             let rows = viewModel.totalCount
             viewModel.removeTrack(forCellAt: indexPath.row)
@@ -335,5 +343,13 @@ extension AddPlaylistViewController: Photographable {
                 self?.tableView.reloadData()
             }
         }
+    }
+}
+
+// MARK: AddTrackViewControllerDelegate
+
+extension AddPlaylistViewController: AddTrackViewControllerDelegate {
+    func didFinish(_ vc: AddTrackViewController, select tracks: [Track]) {
+        viewModel.appendTracks(newTracks: tracks)
     }
 }
