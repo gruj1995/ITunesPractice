@@ -14,7 +14,11 @@ class AddPlaylistViewModel {
     init(displayMode: DisplayMode, playlist: Playlist?) {
         self.displayMode = displayMode
         self.playlist = UserDefaults.playlists.first { $0 == playlist } ?? Playlist()
-        imageUrl = self.playlist.imageUrl ?? UserDefaults.placeholderUrls.randomElement()
+
+        if self.playlist.imageUrl == nil {
+            self.playlist.imageUrl = UserDefaults.placeholderUrls.randomElement()
+        }
+        imageUrl = self.playlist.imageUrl
         tracks = self.playlist.tracks
         name = self.playlist.name
     }
