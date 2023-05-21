@@ -155,8 +155,6 @@
 		8BDE4E532A0797F000617916 /* CloudViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDE4E522A0797F000617916 /* CloudViewModel.swift */; };
 		8BDE4E552A088B9400617916 /* LibraryMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDE4E542A088B9400617916 /* LibraryMenuItem.swift */; };
 		8BDE4E572A08A4C200617916 /* Playlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDE4E562A08A4C200617916 /* Playlist.swift */; };
-		8BDE4E592A08A63300617916 /* LibraryPlaylistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDE4E582A08A63300617916 /* LibraryPlaylistViewController.swift */; };
-		8BDE4E5B2A08A63B00617916 /* LibraryPlaylistViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDE4E5A2A08A63B00617916 /* LibraryPlaylistViewModel.swift */; };
 		8BDE4E5E2A08AAEF00617916 /* PlaylistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDE4E5D2A08AAEF00617916 /* PlaylistCell.swift */; };
 		8BDE4E602A08CD4D00617916 /* AddPlaylistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDE4E5F2A08CD4D00617916 /* AddPlaylistViewController.swift */; };
 		8BDE4E622A08CDFE00617916 /* AddPlaylistViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDE4E612A08CDFE00617916 /* AddPlaylistViewModel.swift */; };
@@ -364,8 +362,6 @@
 		8BDE4E522A0797F000617916 /* CloudViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudViewModel.swift; sourceTree = "<group>"; };
 		8BDE4E542A088B9400617916 /* LibraryMenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryMenuItem.swift; sourceTree = "<group>"; };
 		8BDE4E562A08A4C200617916 /* Playlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playlist.swift; sourceTree = "<group>"; };
-		8BDE4E582A08A63300617916 /* LibraryPlaylistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryPlaylistViewController.swift; sourceTree = "<group>"; };
-		8BDE4E5A2A08A63B00617916 /* LibraryPlaylistViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryPlaylistViewModel.swift; sourceTree = "<group>"; };
 		8BDE4E5D2A08AAEF00617916 /* PlaylistCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistCell.swift; sourceTree = "<group>"; };
 		8BDE4E5F2A08CD4D00617916 /* AddPlaylistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlaylistViewController.swift; sourceTree = "<group>"; };
 		8BDE4E612A08CDFE00617916 /* AddPlaylistViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlaylistViewModel.swift; sourceTree = "<group>"; };
@@ -714,8 +710,6 @@
 			children = (
 				8BFDF17429A229A9008E2C23 /* LibraryViewController.swift */,
 				8B6B56A629B1755300F099DD /* LibraryViewModel.swift */,
-				8BDE4E582A08A63300617916 /* LibraryPlaylistViewController.swift */,
-				8BDE4E5A2A08A63B00617916 /* LibraryPlaylistViewModel.swift */,
 				8BDE4E5F2A08CD4D00617916 /* AddPlaylistViewController.swift */,
 				8BDE4E612A08CDFE00617916 /* AddPlaylistViewModel.swift */,
 				8B19AA4B2A19D35400F7A642 /* AddTrackViewController.swift */,
@@ -1311,7 +1305,6 @@
 				8BFDF16E29A1F835008E2C23 /* ITunesServiceProviderInpl.swift in Sources */,
 				8BB69BE029BE5A5900F09793 /* MiniPlayerViewController.swift in Sources */,
 				8B8B3E0629EB8C8600308778 /* AudioSearchViewController.swift in Sources */,
-				8BDE4E5B2A08A63B00617916 /* LibraryPlaylistViewModel.swift in Sources */,
 				8BFDF17F29A313D5008E2C23 /* DateUtility.swift in Sources */,
 				8BBCE35829C1F56D0084BF44 /* PlaylistPlayerViewController.swift in Sources */,
 				8BB74C6C29A14BEF000B9D59 /* HTTPMethod.swift in Sources */,
@@ -1340,7 +1333,6 @@
 				8BB69BD429BDB49400F09793 /* SearchResultsViewController.swift in Sources */,
 				8B3F9BCE29C5C64F0050CFC9 /* FloatingViewController.swift in Sources */,
 				8B8F50E129EF011E00BCE350 /* MusicSearchStage.swift in Sources */,
-				8BDE4E592A08A63300617916 /* LibraryPlaylistViewController.swift in Sources */,
 				8BDE4E622A08CDFE00617916 /* AddPlaylistViewModel.swift in Sources */,
 				8B6B56B729B4821600F099DD /* ToastHelper.swift in Sources */,
 				8BB74C8729A1CC8F000B9D59 /* CustomContentTypeAdapter.swift in Sources */,
