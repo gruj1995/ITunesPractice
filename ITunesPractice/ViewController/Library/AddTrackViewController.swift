@@ -5,8 +5,11 @@
 //  Created by 李品毅 on 2023/5/21.
 //
 
+import Combine
 import SnapKit
 import UIKit
+
+// MARK: - AddTrackViewControllerDelegate
 
 protocol AddTrackViewControllerDelegate: AnyObject {
     func didFinish(_ vc: AddTrackViewController, select tracks: [Track])
@@ -28,6 +31,8 @@ class AddTrackViewController: UIViewController {
 
     // MARK: Internal
 
+    weak var delegate: AddTrackViewControllerDelegate?
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.prefersLargeTitles = false
@@ -36,13 +41,14 @@ class AddTrackViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        bindViewModel()
         dismissKeyboard()
     }
 
     // MARK: Private
 
-    weak var delegate: AddTrackViewControllerDelegate?
     private var viewModel: AddTrackViewModel = .init()
+    private var cancellables: Set<AnyCancellable> = .init()
     private let cellHeight: CGFloat = 60
 
     private lazy var tableView: UITableView = {
@@ -58,6 +64,25 @@ class AddTrackViewController: UIViewController {
         return tableView
     }()
 
+    private lazy var searchController: UISearchController = {
+        let searchController = UISearchController()
+        searchController.searchBar.tintColor = .appColor(.red1)
+        searchController.searchBar.barTintColor = .appColor(.red1)
+        // barStyle 設為 .black 文字顯示(白色)
+        searchController.searchBar.barStyle = .black
+        // 預設文字
+        searchController.searchBar.placeholder = "搜尋".localizedString()
+        // 搜尋框樣式: .minimal -> SearchBar 沒有背景，且搜尋欄位為半透明
+        searchController.searchBar.searchBarStyle = .minimal
+        // 首字自動變大寫
+        searchController.searchBar.autocapitalizationType = .none
+        // 搜尋時是否隱藏 NavigationBar
+        searchController.hidesNavigationBarDuringPresentation = true
+        // 監聽搜尋事件
+        searchController.searchResultsUpdater = self
+        return searchController
+    }()
+
     private lazy var finishBarButtonItem = UIBarButtonItem(title: "完成", style: .done, target: self, action: #selector(finish))
 
     // MARK: Setup
@@ -70,6 +95,7 @@ class AddTrackViewController: UIViewController {
 
     private func setNavigationBar() {
         navigationItem.title = "加入音樂"
+        navigationItem.searchController = searchController
         navigationItem.rightBarButtonItem = finishBarButtonItem
         // 在delegate實作避免下滑關閉的邏輯
         navigationController?.presentationController?.delegate = self
@@ -80,6 +106,19 @@ class AddTrackViewController: UIViewController {
         tableView.snp.makeConstraints { make in
             make.top.bottom.leading.trailing.equalToSuperview()
         }
+    }
+
+    private func bindViewModel() {
+        viewModel.$filteredTracks
+            .receive(on: RunLoop.main)
+            .removeDuplicates()
+            .sink { [weak self] _ in
+                self?.updateUI()
+            }.store(in: &cancellables)
+    }
+
+    private func updateUI() {
+        tableView.reloadData()
     }
 
     private func confirmCancel() {
@@ -124,7 +163,7 @@ extension AddTrackViewController: UITableViewDataSource, UITableViewDelegate {
         cell.configure(artworkUrl: track.artworkUrl100, collectionName: track.collectionName, artistName: track.artistName, trackName: track.trackName)
 
         // 右側圖片
-        let isSelected = viewModel.isSelected(forCellAt: indexPath.row)
+        let isSelected = viewModel.isSelected(track)
         let image = isSelected ? AppImages.checkmark : AppImages.plusCircle
         cell.accessoryView = UIImageView(image: image)
         cell.tintColor = .appColor(.red1)
@@ -165,5 +204,14 @@ extension AddTrackViewController: UIAdaptivePresentationControllerDelegate {
         } else {
             return true // 允許關閉
         }
+    }
+}
+
+// MARK: UISearchResultsUpdating
+
+extension AddTrackViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        viewModel.searchTerm = searchController.searchBar.text ?? ""
+        tableView.scrollToTop(animated: false)
     }
 }
