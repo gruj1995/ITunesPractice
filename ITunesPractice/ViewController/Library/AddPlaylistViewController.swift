@@ -130,7 +130,7 @@ class AddPlaylistViewController: UIViewController {
     private func setupLayout() {
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.top.bottom.leading.trailing.equalToSuperview()
+            make.edges.equalToSuperview()
         }
     }
 

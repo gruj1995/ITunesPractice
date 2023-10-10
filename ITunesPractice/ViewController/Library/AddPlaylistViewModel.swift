@@ -37,6 +37,7 @@ class AddPlaylistViewModel {
     @Published var displayMode: DisplayMode
     @Published var imageUrl: URL?
     @Published var tracks: [Track] = []
+    @Published var tmpTracks: [Track] = []
 
     var currentTrackIndexPublisher: AnyPublisher<Int, Never> {
         musicPlayer.currentTrackIndexPublisher
@@ -57,7 +58,11 @@ class AddPlaylistViewModel {
     }
 
     var totalCount: Int {
-        tracks.count + prefixItemCount
+        if displayMode == .edit {
+            return tmpTracks.count + prefixItemCount
+        }
+
+        return tracks.count + prefixItemCount
     }
 
     var isPlaying: Bool {
@@ -73,19 +78,33 @@ class AddPlaylistViewModel {
         }
     }
 
-    func track(forCellAt index: Int) -> Track? {
-        guard tracks.indices.contains(index - prefixItemCount) else { return nil }
-        return tracks[index - prefixItemCount]
-    }
+    // MARK: 正常顯示時的資料
 
     func setSelectedTrack(forCellAt index: Int) {
         guard tracks.indices.contains(index - prefixItemCount) else { return }
         selectedTrack = tracks[index - prefixItemCount]
     }
 
+    func track(forCellAt index: Int) -> Track? {
+        guard tracks.indices.contains(index - prefixItemCount) else { return nil }
+        return tracks[index - prefixItemCount]
+    }
+
     func removeTrack(forCellAt index: Int) {
         guard tracks.indices.contains(index - prefixItemCount) else { return }
         tracks.remove(at: index - prefixItemCount)
+    }
+
+    // MARK: 編輯或新增時的資料
+
+    func tmpTrack(forCellAt index: Int) -> Track? {
+        guard tmpTracks.indices.contains(index - prefixItemCount) else { return nil }
+        return tmpTracks[index - prefixItemCount]
+    }
+
+    func removeTmpTrack(forCellAt index: Int) {
+        guard tmpTracks.indices.contains(index - prefixItemCount) else { return }
+        tmpTracks.remove(at: index - prefixItemCount)
     }
 
     func savePlaylist() {
