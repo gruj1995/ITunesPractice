@@ -84,6 +84,13 @@ class SearchViewController: UIViewController {
         return view
     }()
 
+    private lazy var imageView: UIImageView = {
+        let imageView = UIImageView(image: AppImages.catHide)
+        imageView.contentMode = .scaleAspectFit
+        imageView.backgroundColor = .clear
+        return imageView
+    }()
+
     private func setupUI() {
         view.backgroundColor = .black
         navigationItem.searchController = searchController // 添加搜尋框
@@ -106,6 +113,12 @@ class SearchViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview().multipliedBy(0.9)
             make.width.equalToSuperview().multipliedBy(0.8)
+        }
+
+        view.addSubview(imageView)
+        imageView.snp.makeConstraints { make in
+            make.centerX.centerY.equalToSuperview()
+            make.width.equalToSuperview().multipliedBy(0.6)
         }
     }
 

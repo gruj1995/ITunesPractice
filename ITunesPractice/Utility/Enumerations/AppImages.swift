@@ -65,4 +65,26 @@ enum AppImages {
     static let circleFill = UIImage(named: "circle.fill.normal") // 正常尺寸
     static let circleFillSmall = UIImage(named: "circle.fill.small")
     static let circleFillTiny = UIImage(named: "circle.fill.tiny") // 最小
+
+    // 雲端資源
+    static let iCloud = UIImage(named: "iCloud")
+    static let googleDrive = UIImage(named: "googleDrive")
+    static let personICloudFill = UIImage(systemName: "person.icloud.fill")
+
+    // 資料庫
+    static let cameraFill = UIImage(systemName: "camera.fill")
+    static let camera = UIImage(systemName: "camera")
+    static let photoOnRectangle = UIImage(systemName: "photo.on.rectangle")
+    static let pencil = UIImage(systemName: "pencil")
+    static let plusCircle = UIImage(systemName: "plus.circle")
+    static let checkmark = UIImage(systemName: "checkmark")
+
+    // 貓
+    static let catCircle = UIImage(named: "cat_circle")
+    static let catHalf = UIImage(named: "cat_half")
+    static let catHide = UIImage(named: "cat_hide")
+    static let catMushroom = UIImage(named: "cat_mushroom")
+    static let catMoutainDarkBlue = UIImage(named: "cat_moutain_darkBlue")
+    static let catMoutainLightBlue = UIImage(named: "cat_moutain_lightBlue")
+    static let catMoutainGreen = UIImage(named: "cat_moutain_green")
 }

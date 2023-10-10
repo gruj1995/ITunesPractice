@@ -113,11 +113,15 @@ class TrackContextMenuViewController: UIViewController {
         view.backgroundColor = .appColor(.gray2)
         setupLayout()
 
-        guard let track = track else { return }
-        let url = URL(string: track.artworkUrl100)
-        coverImageView.loadCoverImage(with: url)
+        guard let track else { return }
+        coverImageView.loadCoverImage(with: URL(string: track.artworkUrl100))
         trackNameLabel.text = track.trackName
         artistNameLabel.text = track.artistName
-        albumInfoLabel.text = "\(track.collectionName) · \(track.releaseDateValue?.toString(dateFormat: "yyyy年") ?? "") "
+        artistNameLabel.isHidden = track.artistName.isEmpty
+
+        let collectionName = track.collectionName
+        let releaseDateString = track.releaseDateValue?.toString(dateFormat: "yyyy年") ?? ""
+        albumInfoLabel.text = "\(collectionName) · \(releaseDateString)"
+        albumInfoLabel.isHidden = collectionName.isEmpty && releaseDateString.isEmpty
     }
 }

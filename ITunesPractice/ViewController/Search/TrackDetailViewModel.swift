@@ -11,8 +11,9 @@ import Foundation
 class TrackDetailViewModel {
     // MARK: Lifecycle
 
-    init(trackId: Int?) {
-        lookup(trackId: trackId)
+    init(track: Track?) {
+        self.track = track
+        lookup(track)
     }
 
     // MARK: Internal
@@ -33,8 +34,10 @@ class TrackDetailViewModel {
 
     // MARK: Private
 
-    private func lookup(trackId: Int?) {
-        guard let trackId = trackId else { return }
+    private func lookup(_ track: Track?) {
+        guard let trackId = track?.trackId else {
+            return
+        }
         let request = ITunesService.LookupRequest(trackId: trackId)
         request.fetchTrack { [weak self] result in
             guard let self = self else { return }

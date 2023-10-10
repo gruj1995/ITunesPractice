@@ -58,9 +58,15 @@ class AudioSearchViewController: UIViewController {
         let button = UIButton(type: .custom)
         button.setTitle("搜尋記錄", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 15, weight: .medium)
-        button.tintColor = .white
+        button.setTitleColor(.white, for: .normal)
         button.addTarget(self, action: #selector(historyButtonTapped), for: .touchUpInside)
         return button
+    }()
+
+    private lazy var historyButtonUnderLine: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        return view
     }()
 
     private lazy var hintView: EmptyStateView = {
@@ -159,6 +165,13 @@ class AudioSearchViewController: UIViewController {
             make.centerY.equalToSuperview().multipliedBy(1.4)
             make.centerX.equalToSuperview()
         }
+
+        view.addSubview(historyButtonUnderLine)
+        historyButtonUnderLine.snp.makeConstraints { make in
+            make.centerX.width.equalTo(historyButton)
+            make.bottom.equalTo(historyButton).offset(-2)
+            make.height.equalTo(1)
+        }
     }
 
     private func bindViewModel() {
@@ -210,6 +223,7 @@ class AudioSearchViewController: UIViewController {
         hintView.isHidden = !isRecording
         closeButton.isHidden = !isRecording
         historyButton.isHidden = isRecording
+        historyButtonUnderLine.isHidden = isRecording
         playHeartbeatAnimation()
     }
 

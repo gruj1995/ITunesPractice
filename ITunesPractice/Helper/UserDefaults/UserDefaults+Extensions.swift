@@ -10,9 +10,21 @@ import Foundation
 extension UserDefaults {
     // MARK: - 資料相關
 
+    /// 所有播放清單
+    @UserDefaultValue(key: "playlists", defaultValue: [])
+    static var playlists: [Playlist]
+
+    /// 儲存所有歌曲的預設播放清單
+    @UserDefaultValue(key: "defaultPlaylist", defaultValue: Playlist(id: 1, name: "所有歌曲", description: "", tracks: []))
+    static var defaultPlaylist: Playlist
+
     /// 自動增加的 Track id
     @UserDefaultValue(key: "autoIncrementTrackID", defaultValue: 0)
     static var autoIncrementTrackID: Int
+
+    /// 自動增加的 Playlist id
+    @UserDefaultValue(key: "autoIncrementPlaylistID", defaultValue: 0)
+    static var autoIncrementPlaylistID: Int
 
     /// 主音樂清單(包含所有加入過的音樂)
     @UserDefaultValue(key: "mainPlaylist", defaultValue: [])
@@ -42,9 +54,9 @@ extension UserDefaults {
     @UserDefaultValue(key: "playedTracks", defaultValue: [])
     static var playedTracks: [Track]
 
-    /// 資料庫清單
-    @UserDefaultValue(key: "libraryTracks", defaultValue: [])
-    static var libraryTracks: [Track]
+    /// 預設貓貓圖的路徑陣列
+    @UserDefaultValue(key: "placeholderUrls", defaultValue: [])
+    static var placeholderUrls: [URL]
 
     // MARK: - 播放清單頁
 
