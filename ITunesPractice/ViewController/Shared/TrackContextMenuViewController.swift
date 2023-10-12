@@ -110,7 +110,7 @@ class TrackContextMenuViewController: UIViewController {
     }
 
     private func setupUI() {
-        view.backgroundColor = .appColor(.gray2)
+        view.backgroundColor = .appColor(.gray5)
         setupLayout()
 
         guard let track else { return }

@@ -5,7 +5,6 @@
 //  Created by 李品毅 on 2023/5/8.
 //
 
-import SnapKit
 import UIKit
 
 class AddTrackCell: UITableViewCell {
@@ -44,7 +43,7 @@ class AddTrackCell: UITableViewCell {
         if showsHighlight {
             // 更改預設的 highlight 顏色
             let backgroundView = UIView()
-            backgroundView.backgroundColor = .appColor(.gray2)
+            backgroundView.backgroundColor = .appColor(.gray5)
             selectedBackgroundView = backgroundView
         }
     }

@@ -58,6 +58,10 @@ extension UserDefaults {
     @UserDefaultValue(key: "placeholderUrls", defaultValue: [])
     static var placeholderUrls: [URL]
 
+    /// 搜尋紀錄
+    @UserDefaultValue(key: "historyItems", defaultValue: [])
+    static var historyItems: [String]
+
     // MARK: - 播放清單頁
 
     /// 播放器顯示模式

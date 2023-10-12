@@ -104,7 +104,7 @@ class TrackCell: UITableViewCell {
         if showsHighlight {
             // 更改預設的 highlight 顏色
             let backgroundView = UIView()
-            backgroundView.backgroundColor = .appColor(.gray2)
+            backgroundView.backgroundColor = .appColor(.gray5)
             selectedBackgroundView = backgroundView
         }
     }

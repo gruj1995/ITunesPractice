@@ -8,7 +8,7 @@
 import Foundation
 
 /// 基底Request
-public protocol CustomRequest {
+protocol CustomRequest {
 
     /// 基底Response
     associatedtype Response: Decodable
@@ -26,7 +26,7 @@ public protocol CustomRequest {
 extension CustomRequest {
     
     /// 建立Request
-    public func buildRequest() throws -> URLRequest {
+    func buildRequest() throws -> URLRequest {
         guard let url = URL(string: Constants.itunesDomain) else {
             throw RequestError.urlError
         }

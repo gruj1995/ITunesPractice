@@ -47,3 +47,9 @@ extension Collection where Index == Int {
         return indices.randomElement() ?? 0
     }
 }
+
+extension Collection {
+    subscript (safe index: Index) -> Element? {
+        return indices.contains(index) ? self[index] : nil
+    }
+}

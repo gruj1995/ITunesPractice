@@ -11,16 +11,8 @@ import Foundation
 // MARK: - SearchViewModel
 
 class SearchViewModel {
-    // MARK: Lifecycle
-
-    init() {}
 
     // MARK: Internal
-
-    var state: ViewState {
-        get { stateSubject.value }
-        set { stateSubject.value = newValue }
-    }
 
     var statePublisher: AnyPublisher<ViewState, Never> {
         stateSubject.eraseToAnyPublisher()
@@ -29,5 +21,9 @@ class SearchViewModel {
     // MARK: Private
 
     private let stateSubject = CurrentValueSubject<ViewState, Never>(.none)
+    private var state: ViewState {
+        get { stateSubject.value }
+        set { stateSubject.value = newValue }
+    }
     private var cancellables: Set<AnyCancellable> = .init()
 }

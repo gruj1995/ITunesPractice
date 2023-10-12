@@ -191,7 +191,7 @@ class TrackDetailViewController: UIViewController {
         config.titleAlignment = .leading
         config.image = type.iconImage
         config.imagePlacement = .leading // 圖片位置
-        config.baseBackgroundColor = .appColor(.gray1)
+        config.baseBackgroundColor = .appColor(.gray6)
         config.baseForegroundColor = .appColor(.red1) // 圖片及文字顏色
         config.cornerStyle = .small
         button.configuration = config

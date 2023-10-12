@@ -47,18 +47,18 @@ class SearchViewController: UIViewController {
 
     private let viewModel: SearchViewModel = .init()
     private var cancellables: Set<AnyCancellable> = .init()
-
-    private lazy var searchResultsVC: SearchResultsViewController = .init()
+    private lazy var searchResultsVC: SearchSuggestViewController = .init()
 
     private lazy var searchController: UISearchController = {
         // 参数searchResultsController為nil，表示沒有單獨的顯示搜索结果的界面，也就是使用當前畫面顯示
+        searchResultsVC.delegate = self
         let searchController = UISearchController(searchResultsController: searchResultsVC)
         searchController.searchBar.tintColor = .appColor(.red1)
         searchController.searchBar.barTintColor = .appColor(.red1)
         // barStyle 設為 .black 文字顯示(白色)
         searchController.searchBar.barStyle = .black
         // 預設文字
-        searchController.searchBar.placeholder = "歌曲".localizedString()
+        searchController.searchBar.placeholder = "搜尋影片".localizedString()
         // 搜尋框樣式: .minimal -> SearchBar 沒有背景，且搜尋欄位為半透明
         searchController.searchBar.searchBarStyle = .minimal
         // 首字自動變大寫
@@ -160,5 +160,27 @@ class SearchViewController: UIViewController {
 
     private func handleError(_ error: Error) {
         Utils.toast(error.localizedDescription, at: .center)
+    }
+}
+
+// MARK: SearchSuggestViewControllerDelegate
+
+extension SearchViewController: SearchSuggestViewControllerDelegate {
+    // 更改關鍵字
+    func didTapAddButton(_ vc: SearchSuggestViewController, item: String) {
+        searchController.searchBar.text = item
+    }
+
+    // 搜尋
+    func didSelectItemAt(_ vc: SearchSuggestViewController, item: String) {
+        // 結束輸入狀態（不進行動畫過度）
+        UIView.performWithoutAnimation { 
+          self.searchController.isActive = false
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            let vm = VideoListViewModel(searchTerm: item)
+            let vc = VideoListViewController(viewModel: vm)
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
 }

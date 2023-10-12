@@ -1,17 +1,22 @@
 //
-//  SearchResultViewController.swift
+//  SearchSuggestViewController.swift
 //  ITunesPractice
 //
-//  Created by 李品毅 on 2023/3/12.
+//  Created by 李品毅 on 2023/10/11.
 //
 
 import Combine
 import SnapKit
 import UIKit
 
-// MARK: - SearchResultsViewController
+protocol SearchSuggestViewControllerDelegate: AnyObject {
+    func didTapAddButton(_ vc: SearchSuggestViewController, item: String)
+    func didSelectItemAt(_ vc: SearchSuggestViewController, item: String)
+}
 
-class SearchResultsViewController: UIViewController {
+// MARK: - SearchSuggestViewController
+
+class SearchSuggestViewController: UIViewController {
     // MARK: Lifecycle
 
     init() {
@@ -30,9 +35,15 @@ class SearchResultsViewController: UIViewController {
         bindViewModel()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+//        reloadTracks()
+    }
+
     // MARK: Private
 
-    private let viewModel: SearchResultsViewModel = .init()
+    weak var delegate: SearchSuggestViewControllerDelegate?
+    private let viewModel: SearchSuggestViewModel = .init()
     private var cancellables: Set<AnyCancellable> = .init()
 
     // 抓取資料時的旋轉讀條 (可以搜尋"egaf"，觀察在資料筆數小的情況下怎麼顯示)
@@ -56,15 +67,11 @@ class SearchResultsViewController: UIViewController {
         return refreshControl
     }()
 
-    private let cellHeight: CGFloat = 60
-
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
-        tableView.register(TrackCell.self, forCellReuseIdentifier: TrackCell.reuseIdentifier)
-        tableView.rowHeight = cellHeight
+        tableView.register(SuggestCell.self, forCellReuseIdentifier: SuggestCell.identifier)
         tableView.delegate = self
         tableView.dataSource = self
-//        tableView.prefetchDataSource = self // 懶加載
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
         tableView.keyboardDismissMode = .onDrag // 捲動就隱藏鍵盤
@@ -81,7 +88,7 @@ class SearchResultsViewController: UIViewController {
     // MARK: Setup
 
     private func setupUI() {
-        view.backgroundColor = .black
+        view.backgroundColor = .appColor(.background)
         setupLayout()
     }
 
@@ -100,14 +107,6 @@ class SearchResultsViewController: UIViewController {
     }
 
     private func bindViewModel() {
-        viewModel.currentTrackIndexPublisher
-            .receive(on: RunLoop.main)
-            .removeDuplicates()
-            .combineLatest(viewModel.isPlayingPublisher)
-            .sink { [weak self] _ in
-                self?.updateUI()
-            }.store(in: &cancellables)
-
         viewModel.$state
             .receive(on: RunLoop.main)
             .sink { [weak self] state in
@@ -172,60 +171,32 @@ class SearchResultsViewController: UIViewController {
 
 // MARK: UITableViewDataSource, UITableViewDelegate
 
-extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegate {
+extension SearchSuggestViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.totalCount
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: TrackCell.reuseIdentifier) as? TrackCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SuggestCell.identifier) as? SuggestCell else {
             return UITableViewCell()
         }
-        guard let track = viewModel.track(forCellAt: indexPath.row) else {
+        guard let item = viewModel.items[safe: indexPath.row] else {
             return cell
         }
-        // 右邊選單按鈕
-        cell.addRightMenuButton(track)
-        cell.configure(artworkUrl: track.artworkUrl100, collectionName: track.collectionName, artistName: track.artistName, trackName: track.trackName, showsHighlight: true)
-
-        // 被選中的歌曲顯示播放動畫
-        let showAnimation = (track == viewModel.currentTrack)
-        let isPlaying = viewModel.isPlaying
-        cell.updateAnimationState(showAnimation: showAnimation, isPlaying: isPlaying)
+        let image = indexPath.row < viewModel.filteredHistoryItems.count ? AppImages.clockArrowCirclepath : AppImages.magnifyingGlass
+        cell.configure(title: item, image: image)
+        cell.onArrowButtonTapped = { [weak self] in
+            guard let self else { return }
+            self.delegate?.didTapAddButton(self, item: item)
+        }
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // 解除cell被選中的狀態
-        tableView.deselectRow(at: indexPath, animated: true)
-        // 插播並播放
-        viewModel.insertTrack(forCellAt: indexPath.row)
-        viewModel.play()
-    }
-
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let lastRowIndex = tableView.numberOfRows(inSection: 0) - 1
-        viewModel.loadMoreIfNeeded(currentRowIndex: indexPath.row, lastRowIndex: lastRowIndex)
-    }
-
-    /*
-     點擊 context menu 的預覽圖後觸發，如果沒實作此 funtion，則點擊預覽圖後直接關閉 context menu
-     - animator  跳轉動畫執行者，可以添加要跳轉到的頁面和跳轉動畫
-     */
-    func tableView(_ tableView: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
-            animator.addCompletion { [weak self] in
-                guard let self else { return }
-                let vc = TrackDetailViewController()
-                vc.dataSource = self
-                // 由 SearchViewController push
-                self.presentingViewController?.navigationController?.pushViewController(vc, animated: true)
-            }
-    }
-
-    // context menu 的清單
-    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        viewModel.setSelectedTrack(forCellAt: indexPath.row)
-        return tableView.createTrackContextMenuConfiguration(indexPath: indexPath, track: viewModel.selectedTrack)
+        viewModel.setSelectedItem(forCellAt: indexPath.row)
+        if let item = viewModel.selectedItem {
+            delegate?.didSelectItemAt(self, item: item)
+        }
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -237,7 +208,7 @@ extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegat
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        cellHeight
+        60
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -245,17 +216,9 @@ extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegat
     }
 }
 
-// MARK: TrackDetailViewControllerDatasource
-
-extension SearchResultsViewController: TrackDetailViewControllerDatasource {
-    func track(_ trackDetailViewController: TrackDetailViewController) -> Track? {
-        return viewModel.selectedTrack
-    }
-}
-
 // MARK: UISearchResultsUpdating
 
-extension SearchResultsViewController: UISearchResultsUpdating {
+extension SearchSuggestViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         viewModel.searchTerm = searchController.searchBar.text ?? ""
         tableView.scrollToTop(animated: false)

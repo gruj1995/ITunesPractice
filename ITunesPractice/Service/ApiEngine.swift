@@ -10,13 +10,13 @@ import Foundation
 
 // MARK: - ApiEngine
 
-public class ApiEngine {
+class ApiEngine {
     // MARK: Public
 
-    public static let shared = ApiEngine()
+    static let shared = ApiEngine()
 
     /// 開放外部修改 time out
-    public func updateRequestTimeout(timeout: TimeInterval) {
+    func updateRequestTimeout(timeout: TimeInterval) {
         session.sessionConfiguration.timeoutIntervalForRequest = timeout
         session.sessionConfiguration.timeoutIntervalForResource = timeout
     }
@@ -25,7 +25,7 @@ public class ApiEngine {
 
     /// Request with URLRequest - completion 回傳物件 (Data?, URLResponse?, Error?)
     @discardableResult
-    public func request(_ request: URLRequest,
+    func request(_ request: URLRequest,
                         queue: DispatchQueue = .main,
                         completion: @escaping ((Data?, URLResponse?, Error?) -> Void)) -> DataRequest {
         Logger.log("🌐 [\(request.method?.rawValue ?? "") Url]: \(request.url?.absoluteString.removingPercentEncoding ?? "")")
@@ -53,7 +53,7 @@ public class ApiEngine {
 
     /// Request with endPoint - completion 回傳物件 (Data?, URLResponse?, Error?)
     @discardableResult
-    public func request(endPoint: String,
+    func request(endPoint: String,
                         method: HTTPMethod,
                         parameters: Parameters? = nil,
                         encoding: ParameterEncoding = JSONEncoding.default,
@@ -83,7 +83,7 @@ public class ApiEngine {
     
     /// Request with endPoint - completion 回傳物件 (Result<T, CMApiEngineError>)
     @discardableResult
-    public func requestDecodableWithResult<T: Decodable>(
+    func requestDecodableWithResult<T: Decodable>(
         endPoint: String,
         method: HTTPMethod = .get,
         parameters: Parameters? = nil,

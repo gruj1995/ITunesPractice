@@ -71,6 +71,10 @@ enum AppImages {
     static let googleDrive = UIImage(named: "googleDrive")
     static let personICloudFill = UIImage(systemName: "person.icloud.fill")
 
+    // 搜尋
+    static let clockArrowCirclepath = UIImage(systemName: "clock.arrow.circlepath")
+    static let arrowUpLeft = UIImage(systemName: "arrow.up.left")
+
     // 資料庫
     static let cameraFill = UIImage(systemName: "camera.fill")
     static let camera = UIImage(systemName: "camera")
