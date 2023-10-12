@@ -1692,7 +1692,7 @@
 				CODE_SIGN_ENTITLEMENTS = ITunesPractice/ITunesPractice.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20230506.01;
-				DEVELOPMENT_TEAM = 5J9S4L22HS;
+				DEVELOPMENT_TEAM = W3L4T944MU;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ITunesPractice/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
@@ -1729,7 +1729,7 @@
 				CODE_SIGN_ENTITLEMENTS = ITunesPractice/ITunesPractice.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20230506.01;
-				DEVELOPMENT_TEAM = 5J9S4L22HS;
+				DEVELOPMENT_TEAM = W3L4T944MU;
 				"EXCLUDED_SOURCE_FILE_NAMES[arch=*]" = FLEX.o;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ITunesPractice/Info.plist;

@@ -35,11 +35,6 @@ class SearchSuggestViewController: UIViewController {
         bindViewModel()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-//        reloadTracks()
-    }
-
     // MARK: Private
 
     weak var delegate: SearchSuggestViewControllerDelegate?
@@ -97,7 +92,6 @@ class SearchSuggestViewController: UIViewController {
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-
         view.addSubview(emptyStateView)
         emptyStateView.snp.makeConstraints { make in
             make.centerX.equalTo(view.safeAreaLayoutGuide)
@@ -213,6 +207,17 @@ extension SearchSuggestViewController: UITableViewDataSource, UITableViewDelegat
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         UIView.emptyView()
+    }
+
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            viewModel.deleteHistory(index: indexPath.row)
+            reloadTracks()
+        }
+    }
+
+    func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        return "刪除".localizedString()
     }
 }
 

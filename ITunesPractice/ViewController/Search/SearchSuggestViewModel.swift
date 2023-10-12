@@ -73,6 +73,14 @@ class SearchSuggestViewModel {
         loadNextPage()
     }
 
+    func deleteHistory(index: Int) {
+        if let item = filteredHistoryItems[safe: index],
+           let index = historyItems.firstIndex(of: item) {
+            historyItems.remove(at: index)
+            return
+        }
+    }
+
     // MARK: Private
 
     private var cancellables: Set<AnyCancellable> = .init()

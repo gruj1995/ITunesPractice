@@ -81,7 +81,7 @@ class SearchResultsViewController: UIViewController {
     // MARK: Setup
 
     private func setupUI() {
-        view.backgroundColor = .black
+        view.backgroundColor = .appColor(.background)
         setupLayout()
     }
 

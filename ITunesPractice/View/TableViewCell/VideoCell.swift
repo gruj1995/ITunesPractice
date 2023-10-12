@@ -89,7 +89,7 @@ class VideoCell: UITableViewCell {
     }()
 
     private func setupUI() {
-        contentView.backgroundColor = .clear
+        contentView.backgroundColor = .appColor(.background)
         selectionStyle = .none
         contentView.addSubview(videoImageView)
         videoImageView.addSubview(timeLabel)
