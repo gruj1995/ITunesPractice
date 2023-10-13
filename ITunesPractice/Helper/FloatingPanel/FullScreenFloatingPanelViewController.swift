@@ -11,6 +11,7 @@ import UIKit
 // MARK: - FullScreenFloatingPanelViewController
 
 class FullScreenFloatingPanelViewController: UIViewController {
+
     /// 可設置錨點的容器
     func getFpc() -> FloatingPanelController {
         let fpc = FloatingPanelController()
@@ -44,7 +45,8 @@ extension FullScreenFloatingPanelViewController: FloatingPanelControllerDelegate
     /// 頁面關閉條件
     func floatingPanel(_ fpc: FloatingPanelController, shouldRemoveAt location: CGPoint, with velocity: CGVector) -> Bool {
         // 低於頁面一半或下滑超過一定速度時
-        return location.y > Constants.screenHeight / 2 || velocity.dy > 1.5
+//        return location.y > Constants.screenHeight / 2 || velocity.dy > 1.5
+        return velocity.dy > 0.5
     }
 
     func floatingPanel(_ fpc: FloatingPanelController, animatorForPresentingTo state: FloatingPanelState) -> UIViewPropertyAnimator {

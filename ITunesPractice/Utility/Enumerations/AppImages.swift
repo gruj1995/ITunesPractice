@@ -51,8 +51,11 @@ enum AppImages {
     static let plus = UIImage(systemName: "plus")
     static let trash = UIImage(systemName: "trash")
     static let squareAndArrowUp = UIImage(systemName: "square.and.arrow.up")
-    // 右側箭頭
+    // 箭頭
     static let chevronRight = UIImage(systemName: "chevron.right")
+    static let chevronLeft = UIImage(systemName: "chevron.left")
+    static let chevronDown = UIImage(systemName: "chevron.down")
+    static let chevronUp = UIImage(systemName: "chevron.up")
 
     // PreviewType
     static let person = UIImage(systemName: "person.fill")

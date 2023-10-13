@@ -68,7 +68,7 @@ class SearchSuggestViewModel {
         historyItems.insert(selectedItem, at: 0)
     }
 
-    func reloadTracks() {
+    func reloadItems() {
         items.removeAll()
         loadNextPage()
     }
@@ -94,6 +94,6 @@ class SearchSuggestViewModel {
 
     private func search(with term: String) {
         searchTerm = term
-        reloadTracks()
+        reloadItems()
     }
 }

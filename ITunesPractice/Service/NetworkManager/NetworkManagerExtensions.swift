@@ -98,6 +98,8 @@ extension NetworkManager {
     }
 }
 
+// MARK: Youtube
+
 extension NetworkManager {
     // 官方文件參數： https://developers.google.com/youtube/v3/docs/search/list?hl=zh-tw
 //    func fetchYTSearchResponse(term: String, limit: Int = 20, nextPageToken: String? = nil, _ completion: @escaping ((Swift.Result<YTSearchResponse, Error>) -> Void)) {
@@ -120,17 +122,6 @@ extension NetworkManager {
 //        }
 //    }
 
-    func searchYTVideos(term: String, _ completion: @escaping ((Swift.Result<[VideoInfo], Error>) -> Void)) {
-        let parameters: Parameters = ["keyword": term]
-        firstly {
-            getData(action: .ytSearchVideos, ofType: VideoSearchResponse.self, parameters: parameters)
-        }.done { response in
-            completion(.success(response.data ?? []))
-        }.catch { error in
-            completion(.failure(error))
-        }
-    }
-
     /// 取得關鍵字建議
     func fetchYTAutoSuggest(term: String, _ completion: @escaping ((Swift.Result<[String], Error>) -> Void)) {
         let parameters: Parameters = [
@@ -144,6 +135,33 @@ extension NetworkManager {
         }.done { response in
             let items = self.parseSuggestData(response)
             completion(.success(items))
+        }.catch { error in
+            completion(.failure(error))
+        }
+    }
+
+    /// 透過關鍵字搜尋影片
+    func searchYTVideos(term: String, _ completion: @escaping ((Swift.Result<[VideoInfo], Error>) -> Void)) {
+        let parameters: Parameters = ["keyword": term]
+        firstly {
+            getData(action: .ytSearchVideos, ofType: YTVideoSearchResponse.self, parameters: parameters)
+        }.done { response in
+            completion(.success(response.data ?? []))
+        }.catch { error in
+            completion(.failure(error))
+        }
+    }
+
+    /// 指定影片的資訊(包含其他推薦影片)
+    func getYTVideoInfoResponse(videoId: String, channelName: String, _ completion: @escaping ((Swift.Result<YTVideoInfoResponse, Error>) -> Void)) {
+        let parameters: Parameters = [
+            "videoId": videoId,
+            "channelName": channelName
+        ]
+        firstly {
+            getData(action: .ytVideoInfo, ofType: YTVideoInfoResponse.self, parameters: parameters)
+        }.done { response in
+            completion(.success(response))
         }.catch { error in
             completion(.failure(error))
         }

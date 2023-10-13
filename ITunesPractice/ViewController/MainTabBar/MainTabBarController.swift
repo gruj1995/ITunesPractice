@@ -24,7 +24,7 @@ class MainTabBarController: UITabBarController {
     // MARK: Private
 
     // 迷你音樂播放器
-    private lazy var miniPlayerVC = MiniPlayerViewController()
+    lazy var miniPlayerVC = MiniPlayerViewController()
 
     private var cancellables = Set<AnyCancellable>()
 

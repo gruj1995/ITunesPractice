@@ -52,15 +52,18 @@ class NetworkManager {
 
     enum Action {
         // Youtube
-        case ytSearchVideos // 搜尋清單
         case ytAutoSuggest // 搜尋自動建議關鍵字
+        case ytSearchVideos // 搜尋清單
+        case ytVideoInfo // 指定影片的資訊(包含其他推薦影片)
 
         var url: String {
             switch self {
-            case .ytSearchVideos:
-                return "\(Constants.youtubeDomain)/search"
             case .ytAutoSuggest:
                 return "https://clients1.google.com/complete/search"
+            case .ytSearchVideos:
+                return "\(Constants.youtubeDomain)/search"
+            case .ytVideoInfo:
+                return "\(Constants.youtubeDomain)/videoInfo"
             }
         }
     }

@@ -15,41 +15,6 @@ protocol YoutubePlayerViewDelegate: AnyObject {
 
 class YoutubePlayerView: UIView {
 
-//    private lazy var smallLoadindView: SmallLoadingView = {
-//        return SmallLoadingView()
-//    }()
-
-    lazy var playerView: YTPlayerView = {
-        let view = YTPlayerView()
-        view.delegate = self
-        return view
-    }()
-
-    lazy var topMaskView: UIView = {
-        return UIView()
-    }()
-
-    lazy var bottomMaskView: UIView = {
-        return UIView()
-    }()
-
-    private var playerViewDidBecomeReady: Bool = false
-
-    private var isVideoPlaying: Bool = false
-
-    /// autoplay: 自動播放影片(是:1,否:0)
-    /// disablekb: 支持鍵盤控制鍵(是:0,否:1)
-    /// fs：播放器中顯示全屏按鈕(是:1,否:0)
-    /// rel：視頻播放結束一定會顯示相關視頻(不同：1,同頻道：0)
-    /// playsinline：在 HTML5 播放器中播放時，0：全屏模式播放, 1:内嵌播放
-    private var playerVars = ["autoplay": 1,
-                              "controls": 1,
-                              "disablekb": 1,
-                              "rel": 0,
-                              "playsinline": 1]
-
-    weak var delegate: YoutubePlayerViewDelegate? = nil
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -59,31 +24,31 @@ class YoutubePlayerView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    weak var delegate: YoutubePlayerViewDelegate? = nil
+    private var playerViewDidBecomeReady: Bool = false
+    private var isVideoPlaying: Bool = false
+
+    /// youtube iframe 播放器參數文件： https://developers.google.com/youtube/player_parameters?playerVersion=HTML5&hl=zh-tw
+    private var playerVars = [
+        "autoplay": 1, // 自動播放影片(是:1,否:0)
+        "playsinline": 1 // 在 HTML5 播放器中播放時，0：全屏模式播放, 1:内嵌播放
+    ]
+
+    lazy var playerView: YTPlayerView = {
+        let view = YTPlayerView()
+        view.delegate = self
+        return view
+    }()
+
     /// 設定UI
     private func setupUI() {
         addSubview(playerView)
         playerView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-
-//        addSubview(topMaskView)
-//        topMaskView.snp.makeConstraints {
-//            $0.leading.equalTo(playerView.snp.leading)
-//            $0.trailing.equalTo(playerView.snp.trailing)
-//            $0.top.equalTo(playerView.snp.top)
-//            $0.height.equalTo(57)
-//        }
-//
-//        addSubview(bottomMaskView)
-//        bottomMaskView.snp.makeConstraints {
-//            $0.trailing.equalTo(playerView.snp.trailing).offset(-55)
-//            $0.bottom.equalTo(playerView.snp.bottom)
-//            $0.height.equalTo(40)
-//            $0.width.equalTo(70)
-//        }
     }
 
-    /// 加載影片
+    /// 下載影片
     func loadVideo(videoID: String) {
         if !playerViewDidBecomeReady {
             playerView.load(withVideoId: videoID, playerVars: playerVars)

@@ -30,5 +30,7 @@ enum Constants {
 
     static let screenHeight = Constants.screenSize.height
 
+    static let statusBarHeight = UIApplication.shared.statusBarFrame.height
+
     static let padding: CGFloat = 16.0
 }

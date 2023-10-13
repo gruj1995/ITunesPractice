@@ -27,4 +27,23 @@ extension UIViewController {
     private func dismissKeyboardTouchOutside() {
         view.endEditing(true)
     }
+
+    /// 加入讀取動畫
+    func loadingAction() {
+        DispatchQueue.main.async {
+            let loading = LoadingView(frame: CGRect(origin: .zero, size: CGSize(width: 150, height: 150)))
+            loading.setup(to: self.view)
+        }
+    }
+
+    /// 移除讀取動畫
+    func finishLoading() {
+        DispatchQueue.main.async {
+            for view in self.view.subviews {
+                if let loading = view as? LoadingView {
+                    loading.removeView()
+                }
+            }
+        }
+    }
 }

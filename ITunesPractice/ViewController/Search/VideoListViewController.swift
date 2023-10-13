@@ -10,7 +10,7 @@ import UIKit
 
 // MARK: - VideoListViewController
 
-class VideoListViewController: UIViewController {
+class VideoListViewController: FullScreenFloatingPanelViewController {
     // MARK: Lifecycle
 
     init(viewModel: VideoListViewModel) {
@@ -40,13 +40,6 @@ class VideoListViewController: UIViewController {
 
     private let viewModel: VideoListViewModel
     private var cancellables: Set<AnyCancellable> = .init()
-
-    // 抓取資料時的旋轉讀條 (可以搜尋"egaf"，觀察在資料筆數小的情況下怎麼顯示)
-    private lazy var activityIndicator: UIActivityIndicatorView = {
-        let activityIndicator = UIActivityIndicatorView(style: .medium)
-        activityIndicator.startAnimating()
-        return activityIndicator
-    }()
 
     // 下拉 tableView 更新資料
     private lazy var refreshControl: UIRefreshControl = {
@@ -160,6 +153,22 @@ class VideoListViewController: UIViewController {
         }
     }
 
+    private func presentYTPlayerVC(index: Int) {
+        guard let videoInfo = viewModel.videoInfos[safe: index],
+              let videoId = videoInfo.videoId,
+              let channelName = videoInfo.channelTitle else {
+            return
+        }
+        let vm = YTPlayerViewModel(videoId: videoId, channelName: channelName)
+        let vc = YTPlayerViewController(viewModel: vm)
+        let fpc = getFpc()
+        // 隱藏頂部拖動指示器
+        fpc.surfaceView.grabberHandle.isHidden = true
+        fpc.set(contentViewController: vc)
+//        fpc.track(scrollView: vc.tableView)
+        present(fpc, animated: true)
+    }
+
     @objc
     private func reloadVideos() {
         viewModel.fetchVideos()
@@ -185,7 +194,7 @@ extension VideoListViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
+        presentYTPlayerVC(index: indexPath.row)
     }
 
 //    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

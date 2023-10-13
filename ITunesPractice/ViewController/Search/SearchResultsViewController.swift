@@ -35,13 +35,6 @@ class SearchResultsViewController: UIViewController {
     private let viewModel: SearchResultsViewModel = .init()
     private var cancellables: Set<AnyCancellable> = .init()
 
-    // 抓取資料時的旋轉讀條 (可以搜尋"egaf"，觀察在資料筆數小的情況下怎麼顯示)
-    private lazy var activityIndicator: UIActivityIndicatorView = {
-        let activityIndicator = UIActivityIndicatorView(style: .medium)
-        activityIndicator.startAnimating()
-        return activityIndicator
-    }()
-
     // 下拉 tableView 更新資料
     private lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
