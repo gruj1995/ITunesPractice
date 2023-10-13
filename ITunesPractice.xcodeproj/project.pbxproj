@@ -82,9 +82,6 @@
 		8B8236E82AD7D63500BF48B9 /* VideoListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8236E72AD7D63500BF48B9 /* VideoListViewModel.swift */; };
 		8B8236EA2AD7D96D00BF48B9 /* VideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8236E92AD7D96D00BF48B9 /* VideoCell.swift */; };
 		8B8236EC2AD7DD1300BF48B9 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8236EB2AD7DD1300BF48B9 /* PaddingLabel.swift */; };
-		8B8236EE2AD7F9F000BF48B9 /* VideoListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8236ED2AD7F9F000BF48B9 /* VideoListModel.swift */; };
-		8B8236F02AD7FA1100BF48B9 /* EpisodeModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8236EF2AD7FA1100BF48B9 /* EpisodeModelProtocol.swift */; };
-		8B8236F22AD7FD9500BF48B9 /* ChannelModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8236F12AD7FD9500BF48B9 /* ChannelModel.swift */; };
 		8B8236F42AD8008C00BF48B9 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8236F32AD8008C00BF48B9 /* LoadingView.swift */; };
 		8B8236F62AD8D4DA00BF48B9 /* YTPlayerHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8236F52AD8D4DA00BF48B9 /* YTPlayerHeaderView.swift */; };
 		8B8236F82AD8F65C00BF48B9 /* YTVideoInfoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8236F72AD8F65C00BF48B9 /* YTVideoInfoResponse.swift */; };
@@ -315,9 +312,6 @@
 		8B8236E72AD7D63500BF48B9 /* VideoListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoListViewModel.swift; sourceTree = "<group>"; };
 		8B8236E92AD7D96D00BF48B9 /* VideoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCell.swift; sourceTree = "<group>"; };
 		8B8236EB2AD7DD1300BF48B9 /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
-		8B8236ED2AD7F9F000BF48B9 /* VideoListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoListModel.swift; sourceTree = "<group>"; };
-		8B8236EF2AD7FA1100BF48B9 /* EpisodeModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeModelProtocol.swift; sourceTree = "<group>"; };
-		8B8236F12AD7FD9500BF48B9 /* ChannelModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelModel.swift; sourceTree = "<group>"; };
 		8B8236F32AD8008C00BF48B9 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		8B8236F52AD8D4DA00BF48B9 /* YTPlayerHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YTPlayerHeaderView.swift; sourceTree = "<group>"; };
 		8B8236F72AD8F65C00BF48B9 /* YTVideoInfoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YTVideoInfoResponse.swift; sourceTree = "<group>"; };
@@ -1002,9 +996,6 @@
 			children = (
 				8BBD8F2F2AD525B100760471 /* YTPlayerViewController.swift */,
 				8BBD8F312AD525BF00760471 /* YTPlayerViewModel.swift */,
-				8B8236ED2AD7F9F000BF48B9 /* VideoListModel.swift */,
-				8B8236EF2AD7FA1100BF48B9 /* EpisodeModelProtocol.swift */,
-				8B8236F12AD7FD9500BF48B9 /* ChannelModel.swift */,
 			);
 			path = YoutubePlayer;
 			sourceTree = "<group>";
@@ -1394,7 +1385,6 @@
 				8B8236FC2AD912EB00BF48B9 /* BaseListViewController.swift in Sources */,
 				8BB74C6529A14584000B9D59 /* ApiRequestError.swift in Sources */,
 				8B3F9BC629C376E70050CFC9 /* PanDismissViewController.swift in Sources */,
-				8B8236F22AD7FD9500BF48B9 /* ChannelModel.swift in Sources */,
 				8B8F50E529EF07C400BCE350 /* AudioSearchResultViewModel.swift in Sources */,
 				8B6B56A329B111B700F099DD /* TrackContextMenuConfiguration.swift in Sources */,
 				8B8236CC2AD64FE400BF48B9 /* SuggestCell.swift in Sources */,
@@ -1413,7 +1403,6 @@
 				8B6B56C229B4F2ED00F099DD /* PagingViewModel.swift in Sources */,
 				8B0265DD29E85E6100BB732D /* Track+Kingfisher.swift in Sources */,
 				8B6B569F29B0EA3000F099DD /* PreviewType.swift in Sources */,
-				8B8236EE2AD7F9F000BF48B9 /* VideoListModel.swift in Sources */,
 				8B19AA4E2A19D36000F7A642 /* AddTrackViewModel.swift in Sources */,
 				8BDE4E532A0797F000617916 /* CloudViewModel.swift in Sources */,
 				8BB69BE029BE5A5900F09793 /* MiniPlayerViewController.swift in Sources */,
@@ -1531,7 +1520,6 @@
 				8B677CD029BF942200F73FE5 /* UIView+Ripple.swift in Sources */,
 				8B8236EA2AD7D96D00BF48B9 /* VideoCell.swift in Sources */,
 				8BB69BE429BE5CC600F09793 /* AppImages.swift in Sources */,
-				8B8236F02AD7FA1100BF48B9 /* EpisodeModelProtocol.swift in Sources */,
 				8BBC8F6529B7632300ACB0EA /* UIButton+Extensions.swift in Sources */,
 				8B5FCD3E29D3C9B500C763DB /* MiniPlayerViewModel.swift in Sources */,
 			);

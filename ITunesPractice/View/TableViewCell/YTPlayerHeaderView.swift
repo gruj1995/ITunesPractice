@@ -45,6 +45,7 @@ class YTPlayerHeaderView: UITableViewHeaderFooterView {
         channelImageView.loadCoverImage(with: url)
         channelNameLabel.text = model.channelTitle ?? ""
         channelSubscriptionLabel.isHidden = true
+        moreButton.setTitle("...顯示更多", for: .normal)
     }
 
     // MARK: Private
@@ -83,7 +84,6 @@ class YTPlayerHeaderView: UITableViewHeaderFooterView {
 
     lazy var moreButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setTitle("...顯示更多", for: .normal)
         button.setTitleColor(.appColor(.text1), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 12, weight: .semibold)
         button.addTarget(self, action: #selector(moreButtonTapped), for: .touchUpInside)

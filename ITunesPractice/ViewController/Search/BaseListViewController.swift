@@ -95,10 +95,14 @@ class BaseListViewController<VM: BaseListViewModel>: UIViewController, UITableVi
                 guard let self else { return }
                 switch state {
                 case .success:
+                    self.tableView.reloadData()
+                    self.finishLoading()
                     self.updateUI()
                 case .failed(let error):
+                    self.tableView.reloadData()
+                    self.finishLoading()
                     self.handleError(error)
-                case .loading, .none:
+                default:
                     return
                 }
             }.store(in: &cancellables)
@@ -114,13 +118,9 @@ class BaseListViewController<VM: BaseListViewModel>: UIViewController, UITableVi
     @objc
     func updateUI() {
         refreshControl.endRefreshing()
-
         if viewModel.totalCount == 0 {
             showNoResultView()
         } else {
-            // 要放在 tableView.reloadData() 前
-            tableView.tableFooterView = nil
-            tableView.reloadData()
             showTableView()
         }
     }
@@ -146,6 +146,7 @@ class BaseListViewController<VM: BaseListViewModel>: UIViewController, UITableVi
 
     @objc
     func reloadItems() {
+        loadingAction()
         viewModel.reloadItems()
     }
 

@@ -9,7 +9,9 @@ import UIKit
 import YouTubeiOSPlayerHelper
 
 protocol YoutubePlayerViewDelegate: AnyObject {
+    /// 當前影片播放完畢
     func currentVideoDidFinish()
+    /// 當前播放時間
     func didPlayTime(playTime: Float)
 }
 

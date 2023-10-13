@@ -32,31 +32,14 @@ class YTPlayerViewController: BaseListViewController<YTPlayerViewModel> {
         }
     }
 
-    override func setupUI() {
-        super.setupUI()
-        view.addSubview(videoView)
+    lazy var playerView: YoutubePlayerView = {
+        let view = YoutubePlayerView()
+        view.delegate = self
+        return view
+    }()
 
-        tableView.register(VideoCell.self, forCellReuseIdentifier: VideoCell.reuseIdentifier)
-        tableView.register(YTPlayerHeaderView.self, forHeaderFooterViewReuseIdentifier: YTPlayerHeaderView.reuseIdentifier)
-        tableView.rowHeight = 100
-
-        emptyStateView.configure(title: "沒有結果".localizedString(), message: "無相關推薦影片".localizedString())
-    }
-
-    override func setupLayout() {
-        videoView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-            $0.height.equalToSuperview().multipliedBy(0.33)
-        }
-        tableView.snp.makeConstraints {
-            $0.top.equalTo(videoView.snp.bottom)
-            $0.bottom.leading.trailing.equalToSuperview()
-        }
-        emptyStateView.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.centerY.equalTo(tableView)
-            $0.width.equalToSuperview().multipliedBy(0.8)
-        }
+    var unwrappedVM: YTPlayerViewModel? {
+        viewModel as? YTPlayerViewModel
     }
 
     /// 當前播放影音於影音列表中的位置(預設=0)
@@ -67,7 +50,32 @@ class YTPlayerViewController: BaseListViewController<YTPlayerViewModel> {
     }
     private var isFullScreenMode: Bool = false
 
-    private(set) lazy var videoView: YoutubePlayerView = YoutubePlayerView()
+    override func setupUI() {
+        super.setupUI()
+        view.addSubview(playerView)
+
+        tableView.register(VideoCell.self, forCellReuseIdentifier: VideoCell.reuseIdentifier)
+        tableView.register(YTPlayerHeaderView.self, forHeaderFooterViewReuseIdentifier: YTPlayerHeaderView.reuseIdentifier)
+        tableView.rowHeight = 100
+
+        emptyStateView.configure(title: "沒有結果".localizedString(), message: "無相關推薦影片".localizedString())
+    }
+
+    override func setupLayout() {
+        playerView.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+            $0.height.equalToSuperview().multipliedBy(0.33)
+        }
+        tableView.snp.makeConstraints {
+            $0.top.equalTo(playerView.snp.bottom)
+            $0.bottom.leading.trailing.equalToSuperview()
+        }
+        emptyStateView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.centerY.equalTo(tableView)
+            $0.width.equalToSuperview().multipliedBy(0.8)
+        }
+    }
 
     /// 加入APP到背景通知
     private func addNotification() {
@@ -75,16 +83,12 @@ class YTPlayerViewController: BaseListViewController<YTPlayerViewModel> {
         NotificationCenter.default.addObserver(self, selector: #selector(leaveFullScreen), name: UIWindow.didBecomeHiddenNotification, object: nil)
     }
 
-    var unwrappedVM: YTPlayerViewModel? {
-        viewModel as? YTPlayerViewModel
-    }
-
     /// 播放中影片的View
     private func setVideoView() {
         guard let videoID = unwrappedVM?.videoId else {
             return
         }
-        videoView.loadVideo(videoID: videoID)
+        playerView.loadVideo(videoID: videoID)
     }
 
     override func showTableView() {
@@ -95,15 +99,6 @@ class YTPlayerViewController: BaseListViewController<YTPlayerViewModel> {
     override func showNoResultView() {
         emptyStateView.isHidden = false
     }
-
-//    /// 分享影片
-//    private func shareVideo() {
-//        guard let videoInfo = viewModel.getVideoInfo(at: currentIndex) else { return }
-//        let url = URL(string: videoInfo.imageURL)
-//        let preview = DynamicLinkPreviewModel(title: videoInfo.title, descriptionText: videoInfo.description, imageURL: url)
-//        self.shareVideo(videoTitle: videoInfo.title, videoID: videoInfo.videoID, dynamicLinkPreview: preview)
-////        AnalyticsHelper.logClickShareVideo(videoID: videoInfo.videoID)
-//    }
 
     /// 進入全螢幕
     @objc
@@ -165,58 +160,17 @@ class YTPlayerViewController: BaseListViewController<YTPlayerViewModel> {
 
 // MARK: - Extension YoutubePlayerViewDelegate
 extension YTPlayerViewController: YoutubePlayerViewDelegate {
-
-    /// 當前影片播放完畢
     func currentVideoDidFinish() {
-//        let isLastVideo = viewModel.isLastVideo(index: currentIndex)
-//        if isLastVideo {
+//        guard currentIndex <= viewModel.totalCount - 2 else {
 //            return
 //        }
 //        // 自動播放下一支影片
-//        playNextVideo()
-//        AnalyticsHelper.logAutoPlayNextVideo()
+//        loadMoreIfNeeded(index: currentIndex)
+//        currentIndex += 1
+        currentIndex = 0
     }
 
     func didPlayTime(playTime: Float) {
 
     }
-
-    private func playNextVideo() {
-        loadMoreIfNeeded(index: currentIndex)
-        currentIndex += 1
-//        setVideoView()
-    }
 }
-
-// MARK: - Extension EpisodeViewModelDelegate
-//extension YTPlayerViewController: EpisodeViewModelDelegate {
-//
-//    func getVideoListFailed() {
-//        finishLoading()
-//        if let count = viewModel.getListCount(),
-//           count > 0 {
-//            videoListStatus = .success
-//        } else {
-//            videoListStatus = .failed(error: AppError.unknown)
-//        }
-//        tableView.reloadData()
-//    }
-//
-//    func didGetVideoList() {
-//        finishLoading()
-//        if viewModel.getListCount() == 0 {
-//            videoListStatus = .none
-//        } else {
-//            videoListStatus = .success
-//        }
-//        tableView.reloadData()
-//        setVideoIfNeeded()
-//    }
-//
-//    private func setVideoIfNeeded() {
-//        guard isFirstGetVideo else { return }
-//        isFirstGetVideo = false
-//        setInfoView()
-//        setVideoView()
-//    }
-//}
