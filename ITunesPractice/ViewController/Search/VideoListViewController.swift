@@ -155,17 +155,15 @@ class VideoListViewController: FullScreenFloatingPanelViewController {
 
     private func presentYTPlayerVC(index: Int) {
         guard let videoInfo = viewModel.videoInfos[safe: index],
-              let videoId = videoInfo.videoId,
               let channelName = videoInfo.channelTitle else {
             return
         }
-        let vm = YTPlayerViewModel(videoId: videoId, channelName: channelName)
+        let vm = YTPlayerViewModel(videoId: videoInfo.videoId, channelName: channelName)
         let vc = YTPlayerViewController(viewModel: vm)
         let fpc = getFpc()
         // 隱藏頂部拖動指示器
         fpc.surfaceView.grabberHandle.isHidden = true
         fpc.set(contentViewController: vc)
-//        fpc.track(scrollView: vc.tableView)
         present(fpc, animated: true)
     }
 

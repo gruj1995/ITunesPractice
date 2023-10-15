@@ -38,8 +38,9 @@ class YTPlayerHeaderView: UITableViewHeaderFooterView {
 
     func configure(_ model: VideoDetailInfo) {
         titleLabel.text = model.title ?? ""
-        if let viewCount = model.shortViewConuntText, let time = model.publishedTimeText {
-            infoLabel.text = "觀看次數：\(viewCount)・\(time)"
+        if let viewCount = model.viewCount {
+            let time = model.publishedTimeText ?? model.liveStartTimeText ?? ""
+            infoLabel.text = "\(viewCount)・\(time)"
         }
         let url = URL(string: model.channelThumbnails?.last?.url ?? "")
         channelImageView.loadCoverImage(with: url)

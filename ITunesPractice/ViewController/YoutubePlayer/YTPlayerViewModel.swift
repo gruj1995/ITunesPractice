@@ -66,13 +66,11 @@ class YTPlayerViewModel: BaseListViewModel {
     }
 
     func setSelectedItem(index: Int) {
-        guard let selectedVideo = videoInfos[safe: index],
-              let videoId = selectedVideo.videoId,
-              let channelName = selectedVideo.channelTitle else {
+        guard let selectedVideo = videoInfos[safe: index] else {
             return
         }
-        self.videoId = videoId
-        self.channelName = channelName
+        self.videoId = selectedVideo.videoId
+        self.channelName = selectedVideo.channelTitle ?? ""
         reloadItems()
     }
 }

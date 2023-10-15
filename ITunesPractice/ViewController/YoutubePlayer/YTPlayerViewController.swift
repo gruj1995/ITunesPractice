@@ -13,7 +13,6 @@ class YTPlayerViewController: BaseListViewController<YTPlayerViewModel> {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        setupUI()
         addNotification()
         reloadItems()
     }
@@ -49,6 +48,7 @@ class YTPlayerViewController: BaseListViewController<YTPlayerViewModel> {
         }
     }
     private var isFullScreenMode: Bool = false
+    private var playerHeightRatio: CGFloat = 0.33
 
     override func setupUI() {
         super.setupUI()
@@ -64,7 +64,7 @@ class YTPlayerViewController: BaseListViewController<YTPlayerViewModel> {
     override func setupLayout() {
         playerView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
-            $0.height.equalToSuperview().multipliedBy(0.33)
+            $0.height.equalToSuperview().multipliedBy(playerHeightRatio)
         }
         tableView.snp.makeConstraints {
             $0.top.equalTo(playerView.snp.bottom)
@@ -137,7 +137,28 @@ class YTPlayerViewController: BaseListViewController<YTPlayerViewModel> {
             return header
         }
         header.configure(videoDetailInfo)
+        header.onMoreButtonTapped = { [weak self] _ in
+            self?.presentInfoAlert(info: videoDetailInfo)
+        }
         return header
+    }
+
+    private func presentInfoAlert(info: VideoDetailInfo) {
+        let vm = VideoDetailBottomAlertViewModel(videoDetailInfo: info)
+        let vc = VideoDetailBottomAlert(viewModel: vm)
+        if let sheet = vc.sheetPresentationController {
+            // 自訂彈窗高度
+            if #available(iOS 16.0, *) {
+                let fraction = UISheetPresentationController.Detent.custom { _ in
+                    (Constants.screenHeight - Constants.statusBarHeight) * (1 - self.playerHeightRatio)
+                }
+                sheet.detents = [fraction]
+            } else {
+                sheet.detents = [.medium()]
+            }
+            sheet.prefersGrabberVisible = true // 顯示頂部 grabber
+        }
+        present(vc, animated: true)
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

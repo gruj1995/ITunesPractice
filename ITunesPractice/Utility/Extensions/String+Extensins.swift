@@ -36,15 +36,27 @@ extension String {
 extension String {
     func formatViewCount() -> String {
         let viewCount = replacingOccurrences(of: "觀看次數：", with: "").replacingOccurrences(of: "次", with: "").replacingOccurrences(of: ",", with: "")
-        return "\(getDealNum(with: viewCount))次"
+        return "觀看次數：\(viewCount.getDealNum())次"
     }
 
-    func getDealNum(with string: String) -> String {
-        let numberA = NSDecimalNumber(string: string)
+    func extractNumberFromString() -> Double? {
+        let regexPattern = "(\\d+(,\\d{3})*(\\.\\d+)?)"
+        let regex = try? NSRegularExpression(pattern: regexPattern)
+        let range = NSRange(location: 0, length: self.utf8.count)
+        guard let match = regex?.firstMatch(in: self, options: [], range: range),
+              let matchedRange = Range(match.range, in: self),
+              let number = Double(self[matchedRange]) else {
+            return nil
+        }
+        return number
+    }
+
+    func getDealNum() -> String {
+        let numberA = NSDecimalNumber(string: self)
         var numberB: NSDecimalNumber?
         var unitStr: String = ""
 
-        switch string.count {
+        switch self.count {
         case 5..<7:
             numberB = NSDecimalNumber(string: "10000")
             unitStr = "萬"
@@ -58,7 +70,7 @@ extension String {
             numberB = NSDecimalNumber(string: "100000000")
             unitStr = "億"
         default:
-            return string
+            return self
         }
 
         let roundingBehavior = NSDecimalNumberHandler(

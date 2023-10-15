@@ -5,7 +5,6 @@
 //  Created by 李品毅 on 2023/10/12.
 //
 
-import SnapKit
 import UIKit
 
 class VideoCell: UITableViewCell {
@@ -27,13 +26,15 @@ class VideoCell: UITableViewCell {
     }
 
     func configure(_ model: VideoInfo) {
-        let url = URL(string: model.thumbnails?.first?.url ?? "")
-        videoImageView.loadCoverImage(with: url)
+        let videoUrl = URL(string: model.thumbnails?.first?.url ?? "")
+        videoImageView.loadCoverImage(with: videoUrl)
         timeLabel.text = model.length ?? ""
+        liveLabel.text = model.isLive ? "直播" : ""
         titleLabel.text = model.title ?? ""
         channelLabel.text = model.channelTitle ?? ""
-        if let viewCount = model.shortViewConuntText, let time = model.publishedTimeText {
-            infoLabel.text = "\(viewCount)・\(time)"
+        if let viewCount = model.viewCount {
+            let time = model.publishedTimeText.isEmptyOrNil ? "" : "・\(model.publishedTimeText!)"
+            infoLabel.text = "\(viewCount)\(time)"
         }
     }
 
@@ -52,6 +53,17 @@ class VideoCell: UITableViewCell {
         label.backgroundColor = .black.withAlphaComponent(0.9)
         label.textColor = .white
         label.font = .systemFont(ofSize: 12)
+        label.layer.cornerRadius = 4
+        label.clipsToBounds = true
+        label.textInsets = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
+        return label
+    }()
+
+    private lazy var liveLabel: PaddingLabel = {
+        let label = PaddingLabel()
+        label.backgroundColor = .red
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 11, weight: .medium)
         label.layer.cornerRadius = 4
         label.clipsToBounds = true
         label.textInsets = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
@@ -93,24 +105,28 @@ class VideoCell: UITableViewCell {
         selectionStyle = .none
         contentView.addSubview(videoImageView)
         videoImageView.addSubview(timeLabel)
+        videoImageView.addSubview(liveLabel)
         contentView.addSubview(vStackView)
         setupLayout()
     }
 
     func setupLayout() {
         let padding = Constants.padding
-        videoImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(padding)
-            make.top.bottom.equalToSuperview().inset(8)
-            make.width.equalTo(120)
+        videoImageView.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(padding)
+            $0.top.bottom.equalToSuperview().inset(8)
+            $0.width.equalTo(120)
         }
-        timeLabel.snp.makeConstraints { make in
-            make.trailing.bottom.equalToSuperview().inset(4)
+        timeLabel.snp.makeConstraints {
+            $0.trailing.bottom.equalToSuperview().inset(4)
         }
-        vStackView.snp.makeConstraints { make in
-            make.leading.equalTo(videoImageView.snp.trailing).offset(8)
-            make.trailing.equalToSuperview().inset(padding)
-            make.top.bottom.equalTo(videoImageView)
+        liveLabel.snp.makeConstraints {
+            $0.trailing.bottom.equalToSuperview().inset(4)
+        }
+        vStackView.snp.makeConstraints {
+            $0.leading.equalTo(videoImageView.snp.trailing).offset(8)
+            $0.trailing.equalToSuperview().inset(padding)
+            $0.top.bottom.equalTo(videoImageView)
         }
     }
 }

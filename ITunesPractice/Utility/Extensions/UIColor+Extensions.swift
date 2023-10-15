@@ -10,9 +10,11 @@ import UIKit
 // MARK: - AssetsColor
 
 enum AssetsColor: String {
+    case blue
     case red1
     case background
     case text1
+    case gray
     case gray1
     case gray2
     case gray3

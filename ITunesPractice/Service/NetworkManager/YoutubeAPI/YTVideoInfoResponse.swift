@@ -17,20 +17,24 @@ struct YTVideoInfoResponse: Codable {
 }
 
 struct VideoDetailInfo: Codable {
-    let channelId: String?
+    let channelId: String
     let channelTitle: String?
     let channelThumbnails: [Thumbnail]?
-    let videoId: String?
+    let videoId: String
     let title: String?
     // (e.g.首播日期：2021年5月20日)
     let publishedTimeText: String?
-    // 觀看次數 (e.g. "觀看次數：1,000次")
+    // (e.g. "觀看次數：1,000萬次")
     let viewCountText: String?
+    // 直播收看人數(e.g. "100 人正在觀看")
+    let liveViewCountText: String?
+    // 直播開始日期(e.g. "開始直播日期：2023年9月7日")
+    let liveStartTimeText: String?
     // 說明欄內容
     let description: String?
 
-    var shortViewConuntText: String? {
-        viewCountText?.formatViewCount()
+    var viewCount: String? {
+        viewCountText ?? liveViewCountText
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -41,6 +45,8 @@ struct VideoDetailInfo: Codable {
         case title
         case publishedTimeText
         case viewCountText
+        case liveViewCountText
+        case liveStartTimeText
         case description
     }
 }

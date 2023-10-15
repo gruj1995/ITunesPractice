@@ -87,6 +87,12 @@
 		8B8236F82AD8F65C00BF48B9 /* YTVideoInfoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8236F72AD8F65C00BF48B9 /* YTVideoInfoResponse.swift */; };
 		8B8236FA2AD912E000BF48B9 /* BaseListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8236F92AD912E000BF48B9 /* BaseListViewModel.swift */; };
 		8B8236FC2AD912EB00BF48B9 /* BaseListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8236FB2AD912EB00BF48B9 /* BaseListViewController.swift */; };
+		8B8236FE2AD9498D00BF48B9 /* YTBaseBottomAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8236FD2AD9498D00BF48B9 /* YTBaseBottomAlert.swift */; };
+		8B8237002AD949B500BF48B9 /* YTBaseBottomAlertViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8236FF2AD949B500BF48B9 /* YTBaseBottomAlertViewModel.swift */; };
+		8B8237022AD94A9B00BF48B9 /* VideoDetailBottomAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8237012AD94A9B00BF48B9 /* VideoDetailBottomAlert.swift */; };
+		8B8237042AD94AE800BF48B9 /* VideoDetailBottomAlertViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8237032AD94AE800BF48B9 /* VideoDetailBottomAlertViewModel.swift */; };
+		8B8237062ADA838900BF48B9 /* ChannelTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8237052ADA838900BF48B9 /* ChannelTableHeaderView.swift */; };
+		8B8237082ADBE3AB00BF48B9 /* OptionalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8237072ADBE3AB00BF48B9 /* OptionalExtension.swift */; };
 		8B882E8F29D872ED000AA1DE /* UIImageView+Kingfisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B882E8E29D872ED000AA1DE /* UIImageView+Kingfisher.swift */; };
 		8B882E9129D93D45000AA1DE /* DefaultTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B882E9029D93D45000AA1DE /* DefaultTrack.swift */; };
 		8B882E9429D940C3000AA1DE /* FormattedTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B882E9329D940C3000AA1DE /* FormattedTime.swift */; };
@@ -317,6 +323,12 @@
 		8B8236F72AD8F65C00BF48B9 /* YTVideoInfoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YTVideoInfoResponse.swift; sourceTree = "<group>"; };
 		8B8236F92AD912E000BF48B9 /* BaseListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseListViewModel.swift; sourceTree = "<group>"; };
 		8B8236FB2AD912EB00BF48B9 /* BaseListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseListViewController.swift; sourceTree = "<group>"; };
+		8B8236FD2AD9498D00BF48B9 /* YTBaseBottomAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YTBaseBottomAlert.swift; sourceTree = "<group>"; };
+		8B8236FF2AD949B500BF48B9 /* YTBaseBottomAlertViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YTBaseBottomAlertViewModel.swift; sourceTree = "<group>"; };
+		8B8237012AD94A9B00BF48B9 /* VideoDetailBottomAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoDetailBottomAlert.swift; sourceTree = "<group>"; };
+		8B8237032AD94AE800BF48B9 /* VideoDetailBottomAlertViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoDetailBottomAlertViewModel.swift; sourceTree = "<group>"; };
+		8B8237052ADA838900BF48B9 /* ChannelTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelTableHeaderView.swift; sourceTree = "<group>"; };
+		8B8237072ADBE3AB00BF48B9 /* OptionalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalExtension.swift; sourceTree = "<group>"; };
 		8B882E8E29D872ED000AA1DE /* UIImageView+Kingfisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Kingfisher.swift"; sourceTree = "<group>"; };
 		8B882E9029D93D45000AA1DE /* DefaultTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTrack.swift; sourceTree = "<group>"; };
 		8B882E9329D940C3000AA1DE /* FormattedTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattedTime.swift; sourceTree = "<group>"; };
@@ -716,6 +728,7 @@
 				8B19AA4F2A1A3EED00F7A642 /* PlaylistInfoHeaderView.swift */,
 				8B19AA512A1A405100F7A642 /* EditPlaylistInfoHeaderView.swift */,
 				8B8236F52AD8D4DA00BF48B9 /* YTPlayerHeaderView.swift */,
+				8B8237052ADA838900BF48B9 /* ChannelTableHeaderView.swift */,
 				8B8236CB2AD64FE400BF48B9 /* SuggestCell.swift */,
 				8B8236E92AD7D96D00BF48B9 /* VideoCell.swift */,
 			);
@@ -996,6 +1009,10 @@
 			children = (
 				8BBD8F2F2AD525B100760471 /* YTPlayerViewController.swift */,
 				8BBD8F312AD525BF00760471 /* YTPlayerViewModel.swift */,
+				8B8236FD2AD9498D00BF48B9 /* YTBaseBottomAlert.swift */,
+				8B8236FF2AD949B500BF48B9 /* YTBaseBottomAlertViewModel.swift */,
+				8B8237012AD94A9B00BF48B9 /* VideoDetailBottomAlert.swift */,
+				8B8237032AD94AE800BF48B9 /* VideoDetailBottomAlertViewModel.swift */,
 			);
 			path = YoutubePlayer;
 			sourceTree = "<group>";
@@ -1069,6 +1086,7 @@
 				8B5FCD3429D2C50500C763DB /* CAGradientLayer+Extensions.swift */,
 				8B882E9729DA71A9000AA1DE /* CaseIterable+Extensions.swift */,
 				8BF66E2429E397BC00C8811E /* NotificationName+Extensions.swift */,
+				8B8237072ADBE3AB00BF48B9 /* OptionalExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1354,6 +1372,7 @@
 				8B0265DB29E856FF00BB732D /* MusicPlayer+Remote.swift in Sources */,
 				8BDE4E572A08A4C200617916 /* Playlist.swift in Sources */,
 				8B677CC729BEF7F400F73FE5 /* RippleEffectButton.swift in Sources */,
+				8B8236FE2AD9498D00BF48B9 /* YTBaseBottomAlert.swift in Sources */,
 				8B0E6A0029F8D8F3004743A7 /* UserDefaultValue.swift in Sources */,
 				8B8F50E329EF07BA00BCE350 /* AudioSearchResultViewController.swift in Sources */,
 				8B0E6A2F2A043343004743A7 /* KannaAdapter.swift in Sources */,
@@ -1370,6 +1389,7 @@
 				8BBD8F202AD4EBCA00760471 /* BodyDataEncoding.swift in Sources */,
 				8BB74C6A29A14BA3000B9D59 /* CustomRequest.swift in Sources */,
 				8BB74C7D29A1CA0E000B9D59 /* CustomPathAdapter.swift in Sources */,
+				8B8237062ADA838900BF48B9 /* ChannelTableHeaderView.swift in Sources */,
 				8B6B56A529B11BBA00F099DD /* TrackContextMenuViewController.swift in Sources */,
 				8BBD8F272AD4EE2800760471 /* YoutubeAPIError.swift in Sources */,
 				8BDE4E872A0BD5C800617916 /* AlertManager.swift in Sources */,
@@ -1400,6 +1420,7 @@
 				8B6B56C429B577C200F099DD /* SearchViewController.swift in Sources */,
 				8B882E9129D93D45000AA1DE /* DefaultTrack.swift in Sources */,
 				8B19AA502A1A3EED00F7A642 /* PlaylistInfoHeaderView.swift in Sources */,
+				8B8237082ADBE3AB00BF48B9 /* OptionalExtension.swift in Sources */,
 				8B6B56C229B4F2ED00F099DD /* PagingViewModel.swift in Sources */,
 				8B0265DD29E85E6100BB732D /* Track+Kingfisher.swift in Sources */,
 				8B6B569F29B0EA3000F099DD /* PreviewType.swift in Sources */,
@@ -1414,6 +1435,7 @@
 				8BFDF17729A23142008E2C23 /* UISearchBar+Extensions.swift in Sources */,
 				8B5FCD3329D1CC9400C763DB /* CurrentTrackView.swift in Sources */,
 				8BD1C65329AF37AA00337EF3 /* PreviewViewController.swift in Sources */,
+				8B8237022AD94A9B00BF48B9 /* VideoDetailBottomAlert.swift in Sources */,
 				8BFDF17929A24D37008E2C23 /* UIColor+Extensions.swift in Sources */,
 				8BF7183529CDF68D002CEFD6 /* Error+Extensions.swift in Sources */,
 				8BB74C7529A15425000B9D59 /* Constants.swift in Sources */,
@@ -1488,6 +1510,7 @@
 				8B8F510429F618B100BCE350 /* VideoView.swift in Sources */,
 				8BB69BBF29BC93C800F09793 /* APIRequest.swift in Sources */,
 				8BDE4E452A0609BE00617916 /* TrackData.swift in Sources */,
+				8B8237002AD949B500BF48B9 /* YTBaseBottomAlertViewModel.swift in Sources */,
 				8B6B56B329B2D6FB00F099DD /* UserDefaults+Extensions.swift in Sources */,
 				8B3B6CCF29AD8C2500A6352A /* TrackDetailViewModel.swift in Sources */,
 				8BB69BD229BDAFF500F09793 /* ViewState.swift in Sources */,
@@ -1508,6 +1531,7 @@
 				8B8236DE2AD6902A00BF48B9 /* ITunesService.swift in Sources */,
 				8BB69BDA29BE1B3100F09793 /* PlaylistViewModel.swift in Sources */,
 				8B0E6A1E29FF8583004743A7 /* Playlist2.swift in Sources */,
+				8B8237042AD94AE800BF48B9 /* VideoDetailBottomAlertViewModel.swift in Sources */,
 				8BB69BC929BCB71C00F09793 /* ApiEngine+Extensions.swift in Sources */,
 				8B3B6CCB29AC788400A6352A /* ITunesService+Lookup.swift in Sources */,
 				8BF2026029A99DF7005FF2E4 /* SearchResponse.swift in Sources */,
