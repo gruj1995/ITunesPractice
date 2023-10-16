@@ -17,6 +17,14 @@ class SearchViewModel {
     var statePublisher: AnyPublisher<ViewState, Never> {
         stateSubject.eraseToAnyPublisher()
     }
+    
+    func updateHistoryItems(term: String?) {
+        guard let term else { return }
+        if let index = UserDefaults.historyItems.firstIndex(of: term) {
+            UserDefaults.historyItems.remove(at: index)
+        }
+        UserDefaults.historyItems.insert(term, at: 0)
+    }
 
     // MARK: Private
 

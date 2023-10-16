@@ -75,6 +75,7 @@ class SearchViewController: UIViewController {
         searchController.showsSearchResultsController = true
         // 轉場方式是否由 searchResultsController 決定，預設值為 false 由系統決定
 //        searchController.providesPresentationContextTransitionStyle = true
+        searchController.searchBar.textField?.delegate = self
         return searchController
     }()
 
@@ -161,26 +162,44 @@ class SearchViewController: UIViewController {
     private func handleError(_ error: Error) {
         Utils.toast(error.localizedDescription, at: .center)
     }
+
+    private func searchVideo(by term: String) {
+        // 結束輸入狀態（不進行動畫過度）
+        UIView.performWithoutAnimation {
+          self.searchController.isActive = false
+        }
+        guard !term.isEmpty else { return }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            let vm = VideoListViewModel(searchTerm: term)
+            let vc = VideoListViewController(viewModel: vm)
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
 }
 
 // MARK: SearchSuggestViewControllerDelegate
 
 extension SearchViewController: SearchSuggestViewControllerDelegate {
     // 更改關鍵字
-    func didTapAddButton(_ vc: SearchSuggestViewController, item: String) {
-        searchController.searchBar.text = item
+    func didTapAddButton(_ vc: SearchSuggestViewController, keyword: String) {
+        searchController.searchBar.text = keyword
     }
 
     // 搜尋
-    func didSelectItemAt(_ vc: SearchSuggestViewController, item: String) {
-        // 結束輸入狀態（不進行動畫過度）
-        UIView.performWithoutAnimation { 
-          self.searchController.isActive = false
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            let vm = VideoListViewModel(searchTerm: item)
-            let vc = VideoListViewController(viewModel: vm)
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
+    func didSelectItemAt(_ vc: SearchSuggestViewController, keyword: String) {
+        viewModel.updateHistoryItems(term: keyword)
+        searchVideo(by: keyword)
+    }
+}
+
+// MARK: UITextFieldDelegate
+
+extension SearchViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        let keyword = textField.text ?? ""
+        viewModel.updateHistoryItems(term: keyword)
+        searchVideo(by: keyword)
+        return true
     }
 }

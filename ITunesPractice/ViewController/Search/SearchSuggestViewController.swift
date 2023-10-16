@@ -10,8 +10,8 @@ import SnapKit
 import UIKit
 
 protocol SearchSuggestViewControllerDelegate: AnyObject {
-    func didTapAddButton(_ vc: SearchSuggestViewController, item: String)
-    func didSelectItemAt(_ vc: SearchSuggestViewController, item: String)
+    func didTapAddButton(_ vc: SearchSuggestViewController, keyword: String)
+    func didSelectItemAt(_ vc: SearchSuggestViewController, keyword: String)
 }
 
 // MARK: - SearchSuggestViewController
@@ -167,22 +167,22 @@ extension SearchSuggestViewController: UITableViewDataSource, UITableViewDelegat
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SuggestCell.identifier) as? SuggestCell else {
             return UITableViewCell()
         }
-        guard let item = viewModel.items[safe: indexPath.row] else {
+        guard let keyword = viewModel.items[safe: indexPath.row] else {
             return cell
         }
         let image = indexPath.row < viewModel.filteredHistoryItems.count ? AppImages.clockArrowCirclepath : AppImages.magnifyingGlass
-        cell.configure(title: item, image: image)
+        cell.configure(title: keyword, image: image)
         cell.onArrowButtonTapped = { [weak self] in
             guard let self else { return }
-            self.delegate?.didTapAddButton(self, item: item)
+            self.delegate?.didTapAddButton(self, keyword: keyword)
         }
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.setSelectedItem(forCellAt: indexPath.row)
-        if let item = viewModel.selectedItem {
-            delegate?.didSelectItemAt(self, item: item)
+        if let keyword = viewModel.selectedItem {
+            delegate?.didSelectItemAt(self, keyword: keyword)
         }
     }
 

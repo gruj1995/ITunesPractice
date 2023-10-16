@@ -60,12 +60,6 @@ class SearchSuggestViewModel {
 
     func setSelectedItem(forCellAt index: Int) {
         selectedItem = items[safe: index]
-
-        guard let selectedItem else { return }
-        if let index = historyItems.firstIndex(of: selectedItem) {
-            historyItems.remove(at: index)
-        }
-        historyItems.insert(selectedItem, at: 0)
     }
 
     func reloadItems() {
