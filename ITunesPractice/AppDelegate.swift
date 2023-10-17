@@ -31,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 #if DEBUG
         FLEXManager.shared.isNetworkDebuggingEnabled = true
 #endif
+
         return true
     }
 

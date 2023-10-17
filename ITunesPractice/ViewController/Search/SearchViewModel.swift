@@ -14,6 +14,8 @@ class SearchViewModel {
 
     // MARK: Internal
 
+    let app: AppModel = AppModel.shared
+
     var statePublisher: AnyPublisher<ViewState, Never> {
         stateSubject.eraseToAnyPublisher()
     }

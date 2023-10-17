@@ -19,13 +19,17 @@ class VideoListViewModel {
 
     // MARK: Internal
 
-    @Published var state: ViewState = .none
+    let app: AppModel = AppModel.shared
+
     var videoInfos: [VideoInfo] = []
-    private var searchTerm: String = ""
+
+    var searchTerm: String = ""
 
     var totalCount: Int {
         videoInfos.count
     }
+
+    @Published var state: ViewState = .none
 
     func fetchVideos() {
         // 避免同時載入多次

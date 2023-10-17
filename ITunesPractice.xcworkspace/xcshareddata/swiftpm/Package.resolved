@@ -28,6 +28,24 @@
       }
     },
     {
+      "identity" : "ffmpeg-ios-lame",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kewlbear/FFmpeg-iOS-Lame",
+      "state" : {
+        "revision" : "1808fa5a1263c5e216646cd8421fc7dcb70520cc",
+        "version" : "0.0.6-b20230730-000000"
+      }
+    },
+    {
+      "identity" : "ffmpeg-ios-support",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kewlbear/FFmpeg-iOS-Support",
+      "state" : {
+        "revision" : "be3bd9149ac53760e8725652eee99c405b2be47a",
+        "version" : "0.0.2"
+      }
+    },
+    {
       "identity" : "flex",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/FLEXTool/FLEX.git",
@@ -91,6 +109,24 @@
       }
     },
     {
+      "identity" : "python-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kewlbear/Python-iOS.git",
+      "state" : {
+        "revision" : "4f3ca2bc0cff1ef2511555eb6114f9eb12e50412",
+        "version" : "0.1.1-b20230423-090254"
+      }
+    },
+    {
+      "identity" : "pythonkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pvieito/PythonKit.git",
+      "state" : {
+        "revision" : "81f621d094a7c8923207efe5178f50dba1b56c39",
+        "version" : "0.3.1"
+      }
+    },
+    {
       "identity" : "snapkit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SnapKit/SnapKit.git",
@@ -133,6 +169,15 @@
       "state" : {
         "revision" : "f57129cd4380ec0a74dd3a59da3270a1d653d59b",
         "version" : "1.0.4"
+      }
+    },
+    {
+      "identity" : "youtubedl-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kewlbear/YoutubeDL-iOS.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "fa41e79d0630b427c6ec698d57c1af20e2ef8ef8"
       }
     }
   ],

@@ -16,6 +16,7 @@
 		8B0E6A1E29FF8583004743A7 /* Playlist2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0E6A1D29FF8583004743A7 /* Playlist2.swift */; };
 		8B0E6A2D2A04330C004743A7 /* Kanna in Frameworks */ = {isa = PBXBuildFile; productRef = 8B0E6A2C2A04330C004743A7 /* Kanna */; };
 		8B0E6A2F2A043343004743A7 /* KannaAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0E6A2E2A043343004743A7 /* KannaAdapter.swift */; };
+		8B17236E2ADD160300D75B43 /* YoutubeDL in Frameworks */ = {isa = PBXBuildFile; productRef = 8B17236D2ADD160300D75B43 /* YoutubeDL */; };
 		8B19AA4C2A19D35400F7A642 /* AddTrackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B19AA4B2A19D35400F7A642 /* AddTrackViewController.swift */; };
 		8B19AA4E2A19D36000F7A642 /* AddTrackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B19AA4D2A19D36000F7A642 /* AddTrackViewModel.swift */; };
 		8B19AA502A1A3EED00F7A642 /* PlaylistInfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B19AA4F2A1A3EED00F7A642 /* PlaylistInfoHeaderView.swift */; };
@@ -93,6 +94,7 @@
 		8B8237042AD94AE800BF48B9 /* VideoDetailBottomAlertViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8237032AD94AE800BF48B9 /* VideoDetailBottomAlertViewModel.swift */; };
 		8B8237062ADA838900BF48B9 /* ChannelTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8237052ADA838900BF48B9 /* ChannelTableHeaderView.swift */; };
 		8B8237082ADBE3AB00BF48B9 /* OptionalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8237072ADBE3AB00BF48B9 /* OptionalExtension.swift */; };
+		8B82370A2ADCD9DA00BF48B9 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8237092ADCD9DA00BF48B9 /* AppModel.swift */; };
 		8B882E8F29D872ED000AA1DE /* UIImageView+Kingfisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B882E8E29D872ED000AA1DE /* UIImageView+Kingfisher.swift */; };
 		8B882E9129D93D45000AA1DE /* DefaultTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B882E9029D93D45000AA1DE /* DefaultTrack.swift */; };
 		8B882E9429D940C3000AA1DE /* FormattedTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B882E9329D940C3000AA1DE /* FormattedTime.swift */; };
@@ -255,6 +257,7 @@
 		8B0E6A0829FA2F46004743A7 /* TracksType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksType.swift; sourceTree = "<group>"; };
 		8B0E6A1D29FF8583004743A7 /* Playlist2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playlist2.swift; sourceTree = "<group>"; };
 		8B0E6A2E2A043343004743A7 /* KannaAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KannaAdapter.swift; sourceTree = "<group>"; };
+		8B17236A2ADD11E200D75B43 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8B19AA4B2A19D35400F7A642 /* AddTrackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTrackViewController.swift; sourceTree = "<group>"; };
 		8B19AA4D2A19D36000F7A642 /* AddTrackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTrackViewModel.swift; sourceTree = "<group>"; };
 		8B19AA4F2A1A3EED00F7A642 /* PlaylistInfoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistInfoHeaderView.swift; sourceTree = "<group>"; };
@@ -277,7 +280,6 @@
 		8B4D36C5299FBD7E00059381 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		8B4D36CC299FBD8000059381 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8B4D36CF299FBD8000059381 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		8B4D36D1299FBD8000059381 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8B4D36D6299FBD8000059381 /* ITunesPracticeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ITunesPracticeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B4D36DA299FBD8000059381 /* ITunesPracticeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITunesPracticeTests.swift; sourceTree = "<group>"; };
 		8B4D36E0299FBD8000059381 /* ITunesPracticeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ITunesPracticeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -329,6 +331,7 @@
 		8B8237032AD94AE800BF48B9 /* VideoDetailBottomAlertViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoDetailBottomAlertViewModel.swift; sourceTree = "<group>"; };
 		8B8237052ADA838900BF48B9 /* ChannelTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelTableHeaderView.swift; sourceTree = "<group>"; };
 		8B8237072ADBE3AB00BF48B9 /* OptionalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalExtension.swift; sourceTree = "<group>"; };
+		8B8237092ADCD9DA00BF48B9 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
 		8B882E8E29D872ED000AA1DE /* UIImageView+Kingfisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Kingfisher.swift"; sourceTree = "<group>"; };
 		8B882E9029D93D45000AA1DE /* DefaultTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTrack.swift; sourceTree = "<group>"; };
 		8B882E9329D940C3000AA1DE /* FormattedTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattedTime.swift; sourceTree = "<group>"; };
@@ -460,6 +463,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B3F9BD129C5EDB10050CFC9 /* FloatingPanel in Frameworks */,
+				8B17236E2ADD160300D75B43 /* YoutubeDL in Frameworks */,
 				8BBD8F2D2AD51D1800760471 /* YouTubeiOSPlayerHelper in Frameworks */,
 				8BFDF18C29A3ACEF008E2C23 /* CombineSchedulers in Frameworks */,
 				8B5FCD3C29D3281A00C763DB /* MarqueeLabel in Frameworks */,
@@ -608,9 +612,9 @@
 				8B4D36F3299FC40E00059381 /* Resources */,
 				8B4D36C3299FBD7E00059381 /* AppDelegate.swift */,
 				8B4D36C5299FBD7E00059381 /* SceneDelegate.swift */,
-				8B4D36D1299FBD8000059381 /* Info.plist */,
 				8B4D36CE299FBD8000059381 /* LaunchScreen.storyboard */,
 				8B3F9BCA29C3AF9C0050CFC9 /* PlayListPlayer.storyboard */,
+				8B17236A2ADD11E200D75B43 /* Info.plist */,
 			);
 			path = ITunesPractice;
 			sourceTree = "<group>";
@@ -943,6 +947,7 @@
 				8BDE4E842A0BD4EC00617916 /* PermissionManager.swift */,
 				8BDE4E862A0BD5C800617916 /* AlertManager.swift */,
 				8BDE4E8A2A0C26D400617916 /* PhotoManager.swift */,
+				8B8237092ADCD9DA00BF48B9 /* AppModel.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -1136,6 +1141,7 @@
 				8B0E6A2C2A04330C004743A7 /* Kanna */,
 				8BBD8F1D2AD4EA0D00760471 /* PromiseKit */,
 				8BBD8F2C2AD51D1800760471 /* YouTubeiOSPlayerHelper */,
+				8B17236D2ADD160300D75B43 /* YoutubeDL */,
 			);
 			productName = ITunesPractice;
 			productReference = 8B4D36C0299FBD7E00059381 /* ITunesPractice.app */;
@@ -1226,6 +1232,7 @@
 				8B0E6A2B2A04330C004743A7 /* XCRemoteSwiftPackageReference "Kanna" */,
 				8BBD8F1C2AD4EA0D00760471 /* XCRemoteSwiftPackageReference "PromiseKit" */,
 				8BBD8F2B2AD51D1800760471 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */,
+				8B17236C2ADD160300D75B43 /* XCRemoteSwiftPackageReference "YoutubeDL-iOS" */,
 			);
 			productRefGroup = 8B4D36C1299FBD7E00059381 /* Products */;
 			projectDirPath = "";
@@ -1520,6 +1527,7 @@
 				8BBD8F1B2AD4E94400760471 /* NetworkManagerExtensions.swift in Sources */,
 				8BDE4E732A0A87DF00617916 /* PlaylistMenuItem.swift in Sources */,
 				8BB69BD629BDB4A500F09793 /* SearchResultsViewModel.swift in Sources */,
+				8B82370A2ADCD9DA00BF48B9 /* AppModel.swift in Sources */,
 				8BB74C9129A1DD7F000B9D59 /* ApiComponentSendable.swift in Sources */,
 				8BBD8F222AD4EBF800760471 /* EncodableExtensions.swift in Sources */,
 				8B4D36C6299FBD7E00059381 /* SceneDelegate.swift in Sources */,
@@ -1916,6 +1924,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		8B17236C2ADD160300D75B43 /* XCRemoteSwiftPackageReference "YoutubeDL-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kewlbear/YoutubeDL-iOS.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		8B3F9BCF29C5EDB10050CFC9 /* XCRemoteSwiftPackageReference "FloatingPanel" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SCENEE/FloatingPanel";
@@ -2019,6 +2035,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8B0E6A2B2A04330C004743A7 /* XCRemoteSwiftPackageReference "Kanna" */;
 			productName = Kanna;
+		};
+		8B17236D2ADD160300D75B43 /* YoutubeDL */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B17236C2ADD160300D75B43 /* XCRemoteSwiftPackageReference "YoutubeDL-iOS" */;
+			productName = YoutubeDL;
 		};
 		8B3F9BD029C5EDB10050CFC9 /* FloatingPanel */ = {
 			isa = XCSwiftPackageProductDependency;

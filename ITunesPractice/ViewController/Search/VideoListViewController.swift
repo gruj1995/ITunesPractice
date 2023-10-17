@@ -7,6 +7,7 @@
 
 import Combine
 import UIKit
+import YoutubeDL
 
 // MARK: - VideoListViewController
 
@@ -192,7 +193,11 @@ extension VideoListViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        presentYTPlayerVC(index: indexPath.row)
+//        presentYTPlayerVC(index: indexPath.row)
+        guard let videoId = viewModel.videoInfos[safe: indexPath.row]?.videoId else {
+            return
+        }
+        viewModel.app.url = URL(string: "https://www.youtube.com/watch?v=\(videoId)")
     }
 
 //    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

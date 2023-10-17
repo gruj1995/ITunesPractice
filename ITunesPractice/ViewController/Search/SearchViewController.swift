@@ -127,7 +127,7 @@ class SearchViewController: UIViewController {
         viewModel.statePublisher
             .receive(on: RunLoop.main)
             .sink { [weak self] state in
-                guard let self = self else { return }
+                guard let self else { return }
                 switch state {
                 case .success:
                     self.updateUI()
@@ -143,6 +143,13 @@ class SearchViewController: UIViewController {
             .removeDuplicates()
             .sink {  [weak self] _ in
                 self?.updateUI()
+            }.store(in: &cancellables)
+
+        viewModel.app.$downloads
+            .receive(on: RunLoop.main)
+            .sink { [weak self] downloads in
+                guard let self else { return }
+                print("_+__+ \(downloads)")
             }.store(in: &cancellables)
     }
 
