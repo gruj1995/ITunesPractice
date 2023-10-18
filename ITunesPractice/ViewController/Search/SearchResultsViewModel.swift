@@ -59,7 +59,7 @@ class SearchResultsViewModel {
         // 避免同時載入多次
         if case .loading = state { return }
         state = .loading
-        tracks = UserDefaults.filePlaylist
+        tracks = UserDefaults.defaultPlaylist.tracks
         DispatchQueue.main.async {
             self.state = .success
         }

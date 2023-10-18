@@ -42,9 +42,9 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
     // MARK: Shuffle
 
     // 播放清單
-    var mainPlaylist: [Track] {
-        get { UserDefaults.mainPlaylist }
-        set { UserDefaults.mainPlaylist = newValue }
+    var mainTracks: [Track] {
+        get { UserDefaults.mainTracks }
+        set { UserDefaults.mainTracks = newValue }
     }
 
     // 展示用的播放清單
@@ -53,7 +53,7 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
         if displayIndices.count <= 1 {
             return []
         } else {
-            return Array(displayIndices.dropFirst().map { mainPlaylist[$0] })
+            return Array(displayIndices.dropFirst().map { mainTracks[$0] })
         }
     }
 
@@ -66,8 +66,8 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
     var currentTrack: Track? {
         let shuffledIndex = entireShuffledIndices.isEmpty ? 0 : entireShuffledIndices[currentShuffleTrackIndex]
         let index = isShuffleMode ? shuffledIndex : currentTrackIndex
-        guard mainPlaylist.indices.contains(index) else { return nil }
-        return mainPlaylist[index]
+        guard mainTracks.indices.contains(index) else { return nil }
+        return mainTracks[index]
     }
 
     var currentTrackIndex: Int {
@@ -198,7 +198,7 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
         guard displayIndices.count > 1 else { return }
         let pendingListIndex = index + 1 // 因為第一項是正在播放的，所以這邊要加1
         let targetIndex = displayIndices[pendingListIndex]
-        guard mainPlaylist.indices.contains(targetIndex) else { return }
+        guard mainTracks.indices.contains(targetIndex) else { return }
         currentTrackIndex = targetIndex
         if isShuffleMode {
             currentShuffleTrackIndex += pendingListIndex
@@ -211,8 +211,8 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
     func removeTrackFromDisplayPlaylist(at index: Int) {
         guard displayIndices.count > 1 else { return }
         let targetIndex = displayIndices[index]
-        guard mainPlaylist.indices.contains(targetIndex) else { return }
-        mainPlaylist.remove(at: targetIndex)
+        guard mainTracks.indices.contains(targetIndex) else { return }
+        mainTracks.remove(at: targetIndex)
 
         if isShuffleMode {
             // 更新完整的隨機待播清單索引(因為主音樂清單索引有變動)
@@ -240,7 +240,7 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
 
     /// 更新播放清單並播放指定歌曲
     func refreshPlaylistAndPlaySong(_ playlist: Playlist, at index: Int) {
-        mainPlaylist = playlist.tracks
+        mainTracks = playlist.tracks
         currentTrackIndex = index
         updateOrderedIndices()
         currentShuffleTrackIndex = 0
@@ -345,15 +345,15 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
             shuffledIndices = Array(entireShuffledIndices.dropFirst(currentShuffleTrackIndex))
         } else {
             addTrack(track)
-            orderedIndices.append(mainPlaylist.count - 1)
+            orderedIndices.append(mainTracks.count - 1)
         }
     }
 
     func toggleShuffleMode() {
         if isShuffleMode {
             // 把正在播放的放到最前面
-            if !mainPlaylist.isEmpty {
-                entireShuffledIndices = mainPlaylist.indices.filter { $0 != currentTrackIndex }.shuffled()
+            if !mainTracks.isEmpty {
+                entireShuffledIndices = mainTracks.indices.filter { $0 != currentTrackIndex }.shuffled()
                 entireShuffledIndices.insert(currentTrackIndex, at: 0)
             }
             shuffledIndices = entireShuffledIndices
@@ -413,9 +413,9 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
 
     private func addTrack(_ track: Track, at index: Int? = nil) {
         if let index {
-            mainPlaylist.insert(track.autoIncrementID(), at: index)
+            mainTracks.insert(track.autoIncrementID(), at: index)
         } else {
-            mainPlaylist.append(track.autoIncrementID())
+            mainTracks.append(track.autoIncrementID())
         }
     }
 
@@ -458,16 +458,16 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
 
     @discardableResult
     private func prepareToPlay(at index: Int) -> Bool {
-        guard !mainPlaylist.isEmpty else {
+        guard !mainTracks.isEmpty else {
             Utils.toast(MusicPlayerError.emptyPlaylist.unwrapDescription)
             return false
         }
-        guard mainPlaylist.isValidIndex(index) else {
+        guard mainTracks.isValidIndex(index) else {
             Utils.toast(MusicPlayerError.invalidIndex.unwrapDescription)
             return false
         }
 
-        resetPlayerItem(track: mainPlaylist[index])
+        resetPlayerItem(track: mainTracks[index])
         currentTrackIndex = index
         updateOrderedIndices()
         return true
@@ -487,9 +487,9 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
     private func nextTrackInPendingList() {
         addPlayRecordIfNeeded()
         var nextIndex = 0
-        if !mainPlaylist.isEmpty {
+        if !mainTracks.isEmpty {
             // 超過索引就從第一首歌重新播放
-            nextIndex = (currentTrackIndex + 1) % mainPlaylist.count
+            nextIndex = (currentTrackIndex + 1) % mainTracks.count
         }
         prepareToPlay(at: nextIndex)
     }
@@ -542,11 +542,11 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
     }
 
     private func updateOrderedIndices() {
-        if !mainPlaylist.isValidIndex(currentTrackIndex) {
+        if !mainTracks.isValidIndex(currentTrackIndex) {
             orderedIndices = []
         } else {
             // 重設待播清單
-            orderedIndices = Array(currentTrackIndex ..< mainPlaylist.count)
+            orderedIndices = Array(currentTrackIndex ..< mainTracks.count)
         }
     }
 
@@ -648,7 +648,7 @@ extension MusicPlayer {
     }
 
     private var isLastInPendingList: Bool {
-        isShuffleMode ? (currentShuffleTrackIndex == entireShuffledIndices.count - 1) : (currentTrackIndex == mainPlaylist.count - 1)
+        isShuffleMode ? (currentShuffleTrackIndex == entireShuffledIndices.count - 1) : (currentTrackIndex == mainTracks.count - 1)
     }
 }
 

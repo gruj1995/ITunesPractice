@@ -70,7 +70,7 @@ class PlaylistInfoHeaderView: UITableViewHeaderFooterView {
         config.titleAlignment = .center
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 15, weight: .regular, scale: .small)
         config.image = AppImages.play?.withConfiguration(imageConfig)
-        config.baseBackgroundColor = .appColor(.gray6)
+        config.baseBackgroundColor = .appColor(.gray)
         config.baseForegroundColor = .appColor(.red1) // 圖片及文字顏色
         config.cornerStyle = .medium
         button.configuration = config

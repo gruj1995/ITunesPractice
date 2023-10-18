@@ -9,14 +9,14 @@ import Foundation
 
 class Playlist2 {
     // 播放清單
-    var mainPlaylist: [Track] {
-        get { UserDefaults.mainPlaylist }
-        set { UserDefaults.mainPlaylist = newValue }
+    var mainTracks: [Track] {
+        get { UserDefaults.mainTracks }
+        set { UserDefaults.mainTracks = newValue }
     }
 
     // 展示用的播放清單
     var pendingPlaylist: [Track] {
-        displayIndices.map { mainPlaylist[$0] }
+        displayIndices.map { mainTracks[$0] }
     }
 
     // 播放紀錄
@@ -26,8 +26,8 @@ class Playlist2 {
     }
 
     var currentTrack: Track? {
-        guard mainPlaylist.indices.contains(currentTrackIndex) else { return nil }
-        return mainPlaylist[currentTrackIndex]
+        guard mainTracks.indices.contains(currentTrackIndex) else { return nil }
+        return mainTracks[currentTrackIndex]
     }
 
     var currentTrackIndex: Int {
@@ -93,7 +93,7 @@ class Playlist2 {
 
     private func nextTrackInPendingList() {
         // 超過索引就從第一首歌重新播放
-        let nextIndexInMain = (currentTrackIndex + 1) % mainPlaylist.count
+        let nextIndexInMain = (currentTrackIndex + 1) % mainTracks.count
         prepareToPlay(at: nextIndexInMain)
     }
 
@@ -120,16 +120,16 @@ class Playlist2 {
 
     @discardableResult
     private func prepareToPlay(at index: Int) -> Bool {
-        guard !mainPlaylist.isEmpty else {
+        guard !mainTracks.isEmpty else {
             Utils.toast(MusicPlayerError.emptyPlaylist.unwrapDescription)
             return false
         }
-        guard mainPlaylist.isValidIndex(index) else {
+        guard mainTracks.isValidIndex(index) else {
             Utils.toast(MusicPlayerError.invalidIndex.unwrapDescription)
             return false
         }
 
-        let track = mainPlaylist[index]
+        let track = mainTracks[index]
 //        resetPlayerItem(track: playlist[index])
         currentTrackIndex = index
 //        updateDisplayIndices()
@@ -146,14 +146,14 @@ class Playlist2 {
     /// 加到待播清單首項
     func insertToFirst(track: Track) {
         let newIndex = serialIndices.first ?? 0
-        mainPlaylist.insert(track, at: newIndex)
+        mainTracks.insert(track, at: newIndex)
         serialIndices.insert(newIndex, at: 0)
         shuffledIndices.insert(newIndex, at: 0)
     }
 
     /// 加到待播清單末項
     func addToLast(track: Track) {
-        mainPlaylist.append(track)
+        mainTracks.append(track)
         serialIndices.append(serialIndices.count)
         shuffledIndices.append(shuffledIndices.count)
     }
@@ -161,8 +161,8 @@ class Playlist2 {
     /// 刪除指定的待播清單項目
     func removeTrackFromDisplayPlaylist(at index: Int) {
         let trackIndex = displayIndices[index]
-        guard mainPlaylist.indices.contains(trackIndex) else { return }
-        mainPlaylist.remove(at: trackIndex)
+        guard mainTracks.indices.contains(trackIndex) else { return }
+        mainTracks.remove(at: trackIndex)
 
         if isShuffleMode {
             shuffledIndices.remove(at: index)
@@ -176,7 +176,7 @@ class Playlist2 {
         if isShuffleMode {
             shuffleModeFirstTrackIndex = currentTrackIndex
             currentShuffleTrackIndex = 0
-            entireShuffledIndices = mainPlaylist.filter { $0 != currentTrack }.indices.shuffled()
+            entireShuffledIndices = mainTracks.filter { $0 != currentTrack }.indices.shuffled()
             shuffledIndices = entireShuffledIndices
         } else {
             shuffleModeFirstTrackIndex = 0

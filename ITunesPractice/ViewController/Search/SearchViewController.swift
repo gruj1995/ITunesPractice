@@ -47,7 +47,7 @@ class SearchViewController: UIViewController {
     private let viewModel: SearchViewModel = .init()
     private var cancellables: Set<AnyCancellable> = .init()
     private lazy var searchSuggestVC: SearchSuggestViewController = .init()
-    private lazy var searchResultsVC: SearchResultsViewController = .init()
+//    private lazy var searchResultsVC: SearchResultsViewController = .init()
 
     private lazy var searchController: UISearchController = {
         // 参数searchResultsController為nil，表示沒有單獨的顯示搜索结果的界面，也就是使用當前畫面顯示
@@ -59,6 +59,8 @@ class SearchViewController: UIViewController {
         searchController.searchBar.barStyle = .black
         // 預設文字
         searchController.searchBar.placeholder = "搜尋影片".localizedString()
+        // Return 鍵設為完成
+        searchController.searchBar.returnKeyType = .done
         // 搜尋框樣式: .minimal -> SearchBar 沒有背景，且搜尋欄位為半透明
         searchController.searchBar.searchBarStyle = .minimal
         // 首字自動變大寫
@@ -66,7 +68,7 @@ class SearchViewController: UIViewController {
         // 搜尋時是否隱藏 NavigationBar
         searchController.hidesNavigationBarDuringPresentation = true
         // 監聽搜尋事件
-        searchController.searchResultsUpdater = searchResultsVC
+        searchController.searchResultsUpdater = searchSuggestVC
         // 搜尋框進入搜尋狀態時，要不要在當前頁面上顯示一層半透明遮罩(會擋住點擊)
         searchController.obscuresBackgroundDuringPresentation = false
         // searchResultsController 是否被加入此VC的view層級中，並跟隨VC生命週期。預設值為false
@@ -91,16 +93,16 @@ class SearchViewController: UIViewController {
             // 調整 searchBar 取消按鈕的文案
             UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).title = "取消".localizedString()
         }
-        view.addSubview(searchResultsVC.view)
-        addChild(searchResultsVC)
-        searchResultsVC.didMove(toParent: self)
+//        view.addSubview(searchResultsVC.view)
+//        addChild(searchResultsVC)
+//        searchResultsVC.didMove(toParent: self)
         setupLayout()
     }
 
     private func setupLayout() {
-        searchResultsVC.view.snp.makeConstraints {
-            $0.edges.equalTo(view.safeAreaLayoutGuide)
-        }
+//        searchResultsVC.view.snp.makeConstraints {
+//            $0.edges.equalTo(view.safeAreaLayoutGuide)
+//        }
     }
 
 //    private func bindViewModel() {
@@ -183,9 +185,9 @@ extension SearchViewController: UITextFieldDelegate {
         return true
     }
 
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let newString = (textField.text as NSString?)?.replacingCharacters(in: range, with: string)
-        searchSuggestVC.search(with: newString)
-        return true
-    }
+//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+//        let newString = (textField.text as NSString?)?.replacingCharacters(in: range, with: string)
+//        searchSuggestVC.search(with: newString)
+//        return true
+//    }
 }

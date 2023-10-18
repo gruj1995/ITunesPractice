@@ -48,7 +48,6 @@ struct AddMenuItem: TrackMenuItem {
         let addAction = UIAction(title: "加入資料庫".localizedString(), image: AppImages.plus) { _ in
             // 新的插入到最前面
             let newTrack = track.autoIncrementID()
-            print("__+ \(newTrack.id)")
             UserDefaults.defaultPlaylist.tracks.insert(newTrack, at: 0)
             Utils.toast("已加入資料庫".localizedString())
         }

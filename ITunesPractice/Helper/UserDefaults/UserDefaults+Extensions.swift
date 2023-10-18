@@ -27,12 +27,12 @@ extension UserDefaults {
     static var autoIncrementPlaylistID: Int
 
     /// 主音樂清單(包含所有加入過的音樂)
-    @UserDefaultValue(key: "mainPlaylist", defaultValue: [])
-    static var mainPlaylist: [Track]
+    @UserDefaultValue(key: "mainTracks", defaultValue: [])
+    static var mainTracks: [Track]
 
-    /// mp3 資料夾中的音樂
-    @UserDefaultValue(key: "filePlaylist", defaultValue: [])
-    static var filePlaylist: [Track]
+    /// 播放紀錄
+    @UserDefaultValue(key: "playedTracks", defaultValue: [])
+    static var playedTracks: [Track]
 
     /// 選中的主音樂清單索引
     @UserDefaultValue(key: "currentTrackIndex", defaultValue: 0)
@@ -54,15 +54,11 @@ extension UserDefaults {
     @UserDefaultValue(key: "entireShuffledIndices", defaultValue: [])
     static var entireShuffledIndices: [Int]
 
-    /// 播放紀錄
-    @UserDefaultValue(key: "playedTracks", defaultValue: [])
-    static var playedTracks: [Track]
-
     /// 預設貓貓圖的路徑陣列
     @UserDefaultValue(key: "placeholderUrls", defaultValue: [])
     static var placeholderUrls: [URL]
 
-    /// 搜尋紀錄
+    /// youtube 影片搜尋紀錄
     @UserDefaultValue(key: "historyItems", defaultValue: [])
     static var historyItems: [String]
 

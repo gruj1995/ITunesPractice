@@ -223,3 +223,11 @@ extension SearchSuggestViewController: UITableViewDataSource, UITableViewDelegat
         return "刪除".localizedString()
     }
 }
+
+// MARK: UISearchResultsUpdating
+
+extension SearchSuggestViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        search(with: searchController.searchBar.text ?? "")
+    }
+}

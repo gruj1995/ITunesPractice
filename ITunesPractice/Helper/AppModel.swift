@@ -149,8 +149,8 @@ class AppModel {
         track.ytId = infoData.id
         track.videoUrl = URL(string: infoData.webpage_url ?? "")
         track.artworkUrl100 = infoData.thumbnail ?? ""
-        if !UserDefaults.filePlaylist.contains(track) {
-            UserDefaults.filePlaylist.append(track)
+        if !UserDefaults.defaultPlaylist.tracks.contains(track.autoIncrementID()) {
+            UserDefaults.defaultPlaylist.tracks.append(track)
         }
     }
 

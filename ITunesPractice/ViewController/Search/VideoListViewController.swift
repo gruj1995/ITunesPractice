@@ -186,7 +186,7 @@ extension VideoListViewController: UITableViewDataSource, UITableViewDelegate {
         guard let video = viewModel.videoInfos[safe: indexPath.row] else {
             return cell
         }
-        let showDownload = !video.isLive && !UserDefaults.filePlaylist.contains { $0.ytId == video.videoId }
+        let showDownload = !video.isLive && !UserDefaults.defaultPlaylist.tracks.contains { $0.ytId == video.videoId }
         cell.configure(video, showDownload: showDownload)
         cell.onDownloadButtonTapped = { [weak self] _ in
             Task {

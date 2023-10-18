@@ -115,7 +115,7 @@ class SearchResultsViewController: UIViewController {
                 }
             }.store(in: &cancellables)
 
-        UserDefaults.$filePlaylist
+        UserDefaults.$defaultPlaylist
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.viewModel.loadNextPage()
