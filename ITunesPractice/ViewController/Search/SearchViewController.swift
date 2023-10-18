@@ -6,7 +6,6 @@
 //
 
 import Combine
-import SnapKit
 import UIKit
 
 // MARK: - SearchViewController
@@ -28,7 +27,7 @@ class SearchViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        bindViewModel()
+//        bindViewModel()
         setupUI()
     }
 
@@ -47,12 +46,13 @@ class SearchViewController: UIViewController {
 
     private let viewModel: SearchViewModel = .init()
     private var cancellables: Set<AnyCancellable> = .init()
-    private lazy var searchResultsVC: SearchSuggestViewController = .init()
+    private lazy var searchSuggestVC: SearchSuggestViewController = .init()
+    private lazy var searchResultsVC: SearchResultsViewController = .init()
 
     private lazy var searchController: UISearchController = {
         // 参数searchResultsController為nil，表示沒有單獨的顯示搜索结果的界面，也就是使用當前畫面顯示
-        searchResultsVC.delegate = self
-        let searchController = UISearchController(searchResultsController: searchResultsVC)
+        searchSuggestVC.delegate = self
+        let searchController = UISearchController(searchResultsController: searchSuggestVC)
         searchController.searchBar.tintColor = .appColor(.red1)
         searchController.searchBar.barTintColor = .appColor(.red1)
         // barStyle 設為 .black 文字顯示(白色)
@@ -79,24 +79,9 @@ class SearchViewController: UIViewController {
         return searchController
     }()
 
-    private lazy var emptyStateView: EmptyStateView = {
-        let view = EmptyStateView()
-        view.isHidden = true
-        return view
-    }()
-
-    private lazy var imageView: UIImageView = {
-        let imageView = UIImageView(image: AppImages.catHide)
-        imageView.contentMode = .scaleAspectFit
-        imageView.backgroundColor = .clear
-        return imageView
-    }()
-
     private func setupUI() {
         view.backgroundColor = .black
         navigationItem.searchController = searchController // 添加搜尋框
-        setupLayout()
-
         if let searchBar = navigationItem.searchController?.searchBar,
            let textField = searchBar.textField {
             // 調整搜尋框左邊放大鏡顏色
@@ -106,69 +91,56 @@ class SearchViewController: UIViewController {
             // 調整 searchBar 取消按鈕的文案
             UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).title = "取消".localizedString()
         }
+        view.addSubview(searchResultsVC.view)
+        addChild(searchResultsVC)
+        searchResultsVC.didMove(toParent: self)
+        setupLayout()
     }
 
     private func setupLayout() {
-        view.addSubview(emptyStateView)
-        emptyStateView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().multipliedBy(0.9)
-            make.width.equalToSuperview().multipliedBy(0.8)
-        }
-
-        view.addSubview(imageView)
-        imageView.snp.makeConstraints { make in
-            make.centerX.centerY.equalToSuperview()
-            make.width.equalToSuperview().multipliedBy(0.6)
+        searchResultsVC.view.snp.makeConstraints {
+            $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
     }
 
-    private func bindViewModel() {
-        viewModel.statePublisher
-            .receive(on: RunLoop.main)
-            .sink { [weak self] state in
-                guard let self else { return }
-                switch state {
-                case .success:
-                    self.updateUI()
-                case .failed(let error):
-                    self.handleError(error)
-                case .loading, .none:
-                    break
-                }
-            }.store(in: &cancellables)
-
-        NetworkMonitor.shared.$isConnected
-            .receive(on: DispatchQueue.main)
-            .removeDuplicates()
-            .sink {  [weak self] _ in
-                self?.updateUI()
-            }.store(in: &cancellables)
-
-        viewModel.app.$downloads
-            .receive(on: RunLoop.main)
-            .sink { [weak self] downloads in
-                guard let self else { return }
-                print("_+__+ \(downloads)")
-            }.store(in: &cancellables)
-    }
-
-    private func updateUI() {
-        if !NetworkMonitor.shared.isConnected {
-            showDisconnectView()
-        } else {
-            emptyStateView.isHidden = true
-        }
-    }
-
-    private func showDisconnectView() {
-        emptyStateView.configure(title: "您已離線".localizedString(), message: "關閉「飛航模式」或連接 Wi-Fi。".localizedString())
-        emptyStateView.isHidden = false
-    }
-
-    private func handleError(_ error: Error) {
-        Utils.toast(error.localizedDescription, at: .center)
-    }
+//    private func bindViewModel() {
+//        viewModel.statePublisher
+//            .receive(on: RunLoop.main)
+//            .sink { [weak self] state in
+//                guard let self else { return }
+//                switch state {
+//                case .success:
+//                    self.updateUI()
+//                case .failed(let error):
+//                    self.handleError(error)
+//                case .loading, .none:
+//                    break
+//                }
+//            }.store(in: &cancellables)
+//
+//        NetworkMonitor.shared.$isConnected
+//            .receive(on: DispatchQueue.main)
+//            .removeDuplicates()
+//            .sink {  [weak self] _ in
+//                self?.updateUI()
+//            }.store(in: &cancellables)
+//
+//        viewModel.app.$downloads
+//            .receive(on: RunLoop.main)
+//            .sink { [weak self] downloads in
+//                guard let self else { return }
+//                print("_+__+ \(downloads)")
+//            }.store(in: &cancellables)
+//    }
+//
+//    private func updateUI() {
+//        searchResultsVC.update
+//        if !NetworkMonitor.shared.isConnected {
+//            showDisconnectView()
+//        } else {
+//            emptyStateView.isHidden = true
+//        }
+//    }
 
     private func searchVideo(by term: String) {
         // 結束輸入狀態（不進行動畫過度）
@@ -195,6 +167,7 @@ extension SearchViewController: SearchSuggestViewControllerDelegate {
 
     // 搜尋
     func didSelectItemAt(_ vc: SearchSuggestViewController, keyword: String) {
+        searchSuggestVC.search(with: nil) // 清空本次搜尋
         viewModel.updateHistoryItems(term: keyword)
         searchVideo(by: keyword)
     }
@@ -207,6 +180,12 @@ extension SearchViewController: UITextFieldDelegate {
         let keyword = textField.text ?? ""
         viewModel.updateHistoryItems(term: keyword)
         searchVideo(by: keyword)
+        return true
+    }
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let newString = (textField.text as NSString?)?.replacingCharacters(in: range, with: string)
+        searchSuggestVC.search(with: newString)
         return true
     }
 }

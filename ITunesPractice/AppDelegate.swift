@@ -7,6 +7,8 @@
 
 import AVFoundation
 import UIKit
+import Firebase
+import FirebaseAnalytics
 #if DEBUG
 import FLEX
 #endif
@@ -15,15 +17,12 @@ import FLEX
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-#if DEBUG
-        FLEXManager.shared.isNetworkDebuggingEnabled = true
-#endif
         return true
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
         initializeGlobals()
         initializeDefaultValue()
         setupAppearance()
@@ -56,9 +55,12 @@ extension AppDelegate {
         MatchingHelper.shared.configure()
         PermissionManager.shared.configure()
         PhotoManager.shared.configure()
-
         // 監控網路變化
         NetworkMonitor.shared.startMonitoring()
+
+        // Firebase 設置
+        FirebaseApp.configure()
+        Analytics.setAnalyticsCollectionEnabled(true)
 
         // 指定音訊會話類型為 .playback，讓 App 在背景、螢幕鎖定、silent mode 都能繼續播放音樂
         try? AVAudioSession.sharedInstance().setCategory(.playback)

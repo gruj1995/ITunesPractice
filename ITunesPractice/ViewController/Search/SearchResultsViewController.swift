@@ -6,7 +6,6 @@
 //
 
 import Combine
-import SnapKit
 import UIKit
 
 // MARK: - SearchResultsViewController
@@ -28,6 +27,7 @@ class SearchResultsViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         bindViewModel()
+        reloadTracks()
     }
 
     // MARK: Private
@@ -115,6 +115,12 @@ class SearchResultsViewController: UIViewController {
                 }
             }.store(in: &cancellables)
 
+        UserDefaults.$filePlaylist
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.viewModel.loadNextPage()
+            }.store(in: &cancellables)
+
         NetworkMonitor.shared.$isConnected
             .receive(on: DispatchQueue.main)
             .removeDuplicates()
@@ -127,7 +133,7 @@ class SearchResultsViewController: UIViewController {
     private func updateUI() {
         refreshControl.endRefreshing()
 
-        if viewModel.totalCount == 0, !viewModel.searchTerm.isEmpty {
+        if viewModel.totalCount == 0 {
             showNoResultView()
         } else {
             // 要放在 tableView.reloadData() 前
@@ -143,7 +149,7 @@ class SearchResultsViewController: UIViewController {
     }
 
     private func showNoResultView() {
-        emptyStateView.configure(title: "沒有結果".localizedString(), message: "嘗試新的搜尋項目。".localizedString())
+        emptyStateView.configure(title: "沒有結果".localizedString(), message: "尚無音樂清單".localizedString())
         emptyStateView.isHidden = false
         tableView.isHidden = true
     }
@@ -196,10 +202,10 @@ extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegat
         viewModel.play()
     }
 
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let lastRowIndex = tableView.numberOfRows(inSection: 0) - 1
-        viewModel.loadMoreIfNeeded(currentRowIndex: indexPath.row, lastRowIndex: lastRowIndex)
-    }
+//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        let lastRowIndex = tableView.numberOfRows(inSection: 0) - 1
+//        viewModel.loadMoreIfNeeded(currentRowIndex: indexPath.row, lastRowIndex: lastRowIndex)
+//    }
 
     /*
      點擊 context menu 的預覽圖後觸發，如果沒實作此 funtion，則點擊預覽圖後直接關閉 context menu

@@ -30,6 +30,10 @@ extension UserDefaults {
     @UserDefaultValue(key: "mainPlaylist", defaultValue: [])
     static var mainPlaylist: [Track]
 
+    /// mp3 資料夾中的音樂
+    @UserDefaultValue(key: "filePlaylist", defaultValue: [])
+    static var filePlaylist: [Track]
+
     /// 選中的主音樂清單索引
     @UserDefaultValue(key: "currentTrackIndex", defaultValue: 0)
     static var currentTrackIndex: Int
@@ -85,4 +89,8 @@ extension UserDefaults {
     /// 搜尋到的音樂
     @UserDefaultValue(key: "shazamSearchRecords", defaultValue: [])
     static var shazamSearchRecords: [Track]
+
+    /// 自製抓取 youtube 資料的 API 的網址
+    @UserDefaultValue(key: "apiDomain", defaultValue: "http://127.0.0.1:8000/")
+    static var apiDomain: String
 }

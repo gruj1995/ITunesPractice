@@ -12,8 +12,6 @@ enum Constants {
     static let itunesDomain = "https://itunes.apple.com"
 
 //    static let yoububeAPIUrl = "https://www.googleapis.com/youtube/v3"
-    // 自製抓取 youtube 資料的 API 的網址
-    static let youtubeDomain = "http://127.0.0.1:8000/"
 
     /// Youtube API 金鑰
     static let youtubeAPIKey = "AIzaSyC0a0eOX_Epd_ROSjzEoNZdn63vvI_zLSg"
@@ -33,4 +31,8 @@ enum Constants {
     static let statusBarHeight = UIApplication.shared.statusBarFrame.height
 
     static let padding: CGFloat = 16.0
+
+    static let videoCellHeight: CGFloat = 100
+
+    static let trackCellHeight: CGFloat = 60
 }

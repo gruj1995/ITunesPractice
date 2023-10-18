@@ -12,7 +12,8 @@ extension UIImageView {
     class func coverImageView(cornerRadius: CGFloat = 5) -> UIImageView {
         let imageView = UIImageView()
         imageView.backgroundColor = .clear
-        imageView.contentMode = .scaleAspectFit
+//        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = cornerRadius
         imageView.clipsToBounds = true
         return imageView

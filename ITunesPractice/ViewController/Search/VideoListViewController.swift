@@ -56,12 +56,10 @@ class VideoListViewController: FullScreenFloatingPanelViewController {
         return refreshControl
     }()
 
-    private let cellHeight: CGFloat = 100
-
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.register(VideoCell.self, forCellReuseIdentifier: VideoCell.reuseIdentifier)
-        tableView.rowHeight = cellHeight
+        tableView.rowHeight = Constants.videoCellHeight
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = .clear
@@ -188,42 +186,27 @@ extension VideoListViewController: UITableViewDataSource, UITableViewDelegate {
         guard let video = viewModel.videoInfos[safe: indexPath.row] else {
             return cell
         }
-        cell.configure(video)
+        let showDownload = !video.isLive && !UserDefaults.filePlaylist.contains { $0.ytId == video.videoId }
+        cell.configure(video, showDownload: showDownload)
+        cell.onDownloadButtonTapped = { [weak self] _ in
+            Task {
+                guard let self, let url = URL(string: "https://www.youtube.com/watch?v=\(video.videoId)") else {
+                    return
+                }
+                self.loadingAction()
+                await self.viewModel.app.startDownload(url: url)
+                self.finishLoading()
+                self.tableView.reloadRows(at: [indexPath], with: .none)
+                Utils.toast("下載歌曲成功！")
+            }
+//            self?.viewModel.app.url = URL(string: "https://www.youtube.com/watch?v=\(video.videoId)")
+        }
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        presentYTPlayerVC(index: indexPath.row)
-        guard let videoId = viewModel.videoInfos[safe: indexPath.row]?.videoId else {
-            return
-        }
-        viewModel.app.url = URL(string: "https://www.youtube.com/watch?v=\(videoId)")
+        presentYTPlayerVC(index: indexPath.row)
     }
-
-//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        let lastRowIndex = tableView.numberOfRows(inSection: 0) - 1
-//        viewModel.loadMoreIfNeeded(currentRowIndex: indexPath.row, lastRowIndex: lastRowIndex)
-//    }
-//
-//    /*
-//     點擊 context menu 的預覽圖後觸發，如果沒實作此 funtion，則點擊預覽圖後直接關閉 context menu
-//     - animator  跳轉動畫執行者，可以添加要跳轉到的頁面和跳轉動畫
-//     */
-//    func tableView(_ tableView: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
-//            animator.addCompletion { [weak self] in
-//                guard let self else { return }
-//                let vc = TrackDetailViewController()
-//                vc.dataSource = self
-//                // 由 SearchViewController push
-//                self.presentingViewController?.navigationController?.pushViewController(vc, animated: true)
-//            }
-//    }
-//
-//    // context menu 的清單
-//    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-//        viewModel.setSelectedTrack(forCellAt: indexPath.row)
-//        return tableView.createTrackContextMenuConfiguration(indexPath: indexPath, track: viewModel.selectedTrack)
-//    }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 10
@@ -234,7 +217,7 @@ extension VideoListViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        cellHeight
+        Constants.videoCellHeight
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

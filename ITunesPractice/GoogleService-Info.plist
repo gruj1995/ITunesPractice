@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>773367406291-9jguqavt13l320kutp58f2ptedu7vooi.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.773367406291-9jguqavt13l320kutp58f2ptedu7vooi</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC0a0eOX_Epd_ROSjzEoNZdn63vvI_zLSg</string>
+	<key>GCM_SENDER_ID</key>
+	<string>773367406291</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.pinyi.itunesmusic</string>
+	<key>PROJECT_ID</key>
+	<string>pintube1995</string>
+	<key>STORAGE_BUCKET</key>
+	<string>pintube1995.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:773367406291:ios:947326e9c5bd4f6d643e26</string>
+</dict>
+</plist>

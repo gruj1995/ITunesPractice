@@ -14,23 +14,24 @@ import Photos
 import PythonKit
 
 typealias FormatsContinuation = CheckedContinuation<([Format], TimeRange?), Never>
+typealias YTDownloadResult = (info: PythonObject?, files: [String], infos: [PythonObject])
 
 class AppModel {
     static let shared = AppModel()
 
-    @Published var url: URL?
+//    @Published var url: URL?
 
     @Published var youtubeDL = YoutubeDL()
 
-    @Published var enableChunkedDownload = true
-
-    @Published var enableTranscoding = true
-
-    @Published var supportedFormatsOnly = true
-
-    @Published var exportToPhotos = true
-
-    @Published var fileURL: URL?
+//    @Published var enableChunkedDownload = true
+//
+//    @Published var enableTranscoding = true
+//
+//    @Published var supportedFormatsOnly = true
+//
+//    @Published var exportToPhotos = true
+//
+//    @Published var fileURL: URL?
 
     @Published var downloads: [URL] = []
 
@@ -66,16 +67,42 @@ class AppModel {
     init() {
         changeCurrentDirectoryPath()
 
-        $url
-            .compactMap { $0 }
-            .sink { url in
-                Task {
-                    await self.startDownload(url: url)
-                }
-            }
-            .store(in: &subscriptions)
+//        $url
+//            .compactMap { $0 }
+//            .sink { url in
+//                Task {
+//                    await self.startDownload(url: url)
+//                }
+////                Task {
+////                    do {
+////                        try await self.extractInfo(url: url)
+////                    } catch {
+////                        // FIXME: ...
+////                        print(#function, error)
+////                    }
+////                }
+//            }
+//            .store(in: &subscriptions)
 
         updateDownloads()
+    }
+
+    /// 取得音樂資訊
+    func extractInfo (url: URL) async throws {
+//        let youtubeDL: PythonObject = try await YtDlp().yt_dlp.YoutubeDL(["nocheckcertificate": true])
+//        let info = try PythonDecoder()
+//            .decode(
+//                Info.self,
+//                from: youtubeDL
+//                    .extract_info
+//                    .throwing
+//                    .dynamicallyCall(withKeywordArguments: ["": url.lastPathComponent, "download": false])
+//            )
+//        print("__++ 1 info __+", info)
+
+//        let result = try await youtubeDL.extractInfo(url: url)
+//        print("__++ 1 format __+", result.0)
+//        print("__++ 2 infos  __+", result.1)
     }
 
     func updateDownloads() {
@@ -91,24 +118,11 @@ class AppModel {
         print(#function, url)
 
         do {
-            let (info, files, infos) = try await download(url: url)
-
-            let outputURL: URL
-
-            guard let path = info.flatMap({ String($0["_filename"]) }) else {
-                print(#function, "no '_filename'?", info ?? "nil")
-                return
-            }
-            if #available(iOS 16.0, *) {
-                outputURL = URL(filePath: path)
-            } else {
-                outputURL = URL(fileURLWithPath: path)
-            }
-
-//            export(url: outputURL)
+            let result = try await download(url: url)
             showProgress = false
-            setInfo()
-            updateDownloads()
+            appendTrack(info: result.info)
+//            await setInfo(result.info)
+//            updateDownloads()
         } catch YoutubeDLError.canceled {
             print(#function, "canceled")
         } catch PythonError.exception(let exception, traceback: _) {
@@ -124,10 +138,26 @@ class AppModel {
         }
     }
 
+    func appendTrack(info: PythonObject?) {
+        guard let info, let infoData = try? PythonDecoder().decode(Info.self, from: info) else {
+            return
+        }
+        let mp3FileName = infoData.title
+        let mp3URL = mp3DocumentUrl.appendingPathComponent(mp3FileName).appendingPathExtension(for: .mp3)
+
+        var track = Track(trackName: infoData.title, previewUrl: mp3URL.relativeString)
+        track.ytId = infoData.id
+        track.videoUrl = URL(string: infoData.webpage_url ?? "")
+        track.artworkUrl100 = infoData.thumbnail ?? ""
+        if !UserDefaults.filePlaylist.contains(track) {
+            UserDefaults.filePlaylist.append(track)
+        }
+    }
+
     func save(info: Info) throws -> URL {
         let title = info.safeTitle
         let fileManager = FileManager.default
-        var url = URL(fileURLWithPath: title, relativeTo: try documentsDirectory())
+        var url = URL(fileURLWithPath: title, relativeTo: mp3DocumentUrl)
         try fileManager.createDirectory(at: url, withIntermediateDirectories: true)
 
         // exclude from iCloud backup
@@ -143,7 +173,7 @@ class AppModel {
 
     func loadDownloads() throws -> [URL] {
         let keys: Set<URLResourceKey> = [.nameKey, .isDirectoryKey]
-        let documents = try documentsDirectory()
+        let documents = mp3DocumentUrl
         guard let enumerator = FileManager.default.enumerator(at: documents, includingPropertiesForKeys: Array(keys), options: .skipsHiddenFiles) else { fatalError() }
         var urls = [URL]()
         for case let url as URL in enumerator {
@@ -155,24 +185,7 @@ class AppModel {
         return urls
     }
 
-    func documentsDirectory() throws -> URL {
-        mp3DocumentUrl
-//        try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-    }
-
-    func pauseDownload() {
-
-    }
-
-    func resumeDownload() {
-
-    }
-
-    func cancelDownload() {
-
-    }
-
-    func download(url: URL) async throws -> (PythonObject?, [String], [PythonObject]) {
+    func download(url: URL) async throws -> YTDownloadResult {
         progress.localizedDescription = NSLocalizedString("Extracting info", comment: "progress description")
 
         showProgress = true
@@ -192,10 +205,6 @@ class AppModel {
 //                "-o", "%(title).200B.%(ext)s" // https://github.com/yt-dlp/yt-dlp/issues/1136#issuecomment-932077195
 //            ]
 //        )
-//        + [
-//            "--no-check-certificates",
-//            url.absoluteString
-//        ]
         let argv: [String] = (
             url.pathExtension == "mp3"
             ? ["-o", url.lastPathComponent]
@@ -213,11 +222,11 @@ class AppModel {
         print(#function, argv)
         try await yt_dlp(argv: argv) { dict in
             info = dict["info_dict"]
-            //            if self.info == nil {
-            //                DispatchQueue.main.async {
-            //                    self.info = try? PythonDecoder().decode(Info.self, from: info!)
-            //                }
-            //            }
+//            if self.info == nil {
+//                DispatchQueue.main.async {
+//                    self.info = try? PythonDecoder().decode(Info.self, from: info!)
+//                }
+//            }
 
             let status = String(dict["status"]!)
 
@@ -235,10 +244,11 @@ class AppModel {
                 self.progress.completedUnitCount = Int64(dict["downloaded_bytes"]!) ?? -1
                 self.progress.totalUnitCount = Int64(Double(dict["total_bytes"] ?? dict["total_bytes_estimate"] ?? Python.None) ?? -1)
                 self.progress.throughput = Int(dict["speed"]!)
+                // 剩餘下載時間
                 self.progress.estimatedTimeRemaining = TimeInterval(dict["eta"]!)
             case "finished":
                 print(#function, dict["filename"] ?? "no filename")
-                files.append(String(dict["filename"]!)!)
+                files.append(String(dict["filename"] ?? "")!)
                 formats.append(info!)
             default:
                 print(#function, dict)
@@ -405,6 +415,18 @@ class AppModel {
         }
     }
 
+    func pauseDownload() {
+
+    }
+
+    func resumeDownload() {
+
+    }
+
+    func cancelDownload() {
+
+    }
+
     func share() {
 
     }
@@ -416,7 +438,7 @@ extension AppModel {
         FileManager.default.changeCurrentDirectoryPath(mp3DocumentUrl.path)
     }
 
-    func setInfo() {
+    func setInfo(_ info: Info) async {
         formatSelector = { info in
             self.info = info
             Logger.log("下載資訊： \(info)")

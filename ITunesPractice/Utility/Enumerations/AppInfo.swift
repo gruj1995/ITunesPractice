@@ -10,6 +10,7 @@ import UIKit
 enum AppInfo {
     static let appleID = "6448342626"
     static let bundleID = Bundle.main.bundleIdentifier ?? "Unknown"
+    static let googleAPIKey = "AIzaSyDSM75kZ83CCGWdBqkUHOXAqYg2BhhBMoI"
 
     // 當前 App 版號
     static let appVersion = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? ""

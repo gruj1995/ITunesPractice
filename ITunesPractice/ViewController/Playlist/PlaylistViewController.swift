@@ -40,7 +40,7 @@ class PlaylistViewController: UIViewController {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.register(TrackCell.self, forCellReuseIdentifier: TrackCell.reuseIdentifier)
         tableView.register(PlayListHeaderView.self, forHeaderFooterViewReuseIdentifier: PlayListHeaderView.reuseIdentifier)
-        tableView.rowHeight = cellHeight
+        tableView.rowHeight = Constants.trackCellHeight
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = .clear
@@ -64,7 +64,6 @@ class PlaylistViewController: UIViewController {
 
     private let viewModel: PlaylistViewModel = .init()
     private let playerContainerViewHeight = Constants.screenHeight * 0.35
-    private let cellHeight: CGFloat = 60
 
     private var cancellables: Set<AnyCancellable> = .init()
     private var lastVelocityYSign = 0
@@ -398,7 +397,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        cellHeight
+        Constants.trackCellHeight
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

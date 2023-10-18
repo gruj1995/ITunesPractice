@@ -56,46 +56,56 @@ class SearchResultsViewModel {
     }
 
     func loadNextPage() {
-        guard !searchTerm.isEmpty else {
-            tracks.removeAll()
-            state = .success
-            return
-        }
-
         // 避免同時載入多次
         if case .loading = state { return }
         state = .loading
-
-        let offset = currentPage * pageSize
-        let request = ITunesService.SearchRequest(term: searchTerm, limit: pageSize, offset: offset)
-
-        request.fetchTracksByURLSession { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case .success(let response):
-                self.currentPage += 1
-                self.totalPages = response.resultCount / self.pageSize + 1
-                self.tracks.append(contentsOf: response.results.map { $0.convertToTrack() })
-                // 如果資料的數量小於每頁的大小，表示已經下載完所有資料
-                self.hasMoreData = response.resultCount == self.pageSize
-                DispatchQueue.main.async {
-                    self.state = .success
-                }
-            case .failure(let error):
-                Logger.log(error.localizedDescription)
-                DispatchQueue.main.async {
-                    self.state = .failed(error: error)
-                }
-            }
+        tracks = UserDefaults.filePlaylist
+        DispatchQueue.main.async {
+            self.state = .success
         }
     }
 
-    /// 用戶滑到最底且後面還有資料時，載入下一頁資料
-    func loadMoreIfNeeded(currentRowIndex: Int, lastRowIndex: Int) {
-        if currentRowIndex == lastRowIndex, hasMoreData {
-            loadNextPage()
-        }
-    }
+//    func loadNextPage() {
+//        guard !searchTerm.isEmpty else {
+//            tracks.removeAll()
+//            state = .success
+//            return
+//        }
+//
+//        // 避免同時載入多次
+//        if case .loading = state { return }
+//        state = .loading
+//
+//        let offset = currentPage * pageSize
+//        let request = ITunesService.SearchRequest(term: searchTerm, limit: pageSize, offset: offset)
+//
+//        request.fetchTracksByURLSession { [weak self] result in
+//            guard let self else { return }
+//            switch result {
+//            case .success(let response):
+//                self.currentPage += 1
+//                self.totalPages = response.resultCount / self.pageSize + 1
+//                self.tracks.append(contentsOf: response.results.map { $0.convertToTrack() })
+//                // 如果資料的數量小於每頁的大小，表示已經下載完所有資料
+//                self.hasMoreData = response.resultCount == self.pageSize
+//                DispatchQueue.main.async {
+//                    self.state = .success
+//                }
+//            case .failure(let error):
+//                Logger.log(error.localizedDescription)
+//                DispatchQueue.main.async {
+//                    self.state = .failed(error: error)
+//                }
+//            }
+//        }
+//    }
+
+//    /// 用戶滑到最底且後面還有資料時，載入下一頁資料
+//    func loadMoreIfNeeded(currentRowIndex: Int, lastRowIndex: Int) {
+//        if currentRowIndex == lastRowIndex, hasMoreData {
+//            loadNextPage()
+//        }
+//    }
 
     /// 設定選取的歌曲
     func setSelectedTrack(forCellAt index: Int) {

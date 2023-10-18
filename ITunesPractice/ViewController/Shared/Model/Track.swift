@@ -30,7 +30,7 @@ struct Track: Codable, Equatable, Comparable, CustomStringConvertible {
 
     // MARK: Internal
 
-    // MARK: 為了 Shazam 新增的參數
+    // MARK: Shazam 相關參數
 
     let id: Int
 
@@ -39,6 +39,11 @@ struct Track: Codable, Equatable, Comparable, CustomStringConvertible {
 
     /// 搜尋日期
     var searchDate: Date
+
+    // MARK: Youtube 相關參數
+
+    /// Youtube 影片id
+    var ytId: String?
 
     // MARK: Track 的參數
 
@@ -66,7 +71,7 @@ struct Track: Codable, Equatable, Comparable, CustomStringConvertible {
     /// 專輯預覽網址
     var collectionViewUrl: String
 
-    /// 單曲預覽網址
+    /// 單曲預覽網址(目前播放器吃這個值)
     var previewUrl: String
 
     /// 單曲網址
@@ -102,10 +107,13 @@ struct Track: Codable, Equatable, Comparable, CustomStringConvertible {
 
     static func == (lhs: Self, rhs: Self) -> Bool {
         // 如果沒有 trackId，就比較自訂的 id (可能發生在非透過 iTunes API 加入的音擋)
-        if lhs.trackId == 0 || rhs.trackId == 0 {
+        if lhs.trackId != 0 {
+            return lhs.trackId == rhs.trackId
+        } else if lhs.id != 0 {
             return lhs.id == rhs.id
+        } else {
+            return lhs.ytId == rhs.ytId
         }
-        return lhs.trackId == rhs.trackId
     }
 
     static func < (lhs: Track, rhs: Track) -> Bool {

@@ -25,7 +25,7 @@ class VideoCell: UITableViewCell {
         return String(describing: self)
     }
 
-    func configure(_ model: VideoInfo) {
+    func configure(_ model: VideoInfo, showDownload: Bool = false) {
         let videoUrl = URL(string: model.thumbnails?.first?.url ?? "")
         videoImageView.loadCoverImage(with: videoUrl)
         timeLabel.text = model.length ?? ""
@@ -36,6 +36,7 @@ class VideoCell: UITableViewCell {
             let time = model.publishedTimeText.isEmptyOrNil ? "" : "・\(model.publishedTimeText!)"
             infoLabel.text = "\(viewCount)\(time)"
         }
+        downloadButton.isHidden = !showDownload
     }
 
     // MARK: Private
@@ -71,13 +72,31 @@ class VideoCell: UITableViewCell {
     }()
 
     lazy var vStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, channelLabel, infoLabel])
+        let stackView = UIStackView(arrangedSubviews: [topStackView, channelLabel, infoLabel])
         stackView.axis = .vertical
         stackView.distribution = .equalSpacing
         return stackView
     }()
 
-    private lazy var titleLabel: UILabel = {
+    lazy var topStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, downloadButton])
+        stackView.axis = .horizontal
+        stackView.spacing = 5
+        stackView.alignment = .top
+        return stackView
+    }()
+
+    var onDownloadButtonTapped: ((UIButton) -> Void)?
+
+    lazy var downloadButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(systemName: "arrow.down.circle"), for: .normal)
+        button.tintColor = .appColor(.text1)
+        button.addTarget(self, action: #selector(downloadButtonTapped), for: .touchUpInside)
+        return button
+    }()
+
+    lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
         label.font = .systemFont(ofSize: 15)
@@ -85,7 +104,7 @@ class VideoCell: UITableViewCell {
         return label
     }()
 
-    private lazy var channelLabel: UILabel = {
+    lazy var channelLabel: UILabel = {
         let label = UILabel()
         label.textColor = .appColor(.gray3)
         label.font = .systemFont(ofSize: 12)
@@ -93,7 +112,7 @@ class VideoCell: UITableViewCell {
         return label
     }()
 
-    private lazy var infoLabel: UILabel = {
+    lazy var infoLabel: UILabel = {
         let label = UILabel()
         label.textColor = .appColor(.gray3)
         label.font = .systemFont(ofSize: 12)
@@ -128,5 +147,13 @@ class VideoCell: UITableViewCell {
             $0.trailing.equalToSuperview().inset(padding)
             $0.top.bottom.equalTo(videoImageView)
         }
+        downloadButton.snp.makeConstraints {
+            $0.width.equalTo(20)
+        }
+    }
+
+    @objc
+    private func downloadButtonTapped(_ sender: UIButton) {
+        onDownloadButtonTapped?(sender)
     }
 }

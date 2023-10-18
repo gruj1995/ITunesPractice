@@ -6,9 +6,12 @@
 //
 
 import UIKit
+import FirebaseRemoteConfig
+import SwiftyJSON
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
+    let remoteConfig = RemoteConfig.remoteConfig()
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
@@ -26,8 +29,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
-        // Called when the scene has moved from an inactive state to an active state.
-        // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
+        fetchRemoteConfig()
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
@@ -44,5 +46,28 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
+    }
+
+    private func fetchRemoteConfig() {
+        // 方便測試時快速看到 RemoteConfig 的變化
+        let settings = RemoteConfigSettings()
+        settings.minimumFetchInterval = 0
+        remoteConfig.configSettings = settings
+
+        remoteConfig.fetch { status, error in
+            switch status {
+            case .success:
+                self.remoteConfig.activate { _, _ in
+                    if let apiDomain = self.remoteConfig.configValue(forKey: "api_domain").stringValue,
+                       !apiDomain.isEmpty {
+                        UserDefaults.apiDomain = apiDomain
+                    } else {
+                        Logger.log("Youtube api domain error!")
+                    }
+                }
+            default:
+                Logger.log(("Firebase RemoteConfig Error: \(error?.localizedDescription ?? "No error available.")"))
+            }
+        }
     }
 }

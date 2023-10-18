@@ -21,6 +21,12 @@
 		8B19AA4E2A19D36000F7A642 /* AddTrackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B19AA4D2A19D36000F7A642 /* AddTrackViewModel.swift */; };
 		8B19AA502A1A3EED00F7A642 /* PlaylistInfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B19AA4F2A1A3EED00F7A642 /* PlaylistInfoHeaderView.swift */; };
 		8B19AA522A1A405100F7A642 /* EditPlaylistInfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B19AA512A1A405100F7A642 /* EditPlaylistInfoHeaderView.swift */; };
+		8B20DC482ADE77D10008AA12 /* AppModelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B20DC472ADE77D10008AA12 /* AppModelExtension.swift */; };
+		8B20DC4B2ADEDB770008AA12 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 8B20DC4A2ADEDB770008AA12 /* FirebaseAnalytics */; };
+		8B20DC4D2ADEDB770008AA12 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 8B20DC4C2ADEDB770008AA12 /* FirebaseCrashlytics */; };
+		8B20DC4F2ADEDB770008AA12 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 8B20DC4E2ADEDB770008AA12 /* FirebaseMessaging */; };
+		8B20DC512ADEDB770008AA12 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 8B20DC502ADEDB770008AA12 /* FirebaseRemoteConfig */; };
+		8B20DC5D2ADF11F90008AA12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8B20DC5C2ADF11F90008AA12 /* GoogleService-Info.plist */; };
 		8B3B6CCB29AC788400A6352A /* ITunesService+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B6CCA29AC788400A6352A /* ITunesService+Lookup.swift */; };
 		8B3B6CCD29AD8C0E00A6352A /* TrackDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B6CCC29AD8C0E00A6352A /* TrackDetailViewController.swift */; };
 		8B3B6CCF29AD8C2500A6352A /* TrackDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B6CCE29AD8C2500A6352A /* TrackDetailViewModel.swift */; };
@@ -262,6 +268,8 @@
 		8B19AA4D2A19D36000F7A642 /* AddTrackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTrackViewModel.swift; sourceTree = "<group>"; };
 		8B19AA4F2A1A3EED00F7A642 /* PlaylistInfoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistInfoHeaderView.swift; sourceTree = "<group>"; };
 		8B19AA512A1A405100F7A642 /* EditPlaylistInfoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlaylistInfoHeaderView.swift; sourceTree = "<group>"; };
+		8B20DC472ADE77D10008AA12 /* AppModelExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModelExtension.swift; sourceTree = "<group>"; };
+		8B20DC5C2ADF11F90008AA12 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8B3B6CCA29AC788400A6352A /* ITunesService+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ITunesService+Lookup.swift"; sourceTree = "<group>"; };
 		8B3B6CCC29AD8C0E00A6352A /* TrackDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailViewController.swift; sourceTree = "<group>"; };
 		8B3B6CCE29AD8C2500A6352A /* TrackDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailViewModel.swift; sourceTree = "<group>"; };
@@ -462,6 +470,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B20DC4F2ADEDB770008AA12 /* FirebaseMessaging in Frameworks */,
 				8B3F9BD129C5EDB10050CFC9 /* FloatingPanel in Frameworks */,
 				8B17236E2ADD160300D75B43 /* YoutubeDL in Frameworks */,
 				8BBD8F2D2AD51D1800760471 /* YouTubeiOSPlayerHelper in Frameworks */,
@@ -471,9 +480,12 @@
 				8B4D36FD299FC48E00059381 /* SwiftyJSON in Frameworks */,
 				8B3F9BE629C6F0660050CFC9 /* ColorKit in Frameworks */,
 				8B0E6A2D2A04330C004743A7 /* Kanna in Frameworks */,
+				8B20DC512ADEDB770008AA12 /* FirebaseRemoteConfig in Frameworks */,
 				8BFDF16A29A1EB39008E2C23 /* SnapKit in Frameworks */,
+				8B20DC4B2ADEDB770008AA12 /* FirebaseAnalytics in Frameworks */,
 				24B1F81F56F20E14AB804089 /* Pods_ITunesPractice.framework in Frameworks */,
 				8BBD8F1E2AD4EA0D00760471 /* PromiseKit in Frameworks */,
+				8B20DC4D2ADEDB770008AA12 /* FirebaseCrashlytics in Frameworks */,
 				8B4D36FA299FC47D00059381 /* Alamofire in Frameworks */,
 				8B4D3706299FC50D00059381 /* FLEX in Frameworks */,
 				8B8F50F129F0D21100BCE350 /* Lottie in Frameworks */,
@@ -614,6 +626,7 @@
 				8B4D36C5299FBD7E00059381 /* SceneDelegate.swift */,
 				8B4D36CE299FBD8000059381 /* LaunchScreen.storyboard */,
 				8B3F9BCA29C3AF9C0050CFC9 /* PlayListPlayer.storyboard */,
+				8B20DC5C2ADF11F90008AA12 /* GoogleService-Info.plist */,
 				8B17236A2ADD11E200D75B43 /* Info.plist */,
 			);
 			path = ITunesPractice;
@@ -948,6 +961,7 @@
 				8BDE4E862A0BD5C800617916 /* AlertManager.swift */,
 				8BDE4E8A2A0C26D400617916 /* PhotoManager.swift */,
 				8B8237092ADCD9DA00BF48B9 /* AppModel.swift */,
+				8B20DC472ADE77D10008AA12 /* AppModelExtension.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -1142,6 +1156,10 @@
 				8BBD8F1D2AD4EA0D00760471 /* PromiseKit */,
 				8BBD8F2C2AD51D1800760471 /* YouTubeiOSPlayerHelper */,
 				8B17236D2ADD160300D75B43 /* YoutubeDL */,
+				8B20DC4A2ADEDB770008AA12 /* FirebaseAnalytics */,
+				8B20DC4C2ADEDB770008AA12 /* FirebaseCrashlytics */,
+				8B20DC4E2ADEDB770008AA12 /* FirebaseMessaging */,
+				8B20DC502ADEDB770008AA12 /* FirebaseRemoteConfig */,
 			);
 			productName = ITunesPractice;
 			productReference = 8B4D36C0299FBD7E00059381 /* ITunesPractice.app */;
@@ -1233,6 +1251,7 @@
 				8BBD8F1C2AD4EA0D00760471 /* XCRemoteSwiftPackageReference "PromiseKit" */,
 				8BBD8F2B2AD51D1800760471 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */,
 				8B17236C2ADD160300D75B43 /* XCRemoteSwiftPackageReference "YoutubeDL-iOS" */,
+				8B20DC492ADEDB770008AA12 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 8B4D36C1299FBD7E00059381 /* Products */;
 			projectDirPath = "";
@@ -1252,6 +1271,7 @@
 			files = (
 				8B3F9BCB29C3AF9C0050CFC9 /* PlayListPlayer.storyboard in Resources */,
 				8B4D36D0299FBD8000059381 /* LaunchScreen.storyboard in Resources */,
+				8B20DC5D2ADF11F90008AA12 /* GoogleService-Info.plist in Resources */,
 				8B4D36CD299FBD8000059381 /* Assets.xcassets in Resources */,
 				8B8F50F429F0D39600BCE350 /* musiclist.json in Resources */,
 			);
@@ -1438,6 +1458,7 @@
 				8BFDF17F29A313D5008E2C23 /* DateUtility.swift in Sources */,
 				8BBCE35829C1F56D0084BF44 /* PlaylistPlayerViewController.swift in Sources */,
 				8B8236D02AD6544400BF48B9 /* SearchSuggestViewModel.swift in Sources */,
+				8B20DC482ADE77D10008AA12 /* AppModelExtension.swift in Sources */,
 				8BB74C6C29A14BEF000B9D59 /* HTTPMethod.swift in Sources */,
 				8BFDF17729A23142008E2C23 /* UISearchBar+Extensions.swift in Sources */,
 				8B5FCD3329D1CC9400C763DB /* CurrentTrackView.swift in Sources */,
@@ -1658,6 +1679,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1712,6 +1734,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -1932,6 +1955,14 @@
 				kind = branch;
 			};
 		};
+		8B20DC492ADEDB770008AA12 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.0.0;
+			};
+		};
 		8B3F9BCF29C5EDB10050CFC9 /* XCRemoteSwiftPackageReference "FloatingPanel" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SCENEE/FloatingPanel";
@@ -2040,6 +2071,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8B17236C2ADD160300D75B43 /* XCRemoteSwiftPackageReference "YoutubeDL-iOS" */;
 			productName = YoutubeDL;
+		};
+		8B20DC4A2ADEDB770008AA12 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B20DC492ADEDB770008AA12 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		8B20DC4C2ADEDB770008AA12 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B20DC492ADEDB770008AA12 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		8B20DC4E2ADEDB770008AA12 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B20DC492ADEDB770008AA12 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+		8B20DC502ADEDB770008AA12 /* FirebaseRemoteConfig */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B20DC492ADEDB770008AA12 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseRemoteConfig;
 		};
 		8B3F9BD029C5EDB10050CFC9 /* FloatingPanel */ = {
 			isa = XCSwiftPackageProductDependency;

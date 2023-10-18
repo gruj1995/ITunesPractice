@@ -150,6 +150,11 @@ class SearchSuggestViewController: UIViewController {
         }
     }
 
+    func search(with term: String?) {
+        viewModel.searchTerm = term ?? ""
+        tableView.scrollToTop(animated: false)
+    }
+
     @objc
     private func reloadItems() {
         viewModel.reloadItems()
@@ -202,6 +207,11 @@ extension SearchSuggestViewController: UITableViewDataSource, UITableViewDelegat
         UIView.emptyView()
     }
 
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        let isHistory = indexPath.row < viewModel.filteredHistoryItems.count
+        return isHistory
+    }
+
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             viewModel.deleteHistory(index: indexPath.row)
@@ -211,14 +221,5 @@ extension SearchSuggestViewController: UITableViewDataSource, UITableViewDelegat
 
     func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
         return "刪除".localizedString()
-    }
-}
-
-// MARK: UISearchResultsUpdating
-
-extension SearchSuggestViewController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        viewModel.searchTerm = searchController.searchBar.text ?? ""
-        tableView.scrollToTop(animated: false)
     }
 }

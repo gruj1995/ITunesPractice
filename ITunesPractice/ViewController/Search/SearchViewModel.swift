@@ -16,6 +16,22 @@ class SearchViewModel {
 
     let app: AppModel = AppModel.shared
 
+    init() {
+
+    }
+
+    private func getTracks() {
+        do {
+            let mp3Files = try FileManager.default.contentsOfDirectory(at: app.mp3DocumentUrl, includingPropertiesForKeys: nil, options: [])
+            let mp3Songs = mp3Files.filter { $0.pathExtension.lowercased() == "mp3" }
+            for mp3SongURL in mp3Songs {
+                print("歌曲文件：\(mp3SongURL.lastPathComponent)")
+            }
+        } catch {
+            Logger.log("无法获取歌曲文件列表：\(error)")
+        }
+    }
+
     var statePublisher: AnyPublisher<ViewState, Never> {
         stateSubject.eraseToAnyPublisher()
     }

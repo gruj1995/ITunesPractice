@@ -6,7 +6,6 @@
 //
 
 import Lottie
-import SnapKit
 import UIKit
 
 class TrackCell: UITableViewCell {
