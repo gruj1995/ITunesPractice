@@ -59,8 +59,6 @@ class SearchViewController: UIViewController {
         searchController.searchBar.barStyle = .black
         // 預設文字
         searchController.searchBar.placeholder = "搜尋影片".localizedString()
-        // Return 鍵設為完成
-        searchController.searchBar.returnKeyType = .done
         // 搜尋框樣式: .minimal -> SearchBar 沒有背景，且搜尋欄位為半透明
         searchController.searchBar.searchBarStyle = .minimal
         // 首字自動變大寫

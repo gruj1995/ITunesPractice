@@ -6,7 +6,7 @@
 //
 
 import MarqueeLabel
-import SnapKit
+
 import UIKit
 
 // MARK: - CurrentTrackView

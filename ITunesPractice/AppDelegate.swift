@@ -6,6 +6,7 @@
 //
 
 import AVFoundation
+import SnapKit
 import UIKit
 import Firebase
 import FirebaseAnalytics

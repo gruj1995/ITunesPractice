@@ -5,7 +5,6 @@
 //  Created by 李品毅 on 2023/5/21.
 //
 
-import SnapKit
 import UIKit
 
 // MARK: - EditPlaylistInfoHeaderView
@@ -88,10 +87,10 @@ class EditPlaylistInfoHeaderView: UITableViewHeaderFooterView {
 
     private func setupLayout() {
         addSubview(coverImageView)
-        coverImageView.snp.makeConstraints { make in
-            make.top.centerX.equalToSuperview()
-            make.width.equalToSuperview().multipliedBy(0.6)
-            make.height.equalTo(coverImageView.snp.width)
+        coverImageView.snp.makeConstraints {
+            $0.top.centerX.equalToSuperview()
+            $0.width.equalToSuperview().multipliedBy(0.6)
+            $0.height.equalTo(coverImageView.snp.width)
         }
 
         addSubview(cameraButton)
