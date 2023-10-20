@@ -19,9 +19,9 @@ typealias YTDownloadResult = (info: PythonObject?, files: [String], infos: [Pyth
 class AppModel {
     static let shared = AppModel()
 
-//    @Published var url: URL?
-
     @Published var youtubeDL = YoutubeDL()
+
+//    @Published var url: URL?
 
 //    @Published var enableChunkedDownload = true
 //
@@ -66,24 +66,6 @@ class AppModel {
 
     init() {
         changeCurrentDirectoryPath()
-
-//        $url
-//            .compactMap { $0 }
-//            .sink { url in
-//                Task {
-//                    await self.startDownload(url: url)
-//                }
-////                Task {
-////                    do {
-////                        try await self.extractInfo(url: url)
-////                    } catch {
-////                        // FIXME: ...
-////                        print(#function, error)
-////                    }
-////                }
-//            }
-//            .store(in: &subscriptions)
-
         updateDownloads()
     }
 
@@ -125,6 +107,9 @@ class AppModel {
 //            updateDownloads()
         } catch YoutubeDLError.canceled {
             print(#function, "canceled")
+            await MainActor.run {
+                self.error = AppError.message("canceled")
+            }
         } catch PythonError.exception(let exception, traceback: _) {
             print(#function, exception)
             await MainActor.run {
@@ -435,7 +420,13 @@ class AppModel {
 extension AppModel {
     /// 重要！ 目前的寫法不加這段會無法寫入檔案
     private func changeCurrentDirectoryPath() {
-        FileManager.default.changeCurrentDirectoryPath(mp3DocumentUrl.path)
+        let documentsDirectory: URL
+        if #available(iOS 16.0, *) {
+            documentsDirectory = URL.documentsDirectory
+        } else {
+            documentsDirectory = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        }
+        FileManager.default.changeCurrentDirectoryPath(documentsDirectory.path)
     }
 
     func setInfo(_ info: Info) async {

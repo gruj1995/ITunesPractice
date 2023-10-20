@@ -33,7 +33,8 @@ class YoutubePlayerView: UIView {
     /// youtube iframe 播放器參數文件： https://developers.google.com/youtube/player_parameters?playerVersion=HTML5&hl=zh-tw
     private var playerVars = [
         "autoplay": 1, // 自動播放影片(是:1,否:0)
-        "playsinline": 1 // 在 HTML5 播放器中播放時，0：全屏模式播放, 1:内嵌播放
+        "playsinline": 1, // 在 HTML5 播放器中播放時，0：全屏模式播放, 1:内嵌播放
+        "enablejsapi": 1  // 是否允許通過iFrame或JavaScript Player API控制播放器，預設為0
     ]
 
     lazy var playerView: YTPlayerView = {
@@ -101,11 +102,20 @@ extension YoutubePlayerView: YTPlayerViewDelegate {
             delegate?.currentVideoDidFinish()
         case .cued:
             playVideo()
+//        case .paused:
+//            // 進入後台被暫停時讓音樂繼續播放
+//            switch UIApplication.shared.applicationState {
+//            case .background, .inactive:
+//                playVideo()
+//            default:
+//                return
+//            }
         default:
             break
         }
     }
 
+    /// 調整影片解析度
     func playerView(_ playerView: YTPlayerView, didChangeTo quality: YTPlaybackQuality) {
 
     }
