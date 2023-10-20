@@ -71,7 +71,6 @@ class VideoListViewController: FullScreenFloatingPanelViewController {
 
     private lazy var emptyStateView: EmptyStateView = {
         let view = EmptyStateView()
-        view.isHidden = true
         return view
     }()
 
@@ -98,6 +97,7 @@ class VideoListViewController: FullScreenFloatingPanelViewController {
     private func bindViewModel() {
         viewModel.$state
             .receive(on: RunLoop.main)
+            .removeDuplicates()
             .sink { [weak self] state in
                 guard let self else { return }
                 switch state {
@@ -105,14 +105,15 @@ class VideoListViewController: FullScreenFloatingPanelViewController {
                     self.updateUI()
                 case .failed(let error):
                     self.handleError(error)
-                case .loading, .none:
+                 default:
                     return
                 }
             }.store(in: &cancellables)
 
         NetworkMonitor.shared.$isConnected
-            .receive(on: DispatchQueue.main)
+            .receive(on: RunLoop.main)
             .removeDuplicates()
+            .dropFirst()
             .sink { [weak self] _ in
                 self?.updateUI()
             }.store(in: &cancellables)

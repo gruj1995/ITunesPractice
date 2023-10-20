@@ -110,6 +110,7 @@ class BaseListViewController<VM: BaseListViewModel>: UIViewController, UITableVi
         NetworkMonitor.shared.$isConnected
             .receive(on: DispatchQueue.main)
             .removeDuplicates()
+            .dropFirst()
             .sink { [weak self] _ in
                 self?.updateUI()
             }.store(in: &cancellables)

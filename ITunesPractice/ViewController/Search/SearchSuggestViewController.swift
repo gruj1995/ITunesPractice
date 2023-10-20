@@ -6,7 +6,6 @@
 //
 
 import Combine
-
 import UIKit
 
 protocol SearchSuggestViewControllerDelegate: AnyObject {
@@ -96,6 +95,7 @@ class SearchSuggestViewController: UIViewController {
     private func bindViewModel() {
         viewModel.$state
             .receive(on: RunLoop.main)
+            .removeDuplicates()
             .sink { [weak self] state in
                 guard let self else { return }
                 switch state {
@@ -103,7 +103,7 @@ class SearchSuggestViewController: UIViewController {
                     self.updateUI()
                 case .failed(let error):
                     self.handleError(error)
-                case .loading, .none:
+                 default:
                     return
                 }
             }.store(in: &cancellables)
@@ -111,6 +111,7 @@ class SearchSuggestViewController: UIViewController {
         NetworkMonitor.shared.$isConnected
             .receive(on: DispatchQueue.main)
             .removeDuplicates()
+            .dropFirst()
             .sink { [weak self] _ in
                 self?.updateUI()
             }.store(in: &cancellables)
@@ -228,6 +229,6 @@ extension SearchSuggestViewController: UITableViewDataSource, UITableViewDelegat
 
 extension SearchSuggestViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        search(with: searchController.searchBar.text ?? "")
+        search(with: searchController.searchBar.text)
     }
 }

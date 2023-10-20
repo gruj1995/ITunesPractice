@@ -90,7 +90,7 @@ class VideoCell: UITableViewCell {
 
     lazy var downloadButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(UIImage(systemName: "arrow.down.circle"), for: .normal)
+        button.setImage(UIImage(systemName: "arrow.down"), for: .normal)
         button.tintColor = .appColor(.text1)
         button.addTarget(self, action: #selector(downloadButtonTapped), for: .touchUpInside)
         return button

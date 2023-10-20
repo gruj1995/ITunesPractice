@@ -16,7 +16,6 @@
 		8B0E6A1E29FF8583004743A7 /* Playlist2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0E6A1D29FF8583004743A7 /* Playlist2.swift */; };
 		8B0E6A2D2A04330C004743A7 /* Kanna in Frameworks */ = {isa = PBXBuildFile; productRef = 8B0E6A2C2A04330C004743A7 /* Kanna */; };
 		8B0E6A2F2A043343004743A7 /* KannaAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0E6A2E2A043343004743A7 /* KannaAdapter.swift */; };
-		8B17236E2ADD160300D75B43 /* YoutubeDL in Frameworks */ = {isa = PBXBuildFile; productRef = 8B17236D2ADD160300D75B43 /* YoutubeDL */; };
 		8B19AA4C2A19D35400F7A642 /* AddTrackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B19AA4B2A19D35400F7A642 /* AddTrackViewController.swift */; };
 		8B19AA4E2A19D36000F7A642 /* AddTrackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B19AA4D2A19D36000F7A642 /* AddTrackViewModel.swift */; };
 		8B19AA502A1A3EED00F7A642 /* PlaylistInfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B19AA4F2A1A3EED00F7A642 /* PlaylistInfoHeaderView.swift */; };
@@ -27,6 +26,9 @@
 		8B20DC4F2ADEDB770008AA12 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 8B20DC4E2ADEDB770008AA12 /* FirebaseMessaging */; };
 		8B20DC512ADEDB770008AA12 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 8B20DC502ADEDB770008AA12 /* FirebaseRemoteConfig */; };
 		8B20DC5D2ADF11F90008AA12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8B20DC5C2ADF11F90008AA12 /* GoogleService-Info.plist */; };
+		8B20DC6E2ADF7A2C0008AA12 /* YoutubeDL in Frameworks */ = {isa = PBXBuildFile; productRef = 8B20DC6D2ADF7A2C0008AA12 /* YoutubeDL */; };
+		8B20DC712ADFBDAF0008AA12 /* BgTaskHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B20DC702ADFBDAF0008AA12 /* BgTaskHelper.swift */; };
+		8B20DC732ADFDB180008AA12 /* TestWebVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B20DC722ADFDB180008AA12 /* TestWebVC.swift */; };
 		8B3B6CCB29AC788400A6352A /* ITunesService+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B6CCA29AC788400A6352A /* ITunesService+Lookup.swift */; };
 		8B3B6CCD29AD8C0E00A6352A /* TrackDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B6CCC29AD8C0E00A6352A /* TrackDetailViewController.swift */; };
 		8B3B6CCF29AD8C2500A6352A /* TrackDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B6CCE29AD8C2500A6352A /* TrackDetailViewModel.swift */; };
@@ -270,6 +272,9 @@
 		8B19AA512A1A405100F7A642 /* EditPlaylistInfoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlaylistInfoHeaderView.swift; sourceTree = "<group>"; };
 		8B20DC472ADE77D10008AA12 /* AppModelExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModelExtension.swift; sourceTree = "<group>"; };
 		8B20DC5C2ADF11F90008AA12 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		8B20DC6C2ADF79FE0008AA12 /* YoutubeDL-iOS */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "YoutubeDL-iOS"; path = "../YoutubeDL-iOS"; sourceTree = "<group>"; };
+		8B20DC702ADFBDAF0008AA12 /* BgTaskHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BgTaskHelper.swift; sourceTree = "<group>"; };
+		8B20DC722ADFDB180008AA12 /* TestWebVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestWebVC.swift; sourceTree = "<group>"; };
 		8B3B6CCA29AC788400A6352A /* ITunesService+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ITunesService+Lookup.swift"; sourceTree = "<group>"; };
 		8B3B6CCC29AD8C0E00A6352A /* TrackDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailViewController.swift; sourceTree = "<group>"; };
 		8B3B6CCE29AD8C2500A6352A /* TrackDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailViewModel.swift; sourceTree = "<group>"; };
@@ -472,7 +477,6 @@
 			files = (
 				8B20DC4F2ADEDB770008AA12 /* FirebaseMessaging in Frameworks */,
 				8B3F9BD129C5EDB10050CFC9 /* FloatingPanel in Frameworks */,
-				8B17236E2ADD160300D75B43 /* YoutubeDL in Frameworks */,
 				8BBD8F2D2AD51D1800760471 /* YouTubeiOSPlayerHelper in Frameworks */,
 				8BFDF18C29A3ACEF008E2C23 /* CombineSchedulers in Frameworks */,
 				8B5FCD3C29D3281A00C763DB /* MarqueeLabel in Frameworks */,
@@ -488,6 +492,7 @@
 				8B20DC4D2ADEDB770008AA12 /* FirebaseCrashlytics in Frameworks */,
 				8B4D36FA299FC47D00059381 /* Alamofire in Frameworks */,
 				8B4D3706299FC50D00059381 /* FLEX in Frameworks */,
+				8B20DC6E2ADF7A2C0008AA12 /* YoutubeDL in Frameworks */,
 				8B8F50F129F0D21100BCE350 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -528,6 +533,14 @@
 				8B0E69FF29F8D8F3004743A7 /* UserDefaultValue.swift */,
 			);
 			path = UserDefaults;
+			sourceTree = "<group>";
+		};
+		8B20DC682ADF794E0008AA12 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				8B20DC6C2ADF79FE0008AA12 /* YoutubeDL-iOS */,
+			);
+			name = Packages;
 			sourceTree = "<group>";
 		};
 		8B3F9BC329C3767E0050CFC9 /* Experiments */ = {
@@ -591,6 +604,7 @@
 		8B4D36B7299FBD7E00059381 = {
 			isa = PBXGroup;
 			children = (
+				8B20DC682ADF794E0008AA12 /* Packages */,
 				8B4D36C2299FBD7E00059381 /* ITunesPractice */,
 				8B4D36D9299FBD8000059381 /* ITunesPracticeTests */,
 				8B4D36E3299FBD8000059381 /* ITunesPracticeUITests */,
@@ -787,6 +801,7 @@
 				8BD1C65229AF37AA00337EF3 /* PreviewViewController.swift */,
 				8B8236FB2AD912EB00BF48B9 /* BaseListViewController.swift */,
 				8B8236F92AD912E000BF48B9 /* BaseListViewModel.swift */,
+				8B20DC722ADFDB180008AA12 /* TestWebVC.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -909,7 +924,6 @@
 				8BDE4E6B2A093EE500617916 /* PlaceholderTextView.swift */,
 				8B8236EB2AD7DD1300BF48B9 /* PaddingLabel.swift */,
 				8B8236F32AD8008C00BF48B9 /* LoadingView.swift */,
-				8BBD8F362AD52BA300760471 /* YoutubePlayerView.swift */,
 			);
 			path = CustomView;
 			sourceTree = "<group>";
@@ -960,8 +974,7 @@
 				8BDE4E842A0BD4EC00617916 /* PermissionManager.swift */,
 				8BDE4E862A0BD5C800617916 /* AlertManager.swift */,
 				8BDE4E8A2A0C26D400617916 /* PhotoManager.swift */,
-				8B8237092ADCD9DA00BF48B9 /* AppModel.swift */,
-				8B20DC472ADE77D10008AA12 /* AppModelExtension.swift */,
+				8B20DC702ADFBDAF0008AA12 /* BgTaskHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -1032,6 +1045,9 @@
 				8B8236FF2AD949B500BF48B9 /* YTBaseBottomAlertViewModel.swift */,
 				8B8237012AD94A9B00BF48B9 /* VideoDetailBottomAlert.swift */,
 				8B8237032AD94AE800BF48B9 /* VideoDetailBottomAlertViewModel.swift */,
+				8BBD8F362AD52BA300760471 /* YoutubePlayerView.swift */,
+				8B8237092ADCD9DA00BF48B9 /* AppModel.swift */,
+				8B20DC472ADE77D10008AA12 /* AppModelExtension.swift */,
 			);
 			path = YoutubePlayer;
 			sourceTree = "<group>";
@@ -1135,6 +1151,7 @@
 				8B4D36BD299FBD7E00059381 /* Frameworks */,
 				8B4D36BE299FBD7E00059381 /* Resources */,
 				8BB74C54299FD3AA000B9D59 /* ShellScript */,
+				8B20DC6F2ADF82F80008AA12 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1155,11 +1172,11 @@
 				8B0E6A2C2A04330C004743A7 /* Kanna */,
 				8BBD8F1D2AD4EA0D00760471 /* PromiseKit */,
 				8BBD8F2C2AD51D1800760471 /* YouTubeiOSPlayerHelper */,
-				8B17236D2ADD160300D75B43 /* YoutubeDL */,
 				8B20DC4A2ADEDB770008AA12 /* FirebaseAnalytics */,
 				8B20DC4C2ADEDB770008AA12 /* FirebaseCrashlytics */,
 				8B20DC4E2ADEDB770008AA12 /* FirebaseMessaging */,
 				8B20DC502ADEDB770008AA12 /* FirebaseRemoteConfig */,
+				8B20DC6D2ADF7A2C0008AA12 /* YoutubeDL */,
 			);
 			productName = ITunesPractice;
 			productReference = 8B4D36C0299FBD7E00059381 /* ITunesPractice.app */;
@@ -1250,7 +1267,6 @@
 				8B0E6A2B2A04330C004743A7 /* XCRemoteSwiftPackageReference "Kanna" */,
 				8BBD8F1C2AD4EA0D00760471 /* XCRemoteSwiftPackageReference "PromiseKit" */,
 				8BBD8F2B2AD51D1800760471 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */,
-				8B17236C2ADD160300D75B43 /* XCRemoteSwiftPackageReference "YoutubeDL-iOS" */,
 				8B20DC492ADEDB770008AA12 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 8B4D36C1299FBD7E00059381 /* Products */;
@@ -1315,6 +1331,25 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		8B20DC6F2ADF82F80008AA12 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${BUILD_DIR%Build/*}SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
 		};
 		8BB74C54299FD3AA000B9D59 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1457,6 +1492,7 @@
 				8B8B3E0629EB8C8600308778 /* AudioSearchViewController.swift in Sources */,
 				8BFDF17F29A313D5008E2C23 /* DateUtility.swift in Sources */,
 				8BBCE35829C1F56D0084BF44 /* PlaylistPlayerViewController.swift in Sources */,
+				8B20DC712ADFBDAF0008AA12 /* BgTaskHelper.swift in Sources */,
 				8B8236D02AD6544400BF48B9 /* SearchSuggestViewModel.swift in Sources */,
 				8B20DC482ADE77D10008AA12 /* AppModelExtension.swift in Sources */,
 				8BB74C6C29A14BEF000B9D59 /* HTTPMethod.swift in Sources */,
@@ -1525,6 +1561,7 @@
 				8BDE4E602A08CD4D00617916 /* AddPlaylistViewController.swift in Sources */,
 				8BBD8F192AD4E70900760471 /* NetworkManager.swift in Sources */,
 				8B677CC529BEC97600F73FE5 /* UIView+Extensions.swift in Sources */,
+				8B20DC732ADFDB180008AA12 /* TestWebVC.swift in Sources */,
 				8BB74C8F29A1DC9F000B9D59 /* ApiEngineError.swift in Sources */,
 				8B6B56B529B4491500F099DD /* RangeReplaceableCollection+Extensions.swift in Sources */,
 				8BDE4E642A092F6600617916 /* AddTrackCell.swift in Sources */,
@@ -1681,6 +1718,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
+				STRIP_STYLE = debugging;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -1723,6 +1761,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1736,6 +1775,7 @@
 				MTL_FAST_MATH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
+				STRIP_STYLE = debugging;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
@@ -1750,7 +1790,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = ITunesPractice/ITunesPractice.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20230506.01;
+				CURRENT_PROJECT_VERSION = 20231018.04;
 				DEVELOPMENT_TEAM = W3L4T944MU;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ITunesPractice/Info.plist;
@@ -1787,7 +1827,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = ITunesPractice/ITunesPractice.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20230506.01;
+				CURRENT_PROJECT_VERSION = 20231018.04;
 				DEVELOPMENT_TEAM = W3L4T944MU;
 				"EXCLUDED_SOURCE_FILE_NAMES[arch=*]" = FLEX.o;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1947,14 +1987,6 @@
 				minimumVersion = 5.0.0;
 			};
 		};
-		8B17236C2ADD160300D75B43 /* XCRemoteSwiftPackageReference "YoutubeDL-iOS" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kewlbear/YoutubeDL-iOS.git";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 		8B20DC492ADEDB770008AA12 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
@@ -2067,11 +2099,6 @@
 			package = 8B0E6A2B2A04330C004743A7 /* XCRemoteSwiftPackageReference "Kanna" */;
 			productName = Kanna;
 		};
-		8B17236D2ADD160300D75B43 /* YoutubeDL */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 8B17236C2ADD160300D75B43 /* XCRemoteSwiftPackageReference "YoutubeDL-iOS" */;
-			productName = YoutubeDL;
-		};
 		8B20DC4A2ADEDB770008AA12 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8B20DC492ADEDB770008AA12 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
@@ -2091,6 +2118,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8B20DC492ADEDB770008AA12 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseRemoteConfig;
+		};
+		8B20DC6D2ADF7A2C0008AA12 /* YoutubeDL */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = YoutubeDL;
 		};
 		8B3F9BD029C5EDB10050CFC9 /* FloatingPanel */ = {
 			isa = XCSwiftPackageProductDependency;

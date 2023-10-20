@@ -190,6 +190,7 @@ class PlaylistViewController: UIViewController {
         NetworkMonitor.shared.$isConnected
             .receive(on: DispatchQueue.main)
             .removeDuplicates()
+            .dropFirst()
             .sink { [weak self] _ in
                 self?.updateTableView()
             }.store(in: &cancellables)

@@ -33,6 +33,7 @@ class ChannelTableHeaderView: UITableViewHeaderFooterView {
         viewCountLabel.text = model.viewCount ?? ""
         timeLabel.text = model.publishedTimeText ?? model.liveStartTimeText ?? ""
         textView.text = model.description ?? ""
+        textView.isHidden = textView.text.isEmptyOrNil
     }
 
     // MARK: Private
