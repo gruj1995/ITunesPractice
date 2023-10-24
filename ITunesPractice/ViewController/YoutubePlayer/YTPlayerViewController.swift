@@ -7,7 +7,7 @@
 
 import UIKit
 import Combine
-import YouTubeiOSPlayerHelper
+import AVKit
 
 class YTPlayerViewController: BaseListViewController<YTPlayerViewModel> {
 
@@ -15,6 +15,13 @@ class YTPlayerViewController: BaseListViewController<YTPlayerViewModel> {
         super.viewDidLoad()
         addNotification()
         reloadItems()
+
+        playManager.videoViewController = self
+    }
+
+    deinit {
+        playManager.clear()
+//        BgTaskHelper.shared.playerView = nil
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -31,9 +38,16 @@ class YTPlayerViewController: BaseListViewController<YTPlayerViewModel> {
         }
     }
 
-    lazy var playerView: YoutubePlayerView = {
-        let view = YoutubePlayerView()
-        view.delegate = self
+    let playManager: AVPlayerViewControllerManager = AVPlayerViewControllerManager.shared
+    var playerVC: AVPlayerViewController {
+        playManager.controller
+    }
+
+    lazy var playerView: UIView = {
+        let view = UIView()
+        view.addSubview(playerVC.view)
+        addChild(playerVC)
+        playerVC.didMove(toParent: self)
         return view
     }()
 
@@ -54,6 +68,11 @@ class YTPlayerViewController: BaseListViewController<YTPlayerViewModel> {
         super.setupUI()
         view.addSubview(playerView)
 
+        // 自動播放下一支影片
+        playManager.didPlayToEndTime = { [weak self] in
+            self?.currentIndex = 0
+        }
+
         tableView.register(VideoCell.self, forCellReuseIdentifier: VideoCell.reuseIdentifier)
         tableView.register(YTPlayerHeaderView.self, forHeaderFooterViewReuseIdentifier: YTPlayerHeaderView.reuseIdentifier)
         tableView.rowHeight = 100
@@ -65,6 +84,9 @@ class YTPlayerViewController: BaseListViewController<YTPlayerViewModel> {
         playerView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
             $0.height.equalToSuperview().multipliedBy(playerHeightRatio)
+        }
+        playerVC.view.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
         tableView.snp.makeConstraints {
             $0.top.equalTo(playerView.snp.bottom)
@@ -88,7 +110,8 @@ class YTPlayerViewController: BaseListViewController<YTPlayerViewModel> {
         guard let videoID = unwrappedVM?.videoId else {
             return
         }
-        playerView.loadVideo(videoID: videoID)
+//        playerView.loadVideo(videoID: videoID)
+        play(videoID)
     }
 
     override func showTableView() {
@@ -98,6 +121,21 @@ class YTPlayerViewController: BaseListViewController<YTPlayerViewModel> {
 
     override func showNoResultView() {
         emptyStateView.isHidden = false
+    }
+
+    func play(_ videoID: String) {
+        playManager.playVideo(videoID) { [weak self] (video, error) in
+            if let error {
+                Logger.log(error)
+                return
+            }
+            DispatchQueue.main.async {
+                guard let self else { return }
+                //            self.playManager.lowQualityMode = self.lowQualitySwitch.isOn
+                self.playManager.video = video
+                self.playerVC.player?.play()
+            }
+        }
     }
 
     /// 進入全螢幕
@@ -176,22 +214,5 @@ class YTPlayerViewController: BaseListViewController<YTPlayerViewModel> {
 //        if index >= reloadCount {
 //            viewModel.fetchVideoList(needReload: false)
 //        }
-    }
-}
-
-// MARK: - Extension YoutubePlayerViewDelegate
-extension YTPlayerViewController: YoutubePlayerViewDelegate {
-    func currentVideoDidFinish() {
-//        guard currentIndex <= viewModel.totalCount - 2 else {
-//            return
-//        }
-//        // 自動播放下一支影片
-//        loadMoreIfNeeded(index: currentIndex)
-//        currentIndex += 1
-        currentIndex = 0
-    }
-
-    func didPlayTime(playTime: Float) {
-
     }
 }

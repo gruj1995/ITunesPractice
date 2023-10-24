@@ -12,6 +12,7 @@ import UIKit
 import AVFoundation
 import Photos
 import PythonKit
+import os
 
 typealias FormatsContinuation = CheckedContinuation<([Format], TimeRange?), Never>
 typealias YTDownloadResult = (info: PythonObject?, files: [String], infos: [PythonObject])
@@ -53,6 +54,7 @@ class AppModel {
         let fileUrl = docURL.appendingPathComponent("Mp3")
         // 檢查路徑正確性
         Utils.createDirectoryIfNotExist(atPath: fileUrl.relativePath)
+//        let fileUrl = documentsDirectory
         return fileUrl
     }()
 
@@ -64,7 +66,7 @@ class AppModel {
 
     lazy var subscriptions = Set<AnyCancellable>()
 
-    init() {
+    func configure() {
         changeCurrentDirectoryPath()
         updateDownloads()
     }
@@ -103,20 +105,24 @@ class AppModel {
             let result = try await download(url: url)
             showProgress = false
             appendTrack(info: result.info)
+            logEvent(#function, "result \(result)")
 //            await setInfo(result.info)
 //            updateDownloads()
         } catch YoutubeDLError.canceled {
             print(#function, "canceled")
+            logEvent(#function, "canceled")
             await MainActor.run {
                 self.error = AppError.message("canceled")
             }
         } catch PythonError.exception(let exception, traceback: _) {
             print(#function, exception)
+            logEvent(#function, String(describing: exception))
             await MainActor.run {
                 self.exception = exception
             }
         } catch {
             print(#function, error)
+            logEvent(#function, String(describing: error))
             await MainActor.run {
                 self.error = error
             }
@@ -129,6 +135,7 @@ class AppModel {
         }
         let mp3FileName = infoData.title
         let mp3URL = mp3DocumentUrl.appendingPathComponent(mp3FileName).appendingPathExtension(for: .mp3)
+//        let mp3URL = mp3DocumentUrl.appendingPathComponent(Date().timeIntervalSince1970.description).appendingPathExtension(for: .mp3)
 
         var track = Track(trackName: infoData.title, previewUrl: mp3URL.relativeString)
         track.ytId = infoData.id
@@ -190,18 +197,19 @@ class AppModel {
 //                "-o", "%(title).200B.%(ext)s" // https://github.com/yt-dlp/yt-dlp/issues/1136#issuecomment-932077195
 //            ]
 //        )
+        // https://www.gushiciku.cn/pl/p9Ag/zh-tw
         let argv: [String] = (
             url.pathExtension == "mp3"
             ? ["-o", url.lastPathComponent]
             : [
-                "-x",
-                "--audio-format", "mp3",
+                "-x", // 將視訊檔案轉換為純音訊檔案
+                "--audio-format", "mp3", // 指定音訊格式
                 "--postprocessor-args", "-acodec libmp3lame",
-                "-o", "%(title).200B.%(ext)s" // https://github.com/yt-dlp/yt-dlp/issues/1136#issuecomment-932077195
+                "-o", "%(title).200B.%(ext)s", // 輸出檔名的模板(檔名太長可能導致無法下載) https://github.com/yt-dlp/yt-dlp/issues/1136#issuecomment-932077195
             ]
         )
         + [
-            "--no-check-certificates",
+            "--no-check-certificates", // 禁止HTTPS證書驗證
             url.absoluteString
         ]
         print(#function, argv)
@@ -216,7 +224,7 @@ class AppModel {
             let status = String(dict["status"]!)
 
             self.progress.localizedDescription = nil
-
+            logEvent(#function, "status \(status)")
             switch status {
             case "downloading":
                 self.progress.kind = .file
@@ -251,7 +259,7 @@ class AppModel {
             self.progress.totalUnitCount = 100
 
             let t0 = ProcessInfo.processInfo.systemUptime
-
+            logEvent(#function, "Transcode")
             return { (progress: Double) in
                 print(#function, "transcode:", progress)
                 let elapsed = ProcessInfo.processInfo.systemUptime - t0
@@ -266,9 +274,10 @@ class AppModel {
         }
 
         if let error {
+//            self.logEvent(#function, "error: \(error)")
             throw NSError(domain: "App", code: 1, userInfo: [NSLocalizedDescriptionKey: error])
         }
-
+        logEvent(#function, "info \(info)")
         return (info, files, formats)
     }
 
@@ -418,15 +427,18 @@ class AppModel {
 }
 
 extension AppModel {
+    var documentsDirectory: URL {
+        if #available(iOS 16.0, *) {
+            return URL.documentsDirectory
+        } else {
+            return try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        }
+    }
+
     /// 重要！ 目前的寫法不加這段會無法寫入檔案
     private func changeCurrentDirectoryPath() {
-        let documentsDirectory: URL
-        if #available(iOS 16.0, *) {
-            documentsDirectory = URL.documentsDirectory
-        } else {
-            documentsDirectory = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-        }
-        FileManager.default.changeCurrentDirectoryPath(documentsDirectory.path)
+//        FileManager.default.changeCurrentDirectoryPath(mp3DocumentUrl.path)
+        youtubeDL.downloadsDirectory = mp3DocumentUrl
     }
 
     func setInfo(_ info: Info) async {
@@ -447,5 +459,11 @@ extension AppModel {
 
             return (formats, url, timeRange, formats.first?.vbr, "")
         }
+    }
+}
+
+func logEvent(_ funcName: String, _ message: String) {
+    if #available(iOS 14.0, *) {
+        os_log("ITApp AppModel func: %@, message: %@", log: .default, type: .error, funcName, message)
     }
 }

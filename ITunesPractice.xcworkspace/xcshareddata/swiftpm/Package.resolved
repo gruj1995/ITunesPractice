@@ -263,6 +263,15 @@
         }
       },
       {
+        "package": "XCDYouTubeKit",
+        "repositoryURL": "https://github.com/kbex-dev/XCDYouTubeKit.git",
+        "state": {
+          "branch": null,
+          "revision": "f2b1b685c375edca711cc2b229f6bf2bb4588611",
+          "version": "2.16.0"
+        }
+      },
+      {
         "package": "xctest-dynamic-overlay",
         "repositoryURL": "https://github.com/pointfreeco/xctest-dynamic-overlay",
         "state": {

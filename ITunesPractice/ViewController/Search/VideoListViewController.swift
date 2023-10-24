@@ -160,11 +160,17 @@ class VideoListViewController: FullScreenFloatingPanelViewController {
         }
         let vm = YTPlayerViewModel(videoId: videoInfo.videoId, channelName: channelName)
         let vc = YTPlayerViewController(viewModel: vm)
-        let fpc = getFpc()
-        // 隱藏頂部拖動指示器
-        fpc.surfaceView.grabberHandle.isHidden = true
-        fpc.set(contentViewController: vc)
-        present(fpc, animated: true)
+
+        if let sheet = vc.sheetPresentationController {
+            sheet.detents = [.large()]
+            sheet.prefersGrabberVisible = true // 顯示頂部 grabber
+        }
+        present(vc, animated: true)
+//        let fpc = getFpc()
+//        // 隱藏頂部拖動指示器
+//        fpc.surfaceView.grabberHandle.isHidden = true
+//        fpc.set(contentViewController: vc)
+//        present(fpc, animated: true)
     }
 
     @objc
@@ -191,16 +197,16 @@ extension VideoListViewController: UITableViewDataSource, UITableViewDelegate {
         cell.configure(video, showDownload: showDownload)
         cell.onDownloadButtonTapped = { [weak self] _ in
             Task {
-                guard let self, let url = URL(string: "https://www.youtube.com/watch?v=\(video.videoId)") else {
+                guard let url = URL(string: "https://www.youtube.com/watch?v=\(video.videoId)"),
+                      showDownload else {
                     return
                 }
-                self.loadingAction()
-                await self.viewModel.app.startDownload(url: url)
-                self.finishLoading()
-                self.tableView.reloadRows(at: [indexPath], with: .none)
+                self?.loadingAction()
+                await self?.viewModel.app.startDownload(url: url)
+                self?.tableView.reloadRows(at: [indexPath], with: .none)
                 Utils.toast("下載歌曲成功！")
+                self?.finishLoading()
             }
-//            self?.viewModel.app.url = URL(string: "https://www.youtube.com/watch?v=\(video.videoId)")
         }
         return cell
     }

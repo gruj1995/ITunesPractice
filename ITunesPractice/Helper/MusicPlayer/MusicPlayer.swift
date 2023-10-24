@@ -552,10 +552,11 @@ class MusicPlayer: NSObject, MusicPlayerProtocol {
 
     /// 更新播放時使用的 AVPlayerItem
     private func resetPlayerItem(track: Track?) {
-        guard let track, let audioURL = URL(string: track.previewUrl) else {
-            Utils.toast(MusicPlayerError.invalidTrack.unwrapDescription)
-            return
-        }
+        let audioURL = AppModel.shared.mp3DocumentUrl.appendingPathComponent(track?.trackName ?? "").appendingPathExtension(for: .mp3)
+//        guard let track, let audioURL = track.previewUrl else {
+//            Utils.toast(MusicPlayerError.invalidTrack.unwrapDescription)
+//            return
+//        }
         // 移除時間觀察
         removeTimeObserver()
         // 回到歌曲開頭

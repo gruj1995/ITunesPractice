@@ -10,6 +10,7 @@ import SnapKit
 import UIKit
 import Firebase
 import FirebaseAnalytics
+import BackgroundTasks
 #if DEBUG
 import FLEX
 #endif
@@ -27,7 +28,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         initializeGlobals()
         initializeDefaultValue()
         setupAppearance()
-
 #if DEBUG
         FLEXManager.shared.isNetworkDebuggingEnabled = true
 #endif
@@ -52,6 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
     /// 設置全域變數
     private func initializeGlobals() {
+        AppModel.shared.configure()
         MusicPlayer.shared.configure()
         MatchingHelper.shared.configure()
         PermissionManager.shared.configure()
