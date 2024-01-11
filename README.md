@@ -1,5 +1,5 @@
 # ITunesPractice
-這個專案主要是模仿 Apple Music 的 side project，尚在開發中，所以 developer 分支會是最新進度。
+這個專案主要是模仿 Apple Music 的 side project，尚在開發中，所以有些舊code會殘留在資料夾內。
 
 ## 功能展示
 - 基本播放功能：
