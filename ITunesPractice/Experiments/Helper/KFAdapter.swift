@@ -1,5 +1,5 @@
 //
-//  KingFisherAdaper.swift
+//  KFAdapter.swift
 //  ITunesPractice
 //
 //  Created by 李品毅 on 2023/3/17.
@@ -29,7 +29,7 @@ class KFAdapter {
     }
 
     /// 透過 ImageResource 下載圖片到指定的 UIImageView 中
-    func loadImage(with resource: ImageResource, placeholder: Placeholder?, into imageView: UIImageView) {
+    func loadImage(with resource: Source, placeholder: Placeholder?, into imageView: UIImageView) {
         // 使用 activity 樣式的指示器來提示使用者等待時間
         imageView.kf.indicatorType = .activity
         imageView.kf.setImage(with: resource, placeholder: placeholder)

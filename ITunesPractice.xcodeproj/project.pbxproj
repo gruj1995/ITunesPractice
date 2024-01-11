@@ -24,7 +24,7 @@
 		8B3B6CCD29AD8C0E00A6352A /* TrackDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B6CCC29AD8C0E00A6352A /* TrackDetailViewController.swift */; };
 		8B3B6CCF29AD8C2500A6352A /* TrackDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B6CCE29AD8C2500A6352A /* TrackDetailViewModel.swift */; };
 		8B3F9BC629C376E70050CFC9 /* PanDismissViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F9BC529C376E70050CFC9 /* PanDismissViewController.swift */; };
-		8B3F9BC829C3791C0050CFC9 /* KingFisherAdaper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F9BC729C3791C0050CFC9 /* KingFisherAdaper.swift */; };
+		8B3F9BC829C3791C0050CFC9 /* KFAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F9BC729C3791C0050CFC9 /* KFAdapter.swift */; };
 		8B3F9BCB29C3AF9C0050CFC9 /* PlayListPlayer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B3F9BCA29C3AF9C0050CFC9 /* PlayListPlayer.storyboard */; };
 		8B3F9BCE29C5C64F0050CFC9 /* FloatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F9BCD29C5C64F0050CFC9 /* FloatingViewController.swift */; };
 		8B3F9BD129C5EDB10050CFC9 /* FloatingPanel in Frameworks */ = {isa = PBXBuildFile; productRef = 8B3F9BD029C5EDB10050CFC9 /* FloatingPanel */; };
@@ -234,7 +234,7 @@
 		8B3B6CCC29AD8C0E00A6352A /* TrackDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailViewController.swift; sourceTree = "<group>"; };
 		8B3B6CCE29AD8C2500A6352A /* TrackDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailViewModel.swift; sourceTree = "<group>"; };
 		8B3F9BC529C376E70050CFC9 /* PanDismissViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanDismissViewController.swift; sourceTree = "<group>"; };
-		8B3F9BC729C3791C0050CFC9 /* KingFisherAdaper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KingFisherAdaper.swift; sourceTree = "<group>"; };
+		8B3F9BC729C3791C0050CFC9 /* KFAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KFAdapter.swift; sourceTree = "<group>"; };
 		8B3F9BCA29C3AF9C0050CFC9 /* PlayListPlayer.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PlayListPlayer.storyboard; sourceTree = "<group>"; };
 		8B3F9BCD29C5C64F0050CFC9 /* FloatingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingViewController.swift; sourceTree = "<group>"; };
 		8B3F9BD729C6012E0050CFC9 /* FloatingPanel+Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FloatingPanel+Layout.swift"; sourceTree = "<group>"; };
@@ -481,7 +481,7 @@
 			children = (
 				8BBCE34A29C0B6B90084BF44 /* Presenter */,
 				8B0E6A1D29FF8583004743A7 /* Playlist2.swift */,
-				8B3F9BC729C3791C0050CFC9 /* KingFisherAdaper.swift */,
+				8B3F9BC729C3791C0050CFC9 /* KFAdapter.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -1358,7 +1358,7 @@
 				8BFDF18129A31568008E2C23 /* Date+Extensions.swift in Sources */,
 				8B8B3E0829EB8C9100308778 /* AudioSearchViewModel.swift in Sources */,
 				8BD1C64F29AEDEAE00337EF3 /* ITunesImageSize.swift in Sources */,
-				8B3F9BC829C3791C0050CFC9 /* KingFisherAdaper.swift in Sources */,
+				8B3F9BC829C3791C0050CFC9 /* KFAdapter.swift in Sources */,
 				8BB74C7329A15350000B9D59 /* ApiEngine.swift in Sources */,
 				8B6B56A729B1755300F099DD /* LibraryViewModel.swift in Sources */,
 				8BDE4E602A08CD4D00617916 /* AddPlaylistViewController.swift in Sources */,
