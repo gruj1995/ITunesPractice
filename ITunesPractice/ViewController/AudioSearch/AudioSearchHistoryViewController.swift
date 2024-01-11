@@ -136,6 +136,17 @@ class AudioSearchHistoryViewController: UIViewController {
             Utils.toast(error.localizedDescription, at: .center)
         }
     }
+
+    private func presentAudioSearchResultVC(track: Track) {
+        let vc = AudioSearchResultViewController(track: track)
+        vc.modalPresentationStyle = .pageSheet
+        vc.modalTransitionStyle = .coverVertical
+        if let sheet = vc.sheetPresentationController {
+            sheet.detents = [.large()]
+            sheet.prefersGrabberVisible = true // 顯示頂部 grabber
+        }
+        present(vc, animated: true)
+    }
 }
 
 // MARK: UITableViewDataSource, UITableViewDelegate
@@ -166,6 +177,10 @@ extension AudioSearchHistoryViewController: UITableViewDataSource, UITableViewDe
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // 解除cell被選中的狀態
         tableView.deselectRow(at: indexPath, animated: true)
+        guard let track = viewModel.track(forCellAt: indexPath) else {
+            return
+        }
+        presentAudioSearchResultVC(track: track)
     }
 
     /*
@@ -229,8 +244,8 @@ extension AudioSearchHistoryViewController: UITableViewDataSource, UITableViewDe
 // MARK: TrackDetailViewControllerDatasource
 
 extension AudioSearchHistoryViewController: TrackDetailViewControllerDatasource {
-    func trackId(_ trackDetailViewController: TrackDetailViewController) -> Int? {
-        return viewModel.selectedTrack?.trackId
+    func track(_ trackDetailViewController: TrackDetailViewController) -> Track? {
+        return viewModel.selectedTrack
     }
 }
 

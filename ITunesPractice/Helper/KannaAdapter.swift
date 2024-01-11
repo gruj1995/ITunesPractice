@@ -17,7 +17,7 @@ class KannaAdapter {
         if let htmlString, let doc = try? HTML(html: htmlString, encoding: .utf8) {
             // 使用 XPath 來獲取 meta 標籤中的 content 屬性
             if let videoUrl = doc.at_xpath("//meta[@property='og:video']/@content")?.text {
-                Logger.log("音樂網址： \(videoUrl)")
+//                Logger.log("音樂網址： \(videoUrl)")
                 return videoUrl
             }
         }

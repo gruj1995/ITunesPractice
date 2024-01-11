@@ -15,4 +15,16 @@ extension UIViewController {
         presenter.center = CGPoint(x: Constants.screenWidth / 2, y: Constants.screenHeight - popupHeight / 2)
         presenter.presentViewController(presentingVC: self, presentedVC: presentedVC, animated: animated, completion: nil)
     }
+
+    /// 點擊任意處取消鍵盤輸入狀態
+    func dismissKeyboard() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboardTouchOutside))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+
+    @objc
+    private func dismissKeyboardTouchOutside() {
+        view.endEditing(true)
+    }
 }
